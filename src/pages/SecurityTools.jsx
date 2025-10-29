@@ -43,10 +43,10 @@ export default function SecurityTools() {
               />
             </div>
             <div className="relative z-10">
-              <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                Security <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Tools</span>
+              <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white">
+                Security <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">Tools</span>
               </h1>
-              <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+              <p className="text-xl text-white max-w-3xl mx-auto">
                 Professional-grade cybersecurity tools for encryption, verification, and secure communications
               </p>
             </div>
@@ -54,7 +54,7 @@ export default function SecurityTools() {
 
           <div className="grid md:grid-cols-3 gap-8 mb-16">
             {tools.map((tool, index) => (
-              <Card key={index} className="bg-gray-900 border-gray-800 hover:border-cyan-500/50 transition-all group overflow-hidden">
+              <Card key={index} className="bg-gray-900 border-gray-800 hover:border-blue-500/50 transition-all group overflow-hidden">
                 <div className="relative h-48 overflow-hidden">
                   <img 
                     src={tool.image}
@@ -64,16 +64,16 @@ export default function SecurityTools() {
                   <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent" />
                 </div>
                 <CardContent className="p-8">
-                  <h3 className="text-2xl font-bold mb-3 group-hover:text-cyan-400 transition-colors">{tool.name}</h3>
-                  <p className="text-gray-400 mb-6">{tool.description}</p>
+                  <h3 className="text-2xl font-bold mb-3 text-white group-hover:text-blue-400 transition-colors">{tool.name}</h3>
+                  <p className="text-white mb-6">{tool.description}</p>
                   
                   <div className="flex items-center justify-between mb-6">
-                    <span className="text-3xl font-bold text-cyan-400">{tool.price}</span>
+                    <span className="text-3xl font-bold text-blue-400">{tool.price}</span>
                     <span className="text-sm text-gray-500">one-time</span>
                   </div>
 
                   <Link to={createPageUrl(tool.link)}>
-                    <Button className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700">
+                    <Button className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white">
                       Try Now
                       <ChevronRight className="w-4 h-4 ml-2" />
                     </Button>
@@ -83,7 +83,7 @@ export default function SecurityTools() {
             ))}
           </div>
 
-          <Card className="bg-gray-900 border-cyan-500/30 overflow-hidden relative">
+          <Card className="bg-gray-900 border-blue-500/30 overflow-hidden relative">
             <div className="absolute inset-0">
               <img 
                 src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/8cd0364f8_Whisk_2bd57b9a449d359968944ab33f98257edr-Copy.jpg"
@@ -92,12 +92,12 @@ export default function SecurityTools() {
               />
             </div>
             <CardContent className="p-12 text-center relative z-10">
-              <h2 className="text-3xl font-bold mb-4">Need a Custom Solution?</h2>
-              <p className="text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
+              <h2 className="text-3xl font-bold mb-4 text-white">Need a Custom Solution?</h2>
+              <p className="text-xl text-white mb-8 max-w-2xl mx-auto">
                 Our team can build tailored security tools for your specific needs
               </p>
               <Link to={createPageUrl("Contact")}>
-                <Button size="lg" className="bg-gradient-to-r from-cyan-500 to-blue-600">
+                <Button size="lg" className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white">
                   Contact Us
                 </Button>
               </Link>

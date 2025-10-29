@@ -16,7 +16,6 @@ export default function Contact() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission
     alert("Message sent! We'll get back to you within 24 hours.");
     setFormData({ name: "", email: "", subject: "", message: "" });
   };
@@ -27,9 +26,9 @@ export default function Contact() {
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Get in <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Touch</span>
+              Get in <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">Touch</span>
             </h1>
-            <p className="text-xl text-gray-400">
+            <p className="text-xl text-white">
               Have questions? We're here to help.
             </p>
           </div>
@@ -37,86 +36,86 @@ export default function Contact() {
           <div className="grid md:grid-cols-3 gap-8 mb-12">
             <Card className="bg-gray-900 border-gray-800 text-center">
               <CardContent className="pt-8">
-                <Mail className="w-10 h-10 text-cyan-400 mx-auto mb-4" />
-                <h3 className="font-bold mb-2">Email</h3>
-                <p className="text-gray-400 text-sm">contact@glyphlock.com</p>
+                <Mail className="w-10 h-10 text-blue-400 mx-auto mb-4" />
+                <h3 className="font-bold mb-2 text-white">Email</h3>
+                <p className="text-white text-sm">contact@glyphlock.com</p>
               </CardContent>
             </Card>
 
             <Card className="bg-gray-900 border-gray-800 text-center">
               <CardContent className="pt-8">
-                <Phone className="w-10 h-10 text-cyan-400 mx-auto mb-4" />
-                <h3 className="font-bold mb-2">Phone</h3>
-                <p className="text-gray-400 text-sm">+1 (555) 123-4567</p>
+                <Phone className="w-10 h-10 text-blue-400 mx-auto mb-4" />
+                <h3 className="font-bold mb-2 text-white">Phone</h3>
+                <p className="text-white text-sm">+1 (555) 123-4567</p>
               </CardContent>
             </Card>
 
             <Card className="bg-gray-900 border-gray-800 text-center">
               <CardContent className="pt-8">
-                <MapPin className="w-10 h-10 text-cyan-400 mx-auto mb-4" />
-                <h3 className="font-bold mb-2">Office</h3>
-                <p className="text-gray-400 text-sm">San Francisco, CA</p>
+                <MapPin className="w-10 h-10 text-blue-400 mx-auto mb-4" />
+                <h3 className="font-bold mb-2 text-white">Office</h3>
+                <p className="text-white text-sm">San Francisco, CA</p>
               </CardContent>
             </Card>
           </div>
 
           <Card className="bg-gray-900 border-gray-800">
             <CardHeader>
-              <CardTitle>Send us a Message</CardTitle>
+              <CardTitle className="text-white">Send us a Message</CardTitle>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <Label htmlFor="name">Name</Label>
+                    <Label htmlFor="name" className="text-white">Name</Label>
                     <Input
                       id="name"
                       value={formData.name}
                       onChange={(e) => setFormData({...formData, name: e.target.value})}
                       required
-                      className="bg-gray-800 border-gray-700"
+                      className="bg-gray-800 border-gray-700 text-white"
                     />
                   </div>
                   <div>
-                    <Label htmlFor="email">Email</Label>
+                    <Label htmlFor="email" className="text-white">Email</Label>
                     <Input
                       id="email"
                       type="email"
                       value={formData.email}
                       onChange={(e) => setFormData({...formData, email: e.target.value})}
                       required
-                      className="bg-gray-800 border-gray-700"
+                      className="bg-gray-800 border-gray-700 text-white"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <Label htmlFor="subject">Subject</Label>
+                  <Label htmlFor="subject" className="text-white">Subject</Label>
                   <Input
                     id="subject"
                     value={formData.subject}
                     onChange={(e) => setFormData({...formData, subject: e.target.value})}
                     required
-                    className="bg-gray-800 border-gray-700"
+                    className="bg-gray-800 border-gray-700 text-white"
                   />
                 </div>
 
                 <div>
-                  <Label htmlFor="message">Message</Label>
+                  <Label htmlFor="message" className="text-white">Message</Label>
                   <Textarea
                     id="message"
                     rows={6}
                     value={formData.message}
                     onChange={(e) => setFormData({...formData, message: e.target.value})}
                     required
-                    className="bg-gray-800 border-gray-700"
+                    className="bg-gray-800 border-gray-700 text-white"
                   />
                 </div>
 
                 <Button
                   type="submit"
                   size="lg"
-                  className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700"
+                  className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white"
                 >
                   <Send className="w-4 h-4 mr-2" />
                   Send Message
