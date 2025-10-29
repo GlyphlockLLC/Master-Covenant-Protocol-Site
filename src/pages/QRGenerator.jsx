@@ -5,12 +5,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
-import { Loader2, Shield, AlertTriangle, Info, Upload, Image as ImageIcon, Palette, HelpCircle } from "lucide-react";
+import { Loader2, Shield, AlertTriangle, Info, Upload, Image as ImageIcon, Palette, HelpCircle, Link as LinkIcon, Type, Mail, Phone, Wifi, User, MapPin, Calendar } from "lucide-react";
 import SecurityStatus from "../components/qr/SecurityStatus";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Tooltip,
   TooltipContent,
@@ -19,7 +20,47 @@ import {
 } from "@/components/ui/tooltip";
 
 export default function QRGenerator() {
-  const [url, setUrl] = useState("");
+  const [qrType, setQrType] = useState("url");
+  const [qrData, setQrData] = useState({
+    // URL
+    url: "",
+    // Text
+    text: "",
+    // Email
+    email: "",
+    emailSubject: "",
+    emailBody: "",
+    // Phone
+    phone: "",
+    // SMS
+    smsNumber: "",
+    smsMessage: "",
+    // WiFi
+    wifiSSID: "",
+    wifiPassword: "",
+    wifiEncryption: "WPA",
+    wifiHidden: false,
+    // vCard
+    vcardFirstName: "",
+    vcardLastName: "",
+    vcardOrganization: "",
+    vcardPhone: "",
+    vcardEmail: "",
+    vcardWebsite: "",
+    vcardAddress: "",
+    // Location
+    latitude: "",
+    longitude: "",
+    // Event
+    eventTitle: "",
+    eventLocation: "",
+    eventStartDate: "",
+    eventStartTime: "",
+    eventEndDate: "",
+    eventEndTime: "",
+    eventDescription: ""
+  });
+
   const [size, setSize] = useState(512);
   const [qrGenerated, setQrGenerated] = useState(false);
   const [isScanning, setIsScanning] = useState(false);
@@ -27,7 +68,6 @@ export default function QRGenerator() {
   const [codeId, setCodeId] = useState(null);
   const [scanningStage, setScanningStage] = useState("");
   
-  // Advanced customization options
   const [errorCorrection, setErrorCorrection] = useState("M");
   const [selectedPalette, setSelectedPalette] = useState("classic");
   const [customColors, setCustomColors] = useState({ fg: "#000000", bg: "#FFFFFF" });
@@ -47,47 +87,60 @@ export default function QRGenerator() {
   ];
 
   const errorCorrectionLevels = [
-    {
-      level: "L",
-      name: "Low (7%)",
-      description: "Fastest scanning, minimal redundancy. Best for clean environments.",
-      securityNote: "Lower error correction = less resilience to damage/tampering",
-      icon: "🟢"
-    },
-    {
-      level: "M",
-      name: "Medium (15%)",
-      description: "Balanced performance. Recommended for most use cases.",
-      securityNote: "Good balance between size and error recovery",
-      icon: "🟡"
-    },
-    {
-      level: "Q",
-      name: "Quartile (25%)",
-      description: "Higher redundancy. Suitable for printed materials.",
-      securityNote: "Better tamper resistance, slightly slower scanning",
-      icon: "🟠"
-    },
-    {
-      level: "H",
-      name: "High (30%)",
-      description: "Maximum error correction. Survives up to 30% damage. Ideal for logos.",
-      securityNote: "Best security & durability, may require larger QR size",
-      icon: "🔴"
-    }
+    { level: "L", name: "Low (7%)", description: "Fastest scanning, minimal redundancy", icon: "🟢" },
+    { level: "M", name: "Medium (15%)", description: "Balanced performance", icon: "🟡" },
+    { level: "Q", name: "Quartile (25%)", description: "Higher redundancy for print", icon: "🟠" },
+    { level: "H", name: "High (30%)", description: "Maximum protection for logos", icon: "🔴" }
   ];
+
+  const qrTypes = [
+    { id: "url", name: "URL/Website", icon: LinkIcon, needsSecurity: true },
+    { id: "text", name: "Plain Text", icon: Type, needsSecurity: false },
+    { id: "email", name: "Email", icon: Mail, needsSecurity: true },
+    { id: "phone", name: "Phone Number", icon: Phone, needsSecurity: false },
+    { id: "sms", name: "SMS Message", icon: Phone, needsSecurity: false },
+    { id: "wifi", name: "WiFi Network", icon: Wifi, needsSecurity: false },
+    { id: "vcard", name: "Contact Card", icon: User, needsSecurity: false },
+    { id: "location", name: "GPS Location", icon: MapPin, needsSecurity: false },
+    { id: "event", name: "Calendar Event", icon: Calendar, needsSecurity: false }
+  ];
+
+  const buildQRPayload = () => {
+    switch (qrType) {
+      case "url":
+        return qrData.url;
+      case "text":
+        return qrData.text;
+      case "email":
+        return `mailto:${qrData.email}?subject=${encodeURIComponent(qrData.emailSubject)}&body=${encodeURIComponent(qrData.emailBody)}`;
+      case "phone":
+        return `tel:${qrData.phone}`;
+      case "sms":
+        return `SMSTO:${qrData.smsNumber}:${qrData.smsMessage}`;
+      case "wifi":
+        return `WIFI:T:${qrData.wifiEncryption};S:${qrData.wifiSSID};P:${qrData.wifiPassword};H:${qrData.wifiHidden};`;
+      case "vcard":
+        return `BEGIN:VCARD\nVERSION:3.0\nN:${qrData.vcardLastName};${qrData.vcardFirstName}\nFN:${qrData.vcardFirstName} ${qrData.vcardLastName}\nORG:${qrData.vcardOrganization}\nTEL:${qrData.vcardPhone}\nEMAIL:${qrData.vcardEmail}\nURL:${qrData.vcardWebsite}\nADR:${qrData.vcardAddress}\nEND:VCARD`;
+      case "location":
+        return `geo:${qrData.latitude},${qrData.longitude}`;
+      case "event":
+        const startDateTime = `${qrData.eventStartDate}T${qrData.eventStartTime}:00`;
+        const endDateTime = `${qrData.eventEndDate}T${qrData.eventEndTime}:00`;
+        return `BEGIN:VEVENT\nSUMMARY:${qrData.eventTitle}\nLOCATION:${qrData.eventLocation}\nDTSTART:${startDateTime.replace(/[-:]/g, '')}\nDTEND:${endDateTime.replace(/[-:]/g, '')}\nDESCRIPTION:${qrData.eventDescription}\nEND:VEVENT`;
+      default:
+        return "";
+    }
+  };
 
   const handleLogoUpload = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Validate file type
     if (!file.type.startsWith('image/')) {
       alert('Please upload an image file');
       return;
     }
 
-    // Validate file size (max 2MB)
     if (file.size > 2 * 1024 * 1024) {
       alert('Logo file must be under 2MB');
       return;
@@ -95,7 +148,6 @@ export default function QRGenerator() {
 
     setLogoFile(file);
 
-    // Create preview URL
     const reader = new FileReader();
     reader.onloadend = () => {
       setLogoUrl(reader.result);
@@ -167,58 +219,17 @@ export default function QRGenerator() {
     
     try {
       const result = await base44.integrations.Core.InvokeLLM({
-        prompt: `You are an advanced AI security agent specialized in detecting QR code threats.
+        prompt: `Analyze this URL/email for security threats: "${payload}"
 
-Analyze this URL for security threats: "${payload}"
+Perform comprehensive security analysis:
+1. DOMAIN TRUST (0-100): Check reputation, detect typosquatting, verify legitimate TLDs
+2. NLP PHISHING (0-100): Detect urgency phrases, impersonation, credential harvesting
+3. ENTITY LEGITIMACY (0-100): Verify brand identity, check SSL patterns
+4. URL FEATURES (0-100): Check for javascript:, data URIs, obfuscation
 
-Perform comprehensive NLP security analysis:
+Calculate: final_score = (domain_trust * 0.4) + (sentiment_score * 0.25) + (entity_legitimacy * 0.2) + (url_features * 0.15)
 
-1. DOMAIN TRUST ANALYSIS (0-100):
-   - Check domain reputation and trustworthiness
-   - Detect URL shorteners and redirects
-   - Identify typosquatting patterns (e.g., micr0soft.com, paypa1.com)
-   - Analyze domain age indicators
-   - Check for excessive URL length or unusual characters
-   - Verify legitimate TLDs vs suspicious ones (.tk, .ml, .xyz)
-
-2. NLP SENTIMENT & PHISHING ANALYSIS (0-100):
-   - Extract entities and detect social engineering tactics
-   - Identify urgency-inducing phrases: "urgent", "verify now", "account suspended", "act immediately"
-   - Detect impersonation attempts of legitimate brands
-   - Analyze suspicious keywords: "verify", "confirm", "reset password", "suspended"
-   - Check for homograph attacks (unicode lookalikes)
-   - Detect credential harvesting patterns
-
-3. ENTITY LEGITIMACY (0-100):
-   - Verify if domain matches claimed brand identity
-   - Check for legitimate organization patterns
-   - Detect credential phishing indicators
-   - Analyze path structure for suspicious patterns
-   - Verify SSL certificate legitimacy patterns
-
-4. URL FEATURE ANALYSIS (0-100):
-   - Check for data URIs, javascript:, file:, blob: schemes
-   - Detect obfuscation techniques
-   - Analyze redirect chains
-   - Check for hidden parameters
-
-5. THREAT CLASSIFICATION - Identify all that apply:
-   - Quishing: QR-based phishing attacks
-   - QRLjacking: Session hijacking via QR
-   - Malicious URL: Direct malware/exploit links
-   - Phishing: Credential theft attempts
-   - Typosquatting: Domain impersonation
-   - Social Engineering: Urgency/fear tactics
-
-Calculate final security score using weighted formula:
-final_score = (domain_trust * 0.4) + (sentiment_score * 0.25) + (entity_legitimacy * 0.2) + (url_features * 0.15)
-
-Risk level criteria:
-- 80-100: safe
-- 65-79: low/medium (allow with warning)
-- 0-64: high/critical (block)
-
-Provide detailed analysis with specific examples found.`,
+Identify threats: Quishing, QRLjacking, Phishing, Typosquatting, Social Engineering`,
         response_json_schema: {
           type: "object",
           properties: {
@@ -227,18 +238,9 @@ Provide detailed analysis with specific examples found.`,
             entity_legitimacy: { type: "number" },
             url_features: { type: "number" },
             final_score: { type: "number" },
-            risk_level: { 
-              type: "string",
-              enum: ["safe", "low", "medium", "high", "critical"]
-            },
-            threat_types: {
-              type: "array",
-              items: { type: "string" }
-            },
-            phishing_indicators: {
-              type: "array",
-              items: { type: "string" }
-            },
+            risk_level: { type: "string", enum: ["safe", "low", "medium", "high", "critical"] },
+            threat_types: { type: "array", items: { type: "string" } },
+            phishing_indicators: { type: "array", items: { type: "string" } },
             analysis_details: { type: "string" },
             ml_version: { type: "string" }
           }
@@ -247,93 +249,121 @@ Provide detailed analysis with specific examples found.`,
 
       return result;
     } catch (error) {
-      console.error("NLP analysis failed:", error);
       return {
-        domain_trust: 50,
-        sentiment_score: 50,
-        entity_legitimacy: 50,
-        url_features: 50,
-        final_score: 50,
-        risk_level: "medium",
-        threat_types: ["Analysis Error"],
+        domain_trust: 50, sentiment_score: 50, entity_legitimacy: 50, url_features: 50,
+        final_score: 50, risk_level: "medium", threat_types: ["Analysis Error"],
         phishing_indicators: ["Unable to complete full NLP analysis"],
-        analysis_details: "NLP scan encountered an error",
-        ml_version: "1.0.0"
+        analysis_details: "NLP scan encountered an error", ml_version: "1.0.0"
       };
     }
   };
 
   const generateQR = async () => {
-    if (!url) return;
+    const payload = buildQRPayload();
+    if (!payload) {
+      alert("Please fill in the required fields");
+      return;
+    }
     
     setIsScanning(true);
     setSecurityResult(null);
     setQrGenerated(false);
 
     try {
-      setScanningStage("Performing static checks...");
-      await new Promise(resolve => setTimeout(resolve, 500));
-      const staticResult = performStaticChecks(url);
+      const needsSecurity = qrTypes.find(t => t.id === qrType)?.needsSecurity;
+
+      let combinedResult = null;
+
+      if (needsSecurity) {
+        setScanningStage("Performing static checks...");
+        await new Promise(resolve => setTimeout(resolve, 500));
+        const staticResult = performStaticChecks(payload);
+        
+        const nlpResult = await performNLPAnalysis(payload);
+        
+        setScanningStage("Calculating risk score...");
+        const finalScore = Math.round(
+          (nlpResult.domain_trust * 0.4) +
+          (nlpResult.sentiment_score * 0.25) +
+          (nlpResult.entity_legitimacy * 0.2) +
+          (nlpResult.url_features * 0.15)
+        );
+
+        const allIndicators = [...staticResult.issues, ...(nlpResult.phishing_indicators || [])];
+
+        combinedResult = {
+          ...nlpResult,
+          final_score: Math.min(finalScore, staticResult.score),
+          phishing_indicators: allIndicators,
+          risk_level: finalScore >= 80 ? "safe" : finalScore >= 65 ? "medium" : "high"
+        };
+
+        setSecurityResult(combinedResult);
+
+        if (combinedResult.final_score < 65) {
+          setScanningStage("Code blocked by security policy");
+          
+          const newCodeId = `qr_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+          const payloadHash = await generateSHA256(payload);
+
+          await base44.entities.QRThreatLog.create({
+            incident_id: `threat_${Date.now()}`,
+            code_id: newCodeId,
+            attack_type: combinedResult.threat_types?.[0] || "High Risk URL",
+            payload: payload,
+            threat_description: `Policy gate blocked: Score ${combinedResult.final_score}/100`,
+            resolved: false,
+            severity: combinedResult.risk_level === "critical" ? "critical" : "high"
+          });
+
+          await base44.entities.QRGenHistory.create({
+            code_id: newCodeId,
+            payload: payload,
+            payload_sha256: payloadHash,
+            size: size,
+            creator_id: "guest",
+            status: "blocked",
+            type: qrType,
+            image_format: "png"
+          });
+          
+          setIsScanning(false);
+          return;
+        }
+      }
+
+      setScanningStage("Generating QR code...");
       
-      const nlpResult = await performNLPAnalysis(url);
-      
-      setScanningStage("Calculating risk score...");
-      const finalScore = Math.round(
-        (nlpResult.domain_trust * 0.4) +
-        (nlpResult.sentiment_score * 0.25) +
-        (nlpResult.entity_legitimacy * 0.2) +
-        (nlpResult.url_features * 0.15)
-      );
+      let uploadedLogoUrl = null;
+      if (logoFile) {
+        uploadedLogoUrl = await uploadLogoToServer();
+      }
 
-      const allIndicators = [
-        ...staticResult.issues,
-        ...(nlpResult.phishing_indicators || [])
-      ];
-
-      const combinedResult = {
-        ...nlpResult,
-        final_score: Math.min(finalScore, staticResult.score),
-        phishing_indicators: allIndicators,
-        risk_level: finalScore >= 80 ? "safe" : finalScore >= 65 ? "medium" : "high"
-      };
-
-      setSecurityResult(combinedResult);
+      setQrGenerated(true);
 
       const newCodeId = `qr_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
       setCodeId(newCodeId);
-      const payloadHash = await generateSHA256(url);
+      const payloadHash = await generateSHA256(payload);
 
-      if (combinedResult.final_score >= 65) {
-        setScanningStage("Generating secure QR code...");
-        
-        // Upload logo if present
-        let uploadedLogoUrl = null;
-        if (logoFile) {
-          uploadedLogoUrl = await uploadLogoToServer();
-        }
+      const palette = colorPalettes.find(p => p.id === selectedPalette);
 
-        setQrGenerated(true);
+      await base44.entities.QRGenHistory.create({
+        code_id: newCodeId,
+        payload: payload,
+        payload_sha256: payloadHash,
+        size: size,
+        creator_id: "guest",
+        status: combinedResult ? (combinedResult.final_score >= 80 ? "safe" : "suspicious") : "safe",
+        type: qrType,
+        image_format: "png",
+        error_correction: errorCorrection,
+        foreground_color: palette.fg,
+        background_color: palette.bg,
+        has_logo: !!uploadedLogoUrl,
+        logo_url: uploadedLogoUrl
+      });
 
-        const palette = colorPalettes.find(p => p.id === selectedPalette);
-        const fgColor = palette.fg;
-        const bgColor = palette.bg;
-
-        await base44.entities.QRGenHistory.create({
-          code_id: newCodeId,
-          payload: url,
-          payload_sha256: payloadHash,
-          size: size,
-          creator_id: "guest",
-          status: combinedResult.final_score >= 80 ? "safe" : "suspicious",
-          type: "url",
-          image_format: "png",
-          error_correction: errorCorrection,
-          foreground_color: fgColor,
-          background_color: bgColor,
-          has_logo: !!uploadedLogoUrl,
-          logo_url: uploadedLogoUrl
-        });
-
+      if (combinedResult) {
         await base44.entities.QRAIScore.create({
           code_id: newCodeId,
           final_score: combinedResult.final_score,
@@ -345,34 +375,10 @@ Provide detailed analysis with specific examples found.`,
           phishing_indicators: combinedResult.phishing_indicators || [],
           threat_types: combinedResult.threat_types || []
         });
-      } else {
-        setScanningStage("Code blocked by security policy");
-        setQrGenerated(false);
-
-        await base44.entities.QRThreatLog.create({
-          incident_id: `threat_${Date.now()}`,
-          code_id: newCodeId,
-          attack_type: combinedResult.threat_types?.[0] || "High Risk URL",
-          payload: url,
-          threat_description: `Policy gate blocked: Score ${combinedResult.final_score}/100. ${combinedResult.analysis_details || "Security threshold not met."}`,
-          resolved: false,
-          severity: combinedResult.risk_level === "critical" ? "critical" : "high"
-        });
-
-        await base44.entities.QRGenHistory.create({
-          code_id: newCodeId,
-          payload: url,
-          payload_sha256: payloadHash,
-          size: size,
-          creator_id: "guest",
-          status: "blocked",
-          type: "url",
-          image_format: "png"
-        });
       }
     } catch (error) {
       console.error("QR generation error:", error);
-      setScanningStage("Error during security scan");
+      setScanningStage("Error during generation");
     } finally {
       setIsScanning(false);
     }
@@ -387,22 +393,18 @@ Provide detailed analysis with specific examples found.`,
   };
 
   const getQRUrl = () => {
+    const payload = buildQRPayload();
     const palette = colorPalettes.find(p => p.id === selectedPalette);
     const fgColor = encodeURIComponent(palette.fg.replace('#', ''));
     const bgColor = encodeURIComponent(palette.bg.replace('#', ''));
     
-    let qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(url)}&ecc=${errorCorrection}&color=${fgColor}&bgcolor=${bgColor}`;
-    
-    // Note: The free API doesn't support logos, but we store the logo URL for future use
-    // In production, you'd use a service like QRCode.js or a premium API that supports logo embedding
-    
-    return qrUrl;
+    return `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(payload)}&ecc=${errorCorrection}&color=${fgColor}&bgcolor=${bgColor}`;
   };
 
   const downloadQR = () => {
     const link = document.createElement('a');
     link.href = getQRUrl();
-    link.download = `secure-qr-${codeId}.png`;
+    link.download = `glyphlock-qr-${qrType}-${codeId}.png`;
     link.click();
   };
 
@@ -418,10 +420,327 @@ Provide detailed analysis with specific examples found.`,
     return { label: "Blocked", color: "bg-red-500/20 text-red-400 border-red-500/50" };
   };
 
+  const renderTypeForm = () => {
+    switch (qrType) {
+      case "url":
+        return (
+          <div>
+            <Label htmlFor="url" className="text-white">Website URL *</Label>
+            <Input
+              id="url"
+              value={qrData.url}
+              onChange={(e) => setQrData({...qrData, url: e.target.value})}
+              placeholder="https://example.com"
+              className="bg-gray-800 border-gray-700 text-white"
+            />
+          </div>
+        );
+      
+      case "text":
+        return (
+          <div>
+            <Label htmlFor="text" className="text-white">Text Content *</Label>
+            <Textarea
+              id="text"
+              value={qrData.text}
+              onChange={(e) => setQrData({...qrData, text: e.target.value})}
+              placeholder="Enter any text..."
+              rows={5}
+              className="bg-gray-800 border-gray-700 text-white"
+            />
+          </div>
+        );
+      
+      case "email":
+        return (
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="email" className="text-white">Email Address *</Label>
+              <Input
+                id="email"
+                type="email"
+                value={qrData.email}
+                onChange={(e) => setQrData({...qrData, email: e.target.value})}
+                placeholder="contact@example.com"
+                className="bg-gray-800 border-gray-700 text-white"
+              />
+            </div>
+            <div>
+              <Label htmlFor="emailSubject" className="text-white">Subject</Label>
+              <Input
+                id="emailSubject"
+                value={qrData.emailSubject}
+                onChange={(e) => setQrData({...qrData, emailSubject: e.target.value})}
+                placeholder="Email subject"
+                className="bg-gray-800 border-gray-700 text-white"
+              />
+            </div>
+            <div>
+              <Label htmlFor="emailBody" className="text-white">Message</Label>
+              <Textarea
+                id="emailBody"
+                value={qrData.emailBody}
+                onChange={(e) => setQrData({...qrData, emailBody: e.target.value})}
+                placeholder="Email message"
+                rows={3}
+                className="bg-gray-800 border-gray-700 text-white"
+              />
+            </div>
+          </div>
+        );
+      
+      case "phone":
+        return (
+          <div>
+            <Label htmlFor="phone" className="text-white">Phone Number *</Label>
+            <Input
+              id="phone"
+              type="tel"
+              value={qrData.phone}
+              onChange={(e) => setQrData({...qrData, phone: e.target.value})}
+              placeholder="+1234567890"
+              className="bg-gray-800 border-gray-700 text-white"
+            />
+          </div>
+        );
+      
+      case "sms":
+        return (
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="smsNumber" className="text-white">Phone Number *</Label>
+              <Input
+                id="smsNumber"
+                type="tel"
+                value={qrData.smsNumber}
+                onChange={(e) => setQrData({...qrData, smsNumber: e.target.value})}
+                placeholder="+1234567890"
+                className="bg-gray-800 border-gray-700 text-white"
+              />
+            </div>
+            <div>
+              <Label htmlFor="smsMessage" className="text-white">Message</Label>
+              <Textarea
+                id="smsMessage"
+                value={qrData.smsMessage}
+                onChange={(e) => setQrData({...qrData, smsMessage: e.target.value})}
+                placeholder="SMS message"
+                rows={3}
+                className="bg-gray-800 border-gray-700 text-white"
+              />
+            </div>
+          </div>
+        );
+      
+      case "wifi":
+        return (
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="wifiSSID" className="text-white">Network Name (SSID) *</Label>
+              <Input
+                id="wifiSSID"
+                value={qrData.wifiSSID}
+                onChange={(e) => setQrData({...qrData, wifiSSID: e.target.value})}
+                placeholder="MyWiFiNetwork"
+                className="bg-gray-800 border-gray-700 text-white"
+              />
+            </div>
+            <div>
+              <Label htmlFor="wifiPassword" className="text-white">Password *</Label>
+              <Input
+                id="wifiPassword"
+                type="password"
+                value={qrData.wifiPassword}
+                onChange={(e) => setQrData({...qrData, wifiPassword: e.target.value})}
+                placeholder="Password"
+                className="bg-gray-800 border-gray-700 text-white"
+              />
+            </div>
+            <div>
+              <Label className="text-white">Encryption</Label>
+              <Select value={qrData.wifiEncryption} onValueChange={(value) => setQrData({...qrData, wifiEncryption: value})}>
+                <SelectTrigger className="bg-gray-800 border-gray-700 text-white">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="bg-gray-800 border-gray-700">
+                  <SelectItem value="WPA">WPA/WPA2</SelectItem>
+                  <SelectItem value="WEP">WEP</SelectItem>
+                  <SelectItem value="nopass">None</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+        );
+      
+      case "vcard":
+        return (
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label className="text-white">First Name *</Label>
+                <Input
+                  value={qrData.vcardFirstName}
+                  onChange={(e) => setQrData({...qrData, vcardFirstName: e.target.value})}
+                  className="bg-gray-800 border-gray-700 text-white"
+                />
+              </div>
+              <div>
+                <Label className="text-white">Last Name *</Label>
+                <Input
+                  value={qrData.vcardLastName}
+                  onChange={(e) => setQrData({...qrData, vcardLastName: e.target.value})}
+                  className="bg-gray-800 border-gray-700 text-white"
+                />
+              </div>
+            </div>
+            <div>
+              <Label className="text-white">Organization</Label>
+              <Input
+                value={qrData.vcardOrganization}
+                onChange={(e) => setQrData({...qrData, vcardOrganization: e.target.value})}
+                className="bg-gray-800 border-gray-700 text-white"
+              />
+            </div>
+            <div>
+              <Label className="text-white">Phone</Label>
+              <Input
+                type="tel"
+                value={qrData.vcardPhone}
+                onChange={(e) => setQrData({...qrData, vcardPhone: e.target.value})}
+                className="bg-gray-800 border-gray-700 text-white"
+              />
+            </div>
+            <div>
+              <Label className="text-white">Email</Label>
+              <Input
+                type="email"
+                value={qrData.vcardEmail}
+                onChange={(e) => setQrData({...qrData, vcardEmail: e.target.value})}
+                className="bg-gray-800 border-gray-700 text-white"
+              />
+            </div>
+            <div>
+              <Label className="text-white">Website</Label>
+              <Input
+                value={qrData.vcardWebsite}
+                onChange={(e) => setQrData({...qrData, vcardWebsite: e.target.value})}
+                className="bg-gray-800 border-gray-700 text-white"
+              />
+            </div>
+          </div>
+        );
+      
+      case "location":
+        return (
+          <div className="space-y-4">
+            <div>
+              <Label className="text-white">Latitude *</Label>
+              <Input
+                type="number"
+                step="any"
+                value={qrData.latitude}
+                onChange={(e) => setQrData({...qrData, latitude: e.target.value})}
+                placeholder="37.7749"
+                className="bg-gray-800 border-gray-700 text-white"
+              />
+            </div>
+            <div>
+              <Label className="text-white">Longitude *</Label>
+              <Input
+                type="number"
+                step="any"
+                value={qrData.longitude}
+                onChange={(e) => setQrData({...qrData, longitude: e.target.value})}
+                placeholder="-122.4194"
+                className="bg-gray-800 border-gray-700 text-white"
+              />
+            </div>
+          </div>
+        );
+      
+      case "event":
+        return (
+          <div className="space-y-4">
+            <div>
+              <Label className="text-white">Event Title *</Label>
+              <Input
+                value={qrData.eventTitle}
+                onChange={(e) => setQrData({...qrData, eventTitle: e.target.value})}
+                className="bg-gray-800 border-gray-700 text-white"
+              />
+            </div>
+            <div>
+              <Label className="text-white">Location</Label>
+              <Input
+                value={qrData.eventLocation}
+                onChange={(e) => setQrData({...qrData, eventLocation: e.target.value})}
+                className="bg-gray-800 border-gray-700 text-white"
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label className="text-white">Start Date *</Label>
+                <Input
+                  type="date"
+                  value={qrData.eventStartDate}
+                  onChange={(e) => setQrData({...qrData, eventStartDate: e.target.value})}
+                  className="bg-gray-800 border-gray-700 text-white"
+                />
+              </div>
+              <div>
+                <Label className="text-white">Start Time *</Label>
+                <Input
+                  type="time"
+                  value={qrData.eventStartTime}
+                  onChange={(e) => setQrData({...qrData, eventStartTime: e.target.value})}
+                  className="bg-gray-800 border-gray-700 text-white"
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label className="text-white">End Date *</Label>
+                <Input
+                  type="date"
+                  value={qrData.eventEndDate}
+                  onChange={(e) => setQrData({...qrData, eventEndDate: e.target.value})}
+                  className="bg-gray-800 border-gray-700 text-white"
+                />
+              </div>
+              <div>
+                <Label className="text-white">End Time *</Label>
+                <Input
+                  type="time"
+                  value={qrData.eventEndTime}
+                  onChange={(e) => setQrData({...qrData, eventEndTime: e.target.value})}
+                  className="bg-gray-800 border-gray-700 text-white"
+                />
+              </div>
+            </div>
+            <div>
+              <Label className="text-white">Description</Label>
+              <Textarea
+                value={qrData.eventDescription}
+                onChange={(e) => setQrData({...qrData, eventDescription: e.target.value})}
+                rows={3}
+                className="bg-gray-800 border-gray-700 text-white"
+              />
+            </div>
+          </div>
+        );
+      
+      default:
+        return null;
+    }
+  };
+
+  const currentTypeConfig = qrTypes.find(t => t.id === qrType);
+
   return (
     <div className="min-h-screen bg-black text-white py-20">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
+          {/* Header */}
           <div className="text-center mb-12">
             <div className="relative inline-block mb-6">
               <img 
@@ -434,39 +753,66 @@ Provide detailed analysis with specific examples found.`,
               AI-Hardened QR <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">Generator</span>
             </h1>
             <p className="text-xl text-white mb-2">
-              Every code is scanned, scored, and blessed or blocked before it exists in the wild
+              9 QR code types with AI security scanning and full customization
             </p>
             <div className="flex items-center justify-center gap-2 text-sm text-blue-400">
               <Shield className="w-4 h-4" />
-              <span>Multi-stage AI framework: Static → NLP → Policy Gate</span>
+              <span>URL/Text/Email/Phone/SMS/WiFi/vCard/Location/Events</span>
             </div>
           </div>
 
-          <Alert className="mb-8 bg-blue-500/10 border-blue-500/30">
-            <Info className="h-4 w-4 text-blue-400" />
-            <AlertDescription className="text-white">
-              <strong>Security Protocol:</strong> All payloads under 65/100 are automatically blocked. No exceptions. Scores 65-79 allowed with warnings. 80+ verified safe.
-            </AlertDescription>
-          </Alert>
+          {currentTypeConfig?.needsSecurity && (
+            <Alert className="mb-8 bg-blue-500/10 border-blue-500/30">
+              <Info className="h-4 w-4 text-blue-400" />
+              <AlertDescription className="text-white">
+                <strong>Security Protocol Active:</strong> URLs and emails are scanned by AI. Payloads under 65/100 are blocked.
+              </AlertDescription>
+            </Alert>
+          )}
+
+          {/* QR Type Selector */}
+          <Card className="bg-gray-900 border-gray-800 mb-8">
+            <CardHeader>
+              <CardTitle className="text-white">Select QR Code Type</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-3 md:grid-cols-5 gap-3">
+                {qrTypes.map(type => {
+                  const Icon = type.icon;
+                  return (
+                    <button
+                      key={type.id}
+                      onClick={() => setQrType(type.id)}
+                      className={`p-4 rounded-lg border-2 transition-all ${
+                        qrType === type.id
+                          ? 'border-blue-500 bg-blue-500/10'
+                          : 'border-gray-700 hover:border-gray-600'
+                      }`}
+                    >
+                      <Icon className="w-6 h-6 mx-auto mb-2 text-blue-400" />
+                      <div className="text-xs font-semibold text-white">{type.name}</div>
+                      {type.needsSecurity && (
+                        <Shield className="w-3 h-3 mx-auto mt-1 text-green-400" />
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </CardContent>
+          </Card>
 
           <div className="grid lg:grid-cols-3 gap-8">
-            {/* Left Column - Input & Basic Settings */}
+            {/* Left Column - Content Input */}
             <div className="lg:col-span-1 space-y-6">
               <Card className="bg-gray-900 border-gray-800">
                 <CardHeader>
-                  <CardTitle className="text-white">Basic Settings</CardTitle>
+                  <CardTitle className="text-white flex items-center gap-2">
+                    {React.createElement(currentTypeConfig.icon, { className: "w-5 h-5" })}
+                    {currentTypeConfig.name}
+                  </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6">
-                  <div>
-                    <Label htmlFor="url" className="text-white">URL or Text</Label>
-                    <Input
-                      id="url"
-                      value={url}
-                      onChange={(e) => setUrl(e.target.value)}
-                      placeholder="https://example.com"
-                      className="bg-gray-800 border-gray-700 text-white"
-                    />
-                  </div>
+                  {renderTypeForm()}
 
                   <div>
                     <Label className="text-white">Size: {size}px</Label>
@@ -482,53 +828,40 @@ Provide detailed analysis with specific examples found.`,
 
                   <Button
                     onClick={generateQR}
-                    disabled={!url || isScanning}
+                    disabled={isScanning}
                     className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white"
                   >
                     {isScanning ? (
                       <>
                         <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                        {scanningStage || "Scanning..."}
+                        {scanningStage || "Generating..."}
                       </>
                     ) : (
                       <>
                         <Shield className="w-4 h-4 mr-2" />
-                        Generate & Verify
+                        Generate QR Code
                       </>
                     )}
                   </Button>
 
-                  {isScanning && (
+                  {isScanning && currentTypeConfig?.needsSecurity && (
                     <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4">
-                      <div className="text-sm text-blue-400 mb-2 font-semibold">AI Security Pipeline Active</div>
+                      <div className="text-sm text-blue-400 mb-2 font-semibold">AI Security Scan Active</div>
                       <div className="text-xs text-white space-y-1">
-                        <div>✓ Stage 1: Static checks</div>
-                        <div>✓ Stage 2: NLP analysis</div>
-                        <div>✓ Stage 3: Entity verification</div>
-                        <div>✓ Stage 4: Rank aggregation</div>
-                        <div>✓ Stage 5: Policy gate</div>
+                        <div>✓ Static checks</div>
+                        <div>✓ NLP analysis</div>
+                        <div>✓ Threat detection</div>
+                        <div>✓ Policy gate</div>
                       </div>
                     </div>
                   )}
                 </CardContent>
               </Card>
 
-              {/* Error Correction Level */}
+              {/* Error Correction */}
               <Card className="bg-gray-900 border-gray-800">
                 <CardHeader>
-                  <CardTitle className="text-white flex items-center gap-2">
-                    Error Correction
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger>
-                          <HelpCircle className="w-4 h-4 text-gray-400" />
-                        </TooltipTrigger>
-                        <TooltipContent className="bg-gray-800 border-gray-700 text-white max-w-xs">
-                          <p>Higher error correction allows QR codes to remain scannable even if damaged or obscured. Essential for logos and outdoor use.</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  </CardTitle>
+                  <CardTitle className="text-white text-sm">Error Correction</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <Select value={errorCorrection} onValueChange={setErrorCorrection}>
@@ -538,25 +871,11 @@ Provide detailed analysis with specific examples found.`,
                     <SelectContent className="bg-gray-800 border-gray-700">
                       {errorCorrectionLevels.map(level => (
                         <SelectItem key={level.level} value={level.level} className="text-white">
-                          <div className="flex items-center gap-2">
-                            <span>{level.icon}</span>
-                            <span>{level.name}</span>
-                          </div>
+                          {level.icon} {level.name}
                         </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
-                  
-                  {errorCorrectionLevels.find(l => l.level === errorCorrection) && (
-                    <div className="mt-4 p-3 bg-gray-800 rounded-lg border border-gray-700">
-                      <p className="text-sm text-white mb-2">
-                        {errorCorrectionLevels.find(l => l.level === errorCorrection).description}
-                      </p>
-                      <p className="text-xs text-blue-400">
-                        🔒 {errorCorrectionLevels.find(l => l.level === errorCorrection).securityNote}
-                      </p>
-                    </div>
-                  )}
                 </CardContent>
               </Card>
             </div>
@@ -575,7 +894,7 @@ Provide detailed analysis with specific examples found.`,
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  {qrGenerated && url && securityResult && securityResult.final_score >= 65 ? (
+                  {qrGenerated ? (
                     <div className="space-y-4">
                       <div className="bg-white p-8 rounded-lg flex items-center justify-center relative">
                         <img
@@ -592,17 +911,19 @@ Provide detailed analysis with specific examples found.`,
                             />
                           </div>
                         )}
-                        <div className="absolute top-2 right-2">
-                          <Badge className={`${getScoreColor(securityResult.final_score)} bg-white/90 backdrop-blur`}>
-                            {securityResult.final_score}/100
-                          </Badge>
-                        </div>
+                        {securityResult && (
+                          <div className="absolute top-2 right-2">
+                            <Badge className={`${getScoreColor(securityResult.final_score)} bg-white/90 backdrop-blur`}>
+                              {securityResult.final_score}/100
+                            </Badge>
+                          </div>
+                        )}
                       </div>
-                      {securityResult.final_score < 80 && (
+                      {securityResult && securityResult.final_score < 80 && (
                         <Alert className="bg-yellow-500/10 border-yellow-500/30">
                           <AlertTriangle className="h-4 w-4 text-yellow-400" />
                           <AlertDescription className="text-white">
-                            <strong>Caution:</strong> This code passed but scored below 80. Review security details before use.
+                            <strong>Caution:</strong> Review security details before use.
                           </AlertDescription>
                         </Alert>
                       )}
@@ -611,7 +932,7 @@ Provide detailed analysis with specific examples found.`,
                         variant="outline"
                         className="w-full border-blue-500/50 hover:bg-blue-500/10 text-white"
                       >
-                        ⬇️ Download Secure QR Code
+                        ⬇️ Download QR Code
                       </Button>
                     </div>
                   ) : securityResult && securityResult.final_score < 65 ? (
@@ -619,16 +940,14 @@ Provide detailed analysis with specific examples found.`,
                       <div className="text-center p-6">
                         <div className="text-5xl mb-4">🚫</div>
                         <p className="text-red-400 font-semibold mb-2">Policy Gate Blocked</p>
-                        <p className="text-sm text-white mb-2">Score: {securityResult.final_score}/100 (minimum: 65)</p>
-                        <p className="text-xs text-gray-400">This URL was flagged as high-risk and cannot be encoded.</p>
+                        <p className="text-sm text-white">Score: {securityResult.final_score}/100</p>
                       </div>
                     </div>
                   ) : (
                     <div className="h-96 flex items-center justify-center border-2 border-dashed border-gray-700 rounded-lg">
                       <div className="text-center">
-                        <Shield className="w-16 h-16 mx-auto mb-4 opacity-50 text-blue-400" />
-                        <p className="text-gray-500">Enter a URL to generate a secure QR code</p>
-                        <p className="text-xs text-gray-600 mt-2">All codes are verified by AI before generation</p>
+                        {React.createElement(currentTypeConfig.icon, { className: "w-16 h-16 mx-auto mb-4 opacity-50 text-blue-400" })}
+                        <p className="text-gray-500">Fill the form and click Generate</p>
                       </div>
                     </div>
                   )}
@@ -640,88 +959,73 @@ Provide detailed analysis with specific examples found.`,
             <div className="lg:col-span-1 space-y-6">
               <Card className="bg-gray-900 border-gray-800">
                 <CardHeader>
-                  <CardTitle className="text-white flex items-center gap-2">
-                    <Palette className="w-5 h-5" />
-                    Color Palettes
+                  <CardTitle className="text-white flex items-center gap-2 text-sm">
+                    <Palette className="w-4 h-4" />
+                    Colors
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid grid-cols-2 gap-3">
-                    {colorPalettes.filter(p => p.id !== "custom").map(palette => (
+                  <div className="grid grid-cols-2 gap-2">
+                    {colorPalettes.filter(p => p.id !== "custom").slice(0, 6).map(palette => (
                       <button
                         key={palette.id}
                         onClick={() => setSelectedPalette(palette.id)}
-                        className={`p-3 rounded-lg border-2 transition-all ${
+                        className={`p-2 rounded-lg border transition-all ${
                           selectedPalette === palette.id
                             ? 'border-blue-500 bg-blue-500/10'
                             : 'border-gray-700 hover:border-gray-600'
                         }`}
                       >
-                        <div className="flex items-center gap-2 mb-2">
+                        <div className="flex items-center gap-2 mb-1">
                           <div 
-                            className="w-6 h-6 rounded border border-gray-600"
+                            className="w-4 h-4 rounded border border-gray-600"
                             style={{ backgroundColor: palette.fg }}
                           />
                           <div 
-                            className="w-6 h-6 rounded border border-gray-600"
+                            className="w-4 h-4 rounded border border-gray-600"
                             style={{ backgroundColor: palette.bg }}
                           />
                         </div>
                         <div className="text-xs font-semibold text-white">{palette.name}</div>
-                        <div className="text-xs text-gray-400 mt-1">{palette.description}</div>
                       </button>
                     ))}
                   </div>
 
-                  {/* Custom Colors */}
-                  <div className="mt-4 p-3 bg-gray-800 rounded-lg border border-gray-700">
-                    <Label className="text-white text-xs mb-2 block">Custom Colors</Label>
-                    <div className="grid grid-cols-2 gap-3">
-                      <div>
-                        <Label className="text-xs text-gray-400">Foreground</Label>
-                        <Input
-                          type="color"
-                          value={customColors.fg}
-                          onChange={(e) => {
-                            setCustomColors({...customColors, fg: e.target.value});
-                            setSelectedPalette("custom");
-                          }}
-                          className="h-10 bg-gray-700 border-gray-600"
-                        />
-                      </div>
-                      <div>
-                        <Label className="text-xs text-gray-400">Background</Label>
-                        <Input
-                          type="color"
-                          value={customColors.bg}
-                          onChange={(e) => {
-                            setCustomColors({...customColors, bg: e.target.value});
-                            setSelectedPalette("custom");
-                          }}
-                          className="h-10 bg-gray-700 border-gray-600"
-                        />
-                      </div>
+                  <div className="mt-3 p-2 bg-gray-800 rounded-lg border border-gray-700">
+                    <Label className="text-white text-xs mb-2 block">Custom</Label>
+                    <div className="grid grid-cols-2 gap-2">
+                      <Input
+                        type="color"
+                        value={customColors.fg}
+                        onChange={(e) => {
+                          setCustomColors({...customColors, fg: e.target.value});
+                          setSelectedPalette("custom");
+                        }}
+                        className="h-8 bg-gray-700 border-gray-600"
+                      />
+                      <Input
+                        type="color"
+                        value={customColors.bg}
+                        onChange={(e) => {
+                          setCustomColors({...customColors, bg: e.target.value});
+                          setSelectedPalette("custom");
+                        }}
+                        className="h-8 bg-gray-700 border-gray-600"
+                      />
                     </div>
                   </div>
-
-                  <Alert className="mt-4 bg-amber-500/10 border-amber-500/30">
-                    <Info className="h-3 w-3 text-amber-400" />
-                    <AlertDescription className="text-xs text-white">
-                      Ensure sufficient contrast for reliable scanning
-                    </AlertDescription>
-                  </Alert>
                 </CardContent>
               </Card>
 
               {/* Logo Upload */}
               <Card className="bg-gray-900 border-gray-800">
                 <CardHeader>
-                  <CardTitle className="text-white flex items-center gap-2">
-                    <ImageIcon className="w-5 h-5" />
-                    Custom Logo
+                  <CardTitle className="text-white flex items-center gap-2 text-sm">
+                    <ImageIcon className="w-4 h-4" />
+                    Logo
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-3">
                   <input
                     ref={fileInputRef}
                     type="file"
@@ -731,12 +1035,11 @@ Provide detailed analysis with specific examples found.`,
                   />
                   
                   {logoUrl ? (
-                    <div className="space-y-3">
-                      <div className="bg-gray-800 p-4 rounded-lg border border-gray-700 flex items-center gap-3">
-                        <img src={logoUrl} alt="Logo preview" className="w-16 h-16 object-contain rounded" />
+                    <div className="space-y-2">
+                      <div className="bg-gray-800 p-3 rounded-lg border border-gray-700 flex items-center gap-2">
+                        <img src={logoUrl} alt="Logo" className="w-12 h-12 object-contain rounded" />
                         <div className="flex-1">
-                          <p className="text-sm text-white font-medium">Logo uploaded</p>
-                          <p className="text-xs text-gray-400">Will be centered in QR code</p>
+                          <p className="text-xs text-white font-medium">Logo uploaded</p>
                         </div>
                       </div>
                       <Button
@@ -746,71 +1049,33 @@ Provide detailed analysis with specific examples found.`,
                         }}
                         variant="outline"
                         size="sm"
-                        className="w-full border-red-500/50 text-red-400 hover:bg-red-500/10"
+                        className="w-full border-red-500/50 text-red-400 hover:bg-red-500/10 text-xs"
                       >
-                        Remove Logo
+                        Remove
                       </Button>
                     </div>
                   ) : (
                     <Button
                       onClick={() => fileInputRef.current?.click()}
                       variant="outline"
-                      className="w-full border-blue-500/50 hover:bg-blue-500/10 text-white"
+                      size="sm"
+                      className="w-full border-blue-500/50 hover:bg-blue-500/10 text-white text-xs"
                     >
-                      <Upload className="w-4 h-4 mr-2" />
+                      <Upload className="w-3 h-3 mr-2" />
                       Upload Logo
                     </Button>
                   )}
-
-                  <Alert className="bg-blue-500/10 border-blue-500/30">
-                    <Info className="h-3 w-3 text-blue-400" />
-                    <AlertDescription className="text-xs text-white">
-                      <strong>Tip:</strong> Use High (H) error correction for QR codes with logos to ensure scannability
-                    </AlertDescription>
-                  </Alert>
                 </CardContent>
               </Card>
             </div>
           </div>
 
-          {/* Security Status Display */}
+          {/* Security Status */}
           {securityResult && (
             <div className="mt-8">
               <SecurityStatus securityResult={securityResult} />
             </div>
           )}
-
-          {/* Features Grid */}
-          <div className="mt-12 grid md:grid-cols-4 gap-6">
-            <Card className="bg-gray-900 border-gray-800 text-center">
-              <CardContent className="pt-6">
-                <div className="text-4xl mb-3">🛡️</div>
-                <h3 className="font-bold mb-2 text-white">5-Stage Pipeline</h3>
-                <p className="text-sm text-white">Normalize → Static → NLP → Score → Gate</p>
-              </CardContent>
-            </Card>
-            <Card className="bg-gray-900 border-gray-800 text-center">
-              <CardContent className="pt-6">
-                <div className="text-4xl mb-3">🎯</div>
-                <h3 className="font-bold mb-2 text-white">Real-time Blocking</h3>
-                <p className="text-sm text-white">Quishing, QRLjacking & phishing blocked</p>
-              </CardContent>
-            </Card>
-            <Card className="bg-gray-900 border-gray-800 text-center">
-              <CardContent className="pt-6">
-                <div className="text-4xl mb-3">🎨</div>
-                <h3 className="font-bold mb-2 text-white">Full Customization</h3>
-                <p className="text-sm text-white">Colors, logos, error correction levels</p>
-              </CardContent>
-            </Card>
-            <Card className="bg-gray-900 border-gray-800 text-center">
-              <CardContent className="pt-6">
-                <div className="text-4xl mb-3">📊</div>
-                <h3 className="font-bold mb-2 text-white">Complete Audit</h3>
-                <p className="text-sm text-white">SHA-256 hash & detailed logging</p>
-              </CardContent>
-            </Card>
-          </div>
         </div>
       </div>
     </div>
