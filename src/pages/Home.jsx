@@ -69,10 +69,24 @@ export default function Home() {
   ];
 
   const partners = [
-    "AWS", "Google Cloud", "Azure", "Microsoft", "Stripe", "OpenAI", 
-    "Anthropic", "Vercel", "Supabase", "MongoDB", "Redis", "PostgreSQL", 
-    "Docker", "Kubernetes", "GitHub", "GitLab", "TypeScript", "React", 
-    "Node.js", "Next.js", "Python", "TensorFlow"
+    { name: "AWS", logo: "https://cdn.cdnlogo.com/logos/a/20/aws.svg" },
+    { name: "Google Cloud", logo: "https://cdn.cdnlogo.com/logos/g/23/google-cloud.svg" },
+    { name: "Microsoft Azure", logo: "https://cdn.cdnlogo.com/logos/m/97/microsoft-azure.svg" },
+    { name: "Stripe", logo: "https://cdn.cdnlogo.com/logos/s/84/stripe.svg" },
+    { name: "OpenAI", logo: "https://cdn.cdnlogo.com/logos/o/35/openai.svg" },
+    { name: "Anthropic", logo: "https://cdn.cdnlogo.com/logos/a/14/anthropic.svg" },
+    { name: "Vercel", logo: "https://cdn.cdnlogo.com/logos/v/94/vercel.svg" },
+    { name: "Supabase", logo: "https://cdn.cdnlogo.com/logos/s/8/supabase.svg" },
+    { name: "MongoDB", logo: "https://cdn.cdnlogo.com/logos/m/25/mongodb.svg" },
+    { name: "Redis", logo: "https://cdn.cdnlogo.com/logos/r/8/redis.svg" },
+    { name: "PostgreSQL", logo: "https://cdn.cdnlogo.com/logos/p/61/postgresql.svg" },
+    { name: "Docker", logo: "https://cdn.cdnlogo.com/logos/d/41/docker.svg" },
+    { name: "Kubernetes", logo: "https://cdn.cdnlogo.com/logos/k/61/kubernetes.svg" },
+    { name: "GitHub", logo: "https://cdn.cdnlogo.com/logos/g/69/github-icon.svg" },
+    { name: "GitLab", logo: "https://cdn.cdnlogo.com/logos/g/70/gitlab.svg" },
+    { name: "TypeScript", logo: "https://cdn.cdnlogo.com/logos/t/96/typescript.svg" },
+    { name: "React", logo: "https://cdn.cdnlogo.com/logos/r/85/react.svg" },
+    { name: "Node.js", logo: "https://cdn.cdnlogo.com/logos/n/22/nodejs.svg" }
   ];
 
   return (
@@ -187,7 +201,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Technology Partners - Scrolling Marquee */}
+      {/* Technology Partners - Scrolling Marquee with Logos */}
       <section className="py-20 relative overflow-hidden">
         <div className="absolute inset-0">
           <img 
@@ -204,7 +218,7 @@ export default function Home() {
             <p className="text-white">Built on enterprise-grade infrastructure</p>
           </div>
 
-          {/* Scrolling Marquee */}
+          {/* Scrolling Marquee with Company Logos */}
           <div className="relative overflow-hidden">
             <style>{`
               @keyframes scroll {
@@ -229,10 +243,19 @@ export default function Home() {
                 {partners.map((partner, index) => (
                   <div
                     key={`first-${index}`}
-                    className="flex-shrink-0 mx-6 px-8 py-4 bg-gray-900/50 backdrop-blur-sm rounded-lg border border-blue-500/20 hover:border-blue-500/50 transition-colors"
+                    className="flex-shrink-0 mx-4 px-8 py-6 bg-gray-900/50 backdrop-blur-sm rounded-lg border border-blue-500/20 hover:border-blue-500/50 transition-colors flex items-center justify-center min-w-[180px] h-24"
                   >
-                    <span className="text-white font-bold text-lg whitespace-nowrap">
-                      {partner}
+                    <img 
+                      src={partner.logo} 
+                      alt={partner.name}
+                      className="h-12 w-auto object-contain filter brightness-0 invert opacity-80 hover:opacity-100 transition-opacity"
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                        e.target.nextSibling.style.display = 'block';
+                      }}
+                    />
+                    <span className="text-white font-bold text-lg hidden">
+                      {partner.name}
                     </span>
                   </div>
                 ))}
@@ -240,10 +263,19 @@ export default function Home() {
                 {partners.map((partner, index) => (
                   <div
                     key={`second-${index}`}
-                    className="flex-shrink-0 mx-6 px-8 py-4 bg-gray-900/50 backdrop-blur-sm rounded-lg border border-blue-500/20 hover:border-blue-500/50 transition-colors"
+                    className="flex-shrink-0 mx-4 px-8 py-6 bg-gray-900/50 backdrop-blur-sm rounded-lg border border-blue-500/20 hover:border-blue-500/50 transition-colors flex items-center justify-center min-w-[180px] h-24"
                   >
-                    <span className="text-white font-bold text-lg whitespace-nowrap">
-                      {partner}
+                    <img 
+                      src={partner.logo} 
+                      alt={partner.name}
+                      className="h-12 w-auto object-contain filter brightness-0 invert opacity-80 hover:opacity-100 transition-opacity"
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                        e.target.nextSibling.style.display = 'block';
+                      }}
+                    />
+                    <span className="text-white font-bold text-lg hidden">
+                      {partner.name}
                     </span>
                   </div>
                 ))}
