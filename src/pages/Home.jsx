@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
@@ -33,6 +34,13 @@ export default function Home() {
       gradient: "from-cyan-500 to-blue-600"
     },
     {
+      title: "GlyphBot AI Assistant",
+      description: "Advanced AI powered by Gemini with code execution, security scanning, and automated auditing.",
+      icon: Brain,
+      link: "GlyphBot",
+      gradient: "from-indigo-500 to-purple-600"
+    },
+    {
       title: "QR Code Generator",
       description: "Secure QR code generation with custom branding, analytics tracking, and encryption.",
       icon: QrCode,
@@ -52,13 +60,6 @@ export default function Home() {
       icon: Blocks,
       link: "Blockchain",
       gradient: "from-indigo-500 to-purple-600"
-    },
-    {
-      title: "Enterprise Solutions",
-      description: "Custom security infrastructure for Fortune 500 companies with 24/7 monitoring.",
-      icon: Lock,
-      link: "Contact",
-      gradient: "from-yellow-500 to-orange-600"
     }
   ];
 

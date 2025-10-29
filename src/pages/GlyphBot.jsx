@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from "react";
 import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
@@ -10,6 +11,11 @@ import {
 import { Badge } from "@/components/ui/badge";
 import MessageBubble from "../components/glyphbot/MessageBubble";
 import ConversationList from "../components/glyphbot/ConversationList";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import PersonaSelector from "../components/glyphbot/PersonaSelector";
+import CodeExecutor from "../components/glyphbot/CodeExecutor";
+import SecurityScanner from "../components/glyphbot/SecurityScanner";
+import AuditGenerator from "../components/glyphbot/AuditGenerator";
 
 export default function GlyphBot() {
   const [user, setUser] = useState(null);
@@ -19,6 +25,7 @@ export default function GlyphBot() {
   const [inputMessage, setInputMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const [selectedPersona, setSelectedPersona] = useState("default");
   const messagesEndRef = useRef(null);
   const fileInputRef = useRef(null);
 
@@ -120,6 +127,19 @@ export default function GlyphBot() {
 
     setIsLoading(true);
     const messageContent = inputMessage.trim();
+    
+    // Add persona context if not default
+    let finalContent = messageContent;
+    if (selectedPersona !== "default") {
+      const personaContexts = {
+        "ethical-hacker": "As an ethical hacker focused on offensive security and penetration testing, ",
+        "senior-developer": "As a senior software engineer emphasizing clean code and best practices, ",
+        "security-auditor": "As a security auditor focused on compliance and risk assessment, ",
+        "smart-contract-auditor": "As a blockchain security expert specializing in smart contracts, "
+      };
+      finalContent = (personaContexts[selectedPersona] || "") + messageContent;
+    }
+    
     setInputMessage("");
 
     try {
@@ -128,7 +148,7 @@ export default function GlyphBot() {
 
       await base44.agents.addMessage(currentConversation, {
         role: "user",
-        content: messageContent || "Please analyze the attached files",
+        content: finalContent || "Please analyze the attached files",
         file_urls: fileUrls.length > 0 ? fileUrls : undefined
       });
     } catch (error) {
@@ -162,9 +182,9 @@ export default function GlyphBot() {
             </div>
             <div>
               <h1 className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
-                GlyphBot
+                GlyphBot Advanced
               </h1>
-              <p className="text-sm text-gray-400">AI Assistant powered by Gemini</p>
+              <p className="text-sm text-gray-400">AI Security Expert powered by Gemini</p>
             </div>
           </div>
           <div className="flex items-center gap-4">
@@ -186,180 +206,221 @@ export default function GlyphBot() {
       </header>
 
       <div className="container mx-auto p-4">
-        <div className="grid lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-          {/* Sidebar - Conversations */}
-          <div className="lg:col-span-1">
-            <Card className="bg-gray-900 border-gray-800 sticky top-4">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg">Conversations</CardTitle>
-                  <Button
-                    size="sm"
-                    onClick={createNewConversation}
-                    className="bg-gradient-to-r from-cyan-500 to-blue-600 h-8"
-                  >
-                    <Plus className="w-4 h-4" />
-                  </Button>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <ConversationList
-                  conversations={conversations}
-                  currentConversation={currentConversation}
-                  onSelect={selectConversation}
-                  onDelete={deleteConversation}
-                />
-              </CardContent>
-            </Card>
+        <Tabs defaultValue="chat" className="space-y-6">
+          <TabsList className="bg-gray-900 border border-gray-800">
+            <TabsTrigger value="chat">AI Chat</TabsTrigger>
+            <TabsTrigger value="executor">Code Executor</TabsTrigger>
+            <TabsTrigger value="scanner">Security Scanner</TabsTrigger>
+            <TabsTrigger value="audit">Audit Generator</TabsTrigger>
+          </TabsList>
 
-            {/* Features Card */}
-            <Card className="bg-gradient-to-br from-cyan-500/10 to-blue-600/10 border-cyan-500/30 mt-6">
-              <CardHeader>
-                <CardTitle className="text-base">Capabilities</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3 text-sm">
-                <div className="flex items-center gap-2">
-                  <Shield className="w-4 h-4 text-cyan-400" />
-                  <span>Security Analysis</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Code className="w-4 h-4 text-cyan-400" />
-                  <span>Code Generation</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <FileText className="w-4 h-4 text-cyan-400" />
-                  <span>Smart Contracts</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 text-cyan-400" />
-                  <span>File Analysis</span>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+          {/* Chat Tab */}
+          <TabsContent value="chat">
+            <div className="grid lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+              {/* Sidebar */}
+              <div className="lg:col-span-1 space-y-4">
+                {/* Persona Selector */}
+                <Card className="bg-gray-900 border-gray-800">
+                  <CardHeader>
+                    <CardTitle className="text-base">AI Persona</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <PersonaSelector 
+                      selectedPersona={selectedPersona}
+                      onSelect={setSelectedPersona}
+                    />
+                  </CardContent>
+                </Card>
 
-          {/* Main Chat Area */}
-          <div className="lg:col-span-3">
-            <Card className="bg-gray-900 border-gray-800 h-[calc(100vh-12rem)]">
-              <CardHeader className="border-b border-gray-800">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <CardTitle>
-                      {currentConversation ? (
-                        currentConversation.metadata?.name || "Chat"
-                      ) : (
-                        "Start a New Conversation"
-                      )}
-                    </CardTitle>
-                    {currentConversation && (
-                      <p className="text-sm text-gray-400 mt-1">
-                        {messages.length} messages
-                      </p>
-                    )}
-                  </div>
-                  <Badge variant="outline" className="border-cyan-500/50 text-cyan-400">
-                    <Brain className="w-3 h-3 mr-1" />
-                    Gemini
-                  </Badge>
-                </div>
-              </CardHeader>
-              
-              <CardContent className="flex flex-col h-[calc(100%-5rem)]">
-                {/* Messages */}
-                <div className="flex-1 overflow-y-auto space-y-4 py-4">
-                  {!currentConversation ? (
-                    <div className="h-full flex items-center justify-center">
-                      <div className="text-center">
-                        <Brain className="w-16 h-16 text-cyan-400 mx-auto mb-4" />
-                        <h3 className="text-xl font-bold mb-2">Welcome to GlyphBot</h3>
-                        <p className="text-gray-400 mb-6 max-w-md">
-                          Your AI cybersecurity expert powered by Google Gemini. Start a conversation to get help with code, security analysis, and more.
-                        </p>
-                        <Button
-                          onClick={createNewConversation}
-                          className="bg-gradient-to-r from-cyan-500 to-blue-600"
-                        >
-                          <MessageSquare className="w-4 h-4 mr-2" />
-                          Start New Chat
-                        </Button>
+                {/* Conversations */}
+                <Card className="bg-gray-900 border-gray-800">
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="text-lg">Conversations</CardTitle>
+                      <Button
+                        size="sm"
+                        onClick={createNewConversation}
+                        className="bg-gradient-to-r from-cyan-500 to-blue-600 h-8"
+                      >
+                        <Plus className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <ConversationList
+                      conversations={conversations}
+                      currentConversation={currentConversation}
+                      onSelect={selectConversation}
+                      onDelete={deleteConversation}
+                    />
+                  </CardContent>
+                </Card>
+
+                {/* Features */}
+                <Card className="bg-gradient-to-br from-cyan-500/10 to-blue-600/10 border-cyan-500/30">
+                  <CardHeader>
+                    <CardTitle className="text-base">Capabilities</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-3 text-sm">
+                    <div className="flex items-center gap-2">
+                      <Shield className="w-4 h-4 text-cyan-400" />
+                      <span>Security Analysis</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Code className="w-4 h-4 text-cyan-400" />
+                      <span>Code Generation</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <FileText className="w-4 h-4 text-cyan-400" />
+                      <span>Smart Contracts</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Sparkles className="w-4 h-4 text-cyan-400" />
+                      <span>File Analysis</span>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Main Chat */}
+              <div className="lg:col-span-3">
+                <Card className="bg-gray-900 border-gray-800 h-[calc(100vh-12rem)]">
+                  <CardHeader className="border-b border-gray-800">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <CardTitle>
+                          {currentConversation ? (
+                            currentConversation.metadata?.name || "Chat"
+                          ) : (
+                            "Start a New Conversation"
+                          )}
+                        </CardTitle>
+                        {currentConversation && (
+                          <p className="text-sm text-gray-400 mt-1">
+                            {messages.length} messages • {selectedPersona.replace('-', ' ')} mode
+                          </p>
+                        )}
                       </div>
+                      <Badge variant="outline" className="border-cyan-500/50 text-cyan-400">
+                        <Brain className="w-3 h-3 mr-1" />
+                        Gemini
+                      </Badge>
                     </div>
-                  ) : messages.length === 0 ? (
-                    <div className="h-full flex items-center justify-center">
-                      <div className="text-center text-gray-500">
-                        <MessageSquare className="w-12 h-12 mx-auto mb-3 opacity-50" />
-                        <p>Send a message to start the conversation</p>
-                      </div>
-                    </div>
-                  ) : (
-                    <>
-                      {messages.map((message, index) => (
-                        <MessageBubble key={index} message={message} />
-                      ))}
-                      <div ref={messagesEndRef} />
-                    </>
-                  )}
-                </div>
-
-                {/* Input Area */}
-                <div className="border-t border-gray-800 pt-4">
-                  {selectedFiles.length > 0 && (
-                    <div className="mb-3 flex flex-wrap gap-2">
-                      {selectedFiles.map((file, index) => (
-                        <div
-                          key={index}
-                          className="bg-gray-800 border border-cyan-500/30 rounded-lg px-3 py-2 flex items-center gap-2 text-sm"
-                        >
-                          <FileText className="w-4 h-4 text-cyan-400" />
-                          <span className="max-w-[200px] truncate">{file.name}</span>
-                          <button
-                            onClick={() => setSelectedFiles(selectedFiles.filter((_, i) => i !== index))}
-                            className="text-gray-400 hover:text-red-400"
-                          >
-                            <Trash2 className="w-3 h-3" />
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                  </CardHeader>
                   
-                  <form onSubmit={sendMessage} className="flex gap-2">
-                    <input
-                      type="file"
-                      ref={fileInputRef}
-                      onChange={handleFileSelect}
-                      multiple
-                      className="hidden"
-                    />
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="icon"
-                      onClick={() => fileInputRef.current?.click()}
-                      className="border-gray-700 hover:bg-gray-800"
-                    >
-                      <Upload className="w-4 h-4" />
-                    </Button>
-                    <Input
-                      value={inputMessage}
-                      onChange={(e) => setInputMessage(e.target.value)}
-                      placeholder="Ask GlyphBot anything..."
-                      disabled={isLoading}
-                      className="bg-gray-800 border-gray-700 flex-1"
-                    />
-                    <Button
-                      type="submit"
-                      disabled={isLoading || (!inputMessage.trim() && selectedFiles.length === 0)}
-                      className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700"
-                    >
-                      <Send className="w-4 h-4" />
-                    </Button>
-                  </form>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
+                  <CardContent className="flex flex-col h-[calc(100%-5rem)]">
+                    {/* Messages */}
+                    <div className="flex-1 overflow-y-auto space-y-4 py-4">
+                      {!currentConversation ? (
+                        <div className="h-full flex items-center justify-center">
+                          <div className="text-center">
+                            <Brain className="w-16 h-16 text-cyan-400 mx-auto mb-4" />
+                            <h3 className="text-xl font-bold mb-2">Welcome to GlyphBot Advanced</h3>
+                            <p className="text-gray-400 mb-6 max-w-md">
+                              Your AI cybersecurity expert with code execution, security scanning, and automated auditing capabilities.
+                            </p>
+                            <Button
+                              onClick={createNewConversation}
+                              className="bg-gradient-to-r from-cyan-500 to-blue-600"
+                            >
+                              <MessageSquare className="w-4 h-4 mr-2" />
+                              Start New Chat
+                            </Button>
+                          </div>
+                        </div>
+                      ) : messages.length === 0 ? (
+                        <div className="h-full flex items-center justify-center">
+                          <div className="text-center text-gray-500">
+                            <MessageSquare className="w-12 h-12 mx-auto mb-3 opacity-50" />
+                            <p>Send a message to start the conversation</p>
+                          </div>
+                        </div>
+                      ) : (
+                        <>
+                          {messages.map((message, index) => (
+                            <MessageBubble key={index} message={message} />
+                          ))}
+                          <div ref={messagesEndRef} />
+                        </>
+                      )}
+                    </div>
+
+                    {/* Input Area */}
+                    <div className="border-t border-gray-800 pt-4">
+                      {selectedFiles.length > 0 && (
+                        <div className="mb-3 flex flex-wrap gap-2">
+                          {selectedFiles.map((file, index) => (
+                            <div
+                              key={index}
+                              className="bg-gray-800 border border-cyan-500/30 rounded-lg px-3 py-2 flex items-center gap-2 text-sm"
+                            >
+                              <FileText className="w-4 h-4 text-cyan-400" />
+                              <span className="max-w-[200px] truncate">{file.name}</span>
+                              <button
+                                onClick={() => setSelectedFiles(selectedFiles.filter((_, i) => i !== index))}
+                                className="text-gray-400 hover:text-red-400"
+                              >
+                                <Trash2 className="w-3 h-3" />
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      
+                      <form onSubmit={sendMessage} className="flex gap-2">
+                        <input
+                          type="file"
+                          ref={fileInputRef}
+                          onChange={handleFileSelect}
+                          multiple
+                          className="hidden"
+                        />
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="icon"
+                          onClick={() => fileInputRef.current?.click()}
+                          className="border-gray-700 hover:bg-gray-800"
+                        >
+                          <Upload className="w-4 h-4" />
+                        </Button>
+                        <Input
+                          value={inputMessage}
+                          onChange={(e) => setInputMessage(e.target.value)}
+                          placeholder="Ask GlyphBot anything..."
+                          disabled={isLoading}
+                          className="bg-gray-800 border-gray-700 flex-1"
+                        />
+                        <Button
+                          type="submit"
+                          disabled={isLoading || (!inputMessage.trim() && selectedFiles.length === 0)}
+                          className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700"
+                        >
+                          <Send className="w-4 h-4" />
+                        </Button>
+                      </form>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </TabsContent>
+
+          {/* Code Executor Tab */}
+          <TabsContent value="executor">
+            <CodeExecutor />
+          </TabsContent>
+
+          {/* Security Scanner Tab */}
+          <TabsContent value="scanner">
+            <SecurityScanner />
+          </TabsContent>
+
+          {/* Audit Generator Tab */}
+          <TabsContent value="audit">
+            <AuditGenerator />
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
