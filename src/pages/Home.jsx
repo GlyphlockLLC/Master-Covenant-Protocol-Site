@@ -69,9 +69,10 @@ export default function Home() {
   ];
 
   const partners = [
-    "AWS", "Google Cloud", "Azure", "Stripe", "OpenAI", "Claude",
-    "Vercel", "Supabase", "MongoDB", "Redis", "PostgreSQL", "Docker",
-    "Kubernetes", "GitHub", "TypeScript", "React", "Node.js", "Next.js"
+    "AWS", "Google Cloud", "Azure", "Microsoft", "Stripe", "OpenAI", 
+    "Anthropic", "Vercel", "Supabase", "MongoDB", "Redis", "PostgreSQL", 
+    "Docker", "Kubernetes", "GitHub", "GitLab", "TypeScript", "React", 
+    "Node.js", "Next.js", "Python", "TensorFlow"
   ];
 
   return (
@@ -186,7 +187,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Technology Partners */}
+      {/* Technology Partners - Scrolling Marquee */}
       <section className="py-20 relative overflow-hidden">
         <div className="absolute inset-0">
           <img 
@@ -203,12 +204,51 @@ export default function Home() {
             <p className="text-white">Built on enterprise-grade infrastructure</p>
           </div>
 
-          <div className="grid grid-cols-3 md:grid-cols-6 gap-8 items-center">
-            {partners.map((partner, index) => (
-              <div key={index} className="flex items-center justify-center p-4 bg-gray-900/50 backdrop-blur-sm rounded-lg border border-gray-700 hover:border-blue-500/50 transition-colors">
-                <span className="text-white font-semibold text-sm">{partner}</span>
+          {/* Scrolling Marquee */}
+          <div className="relative overflow-hidden">
+            <style>{`
+              @keyframes scroll {
+                0% {
+                  transform: translateX(0);
+                }
+                100% {
+                  transform: translateX(-50%);
+                }
+              }
+              .marquee {
+                animation: scroll 40s linear infinite;
+              }
+              .marquee:hover {
+                animation-play-state: paused;
+              }
+            `}</style>
+            
+            <div className="flex">
+              <div className="flex marquee">
+                {/* First set of partners */}
+                {partners.map((partner, index) => (
+                  <div
+                    key={`first-${index}`}
+                    className="flex-shrink-0 mx-6 px-8 py-4 bg-gray-900/50 backdrop-blur-sm rounded-lg border border-blue-500/20 hover:border-blue-500/50 transition-colors"
+                  >
+                    <span className="text-white font-bold text-lg whitespace-nowrap">
+                      {partner}
+                    </span>
+                  </div>
+                ))}
+                {/* Duplicate set for seamless loop */}
+                {partners.map((partner, index) => (
+                  <div
+                    key={`second-${index}`}
+                    className="flex-shrink-0 mx-6 px-8 py-4 bg-gray-900/50 backdrop-blur-sm rounded-lg border border-blue-500/20 hover:border-blue-500/50 transition-colors"
+                  >
+                    <span className="text-white font-bold text-lg whitespace-nowrap">
+                      {partner}
+                    </span>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
         </div>
       </section>
