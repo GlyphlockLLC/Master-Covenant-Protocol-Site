@@ -1,3 +1,4 @@
+
 import React, { useState, useRef } from "react";
 import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
@@ -7,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
 import { Loader2, Shield, AlertTriangle, Info, Upload, Image as ImageIcon, Palette, HelpCircle, Link as LinkIcon, Type, Mail, Phone, Wifi, User, MapPin, Calendar } from "lucide-react";
 import SecurityStatus from "../components/qr/SecurityStatus";
+import SteganographicQR from "../components/qr/SteganographicQR"; // Added import
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -1076,6 +1078,14 @@ Identify threats: Quishing, QRLjacking, Phishing, Typosquatting, Social Engineer
               <SecurityStatus securityResult={securityResult} />
             </div>
           )}
+
+          {/* Steganographic QR - NEW */}
+          <div className="mt-8">
+            <SteganographicQR 
+              qrPayload={buildQRPayload()} 
+              qrGenerated={qrGenerated && (!securityResult || securityResult.final_score >= 65)}
+            />
+          </div>
         </div>
       </div>
     </div>
