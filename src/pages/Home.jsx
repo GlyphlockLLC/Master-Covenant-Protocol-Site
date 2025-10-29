@@ -78,7 +78,6 @@ export default function Home() {
     <div className="bg-black text-white">
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Background Image */}
         <div className="absolute inset-0">
           <img 
             src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/2e63b60aa_Whisk_6ce7908b81aaa96a4b5434151a039e8cdr.jpg"
@@ -99,32 +98,31 @@ export default function Home() {
             </div>
             
             <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-              <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-400 via-blue-600 to-blue-700 bg-clip-text text-transparent">
                 Universal Security Platform
               </span>
               <br />
               <span className="text-white">with Smart Contracts</span>
             </h1>
 
-            <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto">
+            <p className="text-xl md:text-2xl text-white mb-8 max-w-3xl mx-auto">
               Next-generation cybersecurity platform pioneering AI-contract integration technology with quantum-resistant encryption.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
               <Link to={createPageUrl("Consultation")}>
-                <Button size="lg" className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-lg px-8">
+                <Button size="lg" className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white text-lg px-8">
                   Book Consultation
                   <ChevronRight className="w-5 h-5 ml-2" />
                 </Button>
               </Link>
               <Link to={createPageUrl("MasterCovenant")}>
-                <Button size="lg" variant="outline" className="border-cyan-500/50 hover:bg-cyan-500/10 text-lg px-8">
+                <Button size="lg" variant="outline" className="border-blue-500/50 hover:bg-blue-500/10 text-white text-lg px-8">
                   Explore Master Covenant
                 </Button>
               </Link>
             </div>
 
-            {/* Stats */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {stats.map((stat, index) => (
                 <div key={index} className="relative group overflow-hidden rounded-lg">
@@ -135,9 +133,9 @@ export default function Home() {
                       className="w-full h-full object-cover opacity-40 group-hover:opacity-60 group-hover:scale-110 transition-all duration-300"
                     />
                   </div>
-                  <div className="relative bg-gray-900/40 backdrop-blur-md border border-cyan-500/30 rounded-lg p-6">
+                  <div className="relative bg-gray-900/40 backdrop-blur-md border border-blue-500/30 rounded-lg p-6">
                     <div className="text-3xl font-bold text-white mb-1">{stat.value}</div>
-                    <div className="text-sm text-gray-300">{stat.label}</div>
+                    <div className="text-sm text-white">{stat.label}</div>
                   </div>
                 </div>
               ))}
@@ -150,10 +148,10 @@ export default function Home() {
       <section className="py-20 bg-gradient-to-b from-black to-gray-900">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">
-              Platform & <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Services</span>
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">
+              Platform & <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">Services</span>
             </h2>
-            <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+            <p className="text-xl text-white max-w-3xl mx-auto">
               Complete cybersecurity and AI platform with premium tools, enterprise solutions, and legal AI binding framework
             </p>
           </div>
@@ -161,7 +159,7 @@ export default function Home() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {services.map((service, index) => (
               <Link key={index} to={createPageUrl(service.link)}>
-                <Card className="bg-gray-900 border-gray-800 hover:border-cyan-500/50 transition-all duration-300 h-full group cursor-pointer overflow-hidden">
+                <Card className="bg-gray-900 border-gray-800 hover:border-blue-500/50 transition-all duration-300 h-full group cursor-pointer overflow-hidden">
                   <div className="relative h-48 overflow-hidden">
                     <img 
                       src={service.image}
@@ -171,13 +169,13 @@ export default function Home() {
                     <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/50 to-transparent" />
                   </div>
                   <CardContent className="p-6">
-                    <h3 className="text-xl font-bold mb-3 group-hover:text-cyan-400 transition-colors">
+                    <h3 className="text-xl font-bold mb-3 text-white group-hover:text-blue-400 transition-colors">
                       {service.title}
                     </h3>
-                    <p className="text-gray-400 mb-4">
+                    <p className="text-white mb-4">
                       {service.description}
                     </p>
-                    <div className="flex items-center text-cyan-400 text-sm font-semibold">
+                    <div className="flex items-center text-blue-400 text-sm font-semibold">
                       Learn More <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
                     </div>
                   </CardContent>
@@ -199,16 +197,16 @@ export default function Home() {
         </div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Powered by <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Industry Leaders</span>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">
+              Powered by <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">Industry Leaders</span>
             </h2>
-            <p className="text-gray-400">Built on enterprise-grade infrastructure</p>
+            <p className="text-white">Built on enterprise-grade infrastructure</p>
           </div>
 
           <div className="grid grid-cols-3 md:grid-cols-6 gap-8 items-center">
             {partners.map((partner, index) => (
-              <div key={index} className="flex items-center justify-center p-4 bg-gray-900/50 backdrop-blur-sm rounded-lg border border-gray-700 hover:border-cyan-500/50 transition-colors">
-                <span className="text-gray-400 font-semibold text-sm">{partner}</span>
+              <div key={index} className="flex items-center justify-center p-4 bg-gray-900/50 backdrop-blur-sm rounded-lg border border-gray-700 hover:border-blue-500/50 transition-colors">
+                <span className="text-white font-semibold text-sm">{partner}</span>
               </div>
             ))}
           </div>
@@ -227,23 +225,23 @@ export default function Home() {
         </div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Ready to Transform Your <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Digital Infrastructure?</span>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
+              Ready to Transform Your <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">Digital Infrastructure?</span>
             </h2>
-            <p className="text-xl text-gray-300 mb-8 leading-relaxed">
+            <p className="text-xl text-white mb-8 leading-relaxed">
               GlyphLock is the world's first platform to bind 5 AI systems to legally enforceable contracts. Our revolutionary Master Covenant System combines cryptographic proof with $14M liability coverage, creating unprecedented accountability in AI-powered security.
             </p>
-            <p className="text-gray-400 mb-8 leading-relaxed">
+            <p className="text-white mb-8 leading-relaxed">
               Built by a team that generated $340K in verified revenue within 90 days, we're addressing the $283 billion annual IP theft crisis with quantum-resistant encryption, 99.97% threat detection accuracy, and enterprise-grade infrastructure.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to={createPageUrl("Consultation")}>
-                <Button size="lg" className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-lg px-8">
+                <Button size="lg" className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white text-lg px-8">
                   Book Consultation
                 </Button>
               </Link>
               <Link to={createPageUrl("Contact")}>
-                <Button size="lg" variant="outline" className="border-cyan-500/50 hover:bg-cyan-500/10 text-lg px-8">
+                <Button size="lg" variant="outline" className="border-blue-500/50 hover:bg-blue-500/10 text-white text-lg px-8">
                   Contact Sales
                 </Button>
               </Link>
