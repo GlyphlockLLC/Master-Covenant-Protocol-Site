@@ -1,8 +1,7 @@
-
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { createPageUrl } from "@/utils";
-import { Shield, Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -25,9 +24,11 @@ export default function Layout({ children, currentPageName }) {
           <div className="flex items-center justify-between h-20">
             {/* Logo */}
             <Link to={createPageUrl("Home")} className="flex items-center gap-3 group">
-              <div className="w-12 h-12 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-lg flex items-center justify-center transform group-hover:scale-110 transition-transform">
-                <Shield className="w-7 h-7 text-white" />
-              </div>
+              <img 
+                src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/d92107808_glyphlock-3d-logo.png"
+                alt="GlyphLock"
+                className="h-12 w-auto transform group-hover:scale-110 transition-transform"
+              />
               <div>
                 <h1 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
                   GlyphLock
@@ -156,8 +157,11 @@ export default function Layout({ children, currentPageName }) {
           <div className="grid md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <Shield className="w-6 h-6 text-cyan-400" />
-                <span className="text-xl font-bold">GlyphLock</span>
+                <img 
+                  src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/08025b614_gl-logo.png"
+                  alt="GlyphLock"
+                  className="h-8 w-auto"
+                />
               </div>
               <p className="text-gray-400 text-sm">
                 Next-generation cybersecurity platform with quantum-resistant encryption and AI integration.

@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Brain, Shield, FileText, Lock, CheckCircle2, AlertTriangle } from "lucide-react";
 
 export default function MasterCovenant() {
   const aiSystems = [
@@ -16,22 +15,18 @@ export default function MasterCovenant() {
 
   const features = [
     {
-      icon: FileText,
       title: "Legally Binding Contracts",
       description: "AI systems bound to enforceable legal agreements with clear liability terms"
     },
     {
-      icon: Shield,
       title: "$14M Liability Coverage",
       description: "Comprehensive insurance protection for all AI operations and decisions"
     },
     {
-      icon: Lock,
       title: "Cryptographic Proof",
       description: "Blockchain-verified attestation of AI compliance and contract adherence"
     },
     {
-      icon: CheckCircle2,
       title: "Real-time Monitoring",
       description: "24/7 surveillance of AI behavior with instant breach detection"
     }
@@ -39,9 +34,18 @@ export default function MasterCovenant() {
 
   return (
     <div className="bg-black text-white min-h-screen">
-      {/* Hero */}
-      <section className="py-20 bg-gradient-to-br from-purple-500/10 via-blue-600/10 to-cyan-500/10">
-        <div className="container mx-auto px-4">
+      {/* Hero with Covenant Image */}
+      <section className="relative py-20 overflow-hidden">
+        <div className="absolute inset-0">
+          <img 
+            src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/ee388f8e1_ai-covenant-binding.jpg"
+            alt="AI Covenant Binding"
+            className="w-full h-full object-cover opacity-30"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black via-black/80 to-black" />
+        </div>
+
+        <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <div className="inline-block mb-6 px-4 py-2 bg-purple-500/10 border border-purple-500/30 rounded-full text-purple-400 text-sm font-semibold">
               World's First AI Legal Framework
@@ -78,11 +82,12 @@ export default function MasterCovenant() {
             {aiSystems.map((ai, index) => (
               <Card key={index} className="bg-gray-800 border-gray-700 hover:border-purple-500/50 transition-all">
                 <CardContent className="p-6 text-center">
-                  <Brain className={`w-12 h-12 text-${ai.color}-400 mx-auto mb-4`} />
+                  <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center text-2xl font-bold">
+                    {ai.name[0]}
+                  </div>
                   <h3 className="text-lg font-bold mb-2">{ai.name}</h3>
                   <div className="inline-block px-3 py-1 bg-green-500/20 text-green-400 text-sm rounded-full border border-green-500/30">
-                    <CheckCircle2 className="w-3 h-3 inline mr-1" />
-                    {ai.status}
+                    ✓ {ai.status}
                   </div>
                 </CardContent>
               </Card>
@@ -107,7 +112,9 @@ export default function MasterCovenant() {
             {features.map((feature, index) => (
               <Card key={index} className="bg-gray-900 border-gray-800 hover:border-purple-500/50 transition-all">
                 <CardContent className="p-8">
-                  <feature.icon className="w-12 h-12 text-purple-400 mb-4" />
+                  <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg mb-4 flex items-center justify-center text-2xl">
+                    {index + 1}
+                  </div>
                   <h3 className="text-xl font-bold mb-3">{feature.title}</h3>
                   <p className="text-gray-400">{feature.description}</p>
                 </CardContent>
@@ -118,8 +125,15 @@ export default function MasterCovenant() {
       </section>
 
       {/* Stats */}
-      <section className="py-20 bg-gradient-to-br from-purple-500/10 to-pink-500/10">
-        <div className="container mx-auto px-4">
+      <section className="py-20 relative overflow-hidden">
+        <div className="absolute inset-0">
+          <img 
+            src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/ee388f8e1_ai-covenant-binding.jpg"
+            alt="AI Covenant"
+            className="w-full h-full object-cover opacity-10"
+          />
+        </div>
+        <div className="container mx-auto px-4 relative z-10">
           <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto text-center">
             <div>
               <div className="text-5xl font-bold text-purple-400 mb-2">$14M</div>
