@@ -1,0 +1,52 @@
+{
+  "name": "POSProduct",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Product name"
+    },
+    "sku": {
+      "type": "string",
+      "description": "Stock keeping unit"
+    },
+    "price": {
+      "type": "number",
+      "description": "Product price"
+    },
+    "cost": {
+      "type": "number",
+      "description": "Product cost"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "Electronics",
+        "Clothing",
+        "Food & Beverage",
+        "Accessories",
+        "Services",
+        "Other"
+      ]
+    },
+    "stock_quantity": {
+      "type": "number",
+      "default": 0
+    },
+    "barcode": {
+      "type": "string"
+    },
+    "image_url": {
+      "type": "string"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "name",
+    "price",
+    "category"
+  ]
+}

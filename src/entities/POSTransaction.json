@@ -1,0 +1,73 @@
+{
+  "name": "POSTransaction",
+  "type": "object",
+  "properties": {
+    "transaction_id": {
+      "type": "string",
+      "description": "Unique transaction identifier"
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "product_id": {
+            "type": "string"
+          },
+          "product_name": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "number"
+          },
+          "price": {
+            "type": "number"
+          },
+          "total": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "subtotal": {
+      "type": "number"
+    },
+    "tax": {
+      "type": "number"
+    },
+    "total": {
+      "type": "number"
+    },
+    "payment_method": {
+      "type": "string",
+      "enum": [
+        "Cash",
+        "Credit Card",
+        "Debit Card",
+        "Digital Wallet",
+        "Other"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "completed",
+        "void",
+        "refunded"
+      ],
+      "default": "completed"
+    },
+    "cashier": {
+      "type": "string",
+      "description": "Email of the staff member who processed the transaction"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "items",
+    "total",
+    "payment_method"
+  ]
+}

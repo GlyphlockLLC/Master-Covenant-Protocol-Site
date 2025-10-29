@@ -7,6 +7,9 @@ import Blockchain from './pages/Blockchain';
 import SecurityTools from './pages/SecurityTools';
 import Pricing from './pages/Pricing';
 import Contact from './pages/Contact';
+import NUPSLogin from './pages/NUPSLogin';
+import NUPSStaff from './pages/NUPSStaff';
+import NUPSOwner from './pages/NUPSOwner';
 import Layout from './Layout.jsx';
 
 
@@ -20,6 +23,9 @@ export const PAGES = {
     "SecurityTools": SecurityTools,
     "Pricing": Pricing,
     "Contact": Contact,
+    "NUPSLogin": NUPSLogin,
+    "NUPSStaff": NUPSStaff,
+    "NUPSOwner": NUPSOwner,
 }
 
 export const pagesConfig = {
