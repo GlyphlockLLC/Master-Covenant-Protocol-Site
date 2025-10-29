@@ -10,22 +10,22 @@ export default function Home() {
     { 
       label: "IP Theft Crisis", 
       value: "$283B+",
-      image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/167ae869c_card-bg-security.jpg"
+      image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/b55c5807c_08f33231-115f-4c95-9719-682f4e9679cc-Copy-Copy-Copy-Copy-Copy-Copy.jpg"
     },
     { 
       label: "Market Opportunity", 
       value: "$10T+",
-      image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/f18434198_enterprise-protection.jpg"
+      image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/8cd0364f8_Whisk_2bd57b9a449d359968944ab33f98257edr-Copy.jpg"
     },
     { 
       label: "Insurance Coverage", 
       value: "$14M",
-      image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/167ae869c_card-bg-security.jpg"
+      image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/eab90f603_Whisk_a031d7a8f4d67e79d2d4deb5ac0e0183eg.jpg"
     },
     { 
       label: "Threat Detection", 
       value: "99.97%",
-      image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/fde39a76a_card-bg-ai-powered.jpg"
+      image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/4c116ea06_Whisk_311edc975728fa8ad384b1950238341bdr-Copy-Copy.jpg"
     }
   ];
 
@@ -40,7 +40,7 @@ export default function Home() {
       title: "Security Tools & Blockchain",
       description: "Complete cybersecurity suite with QR Generator, Steganography, and SHA-256/512 hashing.",
       link: "SecurityTools",
-      image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/167ae869c_card-bg-security.jpg"
+      image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/b55c5807c_08f33231-115f-4c95-9719-682f4e9679cc-Copy-Copy-Copy-Copy-Copy-Copy.jpg"
     },
     {
       title: "GlyphBot AI Assistant",
@@ -58,13 +58,13 @@ export default function Home() {
       title: "Steganography",
       description: "Hide encrypted data within images using LSB encoding for secure communications.",
       link: "Steganography",
-      image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/167ae869c_card-bg-security.jpg"
+      image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/eab90f603_Whisk_a031d7a8f4d67e79d2d4deb5ac0e0183eg.jpg"
     },
     {
       title: "Blockchain Security",
       description: "SHA-256/512 hashing, immutable verification, and cryptographic proof systems.",
       link: "Blockchain",
-      image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/167ae869c_card-bg-security.jpg"
+      image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/4c116ea06_Whisk_311edc975728fa8ad384b1950238341bdr-Copy-Copy.jpg"
     }
   ];
 
@@ -81,11 +81,11 @@ export default function Home() {
         {/* Background Image */}
         <div className="absolute inset-0">
           <img 
-            src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/f18434198_enterprise-protection.jpg"
-            alt="Enterprise Protection"
-            className="w-full h-full object-cover opacity-20"
+            src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/2e63b60aa_Whisk_6ce7908b81aaa96a4b5434151a039e8cdr.jpg"
+            alt="Futuristic Cityscape"
+            className="w-full h-full object-cover opacity-40"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black via-black/80 to-black" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black via-black/60 to-black" />
         </div>
 
         <div className="container mx-auto px-4 relative z-10">
@@ -127,17 +127,17 @@ export default function Home() {
             {/* Stats */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {stats.map((stat, index) => (
-                <div key={index} className="relative group">
-                  <div className="absolute inset-0 rounded-lg overflow-hidden">
+                <div key={index} className="relative group overflow-hidden rounded-lg">
+                  <div className="absolute inset-0">
                     <img 
                       src={stat.image}
                       alt={stat.label}
-                      className="w-full h-full object-cover opacity-30 group-hover:opacity-40 transition-opacity"
+                      className="w-full h-full object-cover opacity-40 group-hover:opacity-60 group-hover:scale-110 transition-all duration-300"
                     />
                   </div>
-                  <div className="relative bg-gray-900/50 backdrop-blur-sm border border-cyan-500/20 rounded-lg p-6">
+                  <div className="relative bg-gray-900/40 backdrop-blur-md border border-cyan-500/30 rounded-lg p-6">
                     <div className="text-3xl font-bold text-white mb-1">{stat.value}</div>
-                    <div className="text-sm text-gray-400">{stat.label}</div>
+                    <div className="text-sm text-gray-300">{stat.label}</div>
                   </div>
                 </div>
               ))}
@@ -166,9 +166,9 @@ export default function Home() {
                     <img 
                       src={service.image}
                       alt={service.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/50 to-transparent" />
                   </div>
                   <CardContent className="p-6">
                     <h3 className="text-xl font-bold mb-3 group-hover:text-cyan-400 transition-colors">
@@ -189,8 +189,15 @@ export default function Home() {
       </section>
 
       {/* Technology Partners */}
-      <section className="py-20 bg-gray-900">
-        <div className="container mx-auto px-4">
+      <section className="py-20 relative overflow-hidden">
+        <div className="absolute inset-0">
+          <img 
+            src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/8cd0364f8_Whisk_2bd57b9a449d359968944ab33f98257edr-Copy.jpg"
+            alt="Tech Background"
+            className="w-full h-full object-cover opacity-5"
+          />
+        </div>
+        <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               Powered by <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Industry Leaders</span>
@@ -200,7 +207,7 @@ export default function Home() {
 
           <div className="grid grid-cols-3 md:grid-cols-6 gap-8 items-center">
             {partners.map((partner, index) => (
-              <div key={index} className="flex items-center justify-center p-4 bg-gray-800/50 rounded-lg border border-gray-700 hover:border-cyan-500/50 transition-colors">
+              <div key={index} className="flex items-center justify-center p-4 bg-gray-900/50 backdrop-blur-sm rounded-lg border border-gray-700 hover:border-cyan-500/50 transition-colors">
                 <span className="text-gray-400 font-semibold text-sm">{partner}</span>
               </div>
             ))}
@@ -212,10 +219,11 @@ export default function Home() {
       <section className="py-20 relative overflow-hidden">
         <div className="absolute inset-0">
           <img 
-            src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/f18434198_enterprise-protection.jpg"
-            alt="Enterprise Protection"
-            className="w-full h-full object-cover opacity-10"
+            src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/4c116ea06_Whisk_311edc975728fa8ad384b1950238341bdr-Copy-Copy.jpg"
+            alt="Quantum Energy"
+            className="w-full h-full object-cover opacity-20"
           />
+          <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black" />
         </div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">

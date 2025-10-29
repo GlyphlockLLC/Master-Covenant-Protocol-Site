@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from "react";
 import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
@@ -171,8 +172,16 @@ export default function GlyphBot() {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      <header className="bg-gray-900 border-b border-cyan-500/20 p-4">
-        <div className="container mx-auto flex items-center justify-between">
+      {/* Header */}
+      <header className="bg-gray-900 border-b border-cyan-500/20 p-4 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <img 
+            src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/8cd0364f8_Whisk_2bd57b9a449d359968944ab33f98257edr-Copy.jpg"
+            alt="GlyphBot Background"
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div className="container mx-auto flex items-center justify-between relative z-10">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center">
               <Brain className="w-6 h-6 text-white" />

@@ -20,7 +20,8 @@ export default function Pricing() {
         "Basic analytics"
       ],
       cta: "Get Started",
-      popular: false
+      popular: false,
+      image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/b55c5807c_08f33231-115f-4c95-9719-682f4e9679cc-Copy-Copy-Copy-Copy-Copy-Copy.jpg"
     },
     {
       name: "Professional",
@@ -37,7 +38,8 @@ export default function Pricing() {
         "Advanced analytics"
       ],
       cta: "Start Free Trial",
-      popular: true
+      popular: true,
+      image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/eab90f603_Whisk_a031d7a8f4d67e79d2d4deb5ac0e0183eg.jpg"
     },
     {
       name: "Enterprise",
@@ -54,7 +56,8 @@ export default function Pricing() {
         "Compliance certifications"
       ],
       cta: "Contact Sales",
-      popular: false
+      popular: false,
+      image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/2e63b60aa_Whisk_6ce7908b81aaa96a4b5434151a039e8cdr.jpg"
     }
   ];
 
@@ -79,17 +82,24 @@ export default function Pricing() {
                   plan.popular
                     ? "bg-gradient-to-b from-cyan-500/20 to-blue-600/20 border-cyan-500/50 relative"
                     : "bg-gray-900 border-gray-800"
-                }`}
+                } overflow-hidden`}
               >
+                <div className="absolute inset-0 opacity-10">
+                  <img 
+                    src={plan.image}
+                    alt={plan.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
                 {plan.popular && (
-                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
                     <div className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-4 py-1 rounded-full text-sm font-semibold flex items-center gap-1">
                       <Sparkles className="w-3 h-3" />
                       Most Popular
                     </div>
                   </div>
                 )}
-                <CardHeader className="text-center pt-8">
+                <CardHeader className="text-center pt-8 relative z-10">
                   <CardTitle className="text-2xl mb-2">{plan.name}</CardTitle>
                   <p className="text-gray-400 text-sm mb-4">{plan.description}</p>
                   <div className="mb-4">
@@ -108,7 +118,7 @@ export default function Pricing() {
                     </Button>
                   </Link>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="relative z-10">
                   <ul className="space-y-3">
                     {plan.features.map((feature, idx) => (
                       <li key={idx} className="flex items-start gap-3">
@@ -122,8 +132,15 @@ export default function Pricing() {
             ))}
           </div>
 
-          <Card className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 border-purple-500/30">
-            <CardContent className="p-12 text-center">
+          <Card className="bg-gray-900 border-purple-500/30 overflow-hidden relative">
+            <div className="absolute inset-0">
+              <img 
+                src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/4c116ea06_Whisk_311edc975728fa8ad384b1950238341bdr-Copy-Copy.jpg"
+                alt="Master Covenant"
+                className="w-full h-full object-cover opacity-20"
+              />
+            </div>
+            <CardContent className="p-12 text-center relative z-10">
               <h2 className="text-3xl font-bold mb-4">
                 Master Covenant <span className="text-purple-400">Bundle</span>
               </h2>
