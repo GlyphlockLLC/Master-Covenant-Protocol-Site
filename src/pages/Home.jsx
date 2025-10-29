@@ -69,24 +69,24 @@ export default function Home() {
   ];
 
   const partners = [
-    { name: "AWS", logo: "https://cdn.cdnlogo.com/logos/a/20/aws.svg" },
-    { name: "Google Cloud", logo: "https://cdn.cdnlogo.com/logos/g/23/google-cloud.svg" },
-    { name: "Microsoft Azure", logo: "https://cdn.cdnlogo.com/logos/m/97/microsoft-azure.svg" },
-    { name: "Stripe", logo: "https://cdn.cdnlogo.com/logos/s/84/stripe.svg" },
-    { name: "OpenAI", logo: "https://cdn.cdnlogo.com/logos/o/35/openai.svg" },
-    { name: "Anthropic", logo: "https://cdn.cdnlogo.com/logos/a/14/anthropic.svg" },
-    { name: "Vercel", logo: "https://cdn.cdnlogo.com/logos/v/94/vercel.svg" },
-    { name: "Supabase", logo: "https://cdn.cdnlogo.com/logos/s/8/supabase.svg" },
-    { name: "MongoDB", logo: "https://cdn.cdnlogo.com/logos/m/25/mongodb.svg" },
-    { name: "Redis", logo: "https://cdn.cdnlogo.com/logos/r/8/redis.svg" },
-    { name: "PostgreSQL", logo: "https://cdn.cdnlogo.com/logos/p/61/postgresql.svg" },
-    { name: "Docker", logo: "https://cdn.cdnlogo.com/logos/d/41/docker.svg" },
-    { name: "Kubernetes", logo: "https://cdn.cdnlogo.com/logos/k/61/kubernetes.svg" },
-    { name: "GitHub", logo: "https://cdn.cdnlogo.com/logos/g/69/github-icon.svg" },
-    { name: "GitLab", logo: "https://cdn.cdnlogo.com/logos/g/70/gitlab.svg" },
-    { name: "TypeScript", logo: "https://cdn.cdnlogo.com/logos/t/96/typescript.svg" },
-    { name: "React", logo: "https://cdn.cdnlogo.com/logos/r/85/react.svg" },
-    { name: "Node.js", logo: "https://cdn.cdnlogo.com/logos/n/22/nodejs.svg" }
+    { name: "AWS", logo: "https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg" },
+    { name: "Google Cloud", logo: "https://upload.wikimedia.org/wikipedia/commons/5/51/Google_Cloud_logo.svg" },
+    { name: "Microsoft Azure", logo: "https://upload.wikimedia.org/wikipedia/commons/f/fa/Microsoft_Azure.svg" },
+    { name: "Stripe", logo: "https://upload.wikimedia.org/wikipedia/commons/b/ba/Stripe_Logo%2C_revised_2016.svg" },
+    { name: "OpenAI", logo: "https://upload.wikimedia.org/wikipedia/commons/4/4d/OpenAI_Logo.svg" },
+    { name: "Vercel", logo: "https://assets.vercel.com/image/upload/front/favicon/vercel/180x180.png" },
+    { name: "Supabase", logo: "https://supabase.com/dashboard/_next/image?url=%2Fdashboard%2Fimg%2Fsupabase-logo.svg&w=64&q=75" },
+    { name: "MongoDB", logo: "https://upload.wikimedia.org/wikipedia/commons/9/93/MongoDB_Logo.svg" },
+    { name: "Redis", logo: "https://upload.wikimedia.org/wikipedia/commons/6/64/Logo-redis.svg" },
+    { name: "PostgreSQL", logo: "https://upload.wikimedia.org/wikipedia/commons/2/29/Postgresql_elephant.svg" },
+    { name: "Docker", logo: "https://upload.wikimedia.org/wikipedia/commons/4/4e/Docker_%28container_engine%29_logo.svg" },
+    { name: "Kubernetes", logo: "https://upload.wikimedia.org/wikipedia/commons/3/39/Kubernetes_logo_without_workmark.svg" },
+    { name: "GitHub", logo: "https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" },
+    { name: "GitLab", logo: "https://upload.wikimedia.org/wikipedia/commons/e/e1/GitLab_logo.svg" },
+    { name: "TypeScript", logo: "https://upload.wikimedia.org/wikipedia/commons/4/4c/Typescript_logo_2020.svg" },
+    { name: "React", logo: "https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg" },
+    { name: "Node.js", logo: "https://upload.wikimedia.org/wikipedia/commons/d/d9/Node.js_logo.svg" },
+    { name: "Python", logo: "https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg" }
   ];
 
   return (
@@ -201,7 +201,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Technology Partners - Scrolling Marquee with Logos */}
+      {/* Technology Partners - Scrolling Marquee with Open Source Logos */}
       <section className="py-20 relative overflow-hidden">
         <div className="absolute inset-0">
           <img 
@@ -248,7 +248,7 @@ export default function Home() {
                     <img 
                       src={partner.logo} 
                       alt={partner.name}
-                      className="h-12 w-auto object-contain filter brightness-0 invert opacity-80 hover:opacity-100 transition-opacity"
+                      className="h-12 w-auto max-w-[140px] object-contain filter brightness-0 invert opacity-80 hover:opacity-100 transition-opacity"
                       onError={(e) => {
                         e.target.style.display = 'none';
                         e.target.nextSibling.style.display = 'block';
@@ -268,7 +268,7 @@ export default function Home() {
                     <img 
                       src={partner.logo} 
                       alt={partner.name}
-                      className="h-12 w-auto object-contain filter brightness-0 invert opacity-80 hover:opacity-100 transition-opacity"
+                      className="h-12 w-auto max-w-[140px] object-contain filter brightness-0 invert opacity-80 hover:opacity-100 transition-opacity"
                       onError={(e) => {
                         e.target.style.display = 'none';
                         e.target.nextSibling.style.display = 'block';
