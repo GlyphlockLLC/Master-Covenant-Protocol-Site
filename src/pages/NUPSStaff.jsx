@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
@@ -8,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ShoppingCart, Plus, Minus, Trash2, DollarSign, User, LogOut, Search } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import AIProductRecommender from "../components/nups/AIProductRecommender";
 
 export default function NUPSStaff() {
   const navigate = useNavigate();
@@ -131,10 +133,10 @@ export default function NUPSStaff() {
         </div>
       </header>
 
-      <div className="container mx-auto p-4">
+      <div className="container mx-auto p-6">
         <div className="grid lg:grid-cols-3 gap-6">
-          {/* Products */}
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2 space-y-6">
+            {/* Products */}
             <Card className="bg-gray-900 border-gray-800">
               <CardHeader>
                 <div className="flex items-center gap-4">
@@ -173,11 +175,16 @@ export default function NUPSStaff() {
             </Card>
           </div>
 
-          {/* Cart */}
-          <div>
-            <Card className="bg-gray-900 border-gray-800 sticky top-4">
+          <div className="space-y-6">
+            {/* Cart */}
+            <Card className="bg-gray-900 border-gray-800 sticky top-6">
               <CardHeader>
-                <CardTitle>Current Sale</CardTitle>
+                <CardTitle className="flex items-center justify-between text-white">
+                  <span>Cart</span>
+                  <Badge variant="outline" className="border-cyan-500 text-cyan-400">
+                    {cart.reduce((sum, item) => sum + item.quantity, 0)} items
+                  </Badge>
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 {cart.length === 0 ? (
@@ -269,6 +276,13 @@ export default function NUPSStaff() {
                 )}
               </CardContent>
             </Card>
+
+            {/* AI Recommendations */}
+            <AIProductRecommender 
+              cartItems={cart}
+              onAddToCart={addToCart}
+              products={products}
+            />
           </div>
         </div>
       </div>
