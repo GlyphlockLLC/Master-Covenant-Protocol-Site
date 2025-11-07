@@ -14,6 +14,9 @@ import NUPSProductManagement from "../components/nups/ProductManagement";
 import NUPSTransactionHistory from "../components/nups/TransactionHistory";
 import NUPSSalesReport from "../components/nups/SalesReport";
 import AIInsights from "../components/nups/AIInsights";
+import CustomerManagement from "../components/nups/CustomerManagement";
+import CustomerInsights from "../components/nups/CustomerInsights";
+import MarketingCampaigns from "../components/nups/MarketingCampaigns";
 
 export default function NUPSOwner() {
   const [user, setUser] = useState(null);
@@ -88,6 +91,9 @@ export default function NUPSOwner() {
           <TabsList className="bg-gray-900 border border-gray-800">
             <TabsTrigger value="dashboard" className="text-white data-[state=active]:text-cyan-400">Dashboard</TabsTrigger>
             <TabsTrigger value="ai-insights" className="text-white data-[state=active]:text-cyan-400">AI Insights</TabsTrigger>
+            <TabsTrigger value="customers" className="text-white data-[state=active]:text-cyan-400">Customers</TabsTrigger>
+            <TabsTrigger value="customer-insights" className="text-white data-[state=active]:text-cyan-400">Customer Insights</TabsTrigger>
+            <TabsTrigger value="campaigns" className="text-white data-[state=active]:text-cyan-400">Campaigns</TabsTrigger>
             <TabsTrigger value="products" className="text-white data-[state=active]:text-cyan-400">Products</TabsTrigger>
             <TabsTrigger value="sales" className="text-white data-[state=active]:text-cyan-400">Sales</TabsTrigger>
             <TabsTrigger value="batches" className="text-white data-[state=active]:text-cyan-400">Batches</TabsTrigger>
@@ -149,6 +155,18 @@ export default function NUPSOwner() {
 
           <TabsContent value="ai-insights">
             <AIInsights />
+          </TabsContent>
+
+          <TabsContent value="customers">
+            <CustomerManagement />
+          </TabsContent>
+
+          <TabsContent value="customer-insights">
+            <CustomerInsights />
+          </TabsContent>
+
+          <TabsContent value="campaigns">
+            <MarketingCampaigns />
           </TabsContent>
 
           <TabsContent value="products">

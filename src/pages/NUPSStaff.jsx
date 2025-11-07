@@ -9,6 +9,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ShoppingCart, Plus, Minus, Trash2, DollarSign, User, LogOut, Search } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
 import AIProductRecommender from "../components/nups/AIProductRecommender";
 
 export default function NUPSStaff() {
@@ -18,6 +20,13 @@ export default function NUPSStaff() {
   const [cart, setCart] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("Cash");
+  const [selectedCustomer, setSelectedCustomer] = useState(null);
+  const [showCustomerDialog, setShowCustomerDialog] = useState(false);
+  const [newCustomerForm, setNewCustomerForm] = useState({
+    full_name: "",
+    email: "",
+    phone: ""
+  });
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -36,11 +45,39 @@ export default function NUPSStaff() {
     queryFn: () => base44.entities.POSProduct.filter({ is_active: true })
   });
 
+  const { data: customers = [] } = useQuery({
+    queryKey: ['pos-customers'],
+    queryFn: () => base44.entities.POSCustomer.list()
+  });
+
+  const createCustomer = useMutation({
+    mutationFn: (data) => base44.entities.POSCustomer.create({
+      customer_id: `CUST-${Date.now()}`,
+      ...data,
+      total_spent: 0,
+      visit_count: 0,
+      loyalty_points: 0,
+      last_visit: null,
+      preferences: {
+        favorite_categories: [],
+        communication_preferences: { email: true, sms: false, phone: false }
+      }
+    }),
+    onSuccess: (customer) => {
+      queryClient.invalidateQueries({ queryKey: ['pos-customers'] });
+      setSelectedCustomer(customer);
+      setShowCustomerDialog(false);
+      setNewCustomerForm({ full_name: "", email: "", phone: "" });
+    }
+  });
+
   const createTransaction = useMutation({
     mutationFn: (data) => base44.entities.POSTransaction.create(data),
     onSuccess: () => {
       setCart([]);
       alert("Transaction completed successfully!");
+      // Optionally re-fetch customer data to show updated stats if needed immediately
+      // queryClient.invalidateQueries({ queryKey: ['pos-customers'] });
     }
   });
 
@@ -83,17 +120,34 @@ export default function NUPSStaff() {
     return { subtotal, tax, total: subtotal + tax };
   };
 
-  const completeTransaction = () => {
+  const completeTransaction = async () => {
     const { subtotal, tax, total } = calculateTotal();
-    createTransaction.mutate({
+    
+    const transactionData = {
       transaction_id: `TXN-${Date.now()}`,
+      customer_id: selectedCustomer?.customer_id,
       items: cart,
       subtotal,
       tax,
       total,
       payment_method: paymentMethod,
-      cashier: user?.email || 'unknown'
-    });
+      cashier: user?.email || 'unknown',
+      loyalty_points_earned: selectedCustomer ? Math.floor(total) : 0
+    };
+
+    createTransaction.mutate(transactionData);
+
+    // Update customer stats
+    if (selectedCustomer) {
+      await base44.entities.POSCustomer.update(selectedCustomer.id, {
+        total_spent: (selectedCustomer.total_spent || 0) + total,
+        visit_count: (selectedCustomer.visit_count || 0) + 1,
+        loyalty_points: (selectedCustomer.loyalty_points || 0) + Math.floor(total),
+        last_visit: new Date().toISOString()
+      });
+      // Invalidate customer query to reflect updated stats
+      queryClient.invalidateQueries({ queryKey: ['pos-customers'] });
+    }
   };
 
   const filteredProducts = products.filter(p =>
@@ -176,6 +230,69 @@ export default function NUPSStaff() {
           </div>
 
           <div className="space-y-6">
+            {/* Customer Selection */}
+            <Card className="bg-gray-900 border-gray-800">
+              <CardHeader>
+                <CardTitle className="text-white">Customer</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <Select 
+                  value={selectedCustomer?.id || ""} 
+                  onValueChange={(value) => {
+                    if (value === "new") {
+                      setShowCustomerDialog(true);
+                    } else {
+                      const customer = customers.find(c => c.id === value);
+                      setSelectedCustomer(customer);
+                    }
+                  }}
+                >
+                  <SelectTrigger className="bg-gray-800 border-gray-700">
+                    <SelectValue placeholder="Select customer (optional)" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-gray-800 border-gray-700">
+                    <SelectItem value="new">+ Add New Customer</SelectItem>
+                    {customers.map((customer) => (
+                      <SelectItem key={customer.id} value={customer.id}>
+                        {customer.full_name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                {selectedCustomer && (
+                  <div className="bg-gradient-to-r from-purple-500/10 to-pink-600/10 border border-purple-500/30 rounded-lg p-3">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="font-semibold text-white">{selectedCustomer.full_name}</div>
+                      {selectedCustomer.status === 'vip' && (
+                        <Badge variant="outline" className="border-purple-500 text-purple-400">
+                          VIP
+                        </Badge>
+                      )}
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 text-xs">
+                      <div>
+                        <div className="text-gray-400">Total Spent</div>
+                        <div className="font-semibold text-cyan-400">${(selectedCustomer.total_spent || 0).toFixed(2)}</div>
+                      </div>
+                      <div>
+                        <div className="text-gray-400">Loyalty Points</div>
+                        <div className="font-semibold text-green-400">{selectedCustomer.loyalty_points || 0}</div>
+                      </div>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setSelectedCustomer(null)}
+                      className="w-full mt-2 text-xs"
+                    >
+                      Clear Selection
+                    </Button>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
             {/* Cart */}
             <Card className="bg-gray-900 border-gray-800 sticky top-6">
               <CardHeader>
@@ -250,7 +367,7 @@ export default function NUPSStaff() {
                     </div>
 
                     <div>
-                      <label className="text-sm text-gray-400 mb-2 block">Payment Method</label>
+                      <Label className="text-sm text-gray-400 mb-2 block">Payment Method</Label>
                       <Select value={paymentMethod} onValueChange={setPaymentMethod}>
                         <SelectTrigger className="bg-gray-800 border-gray-700">
                           <SelectValue />
@@ -286,6 +403,66 @@ export default function NUPSStaff() {
           </div>
         </div>
       </div>
+
+      {/* New Customer Dialog */}
+      <Dialog open={showCustomerDialog} onOpenChange={setShowCustomerDialog}>
+        <DialogContent className="bg-gray-900 border-gray-800 text-white">
+          <DialogHeader>
+            <DialogTitle>Add New Customer</DialogTitle>
+          </DialogHeader>
+          <form onSubmit={(e) => {
+            e.preventDefault();
+            createCustomer.mutate(newCustomerForm);
+          }} className="space-y-4">
+            <div>
+              <Label htmlFor="customer-full-name">Full Name *</Label>
+              <Input
+                id="customer-full-name"
+                value={newCustomerForm.full_name}
+                onChange={(e) => setNewCustomerForm({...newCustomerForm, full_name: e.target.value})}
+                className="bg-gray-800 border-gray-700"
+                required
+              />
+            </div>
+            <div>
+              <Label htmlFor="customer-email">Email</Label>
+              <Input
+                id="customer-email"
+                type="email"
+                value={newCustomerForm.email}
+                onChange={(e) => setNewCustomerForm({...newCustomerForm, email: e.target.value})}
+                className="bg-gray-800 border-gray-700"
+              />
+            </div>
+            <div>
+              <Label htmlFor="customer-phone">Phone</Label>
+              <Input
+                id="customer-phone"
+                value={newCustomerForm.phone}
+                onChange={(e) => setNewCustomerForm({...newCustomerForm, phone: e.target.value})}
+                className="bg-gray-800 border-gray-700"
+              />
+            </div>
+            <div className="flex gap-3">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setShowCustomerDialog(false)}
+                className="flex-1"
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                className="flex-1 bg-gradient-to-r from-cyan-500 to-blue-600"
+                disabled={createCustomer.isPending || !newCustomerForm.full_name}
+              >
+                {createCustomer.isPending ? "Creating..." : "Create"}
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
