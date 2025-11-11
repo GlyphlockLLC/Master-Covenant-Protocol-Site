@@ -4,7 +4,8 @@ import { createPageUrl } from "@/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Shield, Zap } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -102,34 +103,63 @@ export default function Home() {
 
   return (
     <div className="bg-black text-white">
-      {/* Hero Section */}
+      {/* Hero Section with Video Background */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0">
-          <img 
-            src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/2e63b60aa_Whisk_6ce7908b81aaa96a4b5434151a039e8cdr.jpg"
-            alt="Futuristic Cityscape"
-            className="w-full h-full object-cover opacity-40"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black via-black/60 to-black" />
+        {/* Background Video */}
+        <div className="absolute inset-0 z-0">
+          <video 
+            autoPlay 
+            loop 
+            muted 
+            playsInline
+            className="w-full h-full object-cover"
+            style={{ filter: "brightness(0.6)" }}
+          >
+            <source src="https://glyph-merge-pro-glyphlock.replit.app/assets/hero-video-CxU5xRpe.mp4" type="video/mp4" />
+          </video>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black" />
+        </div>
+
+        {/* Grid Overlay */}
+        <div className="absolute inset-0 z-[5] opacity-10" style={{
+          backgroundImage: "linear-gradient(cyan 1px, transparent 1px), linear-gradient(90deg, cyan 1px, transparent 1px)",
+          backgroundSize: "50px 50px"
+        }} />
+
+        {/* Top Tagline */}
+        <div className="absolute top-8 left-0 right-0 z-30 flex items-center justify-center">
+          <h2 className="text-white text-2xl md:text-3xl lg:text-4xl font-bold tracking-wide text-center px-4">
+            Secure Access For A Smarter World!
+          </h2>
         </div>
 
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center max-w-5xl mx-auto">
-            <div className="inline-block mb-6">
-              <img 
-                src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/a7577ec26_db-revenue-badge.jpg"
-                alt="D&B Verified Revenue"
-                className="h-24 w-auto mx-auto"
-              />
+            {/* Badges */}
+            <div className="flex flex-wrap items-center justify-center gap-3 mb-8">
+              <Badge variant="outline" className="border-blue-500/50 bg-blue-500/10 text-blue-400 px-4 py-2 text-sm font-mono">
+                <Shield className="w-4 h-4 mr-2" />
+                5 AI Bound to Master Covenant
+              </Badge>
+              <Badge variant="outline" className="border-green-500/50 bg-green-500/10 text-green-400 px-4 py-2 text-sm font-mono">
+                <Zap className="w-4 h-4 mr-2" />
+                $340K D&B Verified 90 Days
+              </Badge>
             </div>
+
+            <p className="text-gray-400 text-sm md:text-base font-medium tracking-wider uppercase mb-6">
+              Invisible Layers. Infinite Possibilities. Absolute Protection.
+            </p>
             
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
               <span className="text-white">Universal Security Platform</span>
               <br />
-              <span className="text-white">with <span className="bg-gradient-to-r from-blue-400 via-blue-600 to-blue-700 bg-clip-text text-transparent">Smart Contracts</span></span>
+              <span className="bg-gradient-to-r from-blue-400 via-blue-600 to-blue-700 bg-clip-text text-transparent">
+                with Smart Contracts
+              </span>
             </h1>
 
-            <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto">
+            <p className="text-xl md:text-2xl text-gray-300 mb-10 max-w-3xl mx-auto">
               Next-generation cybersecurity platform pioneering AI-contract integration technology with quantum-resistant encryption.
             </p>
 
@@ -173,6 +203,9 @@ export default function Home() {
             </div>
           </div>
         </div>
+
+        {/* Bottom Gradient */}
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black via-black/80 to-transparent z-20" />
       </section>
 
       {/* Services Grid */}
