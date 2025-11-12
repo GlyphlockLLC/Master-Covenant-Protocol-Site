@@ -101,25 +101,32 @@ Be thorough in your analysis.`,
     }
   };
 
+  const getSeverityColor = (severity) => {
+    if (severity === "critical" || severity === "error") return "text-red-400 bg-red-500/10 border-red-500/50";
+    if (severity === "high") return "text-orange-400 bg-orange-500/10 border-orange-500/50";
+    if (severity === "medium") return "text-yellow-400 bg-yellow-500/10 border-yellow-500/50";
+    return "text-green-400 bg-green-500/10 border-green-500/50";
+  };
+
   return (
     <div className="space-y-4">
-      <Card className="bg-gray-900 border-gray-800">
+      <Card className="bg-blue-900/20 backdrop-blur-md border-blue-500/30">
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle className="flex items-center gap-2">
-              <Code className="w-5 h-5 text-cyan-400" />
+            <CardTitle className="flex items-center gap-2 text-white">
+              <Code className="w-5 h-5" />
               Code Execution Environment
             </CardTitle>
             <Select value={language} onValueChange={setLanguage}>
-              <SelectTrigger className="w-40 bg-gray-800 border-gray-700">
+              <SelectTrigger className="w-40 bg-blue-900/30 border-blue-500/30 text-white">
                 <SelectValue />
               </SelectTrigger>
-              <SelectContent className="bg-gray-800 border-gray-700">
-                <SelectItem value="javascript">JavaScript</SelectItem>
-                <SelectItem value="python">Python</SelectItem>
-                <SelectItem value="typescript">TypeScript</SelectItem>
-                <SelectItem value="solidity">Solidity</SelectItem>
-                <SelectItem value="rust">Rust</SelectItem>
+              <SelectContent className="bg-blue-900/90 backdrop-blur-md border-blue-500/30">
+                <SelectItem value="javascript" className="text-white">JavaScript</SelectItem>
+                <SelectItem value="python" className="text-white">Python</SelectItem>
+                <SelectItem value="typescript" className="text-white">TypeScript</SelectItem>
+                <SelectItem value="solidity" className="text-white">Solidity</SelectItem>
+                <SelectItem value="rust" className="text-white">Rust</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -129,12 +136,12 @@ Be thorough in your analysis.`,
             value={code}
             onChange={(e) => setCode(e.target.value)}
             placeholder={`Enter your ${language} code here...`}
-            className="bg-gray-800 border-gray-700 font-mono text-sm min-h-[300px]"
+            className="bg-blue-900/30 backdrop-blur-md border-blue-500/30 font-mono text-sm min-h-[300px] text-white placeholder:text-white/50"
           />
           <Button
             onClick={executeCode}
             disabled={isExecuting || !code.trim()}
-            className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700"
+            className="w-full bg-green-500/30 hover:bg-green-500/50 text-white border border-green-500/50"
           >
             {isExecuting ? (
               <>
@@ -152,9 +159,9 @@ Be thorough in your analysis.`,
       </Card>
 
       {output && (
-        <Card className="bg-gray-900 border-gray-800">
+        <Card className="bg-blue-900/20 backdrop-blur-md border-blue-500/30">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
+            <CardTitle className="flex items-center gap-2 text-white">
               {output.syntax_valid ? (
                 <CheckCircle2 className="w-5 h-5 text-green-400" />
               ) : (
@@ -166,31 +173,31 @@ Be thorough in your analysis.`,
           <CardContent className="space-y-4">
             {/* Output */}
             <div>
-              <h4 className="text-sm font-semibold mb-2 flex items-center gap-2">
+              <h4 className="text-sm font-semibold mb-2 flex items-center gap-2 text-white">
                 Output
-                <Badge variant="outline" className="text-xs">
+                <Badge variant="outline" className="text-xs text-white border-white/30 bg-white/10">
                   {output.execution_time_estimate}
                 </Badge>
               </h4>
-              <pre className="bg-gray-800 border border-gray-700 rounded-lg p-4 text-sm text-gray-300 overflow-x-auto">
+              <pre className="bg-blue-900/30 backdrop-blur-md border border-blue-500/30 rounded-lg p-4 text-sm text-white overflow-x-auto">
                 {output.output || "No output"}
               </pre>
             </div>
 
-            {/* Errors */}
+            {/* Errors - RED */}
             {output.errors && output.errors.length > 0 && (
               <div>
                 <h4 className="text-sm font-semibold mb-2 text-red-400">Errors</h4>
                 <div className="space-y-2">
                   {output.errors.map((error, idx) => (
-                    <div key={idx} className="bg-red-500/10 border border-red-500/30 rounded-lg p-3">
+                    <div key={idx} className="bg-red-500/10 backdrop-blur-md border border-red-500/30 rounded-lg p-3">
                       <div className="flex items-start gap-2">
                         <AlertTriangle className="w-4 h-4 text-red-400 mt-0.5" />
                         <div className="flex-1">
                           <div className="text-sm text-red-400">Line {error.line}</div>
-                          <div className="text-sm text-gray-300 mt-1">{error.message}</div>
+                          <div className="text-sm text-white mt-1">{error.message}</div>
                         </div>
-                        <Badge variant="outline" className="border-red-500/50 text-red-400 text-xs">
+                        <Badge className="bg-red-500/20 text-red-400 border-red-500/50 text-xs">
                           {error.severity}
                         </Badge>
                       </div>
@@ -200,14 +207,14 @@ Be thorough in your analysis.`,
               </div>
             )}
 
-            {/* Warnings */}
+            {/* Warnings - YELLOW */}
             {output.warnings && output.warnings.length > 0 && (
               <div>
                 <h4 className="text-sm font-semibold mb-2 text-yellow-400">Warnings</h4>
                 <div className="space-y-2">
                   {output.warnings.map((warning, idx) => (
-                    <div key={idx} className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-3">
-                      <div className="text-sm text-gray-300">
+                    <div key={idx} className="bg-yellow-500/10 backdrop-blur-md border border-yellow-500/30 rounded-lg p-3">
+                      <div className="text-sm text-white">
                         Line {warning.line}: {warning.message}
                       </div>
                     </div>
@@ -216,22 +223,22 @@ Be thorough in your analysis.`,
               </div>
             )}
 
-            {/* Security Issues */}
+            {/* Security Issues - ORANGE */}
             {output.security_issues && output.security_issues.length > 0 && (
               <div>
                 <h4 className="text-sm font-semibold mb-2 text-orange-400">Security Issues</h4>
                 <div className="space-y-2">
                   {output.security_issues.map((issue, idx) => (
-                    <div key={idx} className="bg-orange-500/10 border border-orange-500/30 rounded-lg p-3">
+                    <div key={idx} className="bg-orange-500/10 backdrop-blur-md border border-orange-500/30 rounded-lg p-3">
                       <div className="flex items-start gap-2">
                         <AlertTriangle className="w-4 h-4 text-orange-400 mt-0.5" />
                         <div className="flex-1">
-                          <div className="text-sm text-gray-300">{issue.description}</div>
+                          <div className="text-sm text-white">{issue.description}</div>
                           {issue.line > 0 && (
-                            <div className="text-xs text-gray-500 mt-1">Line {issue.line}</div>
+                            <div className="text-xs text-white/60 mt-1">Line {issue.line}</div>
                           )}
                         </div>
-                        <Badge variant="outline" className="border-orange-500/50 text-orange-400 text-xs">
+                        <Badge className="bg-orange-500/20 text-orange-400 border-orange-500/50 text-xs">
                           {issue.severity}
                         </Badge>
                       </div>
@@ -241,13 +248,13 @@ Be thorough in your analysis.`,
               </div>
             )}
 
-            {/* Optimization Suggestions */}
+            {/* Optimization Suggestions - GREEN */}
             {output.optimization_suggestions && output.optimization_suggestions.length > 0 && (
               <div>
-                <h4 className="text-sm font-semibold mb-2 text-cyan-400">Optimization Suggestions</h4>
+                <h4 className="text-sm font-semibold mb-2 text-green-400">Optimization Suggestions</h4>
                 <ul className="space-y-2">
                   {output.optimization_suggestions.map((suggestion, idx) => (
-                    <li key={idx} className="bg-cyan-500/10 border border-cyan-500/30 rounded-lg p-3 text-sm text-gray-300">
+                    <li key={idx} className="bg-green-500/10 backdrop-blur-md border border-green-500/30 rounded-lg p-3 text-sm text-white">
                       {suggestion}
                     </li>
                   ))}
@@ -256,14 +263,14 @@ Be thorough in your analysis.`,
             )}
 
             {/* Performance Metrics */}
-            <div className="grid grid-cols-2 gap-4 pt-4 border-t border-gray-800">
+            <div className="grid grid-cols-2 gap-4 pt-4 border-t border-blue-500/30">
               <div>
-                <div className="text-xs text-gray-400">Estimated Execution Time</div>
-                <div className="text-sm font-semibold text-cyan-400">{output.execution_time_estimate}</div>
+                <div className="text-xs text-white/60">Estimated Execution Time</div>
+                <div className="text-sm font-semibold text-white">{output.execution_time_estimate}</div>
               </div>
               <div>
-                <div className="text-xs text-gray-400">Estimated Memory Usage</div>
-                <div className="text-sm font-semibold text-cyan-400">{output.memory_estimate}</div>
+                <div className="text-xs text-white/60">Estimated Memory Usage</div>
+                <div className="text-sm font-semibold text-white">{output.memory_estimate}</div>
               </div>
             </div>
           </CardContent>

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from "react";
 import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
@@ -171,33 +170,33 @@ export default function GlyphBot() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-black text-white relative">
+      {/* Background */}
+      <div className="fixed inset-0 opacity-20 pointer-events-none">
+        <img
+          src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/8cd0364f8_Whisk_2bd57b9a449d359968944ab33f98257edr-Copy.jpg"
+          alt="Background"
+          className="w-full h-full object-cover"
+        />
+      </div>
+
       {/* Header */}
-      <header className="bg-gray-900 border-b border-blue-500/20 p-4 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <img
-            src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/8cd0364f8_Whisk_2bd57b9a449d359968944ab33f98257edr-Copy.jpg"
-            alt="GlyphBot Background"
-            className="w-full h-full object-cover"
-          />
-        </div>
-        <div className="container mx-auto flex items-center justify-between relative z-10">
+      <header className="relative z-10 bg-blue-900/20 backdrop-blur-md border-b border-blue-500/30 p-4">
+        <div className="container mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center">
+            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg flex items-center justify-center shadow-lg shadow-blue-500/50">
               <Brain className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-xl font-bold bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">
-                GlyphBot Advanced
-              </h1>
-              <p className="text-sm text-white">AI Security Expert powered by Gemini</p>
+              <h1 className="text-xl font-bold text-white">GlyphBot Advanced</h1>
+              <p className="text-sm text-white/80">AI Security Expert powered by Gemini</p>
             </div>
           </div>
           <div className="flex items-center gap-4">
             {user && (
-              <div className="flex items-center gap-2">
-                <User className="w-4 h-4 text-white" />
-                <span className="text-sm text-white">{user.email}</span>
+              <div className="flex items-center gap-2 text-white">
+                <User className="w-4 h-4" />
+                <span className="text-sm">{user.email}</span>
               </div>
             )}
             <a
@@ -205,7 +204,7 @@ export default function GlyphBot() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <Button variant="outline" size="sm" className="border-green-500/50 text-green-400">
+              <Button variant="outline" size="sm" className="border-green-500/50 text-white hover:bg-green-500/20">
                 💬 WhatsApp
               </Button>
             </a>
@@ -213,19 +212,19 @@ export default function GlyphBot() {
         </div>
       </header>
 
-      <div className="container mx-auto p-4">
+      <div className="container mx-auto p-4 relative z-10">
         <Tabs defaultValue="chat" className="space-y-6">
-          <TabsList className="bg-gray-900 border border-gray-800">
-            <TabsTrigger value="chat" className="text-white data-[state=active]:text-blue-400">AI Chat</TabsTrigger>
-            <TabsTrigger value="executor" className="text-white data-[state=active]:text-blue-400">Code Executor</TabsTrigger>
-            <TabsTrigger value="scanner" className="text-white data-[state=active]:text-blue-400">Security Scanner</TabsTrigger>
-            <TabsTrigger value="audit" className="text-white data-[state=active]:text-blue-400">Audit Generator</TabsTrigger>
+          <TabsList className="bg-blue-900/30 backdrop-blur-md border border-blue-500/30">
+            <TabsTrigger value="chat" className="text-white data-[state=active]:bg-blue-500/30">AI Chat</TabsTrigger>
+            <TabsTrigger value="executor" className="text-white data-[state=active]:bg-blue-500/30">Code Executor</TabsTrigger>
+            <TabsTrigger value="scanner" className="text-white data-[state=active]:bg-blue-500/30">Security Scanner</TabsTrigger>
+            <TabsTrigger value="audit" className="text-white data-[state=active]:bg-blue-500/30">Audit Generator</TabsTrigger>
           </TabsList>
 
           <TabsContent value="chat">
             <div className="grid lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
               <div className="lg:col-span-1 space-y-4">
-                <Card className="bg-gray-900 border-gray-800">
+                <Card className="bg-blue-900/20 backdrop-blur-md border-blue-500/30">
                   <CardHeader>
                     <CardTitle className="text-base text-white">AI Persona</CardTitle>
                   </CardHeader>
@@ -237,14 +236,14 @@ export default function GlyphBot() {
                   </CardContent>
                 </Card>
 
-                <Card className="bg-gray-900 border-gray-800">
+                <Card className="bg-blue-900/20 backdrop-blur-md border-blue-500/30">
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <CardTitle className="text-lg text-white">Conversations</CardTitle>
                       <Button
                         size="sm"
                         onClick={createNewConversation}
-                        className="bg-gradient-to-r from-blue-600 to-blue-700 h-8 text-white"
+                        className="bg-blue-500/30 hover:bg-blue-500/50 h-8 text-white border border-blue-500/50"
                       >
                         <Plus className="w-4 h-4" />
                       </Button>
@@ -260,25 +259,25 @@ export default function GlyphBot() {
                   </CardContent>
                 </Card>
 
-                <Card className="bg-gradient-to-br from-blue-500/10 to-blue-700/10 border-blue-500/30">
+                <Card className="bg-gradient-to-br from-blue-500/20 to-blue-700/20 backdrop-blur-md border-blue-500/30">
                   <CardHeader>
                     <CardTitle className="text-base text-white">Capabilities</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3 text-sm">
                     <div className="flex items-center gap-2">
-                      <Shield className="w-4 h-4 text-blue-400" />
+                      <Shield className="w-4 h-4 text-white" />
                       <span className="text-white">Security Analysis</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Code className="w-4 h-4 text-blue-400" />
+                      <Code className="w-4 h-4 text-white" />
                       <span className="text-white">Code Generation</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <FileText className="w-4 h-4 text-blue-400" />
+                      <FileText className="w-4 h-4 text-white" />
                       <span className="text-white">Smart Contracts</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Sparkles className="w-4 h-4 text-blue-400" />
+                      <Sparkles className="w-4 h-4 text-white" />
                       <span className="text-white">File Analysis</span>
                     </div>
                   </CardContent>
@@ -286,8 +285,8 @@ export default function GlyphBot() {
               </div>
 
               <div className="lg:col-span-3">
-                <Card className="bg-gray-900 border-gray-800 h-[calc(100vh-12rem)]">
-                  <CardHeader className="border-b border-gray-800">
+                <Card className="bg-blue-900/20 backdrop-blur-md border-blue-500/30 h-[calc(100vh-12rem)]">
+                  <CardHeader className="border-b border-blue-500/30">
                     <div className="flex items-center justify-between">
                       <div>
                         <CardTitle className="text-white">
@@ -298,12 +297,12 @@ export default function GlyphBot() {
                           )}
                         </CardTitle>
                         {currentConversation && (
-                          <p className="text-sm text-white mt-1">
+                          <p className="text-sm text-white/80 mt-1">
                             {messages.length} messages • {selectedPersona.replace('-', ' ')} mode
                           </p>
                         )}
                       </div>
-                      <Badge variant="outline" className="border-blue-500/50 text-blue-400">
+                      <Badge variant="outline" className="border-blue-500/50 text-white bg-blue-500/20">
                         <Brain className="w-3 h-3 mr-1" />
                         Gemini
                       </Badge>
@@ -315,14 +314,14 @@ export default function GlyphBot() {
                       {!currentConversation ? (
                         <div className="h-full flex items-center justify-center">
                           <div className="text-center">
-                            <Brain className="w-16 h-16 text-blue-400 mx-auto mb-4" />
+                            <Brain className="w-16 h-16 text-white mx-auto mb-4" />
                             <h3 className="text-xl font-bold mb-2 text-white">Welcome to GlyphBot Advanced</h3>
-                            <p className="text-white mb-6 max-w-md">
+                            <p className="text-white/80 mb-6 max-w-md">
                               Your AI cybersecurity expert with code execution, security scanning, and automated auditing capabilities.
                             </p>
                             <Button
                               onClick={createNewConversation}
-                              className="bg-gradient-to-r from-blue-600 to-blue-700 text-white"
+                              className="bg-blue-500/30 hover:bg-blue-500/50 text-white border border-blue-500/50"
                             >
                               <MessageSquare className="w-4 h-4 mr-2" />
                               Start New Chat
@@ -346,15 +345,15 @@ export default function GlyphBot() {
                       )}
                     </div>
 
-                    <div className="border-t border-gray-800 pt-4">
+                    <div className="border-t border-blue-500/30 pt-4">
                       {selectedFiles.length > 0 && (
                         <div className="mb-3 flex flex-wrap gap-2">
                           {selectedFiles.map((file, index) => (
                             <div
                               key={index}
-                              className="bg-gray-800 border border-blue-500/30 rounded-lg px-3 py-2 flex items-center gap-2 text-sm"
+                              className="bg-blue-900/30 backdrop-blur-md border border-blue-500/30 rounded-lg px-3 py-2 flex items-center gap-2 text-sm"
                             >
-                              <FileText className="w-4 h-4 text-blue-400" />
+                              <FileText className="w-4 h-4 text-white" />
                               <span className="max-w-[200px] truncate text-white">{file.name}</span>
                               <button
                                 onClick={() => setSelectedFiles(selectedFiles.filter((_, i) => i !== index))}
@@ -380,21 +379,21 @@ export default function GlyphBot() {
                           variant="outline"
                           size="icon"
                           onClick={() => fileInputRef.current?.click()}
-                          className="border-gray-700 hover:bg-gray-800"
+                          className="border-blue-500/50 hover:bg-blue-500/20 text-white"
                         >
-                          <Upload className="w-4 h-4 text-white" />
+                          <Upload className="w-4 h-4" />
                         </Button>
                         <Input
                           value={inputMessage}
                           onChange={(e) => setInputMessage(e.target.value)}
                           placeholder="Ask GlyphBot anything..."
                           disabled={isLoading}
-                          className="bg-gray-800 border-gray-700 flex-1 text-white"
+                          className="bg-blue-900/30 backdrop-blur-md border-blue-500/30 flex-1 text-white placeholder:text-white/50"
                         />
                         <Button
                           type="submit"
                           disabled={isLoading || (!inputMessage.trim() && selectedFiles.length === 0)}
-                          className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white"
+                          className="bg-blue-500/50 hover:bg-blue-500/70 text-white border border-blue-500/50"
                         >
                           <Send className="w-4 h-4" />
                         </Button>
