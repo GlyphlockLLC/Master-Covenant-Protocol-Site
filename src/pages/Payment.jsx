@@ -23,6 +23,7 @@ export default function Payment() {
   const [stripe, setStripe] = useState(null);
   const [elements, setElements] = useState(null);
   const [isLoadingStripe, setIsLoadingStripe] = useState(true);
+  const [stripePublishableKey, setStripePublishableKey] = useState(null);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -40,7 +41,14 @@ export default function Payment() {
         const script = document.createElement('script');
         script.src = 'https://js.stripe.com/v3/';
         script.async = true;
-        script.onload = initializeStripe;
+        script.onload = () => {
+          console.log('Stripe.js loaded successfully');
+          setIsLoadingStripe(false);
+        };
+        script.onerror = () => {
+          setError('Failed to load Stripe. Please refresh the page.');
+          setIsLoadingStripe(false);
+        };
         document.body.appendChild(script);
       } catch (err) {
         setError('Failed to load Stripe. Please refresh the page.');
@@ -50,17 +58,6 @@ export default function Payment() {
 
     loadStripe();
   }, []);
-
-  const initializeStripe = async () => {
-    try {
-      // Note: In production, get the publishable key from backend
-      // For now, we'll initialize Stripe when we have the client secret
-      setIsLoadingStripe(false);
-    } catch (err) {
-      setError('Failed to initialize payment system');
-      setIsLoadingStripe(false);
-    }
-  };
 
   const loadConsultation = async (id) => {
     try {
@@ -92,37 +89,87 @@ export default function Payment() {
 
       setClientSecret(result.clientSecret);
       
-      // Initialize Stripe Elements
-      if (window.Stripe) {
-        // Note: Replace with your actual publishable key from secrets/config
-        const stripeInstance = window.Stripe('pk_test_YOUR_PUBLISHABLE_KEY');
-        setStripe(stripeInstance);
-        
-        const elementsInstance = stripeInstance.elements({
-          clientSecret: result.clientSecret,
-          appearance: {
-            theme: 'night',
-            variables: {
-              colorPrimary: '#3b82f6',
-              colorBackground: '#1f2937',
-              colorText: '#ffffff',
-              colorDanger: '#ef4444',
-              borderRadius: '0.5rem'
-            }
-          }
-        });
-        
-        setElements(elementsInstance);
-        
-        // Mount payment element
-        const paymentElement = elementsInstance.create('payment');
-        paymentElement.mount('#payment-element');
+      // Get Stripe publishable key from backend (via environment)
+      // For now, using a placeholder - replace with actual key retrieval
+      const pubKey = await getStripePublishableKey();
+      setStripePublishableKey(pubKey);
+      
+      // Initialize Stripe Elements after Stripe.js is loaded
+      if (window.Stripe && pubKey) {
+        initializeStripeElements(result.clientSecret, pubKey);
       }
       
       setIsProcessing(false);
     } catch (err) {
       setError(err.message);
       setIsProcessing(false);
+    }
+  };
+
+  const getStripePublishableKey = async () => {
+    // In production, fetch this from your backend/config
+    // The publishable key is safe to expose in frontend
+    
+    // Option 1: Hardcode test key (for development only)
+    // return 'pk_test_YOUR_KEY_HERE';
+    
+    // Option 2: Fetch from backend endpoint
+    try {
+      // Create a backend function that returns the publishable key
+      // const result = await base44.functions.call('get-stripe-config');
+      // return result.publishableKey;
+      
+      // For now, using placeholder - REPLACE THIS WITH YOUR ACTUAL KEY
+      console.warn('⚠️ Using placeholder Stripe key. Update with your actual publishable key from Stripe Dashboard.');
+      return 'pk_test_51PLACEHOLDER_REPLACE_WITH_YOUR_ACTUAL_KEY';
+      
+    } catch (err) {
+      console.error('Failed to get Stripe publishable key:', err);
+      throw new Error('Payment system configuration error');
+    }
+  };
+
+  const initializeStripeElements = (clientSecret, publishableKey) => {
+    try {
+      const stripeInstance = window.Stripe(publishableKey);
+      setStripe(stripeInstance);
+      
+      const elementsInstance = stripeInstance.elements({
+        clientSecret: clientSecret,
+        appearance: {
+          theme: 'night',
+          variables: {
+            colorPrimary: '#3b82f6',
+            colorBackground: '#1f2937',
+            colorText: '#ffffff',
+            colorDanger: '#ef4444',
+            borderRadius: '0.5rem',
+            fontFamily: 'system-ui, sans-serif'
+          }
+        }
+      });
+      
+      setElements(elementsInstance);
+      
+      // Mount payment element
+      const paymentElement = elementsInstance.create('payment');
+      paymentElement.mount('#payment-element');
+      
+      paymentElement.on('ready', () => {
+        console.log('Payment element ready');
+      });
+      
+      paymentElement.on('change', (event) => {
+        if (event.error) {
+          setError(event.error.message);
+        } else {
+          setError(null);
+        }
+      });
+      
+    } catch (err) {
+      console.error('Failed to initialize Stripe elements:', err);
+      setError('Failed to initialize payment form. Please refresh the page.');
     }
   };
 
@@ -219,17 +266,19 @@ export default function Payment() {
                     </Alert>
                   )}
 
-                  {isLoadingStripe ? (
+                  {isLoadingStripe || isProcessing && !clientSecret ? (
                     <div className="flex items-center justify-center py-12">
                       <Loader2 className="w-8 h-8 text-blue-400 animate-spin" />
-                      <span className="ml-3 text-gray-400">Loading payment system...</span>
+                      <span className="ml-3 text-gray-400">
+                        {isLoadingStripe ? 'Loading payment system...' : 'Initializing payment...'}
+                      </span>
                     </div>
                   ) : (
                     <form onSubmit={processPayment} className="space-y-6">
                       {/* Stripe Payment Element Container */}
                       <div>
                         <Label className="text-white mb-3 block">Card Details</Label>
-                        <div id="payment-element" className="p-4 bg-gray-800 border border-gray-700 rounded-lg">
+                        <div id="payment-element" className="min-h-[200px]">
                           {/* Stripe Elements will mount here */}
                         </div>
                       </div>
@@ -325,7 +374,7 @@ export default function Payment() {
                       <span className="text-white">$299.00</span>
                     </div>
                     <div className="flex justify-between items-center mb-2">
-                      <span className="text-gray-400">Stripe Fee</span>
+                      <span className="text-gray-400">Processing Fee</span>
                       <span className="text-white">$0.00</span>
                     </div>
                     <div className="flex justify-between items-center text-lg font-bold pt-2 border-t border-gray-700">
