@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -197,8 +198,16 @@ export default function HotzoneMapper() {
   };
 
   return (
-    <div className="bg-black text-white min-h-screen py-20">
-      <div className="container mx-auto px-4">
+    <div className="bg-black text-white min-h-screen py-20 relative">
+      <div className="fixed inset-0 opacity-20 pointer-events-none">
+        <img
+          src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/8cd0364f8_Whisk_2bd57b9a449d359968944ab33f98257edr-Copy.jpg"
+          alt="Background"
+          className="w-full h-full object-cover"
+        />
+      </div>
+
+      <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="text-center mb-12">
@@ -209,7 +218,7 @@ export default function HotzoneMapper() {
             <h1 className="text-5xl font-bold mb-4">
               Hotzone <span className="bg-gradient-to-r from-red-400 to-orange-600 bg-clip-text text-transparent">Mapper</span>
             </h1>
-            <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+            <p className="text-xl text-white max-w-3xl mx-auto">
               Interactive security vulnerability mapping tool. Upload images and mark security hotspots with severity levels.
             </p>
           </div>
@@ -217,7 +226,7 @@ export default function HotzoneMapper() {
           <div className="grid lg:grid-cols-3 gap-8">
             {/* Main Canvas Area */}
             <div className="lg:col-span-2">
-              <Card className="bg-gray-900 border-gray-800">
+              <Card className="bg-blue-900/20 backdrop-blur-md border-blue-500/30">
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-white">Security Map Canvas</CardTitle>
@@ -226,17 +235,17 @@ export default function HotzoneMapper() {
                         size="sm"
                         variant={isDrawing ? "default" : "outline"}
                         onClick={() => setIsDrawing(!isDrawing)}
-                        className={isDrawing ? "bg-gradient-to-r from-red-600 to-orange-700" : ""}
+                        className={isDrawing ? "bg-gradient-to-r from-red-600 to-orange-700 text-white" : "text-white border-blue-500/50"}
                       >
                         <Crosshair className="w-4 h-4 mr-2" />
                         {isDrawing ? "Drawing Mode" : "View Mode"}
                       </Button>
                       {image && (
                         <>
-                          <Button size="sm" variant="outline" onClick={exportImage}>
+                          <Button size="sm" variant="outline" onClick={exportImage} className="text-white border-blue-500/50">
                             <Download className="w-4 h-4" />
                           </Button>
-                          <Button size="sm" variant="outline" onClick={exportData}>
+                          <Button size="sm" variant="outline" onClick={exportData} className="text-white border-blue-500/50">
                             <Save className="w-4 h-4" />
                           </Button>
                         </>
@@ -246,14 +255,14 @@ export default function HotzoneMapper() {
                 </CardHeader>
                 <CardContent>
                   {!image ? (
-                    <div className="border-2 border-dashed border-gray-700 rounded-lg p-12 text-center">
-                      <Upload className="w-12 h-12 text-gray-500 mx-auto mb-4" />
-                      <p className="text-gray-400 mb-4">Upload an image to start mapping hotzones</p>
+                    <div className="border-2 border-dashed border-blue-500/30 rounded-lg p-12 text-center backdrop-blur-md">
+                      <Upload className="w-12 h-12 text-white/60 mx-auto mb-4" />
+                      <p className="text-white mb-4">Upload an image to start mapping hotzones</p>
                       <Input
                         type="file"
                         accept="image/*"
                         onChange={handleImageUpload}
-                        className="max-w-xs mx-auto"
+                        className="max-w-xs mx-auto bg-blue-900/30 border-blue-500/30 text-white"
                       />
                     </div>
                   ) : (
@@ -261,11 +270,11 @@ export default function HotzoneMapper() {
                       <canvas
                         ref={canvasRef}
                         onClick={handleCanvasClick}
-                        className="w-full border border-gray-700 rounded-lg cursor-crosshair"
+                        className="w-full border border-blue-500/30 rounded-lg cursor-crosshair"
                         style={{ maxHeight: "600px", objectFit: "contain" }}
                       />
                       {isDrawing && (
-                        <div className="absolute top-4 left-4 bg-red-500/20 border border-red-500/50 rounded-lg p-3 text-sm">
+                        <div className="absolute top-4 left-4 bg-red-500/20 backdrop-blur-md border border-red-500/50 rounded-lg p-3 text-sm text-white">
                           <MapPin className="w-4 h-4 inline mr-2" />
                           Click on the image to place hotspots
                         </div>
@@ -280,7 +289,7 @@ export default function HotzoneMapper() {
             <div className="space-y-6">
               {/* Upload Section */}
               {image && (
-                <Card className="bg-gray-900 border-gray-800">
+                <Card className="bg-blue-900/20 backdrop-blur-md border-blue-500/30">
                   <CardHeader>
                     <CardTitle className="text-white text-sm">Change Image</CardTitle>
                   </CardHeader>
@@ -289,7 +298,7 @@ export default function HotzoneMapper() {
                       type="file"
                       accept="image/*"
                       onChange={handleImageUpload}
-                      className="bg-gray-800 border-gray-700"
+                      className="bg-blue-900/30 border-blue-500/30 text-white"
                     />
                   </CardContent>
                 </Card>
@@ -297,7 +306,7 @@ export default function HotzoneMapper() {
 
               {/* Hotspot Editor */}
               {selectedHotspot !== null && (
-                <Card className="bg-gray-900 border-gray-800">
+                <Card className="bg-blue-900/20 backdrop-blur-md border-blue-500/30">
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <CardTitle className="text-white">Edit Hotspot #{selectedHotspot + 1}</CardTitle>
@@ -317,7 +326,7 @@ export default function HotzoneMapper() {
                       <Input
                         value={hotspotForm.name}
                         onChange={(e) => setHotspotForm({ ...hotspotForm, name: e.target.value })}
-                        className="bg-gray-800 border-gray-700 text-white"
+                        className="bg-blue-900/30 border-blue-500/30 text-white placeholder:text-white/50"
                       />
                     </div>
                     <div>
@@ -325,7 +334,7 @@ export default function HotzoneMapper() {
                       <Input
                         value={hotspotForm.description}
                         onChange={(e) => setHotspotForm({ ...hotspotForm, description: e.target.value })}
-                        className="bg-gray-800 border-gray-700 text-white"
+                        className="bg-blue-900/30 border-blue-500/30 text-white placeholder:text-white/50"
                       />
                     </div>
                     <div>
@@ -347,8 +356,8 @@ export default function HotzoneMapper() {
                                       : level === "high"
                                       ? "from-orange-600 to-red-700"
                                       : "from-red-600 to-red-800"
-                                  }`
-                                : ""
+                                  } text-white`
+                                : "text-white border-blue-500/50"
                             }
                           >
                             {level.charAt(0).toUpperCase() + level.slice(1)}
@@ -362,12 +371,12 @@ export default function HotzoneMapper() {
                         value={hotspotForm.url}
                         onChange={(e) => setHotspotForm({ ...hotspotForm, url: e.target.value })}
                         placeholder="https://..."
-                        className="bg-gray-800 border-gray-700 text-white"
+                        className="bg-blue-900/30 border-blue-500/30 text-white placeholder:text-white/50"
                       />
                     </div>
                     <Button
                       onClick={updateHotspot}
-                      className="w-full bg-gradient-to-r from-blue-600 to-blue-700"
+                      className="w-full bg-blue-500/30 hover:bg-blue-500/50 text-white border border-blue-500/50"
                     >
                       Update Hotspot
                     </Button>
@@ -377,7 +386,7 @@ export default function HotzoneMapper() {
 
               {/* Hotspot List */}
               {hotspots.length > 0 && (
-                <Card className="bg-gray-900 border-gray-800">
+                <Card className="bg-blue-900/20 backdrop-blur-md border-blue-500/30">
                   <CardHeader>
                     <CardTitle className="text-white">Hotspots ({hotspots.length})</CardTitle>
                   </CardHeader>
@@ -394,10 +403,10 @@ export default function HotzoneMapper() {
                             url: hotspot.url || ""
                           });
                         }}
-                        className={`p-3 rounded-lg border cursor-pointer transition-all ${
+                        className={`p-3 rounded-lg border cursor-pointer transition-all backdrop-blur-md ${
                           selectedHotspot === index
-                            ? "border-blue-500 bg-blue-500/10"
-                            : "border-gray-700 hover:border-gray-600 bg-gray-800"
+                            ? "border-blue-500 bg-blue-500/20"
+                            : "border-blue-500/30 hover:border-blue-500/50 bg-blue-900/30"
                         }`}
                       >
                         <div className="flex items-center justify-between mb-2">
@@ -406,19 +415,19 @@ export default function HotzoneMapper() {
                             variant="outline"
                             className={`text-xs ${
                               hotspot.severity === "low"
-                                ? "border-green-500 text-green-400"
+                                ? "border-green-500 text-green-400 bg-green-500/10"
                                 : hotspot.severity === "medium"
-                                ? "border-yellow-500 text-yellow-400"
+                                ? "border-yellow-500 text-yellow-400 bg-yellow-500/10"
                                 : hotspot.severity === "high"
-                                ? "border-orange-500 text-orange-400"
-                                : "border-red-500 text-red-400"
+                                ? "border-orange-500 text-orange-400 bg-orange-500/10"
+                                : "border-red-500 text-red-400 bg-red-500/10"
                             }`}
                           >
                             {hotspot.severity}
                           </Badge>
                         </div>
                         {hotspot.description && (
-                          <p className="text-sm text-gray-400">{hotspot.description}</p>
+                          <p className="text-sm text-white/80">{hotspot.description}</p>
                         )}
                       </div>
                     ))}
@@ -427,11 +436,11 @@ export default function HotzoneMapper() {
               )}
 
               {/* Instructions */}
-              <Card className="bg-gradient-to-br from-red-500/10 to-orange-600/10 border-red-500/30">
+              <Card className="bg-gradient-to-br from-red-500/10 to-orange-600/10 backdrop-blur-md border-red-500/30">
                 <CardHeader>
                   <CardTitle className="text-white text-sm">How to Use</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-2 text-sm text-gray-300">
+                <CardContent className="space-y-2 text-sm text-white">
                   <p>1. Upload an image (network diagram, floor plan, etc.)</p>
                   <p>2. Enable Drawing Mode</p>
                   <p>3. Click on the image to place security hotspots</p>

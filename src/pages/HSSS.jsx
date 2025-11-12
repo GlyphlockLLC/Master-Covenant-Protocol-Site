@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -283,8 +284,16 @@ export default function HSSS() {
   const criticalThreatCount = threats.filter(t => t.severity === 'critical').length;
 
   return (
-    <div className="bg-black text-white min-h-screen py-20">
-      <div className="container mx-auto px-4">
+    <div className="bg-black text-white min-h-screen py-20 relative">
+      <div className="fixed inset-0 opacity-20 pointer-events-none">
+        <img
+          src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/8cd0364f8_Whisk_2bd57b9a449d359968944ab33f98257edr-Copy.jpg"
+          alt="Background"
+          className="w-full h-full object-cover"
+        />
+      </div>
+
+      <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="text-center mb-12">
@@ -295,58 +304,58 @@ export default function HSSS() {
             <h1 className="text-5xl font-bold mb-4">
               <span className="bg-gradient-to-r from-red-400 via-orange-500 to-yellow-600 bg-clip-text text-transparent">HSSS</span>
             </h1>
-            <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+            <p className="text-xl text-white max-w-3xl mx-auto">
               Advanced security surveillance with real-time threat monitoring, AI detection, and incident tracking
             </p>
           </div>
 
           {/* Real-time Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-            <Card className="bg-gradient-to-br from-red-500/10 to-red-700/10 border-red-500/30">
+            <Card className="bg-red-900/20 backdrop-blur-md border-red-500/30">
               <CardContent className="p-4 text-center">
                 <AlertTriangle className="w-8 h-8 text-red-400 mx-auto mb-2" />
                 <div className="text-2xl font-bold text-white">{stats.critical}</div>
-                <div className="text-xs text-gray-400">Critical Zones</div>
+                <div className="text-xs text-white/60">Critical Zones</div>
               </CardContent>
             </Card>
-            <Card className="bg-gradient-to-br from-orange-500/10 to-orange-700/10 border-orange-500/30">
+            <Card className="bg-orange-900/20 backdrop-blur-md border-orange-500/30">
               <CardContent className="p-4 text-center">
                 <Activity className="w-8 h-8 text-orange-400 mx-auto mb-2" />
                 <div className="text-2xl font-bold text-white">{stats.active}</div>
-                <div className="text-xs text-gray-400">Active Monitors</div>
+                <div className="text-xs text-white/60">Active Monitors</div>
               </CardContent>
             </Card>
-            <Card className="bg-gradient-to-br from-purple-500/10 to-purple-700/10 border-purple-500/30">
+            <Card className="bg-purple-900/20 backdrop-blur-md border-purple-500/30">
               <CardContent className="p-4 text-center">
                 <Eye className="w-8 h-8 text-purple-400 mx-auto mb-2" />
                 <div className="text-2xl font-bold text-white">{activeThreatCount}</div>
-                <div className="text-xs text-gray-400">Active Threats</div>
+                <div className="text-xs text-white/60">Active Threats</div>
               </CardContent>
             </Card>
-            <Card className="bg-gradient-to-br from-blue-500/10 to-blue-700/10 border-blue-500/30">
+            <Card className="bg-blue-900/20 backdrop-blur-md border-blue-500/30">
               <CardContent className="p-4 text-center">
-                <Target className="w-8 h-8 text-blue-400 mx-auto mb-2" />
+                <Target className="w-8 h-8 text-white mx-auto mb-2" />
                 <div className="text-2xl font-bold text-white">{hotspots.length}</div>
-                <div className="text-xs text-gray-400">Total Hotspots</div>
+                <div className="text-xs text-white/60">Total Hotspots</div>
               </CardContent>
             </Card>
           </div>
 
           <Tabs defaultValue="mapper" className="space-y-6">
-            <TabsList className="bg-gray-900 border border-gray-800">
-              <TabsTrigger value="mapper" className="text-white data-[state=active]:text-red-400">
+            <TabsList className="bg-blue-900/30 backdrop-blur-md border border-blue-500/30">
+              <TabsTrigger value="mapper" className="text-white data-[state=active]:bg-red-500/30">
                 <MapPin className="w-4 h-4 mr-2" />
                 Mapper
               </TabsTrigger>
-              <TabsTrigger value="threats" className="text-white data-[state=active]:text-orange-400">
+              <TabsTrigger value="threats" className="text-white data-[state=active]:bg-orange-500/30">
                 <Bell className="w-4 h-4 mr-2" />
                 Threats ({activeThreatCount})
               </TabsTrigger>
-              <TabsTrigger value="maps" className="text-white data-[state=active]:text-blue-400">
+              <TabsTrigger value="maps" className="text-white data-[state=active]:bg-blue-500/30">
                 <FileText className="w-4 h-4 mr-2" />
                 Saved Maps ({maps.length})
               </TabsTrigger>
-              <TabsTrigger value="analytics" className="text-white data-[state=active]:text-green-400">
+              <TabsTrigger value="analytics" className="text-white data-[state=active]:bg-green-500/30">
                 <TrendingUp className="w-4 h-4 mr-2" />
                 Analytics
               </TabsTrigger>
@@ -356,21 +365,21 @@ export default function HSSS() {
               <div className="grid lg:grid-cols-3 gap-8">
                 {/* Canvas */}
                 <div className="lg:col-span-2 space-y-6">
-                  <Card className="bg-gray-900 border-gray-800">
+                  <Card className="bg-blue-900/20 backdrop-blur-md border-blue-500/30">
                     <CardHeader>
                       <div className="flex items-center justify-between flex-wrap gap-4">
                         <div>
                           <CardTitle className="text-white mb-2">Security Map Canvas</CardTitle>
                           <div className="flex gap-2 flex-wrap">
                             <Badge variant="outline" className={`text-xs ${
-                              mapData.threat_level === 'critical' ? 'border-red-500 text-red-400' :
-                              mapData.threat_level === 'high' ? 'border-orange-500 text-orange-400' :
-                              mapData.threat_level === 'medium' ? 'border-yellow-500 text-yellow-400' :
-                              'border-green-500 text-green-400'
+                              mapData.threat_level === 'critical' ? 'border-red-500 text-red-400 bg-red-500/10' :
+                              mapData.threat_level === 'high' ? 'border-orange-500 text-orange-400 bg-orange-500/10' :
+                              mapData.threat_level === 'medium' ? 'border-yellow-500 text-yellow-400 bg-yellow-500/10' :
+                              'border-green-500 text-green-400 bg-green-500/10'
                             }`}>
                               Threat Level: {mapData.threat_level}
                             </Badge>
-                            <Badge variant="outline" className="border-blue-500/50 text-blue-400 text-xs">
+                            <Badge variant="outline" className="border-blue-500/50 text-white bg-blue-500/10 text-xs">
                               {mapData.map_type || 'network'}
                             </Badge>
                           </div>
@@ -380,14 +389,14 @@ export default function HSSS() {
                             size="sm"
                             variant={isDrawing ? "default" : "outline"}
                             onClick={() => setIsDrawing(!isDrawing)}
-                            className={isDrawing ? "bg-gradient-to-r from-red-600 to-orange-700" : ""}
+                            className={isDrawing ? "bg-gradient-to-r from-red-600 to-orange-700 text-white" : "text-white border-blue-500/50"}
                           >
                             <Crosshair className="w-4 h-4 mr-2" />
                             {isDrawing ? "Drawing" : "View"}
                           </Button>
                           {image && (
                             <>
-                              <Button size="sm" variant="outline" onClick={exportData}>
+                              <Button size="sm" variant="outline" onClick={exportData} className="text-white border-blue-500/50">
                                 <Download className="w-4 h-4" />
                               </Button>
                               <Button 
@@ -395,7 +404,7 @@ export default function HSSS() {
                                 variant="outline" 
                                 onClick={saveMap}
                                 disabled={saveMapMutation.isPending}
-                                className="border-green-500/50 text-green-400"
+                                className="border-green-500/50 text-green-400 hover:bg-green-500/20"
                               >
                                 <Save className="w-4 h-4 mr-2" />
                                 {saveMapMutation.isPending ? 'Saving...' : 'Save'}
@@ -407,14 +416,14 @@ export default function HSSS() {
                     </CardHeader>
                     <CardContent>
                       {!image ? (
-                        <div className="border-2 border-dashed border-gray-700 rounded-lg p-12 text-center">
-                          <Upload className="w-12 h-12 text-gray-500 mx-auto mb-4" />
-                          <p className="text-gray-400 mb-4">Upload security diagram or infrastructure map</p>
+                        <div className="border-2 border-dashed border-blue-500/30 rounded-lg p-12 text-center backdrop-blur-md">
+                          <Upload className="w-12 h-12 text-white/60 mx-auto mb-4" />
+                          <p className="text-white mb-4">Upload security diagram or infrastructure map</p>
                           <Input
                             type="file"
                             accept="image/*"
                             onChange={handleImageUpload}
-                            className="max-w-xs mx-auto bg-gray-800 border-gray-700"
+                            className="max-w-xs mx-auto bg-blue-900/30 border-blue-500/30 text-white placeholder:text-white/50"
                           />
                         </div>
                       ) : (
@@ -422,11 +431,11 @@ export default function HSSS() {
                           <canvas
                             ref={canvasRef}
                             onClick={handleCanvasClick}
-                            className="w-full border border-gray-700 rounded-lg cursor-crosshair"
+                            className="w-full border border-blue-500/30 rounded-lg cursor-crosshair backdrop-blur-sm"
                             style={{ maxHeight: "600px", objectFit: "contain" }}
                           />
                           {isDrawing && (
-                            <div className="absolute top-4 left-4 bg-red-500/20 border border-red-500/50 rounded-lg p-3 text-sm">
+                            <div className="absolute top-4 left-4 bg-red-500/20 backdrop-blur-md border border-red-500/50 rounded-lg p-3 text-sm text-white">
                               <Target className="w-4 h-4 inline mr-2" />
                               Click to mark security zones
                             </div>
@@ -438,7 +447,7 @@ export default function HSSS() {
 
                   {/* Map Configuration */}
                   {image && (
-                    <Card className="bg-gray-900 border-gray-800">
+                    <Card className="bg-blue-900/20 backdrop-blur-md border-blue-500/30">
                       <CardHeader>
                         <CardTitle className="text-white text-sm">Map Configuration</CardTitle>
                       </CardHeader>
@@ -450,7 +459,7 @@ export default function HSSS() {
                               value={mapData.name}
                               onChange={(e) => setMapData({ ...mapData, name: e.target.value })}
                               placeholder="Server Room Alpha"
-                              className="bg-gray-800 border-gray-700 text-white"
+                              className="bg-blue-900/30 border-blue-500/30 text-white placeholder:text-white/50"
                             />
                           </div>
                           <div>
@@ -459,15 +468,15 @@ export default function HSSS() {
                               value={mapData.map_type}
                               onValueChange={(value) => setMapData({ ...mapData, map_type: value })}
                             >
-                              <SelectTrigger className="bg-gray-800 border-gray-700 text-white">
+                              <SelectTrigger className="bg-blue-900/30 border-blue-500/30 text-white">
                                 <SelectValue />
                               </SelectTrigger>
-                              <SelectContent className="bg-gray-800 border-gray-700">
-                                <SelectItem value="network">Network</SelectItem>
-                                <SelectItem value="physical">Physical</SelectItem>
-                                <SelectItem value="infrastructure">Infrastructure</SelectItem>
-                                <SelectItem value="perimeter">Perimeter</SelectItem>
-                                <SelectItem value="data-flow">Data Flow</SelectItem>
+                              <SelectContent className="bg-blue-900/90 backdrop-blur-md border-blue-500/30">
+                                <SelectItem value="network" className="text-white">Network</SelectItem>
+                                <SelectItem value="physical" className="text-white">Physical</SelectItem>
+                                <SelectItem value="infrastructure" className="text-white">Infrastructure</SelectItem>
+                                <SelectItem value="perimeter" className="text-white">Perimeter</SelectItem>
+                                <SelectItem value="data-flow" className="text-white">Data Flow</SelectItem>
                               </SelectContent>
                             </Select>
                           </div>
@@ -478,7 +487,7 @@ export default function HSSS() {
                             value={mapData.description}
                             onChange={(e) => setMapData({ ...mapData, description: e.target.value })}
                             placeholder="Detailed map description..."
-                            className="bg-gray-800 border-gray-700 text-white"
+                            className="bg-blue-900/30 border-blue-500/30 text-white placeholder:text-white/50"
                             rows={2}
                           />
                         </div>
@@ -498,8 +507,8 @@ export default function HSSS() {
                                         level === "medium" ? "from-yellow-600 to-orange-700" :
                                         level === "high" ? "from-orange-600 to-red-700" :
                                         "from-red-600 to-red-800"
-                                      }`
-                                    : ""
+                                      } text-white`
+                                    : "text-white border-blue-500/50"
                                 }
                               >
                                 {level}
@@ -516,7 +525,7 @@ export default function HSSS() {
                 <div className="space-y-6">
                   {/* Hotspot Editor */}
                   {selectedHotspot !== null && (
-                    <Card className="bg-gray-900 border-gray-800">
+                    <Card className="bg-blue-900/20 backdrop-blur-md border-blue-500/30">
                       <CardHeader>
                         <div className="flex items-center justify-between">
                           <CardTitle className="text-white">Zone #{selectedHotspot + 1}</CardTitle>
@@ -536,7 +545,7 @@ export default function HSSS() {
                           <Input
                             value={hotspotForm.name}
                             onChange={(e) => setHotspotForm({ ...hotspotForm, name: e.target.value })}
-                            className="bg-gray-800 border-gray-700 text-white"
+                            className="bg-blue-900/30 border-blue-500/30 text-white placeholder:text-white/50"
                           />
                         </div>
                         <div>
@@ -544,7 +553,7 @@ export default function HSSS() {
                           <Textarea
                             value={hotspotForm.description}
                             onChange={(e) => setHotspotForm({ ...hotspotForm, description: e.target.value })}
-                            className="bg-gray-800 border-gray-700 text-white"
+                            className="bg-blue-900/30 border-blue-500/30 text-white placeholder:text-white/50"
                             rows={2}
                           />
                         </div>
@@ -564,8 +573,8 @@ export default function HSSS() {
                                         level === "medium" ? "from-yellow-600 to-orange-700" :
                                         level === "high" ? "from-orange-600 to-red-700" :
                                         "from-red-600 to-red-800"
-                                      }`
-                                    : ""
+                                      } text-white`
+                                    : "text-white border-blue-500/50"
                                 }
                               >
                                 {level}
@@ -579,14 +588,14 @@ export default function HSSS() {
                             value={hotspotForm.status}
                             onValueChange={(value) => setHotspotForm({ ...hotspotForm, status: value })}
                           >
-                            <SelectTrigger className="bg-gray-800 border-gray-700 text-white">
+                            <SelectTrigger className="bg-blue-900/30 border-blue-500/30 text-white">
                               <SelectValue />
                             </SelectTrigger>
-                            <SelectContent className="bg-gray-800 border-gray-700">
-                              <SelectItem value="active">Active</SelectItem>
-                              <SelectItem value="monitoring">Monitoring</SelectItem>
-                              <SelectItem value="resolved">Resolved</SelectItem>
-                              <SelectItem value="escalated">Escalated</SelectItem>
+                            <SelectContent className="bg-blue-900/90 backdrop-blur-md border-blue-500/30">
+                              <SelectItem value="active" className="text-white">Active</SelectItem>
+                              <SelectItem value="monitoring" className="text-white">Monitoring</SelectItem>
+                              <SelectItem value="resolved" className="text-white">Resolved</SelectItem>
+                              <SelectItem value="escalated" className="text-white">Escalated</SelectItem>
                             </SelectContent>
                           </Select>
                         </div>
@@ -596,12 +605,12 @@ export default function HSSS() {
                             value={hotspotForm.url}
                             onChange={(e) => setHotspotForm({ ...hotspotForm, url: e.target.value })}
                             placeholder="https://..."
-                            className="bg-gray-800 border-gray-700 text-white"
+                            className="bg-blue-900/30 border-blue-500/30 text-white placeholder:text-white/50"
                           />
                         </div>
                         <Button
                           onClick={updateHotspot}
-                          className="w-full bg-gradient-to-r from-blue-600 to-blue-700"
+                          className="w-full bg-blue-500/30 hover:bg-blue-500/50 text-white border border-blue-500/50"
                         >
                           Update Zone
                         </Button>
@@ -611,7 +620,7 @@ export default function HSSS() {
 
                   {/* Hotspot List */}
                   {hotspots.length > 0 && (
-                    <Card className="bg-gray-900 border-gray-800">
+                    <Card className="bg-blue-900/20 backdrop-blur-md border-blue-500/30">
                       <CardHeader>
                         <CardTitle className="text-white">Security Zones ({hotspots.length})</CardTitle>
                       </CardHeader>
@@ -629,10 +638,10 @@ export default function HSSS() {
                                 status: hotspot.status || "active"
                               });
                             }}
-                            className={`p-3 rounded-lg border cursor-pointer transition-all ${
+                            className={`p-3 rounded-lg border cursor-pointer transition-all backdrop-blur-md ${
                               selectedHotspot === index
-                                ? "border-blue-500 bg-blue-500/10"
-                                : "border-gray-700 hover:border-gray-600 bg-gray-800"
+                                ? "border-blue-500 bg-blue-500/20"
+                                : "border-blue-500/30 hover:border-blue-500/50 bg-blue-900/30"
                             }`}
                           >
                             <div className="flex items-center justify-between mb-2">
@@ -641,21 +650,21 @@ export default function HSSS() {
                                 <Badge
                                   variant="outline"
                                   className={`text-xs ${
-                                    hotspot.severity === "low" ? "border-green-500 text-green-400" :
-                                    hotspot.severity === "medium" ? "border-yellow-500 text-yellow-400" :
-                                    hotspot.severity === "high" ? "border-orange-500 text-orange-400" :
-                                    "border-red-500 text-red-400"
+                                    hotspot.severity === "low" ? "border-green-500 text-green-400 bg-green-500/10" :
+                                    hotspot.severity === "medium" ? "border-yellow-500 text-yellow-400 bg-yellow-500/10" :
+                                    hotspot.severity === "high" ? "border-orange-500 text-orange-400 bg-orange-500/10" :
+                                    "border-red-500 text-red-400 bg-red-500/10"
                                   }`}
                                 >
                                   {hotspot.severity}
                                 </Badge>
-                                <Badge variant="outline" className="border-blue-500/50 text-blue-400 text-xs">
+                                <Badge variant="outline" className="border-blue-500/50 text-white bg-blue-500/10 text-xs">
                                   {hotspot.status || 'active'}
                                 </Badge>
                               </div>
                             </div>
                             {hotspot.description && (
-                              <p className="text-sm text-gray-400">{hotspot.description}</p>
+                              <p className="text-sm text-white/80">{hotspot.description}</p>
                             )}
                           </div>
                         ))}
@@ -667,13 +676,13 @@ export default function HSSS() {
             </TabsContent>
 
             <TabsContent value="threats">
-              <Card className="bg-gray-900 border-gray-800">
+              <Card className="bg-blue-900/20 backdrop-blur-md border-blue-500/30">
                 <CardHeader>
                   <CardTitle className="text-white">Active Threat Monitor</CardTitle>
                 </CardHeader>
                 <CardContent>
                   {threats.length === 0 ? (
-                    <div className="text-center py-12 text-gray-400">
+                    <div className="text-center py-12 text-white/60">
                       <Shield className="w-12 h-12 mx-auto mb-4 opacity-50" />
                       <p>No threats detected. System secure.</p>
                     </div>
@@ -682,31 +691,31 @@ export default function HSSS() {
                       {threats.slice(0, 20).map((threat) => (
                         <div
                           key={threat.id}
-                          className="p-4 bg-gray-800 border border-gray-700 rounded-lg"
+                          className="p-4 bg-blue-900/30 backdrop-blur-md border border-blue-500/20 rounded-lg"
                         >
                           <div className="flex items-start justify-between mb-2">
                             <div>
                               <h4 className="font-semibold text-white">{threat.hotspot_name}</h4>
-                              <p className="text-sm text-gray-400">{threat.description}</p>
+                              <p className="text-sm text-white/80">{threat.description}</p>
                             </div>
                             <div className="flex gap-2">
                               <Badge
                                 variant="outline"
                                 className={`${
-                                  threat.severity === "critical" ? "border-red-500 text-red-400" :
-                                  threat.severity === "high" ? "border-orange-500 text-orange-400" :
-                                  threat.severity === "medium" ? "border-yellow-500 text-yellow-400" :
-                                  "border-green-500 text-green-400"
+                                  threat.severity === "critical" ? "border-red-500 text-red-400 bg-red-500/10" :
+                                  threat.severity === "high" ? "border-orange-500 text-orange-400 bg-orange-500/10" :
+                                  threat.severity === "medium" ? "border-yellow-500 text-yellow-400 bg-yellow-500/10" :
+                                  "border-green-500 text-green-400 bg-green-500/10"
                                 }`}
                               >
                                 {threat.severity}
                               </Badge>
-                              <Badge variant="outline" className="border-purple-500/50 text-purple-400">
+                              <Badge variant="outline" className="border-purple-500/50 text-purple-400 bg-purple-500/10">
                                 {threat.status}
                               </Badge>
                             </div>
                           </div>
-                          <div className="flex items-center justify-between text-xs text-gray-500">
+                          <div className="flex items-center justify-between text-xs text-white/60">
                             <span>{threat.threat_type.replace('_', ' ')}</span>
                             <span>{new Date(threat.created_date).toLocaleString()}</span>
                           </div>
@@ -721,7 +730,7 @@ export default function HSSS() {
             <TabsContent value="maps">
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {maps.map((map) => (
-                  <Card key={map.id} className="bg-gray-900 border-gray-800 hover:border-blue-500/50 transition-all cursor-pointer">
+                  <Card key={map.id} className="bg-blue-900/20 backdrop-blur-md border-blue-500/30 hover:border-blue-500/50 transition-all cursor-pointer">
                     <div className="relative h-48 overflow-hidden rounded-t-lg">
                       <img
                         src={map.image_url}
@@ -744,16 +753,16 @@ export default function HSSS() {
                     </div>
                     <CardContent className="p-4">
                       <h3 className="font-bold text-white mb-2">{map.name}</h3>
-                      <p className="text-sm text-gray-400 mb-3">{map.description}</p>
+                      <p className="text-sm text-white/80 mb-3">{map.description}</p>
                       <div className="flex items-center justify-between text-xs">
-                        <Badge variant="outline" className="border-blue-500/50 text-blue-400">
+                        <Badge variant="outline" className="border-blue-500/50 text-white bg-blue-500/10">
                           {map.map_type}
                         </Badge>
-                        <span className="text-gray-500">{map.hotspots?.length || 0} zones</span>
+                        <span className="text-white/60">{map.hotspots?.length || 0} zones</span>
                       </div>
                       <Button
                         onClick={() => loadMap(map)}
-                        className="w-full mt-3 bg-gradient-to-r from-blue-600 to-blue-700"
+                        className="w-full mt-3 bg-blue-500/30 hover:bg-blue-500/50 text-white border border-blue-500/50"
                         size="sm"
                       >
                         Load Map
@@ -766,7 +775,7 @@ export default function HSSS() {
 
             <TabsContent value="analytics">
               <div className="grid md:grid-cols-2 gap-6">
-                <Card className="bg-gray-900 border-gray-800">
+                <Card className="bg-blue-900/20 backdrop-blur-md border-blue-500/30">
                   <CardHeader>
                     <CardTitle className="text-white">Threat Distribution</CardTitle>
                   </CardHeader>
@@ -779,9 +788,9 @@ export default function HSSS() {
                           <div key={severity}>
                             <div className="flex items-center justify-between mb-2">
                               <span className="text-white capitalize">{severity}</span>
-                              <span className="text-gray-400">{count}</span>
+                              <span className="text-white/60">{count}</span>
                             </div>
-                            <div className="w-full bg-gray-800 rounded-full h-2">
+                            <div className="w-full bg-blue-900/30 rounded-full h-2">
                               <div
                                 className={`h-2 rounded-full ${
                                   severity === 'critical' ? 'bg-red-500' :
@@ -799,31 +808,31 @@ export default function HSSS() {
                   </CardContent>
                 </Card>
 
-                <Card className="bg-gray-900 border-gray-800">
+                <Card className="bg-blue-900/20 backdrop-blur-md border-blue-500/30">
                   <CardHeader>
                     <CardTitle className="text-white">System Overview</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="flex justify-between">
-                      <span className="text-gray-400">Total Maps:</span>
+                      <span className="text-white/60">Total Maps:</span>
                       <span className="font-bold text-white">{maps.length}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-400">Total Hotspots:</span>
+                      <span className="text-white/60">Total Hotspots:</span>
                       <span className="font-bold text-white">
                         {maps.reduce((sum, map) => sum + (map.hotspots?.length || 0), 0)}
                       </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-400">Active Threats:</span>
+                      <span className="text-white/60">Active Threats:</span>
                       <span className="font-bold text-red-400">{activeThreatCount}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-400">Critical Threats:</span>
+                      <span className="text-white/60">Critical Threats:</span>
                       <span className="font-bold text-red-400">{criticalThreatCount}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-400">Resolved Threats:</span>
+                      <span className="text-white/60">Resolved Threats:</span>
                       <span className="font-bold text-green-400">
                         {threats.filter(t => t.status === 'resolved').length}
                       </span>
