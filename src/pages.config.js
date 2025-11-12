@@ -17,6 +17,8 @@ import Privacy from './pages/Privacy';
 import Terms from './pages/Terms';
 import NotFound from './pages/NotFound';
 import ConsultationSuccess from './pages/ConsultationSuccess';
+import HotzoneMapper from './pages/HotzoneMapper';
+import HSSS from './pages/HSSS';
 import Layout from './Layout.jsx';
 
 
@@ -40,6 +42,8 @@ export const PAGES = {
     "Terms": Terms,
     "NotFound": NotFound,
     "ConsultationSuccess": ConsultationSuccess,
+    "HotzoneMapper": HotzoneMapper,
+    "HSSS": HSSS,
 }
 
 export const pagesConfig = {

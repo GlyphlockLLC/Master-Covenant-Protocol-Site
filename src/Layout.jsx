@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { createPageUrl } from "@/utils";
@@ -91,6 +92,9 @@ export default function Layout({ children, currentPageName }) {
                     <Link to={createPageUrl("Blockchain")}>Blockchain Security</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild className="text-white hover:text-blue-400 focus:text-blue-400 focus:bg-blue-500/20 cursor-pointer">
+                    <Link to={createPageUrl("HSSS")}>HSSS Surveillance</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild className="text-white hover:text-blue-400 focus:text-blue-400 focus:bg-blue-500/20 cursor-pointer">
                     <Link to={createPageUrl("GlyphBot")}>GlyphBot AI</Link>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -171,6 +175,11 @@ export default function Layout({ children, currentPageName }) {
                 <Link to={createPageUrl("SecurityTools")} onClick={() => setMobileMenuOpen(false)}>
                   <Button variant="ghost" className="w-full justify-start text-white">
                     Security Tools
+                  </Button>
+                </Link>
+                <Link to={createPageUrl("HSSS")} onClick={() => setMobileMenuOpen(false)}>
+                  <Button variant="ghost" className="w-full justify-start text-white">
+                    HSSS Surveillance
                   </Button>
                 </Link>
                 <Link to={createPageUrl("GlyphBot")} onClick={() => setMobileMenuOpen(false)}>
