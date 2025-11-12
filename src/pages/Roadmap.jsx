@@ -1,243 +1,208 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle, Clock, Rocket, Target, Zap } from "lucide-react";
+import { Target, TrendingUp, Globe, Rocket, CheckCircle, Clock, Calendar } from "lucide-react";
 
 export default function Roadmap() {
-  const [activeQuarter, setActiveQuarter] = useState("Q1");
+  const goals = [
+    {
+      icon: Target,
+      title: "Market Leadership",
+      subtitle: "Become the industry standard for AI-contract binding technology",
+      metric: "$10T+ market opportunity in IP protection"
+    },
+    {
+      icon: Rocket,
+      title: "Technology Innovation",
+      subtitle: "Pioneer quantum-resistant security solutions for enterprise AI",
+      metric: "5+ patents filed in steganographic security"
+    },
+    {
+      icon: Globe,
+      title: "Enterprise Adoption",
+      subtitle: "Deploy Master Covenant across Fortune 500 companies",
+      metric: "1000+ enterprise deployments by 2026"
+    }
+  ];
 
-  const roadmapData = {
-    "Q1": {
-      title: "Q1 2025 - Foundation",
+  const milestones = [
+    {
+      quarter: "Q2 2025",
+      period: "May - June",
       status: "completed",
-      features: [
-        { name: "Master Covenant System", description: "Legally bind 5 AI systems", status: "completed", impact: "Revolutionary" },
-        { name: "Platform Launch", description: "Full cybersecurity suite", status: "completed", impact: "High" },
-        { name: "$14M Liability Coverage", description: "Enterprise insurance secured", status: "completed", impact: "Critical" },
-        { name: "QR Security Generator", description: "AI-powered threat detection", status: "completed", impact: "High" },
-        { name: "Steganography Tools", description: "LSB encoding/decoding", status: "completed", impact: "Medium" },
-        { name: "Blockchain Security", description: "SHA-256/512 hashing", status: "completed", impact: "High" },
-        { name: "GlyphBot AI", description: "Code execution & security scanning", status: "completed", impact: "High" },
-        { name: "N.U.P.S. POS System", description: "AI-powered retail platform", status: "completed", impact: "High" }
+      items: [
+        { title: "Company Founded", desc: "GlyphLock Security LLC established in May 2025, El Mirage, Arizona" },
+        { title: "Master Covenant System Launch", desc: "First ever AI-contract binding with 5 major AI systems" },
+        { title: "D&B Revenue Verification", desc: "$340K verified revenue in first 90 days" },
+        { title: "$14M Liability Coverage", desc: "Enterprise-grade insurance coverage secured" },
+        { title: "N.U.P.S. Platform Beta", desc: "Three-tier POS portal management system" }
       ]
     },
-    "Q2": {
-      title: "Q2 2025 - Enterprise Expansion",
-      status: "in-progress",
-      features: [
-        { name: "Fortune 500 Partnerships", description: "Enterprise client onboarding", status: "in-progress", impact: "Critical" },
-        { name: "API Platform", description: "Developer-first integration", status: "in-progress", impact: "High" },
-        { name: "Advanced AI Agents", description: "Custom agent training", status: "planned", impact: "High" },
-        { name: "Real-time Threat Detection", description: "24/7 monitoring dashboard", status: "in-progress", impact: "Critical" },
-        { name: "Mobile Apps", description: "iOS & Android security tools", status: "planned", impact: "Medium" },
-        { name: "White-label Solutions", description: "Branded security platforms", status: "planned", impact: "High" },
-        { name: "Compliance Automation", description: "SOC2, ISO 27001, GDPR", status: "in-progress", impact: "Critical" }
+    {
+      quarter: "Q3 2025",
+      period: "July - September",
+      status: "progress",
+      items: [
+        { title: "Quantum-Resistant Encryption", desc: "Post-quantum cryptography implementation across all systems" },
+        { title: "DeepSeek AI Escalation Response", desc: "Strategic response to August 2025 DeepSeek AI market disruption" },
+        { title: "Blockchain Timestamping", desc: "Immutable audit trail with cryptographic proof" },
+        { title: "Steganography Tools", desc: "LSB encryption/decryption for secure data embedding" },
+        { title: "Interactive Mapping Platform", desc: "Advanced hotzone visualization and analytics" }
       ]
     },
-    "Q3": {
-      title: "Q3 2025 - AI Innovation",
+    {
+      quarter: "Q4 2025",
+      period: "October - December",
       status: "planned",
-      features: [
-        { name: "Quantum Encryption v2", description: "Next-gen cryptography", status: "planned", impact: "Revolutionary" },
-        { name: "AI Contract Marketplace", description: "Buy/sell AI services", status: "planned", impact: "High" },
-        { name: "Smart Contract Generator", description: "Automated legal templates", status: "planned", impact: "High" },
-        { name: "Decentralized Identity", description: "Blockchain-based auth", status: "planned", impact: "Medium" },
-        { name: "AI Audit Automation", description: "Continuous compliance", status: "planned", impact: "Critical" },
-        { name: "Neural Threat Prediction", description: "Predictive security AI", status: "planned", impact: "Revolutionary" },
-        { name: "Multi-chain Support", description: "Ethereum, Solana, Polygon", status: "planned", impact: "Medium" }
+      items: [
+        { title: "Enterprise API Launch", desc: "Developer access to Master Covenant integration" },
+        { title: "Mobile Applications", desc: "iOS and Android apps for security management" },
+        { title: "AI Compliance Monitoring", desc: "Automated contract enforcement with real-time alerts" },
+        { title: "Global Expansion", desc: "GDPR and international compliance frameworks" }
       ]
     },
-    "Q4": {
-      title: "Q4 2025 - Global Scale",
+    {
+      quarter: "Q1 2026",
+      period: "January - March",
       status: "planned",
-      features: [
-        { name: "Global SOC Network", description: "24/7 security operations", status: "planned", impact: "Critical" },
-        { name: "AI Insurance Platform", description: "Automated liability coverage", status: "planned", impact: "Revolutionary" },
-        { name: "Zero-trust Architecture", description: "Enterprise security framework", status: "planned", impact: "Critical" },
-        { name: "Threat Intelligence Marketplace", description: "Community-driven security", status: "planned", impact: "High" },
-        { name: "Quantum-resistant VPN", description: "Post-quantum networking", status: "planned", impact: "High" },
-        { name: "AI Governance Framework", description: "Regulatory compliance tools", status: "planned", impact: "Critical" },
-        { name: "100+ AI Systems Bound", description: "Expand Master Covenant", status: "planned", impact: "Revolutionary" }
+      items: [
+        { title: "Smart Contract Marketplace", desc: "Platform for buying/selling verified AI contracts" },
+        { title: "Decentralized Verification", desc: "Blockchain-based covenant validation network" },
+        { title: "Advanced Analytics Dashboard", desc: "Real-time threat detection and compliance reporting" },
+        { title: "Partner Ecosystem Program", desc: "Integration framework for security providers" }
       ]
     }
-  };
+  ];
 
-  const getStatusIcon = (status) => {
-    switch(status) {
-      case "completed": return <CheckCircle className="w-5 h-5 text-green-400" />;
-      case "in-progress": return <Clock className="w-5 h-5 text-blue-400" />;
-      case "planned": return <Rocket className="w-5 h-5 text-gray-400" />;
-      default: return null;
-    }
-  };
-
-  const getImpactColor = (impact) => {
-    const colors = {
-      "Revolutionary": "from-purple-500 to-pink-600",
-      "Critical": "from-red-500 to-orange-600",
-      "High": "from-blue-500 to-cyan-600",
-      "Medium": "from-green-500 to-emerald-600"
+  const getStatusBadge = (status) => {
+    const config = {
+      completed: { label: "Completed", color: "bg-green-500/20 text-green-400 border-green-500/50" },
+      progress: { label: "In Progress", color: "bg-blue-500/20 text-blue-400 border-blue-500/50" },
+      planned: { label: "Planned", color: "bg-gray-500/20 text-gray-400 border-gray-500/50" }
     };
-    return colors[impact] || "from-gray-500 to-gray-600";
+    return config[status];
   };
 
   return (
-    <div className="bg-black text-white min-h-screen">
-      {/* Hero */}
-      <section className="relative py-20 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-blue-500/10 to-black" />
-        <div className="absolute inset-0 opacity-10" style={{
-          backgroundImage: "linear-gradient(cyan 1px, transparent 1px), linear-gradient(90deg, cyan 1px, transparent 1px)",
-          backgroundSize: "50px 50px"
-        }} />
-        
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <Badge variant="outline" className="border-blue-500/50 bg-blue-500/10 text-blue-400 mb-6">
-              <Target className="w-4 h-4 mr-2" />
-              Product Roadmap 2025
+    <div className="min-h-screen bg-black text-white py-20">
+      <div className="container mx-auto px-4">
+        <div className="max-w-6xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-16">
+            <Badge variant="outline" className="border-blue-500/50 bg-blue-500/10 text-blue-400 mb-6 px-4 py-2">
+              <Calendar className="w-4 h-4 mr-2" />
+              Product Roadmap
             </Badge>
             <h1 className="text-5xl md:text-6xl font-bold mb-6">
-              Building the <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">Future</span>
+              Building the Future of <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">AI Security</span>
             </h1>
-            <p className="text-xl text-gray-300 mb-8 leading-relaxed">
-              Our ambitious plan to revolutionize cybersecurity with AI-powered legal frameworks, 
-              quantum-resistant encryption, and enterprise-grade protection.
+            <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+              Our strategic vision for revolutionizing cybersecurity through AI-contract integration, quantum-resistant encryption, and blockchain verification.
             </p>
           </div>
-        </div>
-      </section>
 
-      {/* Quarter Selector */}
-      <section className="py-12 bg-gray-900 sticky top-20 z-40">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-wrap justify-center gap-4">
-            {Object.keys(roadmapData).map((quarter) => (
-              <Button
-                key={quarter}
-                onClick={() => setActiveQuarter(quarter)}
-                variant={activeQuarter === quarter ? "default" : "outline"}
-                className={activeQuarter === quarter 
-                  ? "bg-gradient-to-r from-blue-600 to-blue-700" 
-                  : "border-gray-700 hover:border-blue-500/50"}
-              >
-                {quarter} 2025
-              </Button>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Roadmap Content */}
-      <section className="py-20 bg-black">
-        <div className="container mx-auto px-4">
-          <div className="max-w-5xl mx-auto">
-            <div className="mb-12 text-center">
-              <h2 className="text-4xl font-bold mb-4 text-white">
-                {roadmapData[activeQuarter].title}
-              </h2>
-              <Badge 
-                variant="outline" 
-                className={`
-                  ${roadmapData[activeQuarter].status === 'completed' ? 'border-green-500/50 bg-green-500/10 text-green-400' : ''}
-                  ${roadmapData[activeQuarter].status === 'in-progress' ? 'border-blue-500/50 bg-blue-500/10 text-blue-400' : ''}
-                  ${roadmapData[activeQuarter].status === 'planned' ? 'border-gray-500/50 bg-gray-500/10 text-gray-400' : ''}
-                `}
-              >
-                {roadmapData[activeQuarter].status === 'completed' && <CheckCircle className="w-4 h-4 mr-2" />}
-                {roadmapData[activeQuarter].status === 'in-progress' && <Zap className="w-4 h-4 mr-2" />}
-                {roadmapData[activeQuarter].status === 'planned' && <Rocket className="w-4 h-4 mr-2" />}
-                {roadmapData[activeQuarter].status.toUpperCase()}
-              </Badge>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-6">
-              {roadmapData[activeQuarter].features.map((feature, index) => (
-                <Card 
-                  key={index} 
-                  className={`
-                    bg-gray-900 border-gray-800 hover:border-blue-500/50 transition-all group
-                    ${feature.status === 'completed' ? 'border-green-500/30' : ''}
-                  `}
-                >
-                  <CardContent className="p-6">
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="flex items-center gap-3">
-                        {getStatusIcon(feature.status)}
-                        <h3 className="text-lg font-bold text-white group-hover:text-blue-400 transition-colors">
-                          {feature.name}
-                        </h3>
-                      </div>
-                      <Badge 
-                        variant="outline" 
-                        className={`bg-gradient-to-r ${getImpactColor(feature.impact)} bg-clip-text text-transparent border-gray-700`}
-                      >
-                        {feature.impact}
-                      </Badge>
+          {/* Strategic Goals */}
+          <section className="mb-20">
+            <h2 className="text-3xl font-bold mb-4 text-white">Strategic Goals</h2>
+            <p className="text-gray-400 mb-8">Ambitious objectives driving our product development and market expansion</p>
+            
+            <div className="grid md:grid-cols-3 gap-6">
+              {goals.map((goal, index) => (
+                <Card key={index} className="bg-gradient-to-br from-blue-500/10 to-blue-700/10 border-blue-500/30 hover:border-blue-500/50 transition-all">
+                  <CardContent className="p-6 text-center">
+                    <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center mx-auto mb-4">
+                      <goal.icon className="w-8 h-8 text-white" />
                     </div>
-                    <p className="text-gray-400 text-sm">{feature.description}</p>
-                    {feature.status === 'completed' && (
-                      <div className="mt-4 flex items-center gap-2 text-xs text-green-400">
-                        <CheckCircle className="w-3 h-3" />
-                        <span>Live Now</span>
-                      </div>
-                    )}
+                    <h3 className="text-xl font-bold text-white mb-2">{goal.title}</h3>
+                    <p className="text-gray-300 text-sm mb-4">{goal.subtitle}</p>
+                    <Badge variant="outline" className="border-blue-500/50 text-blue-400 bg-blue-500/10">
+                      {goal.metric}
+                    </Badge>
                   </CardContent>
                 </Card>
               ))}
             </div>
-          </div>
-        </div>
-      </section>
+          </section>
 
-      {/* Stats */}
-      <section className="py-20 bg-gray-900">
-        <div className="container mx-auto px-4">
-          <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold mb-4 text-white">
-                Progress <span className="text-blue-400">Metrics</span>
-              </h2>
+          {/* Development Milestones */}
+          <section className="mb-20">
+            <h2 className="text-3xl font-bold mb-4 text-white">Development Milestones</h2>
+            <p className="text-gray-400 mb-8">Detailed quarterly roadmap with completed achievements and upcoming features</p>
+            
+            <div className="space-y-8">
+              {milestones.map((milestone, index) => {
+                const statusBadge = getStatusBadge(milestone.status);
+                return (
+                  <Card key={index} className="bg-gray-900 border-gray-800 hover:border-blue-500/50 transition-all">
+                    <CardHeader>
+                      <div className="flex items-center justify-between flex-wrap gap-4">
+                        <div>
+                          <CardTitle className="text-white text-2xl mb-2">{milestone.quarter}</CardTitle>
+                          <p className="text-gray-400">{milestone.period}</p>
+                        </div>
+                        <Badge variant="outline" className={statusBadge.color}>
+                          {milestone.status === "completed" && <CheckCircle className="w-4 h-4 mr-2" />}
+                          {milestone.status === "progress" && <Clock className="w-4 h-4 mr-2 animate-spin" />}
+                          {statusBadge.label}
+                        </Badge>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      {milestone.items.map((item, idx) => (
+                        <div key={idx} className="flex items-start gap-3 p-4 bg-gray-800/50 rounded-lg hover:bg-gray-800 transition-colors">
+                          <div className="flex-shrink-0 mt-1">
+                            {milestone.status === "completed" ? (
+                              <CheckCircle className="w-5 h-5 text-green-400" />
+                            ) : milestone.status === "progress" ? (
+                              <Clock className="w-5 h-5 text-blue-400" />
+                            ) : (
+                              <div className="w-5 h-5 rounded-full border-2 border-gray-600" />
+                            )}
+                          </div>
+                          <div className="flex-1">
+                            <h4 className="font-semibold text-white mb-1">{item.title}</h4>
+                            <p className="text-sm text-gray-400">{item.desc}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </CardContent>
+                  </Card>
+                );
+              })}
             </div>
-            <div className="grid md:grid-cols-4 gap-8">
-              <div className="text-center">
-                <div className="text-5xl font-bold text-green-400 mb-2">8/8</div>
-                <div className="text-white font-semibold mb-1">Q1 Features</div>
-                <div className="text-sm text-gray-500">100% Complete</div>
-              </div>
-              <div className="text-center">
-                <div className="text-5xl font-bold text-blue-400 mb-2">4/7</div>
-                <div className="text-white font-semibold mb-1">Q2 Features</div>
-                <div className="text-sm text-gray-500">In Progress</div>
-              </div>
-              <div className="text-center">
-                <div className="text-5xl font-bold text-purple-400 mb-2">7</div>
-                <div className="text-white font-semibold mb-1">Q3 Planned</div>
-                <div className="text-sm text-gray-500">Coming Soon</div>
-              </div>
-              <div className="text-center">
-                <div className="text-5xl font-bold text-orange-400 mb-2">7</div>
-                <div className="text-white font-semibold mb-1">Q4 Planned</div>
-                <div className="text-sm text-gray-500">Future Vision</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+          </section>
 
-      {/* CTA */}
-      <section className="py-20 bg-black">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-4xl font-bold mb-6 text-white">
-              Join Our Journey
-            </h2>
-            <p className="text-xl text-gray-400 mb-8">
-              Be an early adopter of revolutionary cybersecurity technology
-            </p>
+          {/* Vision 2026 */}
+          <section className="mb-20">
+            <Card className="bg-gradient-to-br from-blue-500/10 to-purple-600/10 border-blue-500/30">
+              <CardContent className="p-8">
+                <div className="flex items-start gap-4 mb-6">
+                  <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-purple-700 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <TrendingUp className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h2 className="text-3xl font-bold text-white mb-2">Our Vision for 2026 and Beyond</h2>
+                  </div>
+                </div>
+                <div className="space-y-4 text-gray-300 leading-relaxed">
+                  <p>
+                    GlyphLock will become the universal standard for AI accountability, creating a world where automation is answerable to written law. Our Master Covenant System will protect the $10 trillion intellectual property market, binding every AI system to legal contracts with cryptographic proof and quantum-resistant security.
+                  </p>
+                  <p>
+                    Through continuous innovation in steganographic technology, blockchain verification, and enterprise-grade security solutions, we're building the infrastructure that makes trust scalable, proof permanent, and accountability enforceable in the age of artificial intelligence.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </section>
+
+          {/* CTA */}
+          <div className="text-center">
+            <h3 className="text-2xl font-bold text-white mb-4">Join Us on This Journey</h3>
+            <p className="text-gray-400 mb-8">Be part of the revolution in AI security and accountability</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to={createPageUrl("Consultation")}>
                 <Button size="lg" className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white">
@@ -246,13 +211,13 @@ export default function Roadmap() {
               </Link>
               <Link to={createPageUrl("Contact")}>
                 <Button size="lg" variant="outline" className="border-blue-500/50 hover:bg-blue-500/10 text-white">
-                  Request Demo
+                  Contact Sales
                 </Button>
               </Link>
             </div>
           </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 }

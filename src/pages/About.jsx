@@ -1,277 +1,247 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Shield, Target, Users, Zap, Brain, Award } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Shield, Target, Award, TrendingUp, Users, Zap, CheckCircle } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 export default function About() {
-  const team = [
+  const timeline = [
     {
-      name: "Chief Security Architect",
-      role: "Founder & CEO",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop",
-      bio: "Former NSA cryptographer with 15+ years in quantum security"
+      period: "The Beginning",
+      title: "Revolutionary Insight",
+      description: "GlyphLock began with a revolutionary insight: camouflage could carry hidden data—an image could be scanned steganographically to reveal secured information. Built first in a studio and a security office, our early prototypes combined scannable imagery and concealed data, proving that protection could exist invisibly inside creative form."
     },
     {
-      name: "Head of AI Integration",
-      role: "CTO",
-      image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop",
-      bio: "PhD in Machine Learning, pioneering AI-contract binding"
+      period: "Market Validation",
+      title: "$340K in 90 Days",
+      description: "GlyphLock earned $340,000 in verified revenue within its first 90 days of operation. The figure was confirmed through Dun & Bradstreet verification, establishing market proof of concept long before venture capital became involved."
     },
     {
-      name: "Legal Technology Lead",
-      role: "Chief Legal Officer",
-      image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop",
-      bio: "Stanford Law, specializing in AI liability frameworks"
+      period: "AI Binding Innovation",
+      title: "Master Covenant System",
+      description: "We developed AI Binding—a governance system that connects artificial intelligence behavior to written law through coded agreements called the Master Covenant. Each AI bound within this structure operates under legal and ethical accountability, creating a digital environment where automation is answerable."
     },
     {
-      name: "Blockchain Architect",
-      role: "Head of Engineering",
-      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop",
-      bio: "Built cryptographic systems for Fortune 500 companies"
+      period: "DeepSeek Response",
+      title: "Strategic Evolution",
+      description: "In 2025, the DeepSeek Escalation exposed global weaknesses in AI and IP protection. GlyphLock used that moment to evolve, pivoting from scannable imagery toward complete IP defense and contractual protection. The redesign positioned GlyphLock as a leader in authentication, verification, and international digital sovereignty."
     }
   ];
 
   const values = [
     {
+      icon: Target,
+      title: "Proof Above Persuasion",
+      description: "Technology must survive chaos as easily as it performs in theory. We build systems where authenticity is not a statement but evidence that survives inspection."
+    },
+    {
       icon: Shield,
-      title: "Security First",
-      description: "Every decision prioritizes the protection of our clients' digital assets"
-    },
-    {
-      icon: Brain,
-      title: "Innovation",
-      description: "Pioneering AI-contract binding technology and quantum-resistant encryption"
-    },
-    {
-      icon: Users,
-      title: "Transparency",
-      description: "Open about our methods, honest about our capabilities"
+      title: "Steganographic Innovation",
+      description: "From the original insight that camouflage could carry data, we've built technology that embeds verification invisibly within creative form."
     },
     {
       icon: Award,
-      title: "Excellence",
-      description: "99.97% threat detection accuracy, $340K revenue in 90 days"
+      title: "Legal Accountability",
+      description: "Our Master Covenant System creates a digital environment where automation is answerable, binding AI behavior to written law through coded agreements."
+    },
+    {
+      icon: TrendingUp,
+      title: "Market Validation",
+      description: "Earned $340K D&B verified revenue in 90 days. First to bind 5 AI systems to contracts. $14M liability coverage. Evidence over claims."
     }
   ];
 
-  const milestones = [
-    { year: "2024 Q1", event: "Company Founded", description: "Vision to bind AI to legal contracts" },
-    { year: "2024 Q2", event: "Master Covenant System", description: "First 5 AI systems legally bound" },
-    { year: "2024 Q3", event: "$14M Liability Coverage", description: "Secured enterprise-grade insurance" },
-    { year: "2024 Q4", event: "$340K Revenue", description: "D&B verified in 90 days" },
-    { year: "2025 Q1", event: "Platform Launch", description: "Full cybersecurity suite released" },
-    { year: "2025 Q2", event: "Enterprise Expansion", description: "Fortune 500 partnerships" }
+  const team = [
+    {
+      name: "Carlo René Earl",
+      title: "Chief Executive Officer & Founder",
+      subtitle: "DACO¹ and DACO²",
+      bio: "Built GlyphLock from the ground up. Over 20 years in music production as a recording engineer (Scottsdale Community College), combined with 10+ years managing nightclub security in Arizona. This unique blend of creativity and protection discipline defines GlyphLock's technology philosophy.",
+      focus: "Corporate strategy, patent development, product architecture, and DACO system governance",
+      philosophy: "Technology must survive chaos as easily as it performs in theory.",
+      image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=400&fit=crop"
+    },
+    {
+      name: "Angel Rose Sticka",
+      title: "Chief Administrative Officer",
+      subtitle: "Legal & Documentation Division",
+      bio: "Over 10 years of management experience with 5 years as top performer at UnitedHealthCare, Humana, and SelectQuote. Ensures every operation meets legal and procedural standards with precision.",
+      focus: "Administrative operations, legal filings, global compliance, and documentation governance",
+      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop"
+    },
+    {
+      name: "Jacub Lough",
+      title: "Chief Financial & Security Officer",
+      subtitle: "Owner, ICEVAULT 88",
+      bio: "Combines financial strategy with operational defense. Owner of ICEVAULT 88, a precision jewelry business built on trust and craftsmanship. Partnership with Carlo began in the recording industry and evolved into securing information with the rigor used to secure valuables.",
+      focus: "Capital strategy, auditing, partner networks, and operational security",
+      image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=400&fit=crop"
+    },
+    {
+      name: "Collin Vanderginst",
+      title: "Chief Technology Officer",
+      subtitle: "Surveillance & Network Security",
+      bio: "Conceived the original idea: camouflage could carry scannable data. Over 20 years in surveillance and network security, transformed this insight into GlyphLock's steganographic technology. Currently oversees statewide surveillance infrastructure for Jiffy Lube Arizona.",
+      focus: "System design, integration architecture, and steganographic technology development",
+      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop"
+    }
   ];
 
   return (
-    <div className="bg-black text-white min-h-screen">
+    <div className="min-h-screen bg-black text-white">
       {/* Hero */}
-      <section className="relative py-20 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-blue-500/10 to-black" />
-        <div className="absolute inset-0 opacity-10" style={{
-          backgroundImage: "linear-gradient(cyan 1px, transparent 1px), linear-gradient(90deg, cyan 1px, transparent 1px)",
-          backgroundSize: "50px 50px"
-        }} />
-        
-        <div className="container mx-auto px-4 relative z-10">
+      <section className="py-20 bg-gradient-to-b from-blue-900/20 to-black">
+        <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
+            <Badge variant="outline" className="border-blue-500/50 bg-blue-500/10 text-blue-400 mb-6 px-4 py-2">
+              <Shield className="w-4 h-4 mr-2" />
+              Established May 2025 • El Mirage, Arizona
+            </Badge>
             <h1 className="text-5xl md:text-6xl font-bold mb-6">
-              About <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">GlyphLock</span>
+              <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">Proof Above Persuasion</span>
             </h1>
             <p className="text-xl text-gray-300 mb-8 leading-relaxed">
-              We're building the world's first platform to legally bind AI systems to enforceable contracts, 
-              addressing the $283 billion annual IP theft crisis with quantum-resistant encryption.
+              Creativity, structure, finance, and engineering united under one principle. From steganographic camouflage to AI-contract binding, GlyphLock builds technology where authenticity is not a statement—it is evidence that survives inspection.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Mission */}
+      {/* Vision */}
       <section className="py-20 bg-gray-900">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
-              <div>
-                <h2 className="text-4xl font-bold mb-6 text-white">
-                  Our <span className="text-blue-400">Mission</span>
-                </h2>
-                <p className="text-gray-300 mb-4 leading-relaxed">
-                  To create unprecedented accountability in AI-powered security through legally binding contracts, 
-                  cryptographic proof, and comprehensive liability coverage.
-                </p>
-                <p className="text-gray-300 leading-relaxed">
-                  We're not just building security tools – we're pioneering a new paradigm where AI systems 
-                  operate within enforceable legal frameworks, protecting enterprises from emerging threats 
-                  while maintaining full transparency and accountability.
-                </p>
-              </div>
-              <div className="relative">
-                <img 
-                  src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=600&fit=crop"
-                  alt="Mission"
-                  className="rounded-lg"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent rounded-lg" />
-              </div>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div className="relative order-2 md:order-1">
-                <img 
-                  src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800&h=600&fit=crop"
-                  alt="Vision"
-                  className="rounded-lg"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent rounded-lg" />
-              </div>
-              <div className="order-1 md:order-2">
-                <h2 className="text-4xl font-bold mb-6 text-white">
-                  Our <span className="text-blue-400">Vision</span>
-                </h2>
-                <p className="text-gray-300 mb-4 leading-relaxed">
-                  A future where every AI system operates within a transparent legal framework, 
-                  where enterprises have guaranteed protection, and where innovation happens 
-                  without compromising security or accountability.
-                </p>
-                <p className="text-gray-300 leading-relaxed">
-                  We envision a world where quantum-resistant encryption is standard, where threat 
-                  detection is instantaneous, and where legal liability is clearly defined – 
-                  making the digital world as secure as the physical one.
-                </p>
-              </div>
+            <h2 className="text-4xl font-bold mb-6 text-white text-center">Our Vision</h2>
+            <div className="space-y-6 text-gray-300 text-lg leading-relaxed">
+              <p>
+                GlyphLock's purpose is to build a world where reality confirms itself. Every image, document, and identity should carry its own verification, independent of opinion or claim. The company's goal is to replace trust with evidence.
+              </p>
+              <p>
+                We design technology that recognizes truth and keeps it intact. From our pioneering steganographic embedding to blockchain validation, we create self-verifying networks where every scan, file, or transaction carries its own proof.
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Core Values */}
+      {/* Evolution Timeline */}
       <section className="py-20 bg-black">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4 text-white">
-              Core <span className="text-blue-400">Values</span>
-            </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto">
-              The principles that guide everything we do
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-            {values.map((value, index) => (
-              <Card key={index} className="bg-gray-900 border-gray-800 hover:border-blue-500/50 transition-all">
-                <CardContent className="p-6 text-center">
-                  <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center mx-auto mb-4">
-                    <value.icon className="w-8 h-8 text-white" />
-                  </div>
-                  <h3 className="text-xl font-bold mb-3 text-white">{value.title}</h3>
-                  <p className="text-gray-400 text-sm">{value.description}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Team */}
-      <section className="py-20 bg-gray-900">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4 text-white">
-              Leadership <span className="text-blue-400">Team</span>
-            </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto">
-              World-class experts in cybersecurity, AI, and legal technology
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
-            {team.map((member, index) => (
-              <Card key={index} className="bg-gray-800 border-gray-700 hover:border-blue-500/50 transition-all group">
-                <CardContent className="p-6 text-center">
-                  <img 
-                    src={member.image}
-                    alt={member.name}
-                    className="w-32 h-32 rounded-full mx-auto mb-4 object-cover border-4 border-blue-500/30 group-hover:border-blue-500 transition-all"
-                  />
-                  <h3 className="text-xl font-bold mb-1 text-white">{member.name}</h3>
-                  <p className="text-blue-400 text-sm mb-3">{member.role}</p>
-                  <p className="text-gray-400 text-sm">{member.bio}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Timeline */}
-      <section className="py-20 bg-black">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4 text-white">
-              Our <span className="text-blue-400">Journey</span>
-            </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto">
-              From vision to reality in record time
-            </p>
-          </div>
-
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-4xl font-bold mb-4 text-white text-center">Our Evolution</h2>
+            <p className="text-gray-400 text-center mb-12">From concept to market leader in AI governance and IP protection</p>
+            
             <div className="space-y-8">
-              {milestones.map((milestone, index) => (
-                <div key={index} className="flex gap-6 group">
-                  <div className="flex flex-col items-center">
-                    <div className="w-4 h-4 bg-blue-500 rounded-full group-hover:scale-150 transition-transform" />
-                    {index < milestones.length - 1 && (
-                      <div className="w-0.5 h-full bg-gradient-to-b from-blue-500 to-transparent mt-2" />
-                    )}
-                  </div>
-                  <div className="flex-1 pb-8">
-                    <div className="bg-gray-900 border border-gray-800 rounded-lg p-6 group-hover:border-blue-500/50 transition-all">
-                      <div className="flex items-center gap-3 mb-2">
-                        <span className="text-blue-400 font-bold">{milestone.year}</span>
-                        <h3 className="text-xl font-bold text-white">{milestone.event}</h3>
+              {timeline.map((item, index) => (
+                <Card key={index} className="bg-gray-900 border-gray-800 hover:border-blue-500/50 transition-all">
+                  <CardContent className="p-8">
+                    <div className="flex items-start gap-6">
+                      <div className="flex-shrink-0">
+                        <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center">
+                          <span className="text-white font-bold">{index + 1}</span>
+                        </div>
                       </div>
-                      <p className="text-gray-400">{milestone.description}</p>
+                      <div className="flex-1">
+                        <Badge variant="outline" className="border-blue-500/50 text-blue-400 bg-blue-500/10 mb-3">
+                          {item.period}
+                        </Badge>
+                        <h3 className="text-2xl font-bold text-white mb-3">{item.title}</h3>
+                        <p className="text-gray-300 leading-relaxed">{item.description}</p>
+                      </div>
                     </div>
-                  </div>
-                </div>
+                  </CardContent>
+                </Card>
               ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* Stats */}
-      <section className="py-20 bg-gradient-to-b from-gray-900 to-black">
+      {/* Values */}
+      <section className="py-20 bg-gradient-to-b from-black to-gray-900">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-4 gap-8 max-w-5xl mx-auto">
-            {[
-              { value: "$340K", label: "Revenue in 90 Days", sublabel: "D&B Verified" },
-              { value: "$14M", label: "Liability Coverage", sublabel: "Enterprise Grade" },
-              { value: "99.97%", label: "Threat Detection", sublabel: "Industry Leading" },
-              { value: "5", label: "AI Systems Bound", sublabel: "Master Covenant" }
-            ].map((stat, index) => (
-              <div key={index} className="text-center">
-                <div className="text-5xl font-bold text-blue-400 mb-2">{stat.value}</div>
-                <div className="text-white font-semibold mb-1">{stat.label}</div>
-                <div className="text-sm text-gray-500">{stat.sublabel}</div>
-              </div>
-            ))}
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-4xl font-bold mb-4 text-white text-center">Our Values</h2>
+            <p className="text-gray-400 text-center mb-12">The principles that guide our innovation and client partnerships</p>
+            
+            <div className="grid md:grid-cols-2 gap-8">
+              {values.map((value, index) => (
+                <Card key={index} className="bg-gray-900 border-gray-800 hover:border-blue-500/50 transition-all">
+                  <CardContent className="p-8">
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <value.icon className="w-6 h-6 text-white" />
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-bold text-white mb-3">{value.title}</h3>
+                        <p className="text-gray-300 leading-relaxed">{value.description}</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Leadership */}
+      <section className="py-20 bg-gray-900">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-4xl font-bold mb-4 text-white text-center">Leadership</h2>
+            <p className="text-gray-400 text-center mb-12">Creativity, structure, finance, and engineering united under one principle: proof above persuasion</p>
+            
+            <div className="space-y-8">
+              {team.map((member, index) => (
+                <Card key={index} className="bg-gray-900 border-gray-800 hover:border-blue-500/50 transition-all overflow-hidden">
+                  <div className="md:flex">
+                    <div className="md:w-1/3">
+                      <img 
+                        src={member.image} 
+                        alt={member.name}
+                        className="w-full h-64 md:h-full object-cover"
+                      />
+                    </div>
+                    <CardContent className="md:w-2/3 p-8">
+                      <h3 className="text-2xl font-bold text-white mb-1">{member.name}</h3>
+                      <p className="text-blue-400 font-semibold mb-2">{member.title}</p>
+                      <Badge variant="outline" className="border-blue-500/50 text-white bg-blue-500/10 mb-4">
+                        {member.subtitle}
+                      </Badge>
+                      <p className="text-gray-300 mb-4 leading-relaxed">{member.bio}</p>
+                      <div className="space-y-3">
+                        <div>
+                          <p className="text-sm font-semibold text-blue-400 mb-1">Focus Areas</p>
+                          <p className="text-sm text-gray-400">{member.focus}</p>
+                        </div>
+                        {member.philosophy && (
+                          <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4 mt-4">
+                            <p className="text-sm font-semibold text-blue-400 mb-2">Philosophy</p>
+                            <p className="text-white italic">"{member.philosophy}"</p>
+                          </div>
+                        )}
+                      </div>
+                    </CardContent>
+                  </div>
+                </Card>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="py-20 bg-black">
+      <section className="py-20 bg-gradient-to-b from-gray-900 to-black">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-4xl font-bold mb-6 text-white">
-              Join the Revolution
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
+              Replace Trust with <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">Evidence</span>
             </h2>
             <p className="text-xl text-gray-400 mb-8">
-              Be part of the first platform to legally bind AI systems with comprehensive protection
+              Partner with GlyphLock to build a world where reality confirms itself. Our technology recognizes truth and keeps it intact.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to={createPageUrl("Consultation")}>
@@ -281,7 +251,7 @@ export default function About() {
               </Link>
               <Link to={createPageUrl("Contact")}>
                 <Button size="lg" variant="outline" className="border-blue-500/50 hover:bg-blue-500/10 text-white">
-                  Contact Us
+                  Contact Sales
                 </Button>
               </Link>
             </div>
