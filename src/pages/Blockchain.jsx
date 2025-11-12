@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Blocks, Hash, Shield, CheckCircle2, Copy, FileCheck, Lock, AlertTriangle, Clock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import FreeTrialGuard from "../components/FreeTrialGuard";
 
 export default function Blockchain() {
   const [inputText, setInputText] = useState("");
@@ -181,7 +182,8 @@ export default function Blockchain() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white py-20">
+    <FreeTrialGuard serviceName="Blockchain">
+      <div className="min-h-screen bg-black text-white py-20">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
@@ -692,5 +694,6 @@ export default function Blockchain() {
         </div>
       </div>
     </div>
+    </FreeTrialGuard>
   );
 }

@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Image, Lock, Eye, EyeOff, Upload } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import FreeTrialGuard from "../components/FreeTrialGuard";
 
 export default function Steganography() {
   const [message, setMessage] = useState("");
@@ -19,7 +20,8 @@ export default function Steganography() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white py-20">
+    <FreeTrialGuard serviceName="Steganography">
+      <div className="min-h-screen bg-black text-white py-20">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
@@ -169,5 +171,6 @@ export default function Steganography() {
         </div>
       </div>
     </div>
+    </FreeTrialGuard>
   );
 }
