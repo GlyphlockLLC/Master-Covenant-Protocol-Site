@@ -196,73 +196,70 @@ ${auditReport.conclusion}
   };
 
   const getSeverityColor = (severity) => {
-    const colors = {
-      Critical: "red",
-      High: "orange",
-      Medium: "yellow",
-      Low: "blue"
-    };
-    return colors[severity] || "gray";
+    if (severity === "Critical") return { text: "text-red-400", bg: "bg-red-500/10", border: "border-red-500/50" };
+    if (severity === "High") return { text: "text-orange-400", bg: "bg-orange-500/10", border: "border-orange-500/50" };
+    if (severity === "Medium") return { text: "text-yellow-400", bg: "bg-yellow-500/10", border: "border-yellow-500/50" };
+    return { text: "text-green-400", bg: "bg-green-500/10", border: "border-green-500/50" };
   };
 
   return (
     <div className="space-y-4">
-      <Card className="bg-gray-900 border-gray-800">
+      <Card className="bg-blue-900/20 backdrop-blur-md border-blue-500/30">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <FileText className="w-5 h-5 text-cyan-400" />
+          <CardTitle className="flex items-center gap-2 text-white">
+            <FileText className="w-5 h-5" />
             Automated Security Audit Generator
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid md:grid-cols-2 gap-4">
             <div>
-              <Label>Project Name</Label>
+              <Label className="text-white">Project Name</Label>
               <Input
                 value={auditConfig.project_name}
                 onChange={(e) => setAuditConfig({...auditConfig, project_name: e.target.value})}
                 placeholder="Enter project name"
-                className="bg-gray-800 border-gray-700"
+                className="bg-blue-900/30 backdrop-blur-md border-blue-500/30 text-white placeholder:text-white/50"
               />
             </div>
             <div>
-              <Label>Audit Type</Label>
+              <Label className="text-white">Audit Type</Label>
               <Select 
                 value={auditConfig.audit_type} 
                 onValueChange={(value) => setAuditConfig({...auditConfig, audit_type: value})}
               >
-                <SelectTrigger className="bg-gray-800 border-gray-700">
+                <SelectTrigger className="bg-blue-900/30 backdrop-blur-md border-blue-500/30 text-white">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="bg-gray-800 border-gray-700">
-                  <SelectItem value="full">Full Security Audit</SelectItem>
-                  <SelectItem value="smart-contract">Smart Contract Audit</SelectItem>
-                  <SelectItem value="penetration">Penetration Test</SelectItem>
-                  <SelectItem value="compliance">Compliance Review</SelectItem>
-                  <SelectItem value="code-review">Code Review</SelectItem>
+                <SelectContent className="bg-blue-900/90 backdrop-blur-md border-blue-500/30">
+                  <SelectItem value="full" className="text-white">Full Security Audit</SelectItem>
+                  <SelectItem value="smart-contract" className="text-white">Smart Contract Audit</SelectItem>
+                  <SelectItem value="penetration" className="text-white">Penetration Test</SelectItem>
+                  <SelectItem value="compliance" className="text-white">Compliance Review</SelectItem>
+                  <SelectItem value="code-review" className="text-white">Code Review</SelectItem>
                 </SelectContent>
               </Select>
             </div>
           </div>
 
           <div>
-            <Label>Project Description</Label>
+            <Label className="text-white">Project Description</Label>
             <Textarea
               value={auditConfig.description}
               onChange={(e) => setAuditConfig({...auditConfig, description: e.target.value})}
               placeholder="Describe the project, architecture, and key features..."
-              className="bg-gray-800 border-gray-700"
+              className="bg-blue-900/30 backdrop-blur-md border-blue-500/30 text-white placeholder:text-white/50"
               rows={3}
             />
           </div>
 
           <div>
-            <Label>Audit Scope</Label>
+            <Label className="text-white">Audit Scope</Label>
             <Textarea
               value={auditConfig.scope}
               onChange={(e) => setAuditConfig({...auditConfig, scope: e.target.value})}
               placeholder="Define what will be audited (components, features, files, etc.)"
-              className="bg-gray-800 border-gray-700"
+              className="bg-blue-900/30 backdrop-blur-md border-blue-500/30 text-white placeholder:text-white/50"
               rows={3}
             />
           </div>
@@ -270,7 +267,7 @@ ${auditReport.conclusion}
           <Button
             onClick={generateAudit}
             disabled={isGenerating || !auditConfig.project_name}
-            className="w-full bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700"
+            className="w-full bg-blue-500/30 hover:bg-blue-500/50 text-white border border-blue-500/50"
           >
             {isGenerating ? (
               <>
@@ -290,15 +287,15 @@ ${auditReport.conclusion}
       {auditReport && (
         <div className="space-y-4">
           {/* Executive Summary */}
-          <Card className="bg-gray-900 border-gray-800">
+          <Card className="bg-blue-900/20 backdrop-blur-md border-blue-500/30">
             <CardHeader>
               <div className="flex items-center justify-between">
-                <CardTitle>Audit Report: {auditConfig.project_name}</CardTitle>
+                <CardTitle className="text-white">Audit Report: {auditConfig.project_name}</CardTitle>
                 <Button
                   onClick={downloadReport}
                   variant="outline"
                   size="sm"
-                  className="border-cyan-500/50 hover:bg-cyan-500/10"
+                  className="border-blue-500/50 hover:bg-blue-500/20 text-white"
                 >
                   <Download className="w-4 h-4 mr-2" />
                   Download Report
@@ -308,22 +305,22 @@ ${auditReport.conclusion}
             <CardContent>
               <div className="space-y-4">
                 <div>
-                  <h4 className="font-semibold text-cyan-400 mb-2">Executive Summary</h4>
-                  <p className="text-sm text-gray-300 leading-relaxed">{auditReport.executive_summary}</p>
+                  <h4 className="font-semibold text-white mb-2">Executive Summary</h4>
+                  <p className="text-sm text-white leading-relaxed">{auditReport.executive_summary}</p>
                 </div>
                 
                 <div>
-                  <h4 className="font-semibold text-cyan-400 mb-2">Methodology</h4>
-                  <p className="text-sm text-gray-300 leading-relaxed">{auditReport.methodology}</p>
+                  <h4 className="font-semibold text-white mb-2">Methodology</h4>
+                  <p className="text-sm text-white leading-relaxed">{auditReport.methodology}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
           {/* Risk Assessment */}
-          <Card className="bg-gray-900 border-gray-800">
+          <Card className="bg-blue-900/20 backdrop-blur-md border-blue-500/30">
             <CardHeader>
-              <CardTitle>Risk Assessment</CardTitle>
+              <CardTitle className="text-white">Risk Assessment</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -331,21 +328,21 @@ ${auditReport.conclusion}
                   <div className="text-3xl font-bold text-orange-400 mb-2">
                     {auditReport.risk_assessment.overall_risk}
                   </div>
-                  <div className="text-sm text-gray-400">Overall Risk Level</div>
+                  <div className="text-sm text-white/60">Overall Risk Level</div>
                 </div>
                 
                 <div className="grid grid-cols-3 gap-4">
-                  <div className="bg-gray-800 rounded-lg p-4 text-center">
+                  <div className="bg-red-500/10 backdrop-blur-md rounded-lg p-4 text-center border border-red-500/30">
                     <div className="text-2xl font-bold text-red-400">{auditReport.risk_assessment.technical_risk}/10</div>
-                    <div className="text-xs text-gray-400 mt-1">Technical</div>
+                    <div className="text-xs text-white/60 mt-1">Technical</div>
                   </div>
-                  <div className="bg-gray-800 rounded-lg p-4 text-center">
+                  <div className="bg-orange-500/10 backdrop-blur-md rounded-lg p-4 text-center border border-orange-500/30">
                     <div className="text-2xl font-bold text-orange-400">{auditReport.risk_assessment.business_risk}/10</div>
-                    <div className="text-xs text-gray-400 mt-1">Business</div>
+                    <div className="text-xs text-white/60 mt-1">Business</div>
                   </div>
-                  <div className="bg-gray-800 rounded-lg p-4 text-center">
+                  <div className="bg-yellow-500/10 backdrop-blur-md rounded-lg p-4 text-center border border-yellow-500/30">
                     <div className="text-2xl font-bold text-yellow-400">{auditReport.risk_assessment.compliance_risk}/10</div>
-                    <div className="text-xs text-gray-400 mt-1">Compliance</div>
+                    <div className="text-xs text-white/60 mt-1">Compliance</div>
                   </div>
                 </div>
               </div>
@@ -354,59 +351,62 @@ ${auditReport.conclusion}
 
           {/* Findings */}
           {auditReport.findings && auditReport.findings.length > 0 && (
-            <Card className="bg-gray-900 border-gray-800">
+            <Card className="bg-blue-900/20 backdrop-blur-md border-blue-500/30">
               <CardHeader>
-                <CardTitle>Findings ({auditReport.findings.length})</CardTitle>
+                <CardTitle className="text-white">Findings ({auditReport.findings.length})</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  {auditReport.findings.map((finding, idx) => (
-                    <div key={idx} className={`bg-${getSeverityColor(finding.severity)}-500/10 border border-${getSeverityColor(finding.severity)}-500/30 rounded-lg p-4`}>
-                      <div className="flex items-start justify-between mb-3">
-                        <div className="flex items-center gap-2">
-                          <Badge variant="outline" className={`border-${getSeverityColor(finding.severity)}-500 text-${getSeverityColor(finding.severity)}-400`}>
-                            {finding.severity}
+                  {auditReport.findings.map((finding, idx) => {
+                    const colors = getSeverityColor(finding.severity);
+                    return (
+                      <div key={idx} className={`${colors.bg} backdrop-blur-md border ${colors.border} rounded-lg p-4`}>
+                        <div className="flex items-start justify-between mb-3">
+                          <div className="flex items-center gap-2">
+                            <Badge className={`${colors.bg} ${colors.text} ${colors.border}`}>
+                              {finding.severity}
+                            </Badge>
+                            <span className="font-semibold text-white">{finding.title}</span>
+                          </div>
+                          <Badge className="bg-white/10 text-white border-white/30 text-xs">
+                            {finding.id}
                           </Badge>
-                          <span className="font-semibold">{finding.title}</span>
                         </div>
-                        <Badge variant="outline" className="text-xs">
-                          {finding.id}
-                        </Badge>
+                        <p className="text-sm text-white mb-2">{finding.description}</p>
+                        <div className="bg-blue-900/30 backdrop-blur-md rounded p-3 mb-2">
+                          <div className="text-xs text-orange-400 font-semibold mb-1">Impact:</div>
+                          <p className="text-xs text-white">{finding.impact}</p>
+                        </div>
+                        <div className="bg-blue-900/30 backdrop-blur-md rounded p-3">
+                          <div className="text-xs text-green-400 font-semibold mb-1">Recommendation:</div>
+                          <p className="text-xs text-white">{finding.recommendation}</p>
+                        </div>
                       </div>
-                      <p className="text-sm text-gray-300 mb-2">{finding.description}</p>
-                      <div className="bg-gray-800 rounded p-3 mb-2">
-                        <div className="text-xs text-orange-400 font-semibold mb-1">Impact:</div>
-                        <p className="text-xs text-gray-300">{finding.impact}</p>
-                      </div>
-                      <div className="bg-gray-800 rounded p-3">
-                        <div className="text-xs text-green-400 font-semibold mb-1">Recommendation:</div>
-                        <p className="text-xs text-gray-300">{finding.recommendation}</p>
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </CardContent>
             </Card>
           )}
 
-          {/* Action Plan */}
+          {/* Action Plan - GREEN */}
           {auditReport.action_plan && auditReport.action_plan.length > 0 && (
-            <Card className="bg-gray-900 border-gray-800">
+            <Card className="bg-blue-900/20 backdrop-blur-md border-blue-500/30">
               <CardHeader>
-                <CardTitle>Action Plan</CardTitle>
+                <CardTitle className="text-green-400">Action Plan</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
                   {auditReport.action_plan.map((item, idx) => (
-                    <div key={idx} className="bg-gray-800 rounded-lg p-4">
+                    <div key={idx} className="bg-green-500/10 backdrop-blur-md rounded-lg p-4 border border-green-500/30">
                       <div className="flex items-start justify-between mb-2">
                         <div className="flex items-center gap-2">
-                          <CheckCircle2 className="w-4 h-4 text-cyan-400" />
-                          <span className="font-semibold text-sm">{item.action}</span>
+                          <CheckCircle2 className="w-4 h-4 text-green-400" />
+                          <span className="font-semibold text-sm text-white">{item.action}</span>
                         </div>
-                        <Badge variant="outline">{item.priority}</Badge>
+                        <Badge className="bg-green-500/20 text-green-400 border-green-500/50">{item.priority}</Badge>
                       </div>
-                      <div className="grid grid-cols-2 gap-4 text-xs text-gray-400 pl-6">
+                      <div className="grid grid-cols-2 gap-4 text-xs text-white/60 pl-6">
                         <div>Timeline: {item.timeline}</div>
                         <div>Owner: {item.owner}</div>
                       </div>
@@ -418,12 +418,12 @@ ${auditReport.conclusion}
           )}
 
           {/* Conclusion */}
-          <Card className="bg-gradient-to-br from-cyan-500/10 to-blue-600/10 border-cyan-500/30">
+          <Card className="bg-gradient-to-br from-blue-500/20 to-blue-700/20 backdrop-blur-md border-blue-500/30">
             <CardHeader>
-              <CardTitle>Conclusion</CardTitle>
+              <CardTitle className="text-white">Conclusion</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-gray-300 leading-relaxed">{auditReport.conclusion}</p>
+              <p className="text-sm text-white leading-relaxed">{auditReport.conclusion}</p>
             </CardContent>
           </Card>
         </div>
