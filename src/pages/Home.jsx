@@ -4,7 +4,7 @@ import { createPageUrl } from "@/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-import { ChevronRight, Shield, Zap } from "lucide-react";
+import { ChevronRight, Shield, Zap, Brain, CheckCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 export default function Home() {
@@ -18,26 +18,41 @@ export default function Home() {
     }
   };
 
-  const stats = [
-    { 
-      label: "IP Theft Crisis", 
-      value: "$283B+",
-      image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/b55c5807c_08f33231-115f-4c95-9719-682f4e9679cc-Copy-Copy-Copy-Copy-Copy-Copy.jpg"
+  const aiDreamTeam = [
+    {
+      name: "Alfred",
+      role: "Contract Architect",
+      status: "Bound",
+      image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=400&fit=crop",
+      specialty: "Legal Framework Design"
     },
-    { 
-      label: "Market", 
-      value: "$10T+",
-      image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/8cd0364f8_Whisk_2bd57b9a449d359968944ab33f98257edr-Copy.jpg"
+    {
+      name: "Claude",
+      role: "Security Engineer",
+      status: "Bound",
+      image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=400&h=400&fit=crop",
+      specialty: "Code & Audit Systems"
     },
-    { 
-      label: "Insurance", 
-      value: "$14M",
-      image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/eab90f603_Whisk_a031d7a8f4d67e79d2d4deb5ac0e0183eg.jpg"
+    {
+      name: "GitHub Copilot",
+      role: "Development Assistant",
+      status: "Bound",
+      image: "https://images.unsplash.com/photo-1618004912476-29818d81ae2e?w=400&h=400&fit=crop",
+      specialty: "Automated Code Generation"
     },
-    { 
-      label: "Threat Detection", 
-      value: "99.97%",
-      image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/4c116ea06_Whisk_311edc975728fa8ad384b1950238341bdr-Copy-Copy.jpg"
+    {
+      name: "Perplexity",
+      role: "Research Analyst",
+      status: "Bound",
+      image: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=400&h=400&fit=crop",
+      specialty: "Threat Intelligence"
+    },
+    {
+      name: "OpenAI GPT",
+      role: "Integration Specialist",
+      status: "Bound",
+      image: "https://images.unsplash.com/photo-1677756119517-756a188d2d94?w=400&h=400&fit=crop",
+      specialty: "Natural Language Processing"
     }
   ];
 
@@ -46,37 +61,37 @@ export default function Home() {
       title: "Master Covenant",
       description: "Legally binding AI contracts. 5 AI systems bound with cryptographic proof and liability coverage.",
       link: "MasterCovenant",
-      image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/ee388f8e1_ai-covenant-binding.jpg"
+      image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=600&fit=crop"
     },
     {
       title: "Security Tools & Blockchain",
       description: "Complete cybersecurity suite with QR Generator, Steganography, and SHA-256/512 hashing.",
       link: "SecurityTools",
-      image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/b55c5807c_08f33231-115f-4c95-9719-682f4e9679cc-Copy-Copy-Copy-Copy-Copy-Copy.jpg"
+      image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=600&fit=crop"
     },
     {
       title: "GlyphBot AI Assistant",
       description: "Advanced AI powered by Gemini with code execution, security scanning, and automated auditing.",
       link: "GlyphBot",
-      image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/fde39a76a_card-bg-ai-powered.jpg"
+      image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=600&fit=crop"
     },
     {
       title: "QR Code Generator",
       description: "Secure QR code generation with custom branding, analytics tracking, and encryption.",
       link: "QRGenerator",
-      image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/b5ad362ca_futuristic-qr-code.jpg"
+      image: "https://images.unsplash.com/photo-1616432043562-3671ea2e5242?w=800&h=600&fit=crop"
     },
     {
       title: "Steganography",
       description: "Hide encrypted data within images using LSB encoding for secure communications.",
       link: "Steganography",
-      image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/eab90f603_Whisk_a031d7a8f4d67e79d2d4deb5ac0e0183eg.jpg"
+      image: "https://images.unsplash.com/photo-1633265486064-086b219458ec?w=800&h=600&fit=crop"
     },
     {
       title: "Blockchain Security",
       description: "SHA-256/512 hashing, immutable verification, and cryptographic proof systems.",
       link: "Blockchain",
-      image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/4c116ea06_Whisk_311edc975728fa8ad384b1950238341bdr-Copy-Copy.jpg"
+      image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800&h=600&fit=crop"
     }
   ];
 
@@ -92,49 +107,41 @@ export default function Home() {
     { name: "Redis", logo: "https://upload.wikimedia.org/wikipedia/commons/6/64/Logo-redis.svg" },
     { name: "PostgreSQL", logo: "https://upload.wikimedia.org/wikipedia/commons/2/29/Postgresql_elephant.svg" },
     { name: "Docker", logo: "https://upload.wikimedia.org/wikipedia/commons/4/4e/Docker_%28container_engine%29_logo.svg" },
-    { name: "Kubernetes", logo: "https://upload.wikimedia.org/wikipedia/commons/3/39/Kubernetes_logo_without_workmark.svg" },
-    { name: "GitHub", logo: "https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" },
-    { name: "GitLab", logo: "https://upload.wikimedia.org/wikipedia/commons/e/e1/GitLab_logo.svg" },
-    { name: "TypeScript", logo: "https://upload.wikimedia.org/wikipedia/commons/4/4c/Typescript_logo_2020.svg" },
-    { name: "React", logo: "https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg" },
-    { name: "Node.js", logo: "https://upload.wikimedia.org/wikipedia/commons/d/d9/Node.js_logo.svg" },
-    { name: "Python", logo: "https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg" }
+    { name: "Kubernetes", logo: "https://upload.wikimedia.org/wikipedia/commons/3/39/Kubernetes_logo_without_workmark.svg" }
   ];
 
   return (
     <div className="bg-black text-white">
-      {/* Hero Section with Video Background */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Background Video */}
-        <div className="absolute inset-0 z-0">
-          <video 
-            autoPlay 
-            loop 
-            muted 
-            playsInline
-            className="w-full h-full object-cover"
-            style={{ filter: "brightness(0.6)" }}
-          >
-            <source src="https://glyph-merge-pro-glyphlock.replit.app/assets/hero-video-CxU5xRpe.mp4" type="video/mp4" />
-          </video>
-          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black" />
-        </div>
-
+      {/* Hero Section - Video Only */}
+      <section className="relative min-h-screen overflow-hidden">
+        <video 
+          autoPlay 
+          loop 
+          muted 
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{ filter: "brightness(0.5)" }}
+        >
+          <source src="https://glyph-merge-pro-glyphlock.replit.app/assets/hero-video-CxU5xRpe.mp4" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black" />
+        
         {/* Grid Overlay */}
-        <div className="absolute inset-0 z-[5] opacity-10" style={{
+        <div className="absolute inset-0 opacity-10" style={{
           backgroundImage: "linear-gradient(cyan 1px, transparent 1px), linear-gradient(90deg, cyan 1px, transparent 1px)",
           backgroundSize: "50px 50px"
         }} />
+      </section>
 
-        {/* Top Tagline */}
-        <div className="absolute top-8 left-0 right-0 z-30 flex items-center justify-center">
-          <h2 className="text-white text-2xl md:text-3xl lg:text-4xl font-bold tracking-wide text-center px-4">
-            Secure Access For A Smarter World!
-          </h2>
-        </div>
-
-        <div className="container mx-auto px-4 relative z-10">
+      {/* Content Below Hero */}
+      <section className="relative bg-black py-20 -mt-32 z-10">
+        <div className="container mx-auto px-4">
           <div className="text-center max-w-5xl mx-auto">
+            {/* Top Tagline */}
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-wide mb-8 text-white">
+              Secure Access For A Smarter World!
+            </h2>
+
             {/* Badges */}
             <div className="flex flex-wrap items-center justify-center gap-3 mb-8">
               <Badge variant="outline" className="border-blue-500/50 bg-blue-500/10 text-blue-400 px-4 py-2 text-sm font-mono">
@@ -184,38 +191,80 @@ export default function Home() {
               </div>
             </form>
 
+            {/* Stats Cards */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-              {stats.map((stat, index) => (
-                <div key={index} className="relative group overflow-hidden rounded-lg">
-                  <div className="absolute inset-0">
-                    <img 
-                      src={stat.image}
-                      alt={stat.label}
-                      className="w-full h-full object-cover opacity-40 group-hover:opacity-60 group-hover:scale-110 transition-all duration-300"
-                    />
-                  </div>
-                  <div className="relative bg-gray-900/40 backdrop-blur-md border border-blue-500/30 rounded-lg p-6">
-                    <div className="text-3xl font-bold text-white mb-1">{stat.value}</div>
-                    <div className="text-sm text-white">{stat.label}</div>
-                  </div>
+              {[
+                { label: "IP Theft Crisis", value: "$283B+" },
+                { label: "Market", value: "$10T+" },
+                { label: "Insurance", value: "$14M" },
+                { label: "Threat Detection", value: "99.97%" }
+              ].map((stat, index) => (
+                <div key={index} className="bg-gray-900/60 backdrop-blur-md border border-blue-500/30 rounded-lg p-6 hover:border-blue-500/50 transition-all">
+                  <div className="text-3xl font-bold text-white mb-1">{stat.value}</div>
+                  <div className="text-sm text-gray-400">{stat.label}</div>
                 </div>
               ))}
             </div>
           </div>
         </div>
+      </section>
 
-        {/* Bottom Gradient */}
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black via-black/80 to-transparent z-20" />
+      {/* AI Dream Team Section */}
+      <section className="py-20 bg-gradient-to-b from-black to-gray-900">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">
+              The AI <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">Dream Team</span>
+            </h2>
+            <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+              5 AI systems legally bound through our revolutionary Master Covenant System
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-5 gap-6 max-w-6xl mx-auto mb-12">
+            {aiDreamTeam.map((ai, index) => (
+              <Card key={index} className="bg-gray-900 border-gray-800 hover:border-blue-500/50 transition-all group">
+                <CardContent className="p-6 text-center">
+                  <div className="relative mb-4">
+                    <img 
+                      src={ai.image}
+                      alt={ai.name}
+                      className="w-20 h-20 mx-auto rounded-full object-cover border-2 border-blue-500/30 group-hover:border-blue-500 transition-all"
+                    />
+                    <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2">
+                      <Badge className="bg-green-500/20 text-green-400 border-green-500/50 text-xs">
+                        <CheckCircle className="w-3 h-3 mr-1" />
+                        {ai.status}
+                      </Badge>
+                    </div>
+                  </div>
+                  <h3 className="text-lg font-bold mb-1 text-white">{ai.name}</h3>
+                  <p className="text-sm text-blue-400 mb-2">{ai.role}</p>
+                  <p className="text-xs text-gray-500">{ai.specialty}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          <div className="text-center">
+            <Link to={createPageUrl("MasterCovenant")}>
+              <Button size="lg" className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white">
+                <Brain className="w-5 h-5 mr-2" />
+                Learn About Master Covenant
+              </Button>
+            </Link>
+          </div>
+        </div>
       </section>
 
       {/* Services Grid */}
-      <section className="py-20 bg-gradient-to-b from-black to-gray-900">
+      <section className="py-20 bg-gray-900">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">
               Platform & <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">Services</span>
             </h2>
-            <p className="text-xl text-white max-w-3xl mx-auto">
+            <p className="text-xl text-gray-400 max-w-3xl mx-auto">
               Complete cybersecurity and AI platform with premium tools, enterprise solutions, and legal AI binding framework
             </p>
           </div>
@@ -223,20 +272,20 @@ export default function Home() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {services.map((service, index) => (
               <Link key={index} to={createPageUrl(service.link)}>
-                <Card className="bg-gray-900 border-gray-800 hover:border-blue-500/50 transition-all duration-300 h-full group cursor-pointer overflow-hidden">
+                <Card className="bg-gray-800 border-gray-700 hover:border-blue-500/50 transition-all duration-300 h-full group cursor-pointer overflow-hidden">
                   <div className="relative h-48 overflow-hidden">
                     <img 
                       src={service.image}
                       alt={service.title}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/50 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-gray-800 via-gray-800/50 to-transparent" />
                   </div>
                   <CardContent className="p-6">
                     <h3 className="text-xl font-bold mb-3 text-white group-hover:text-blue-400 transition-colors">
                       {service.title}
                     </h3>
-                    <p className="text-white mb-4">
+                    <p className="text-gray-400 mb-4">
                       {service.description}
                     </p>
                     <div className="flex items-center text-blue-400 text-sm font-semibold">
@@ -250,48 +299,31 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Technology Partners - Scrolling Marquee with Open Source Logos */}
-      <section className="py-20 relative overflow-hidden">
-        <div className="absolute inset-0">
-          <img 
-            src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/8cd0364f8_Whisk_2bd57b9a449d359968944ab33f98257edr-Copy.jpg"
-            alt="Tech Background"
-            className="w-full h-full object-cover opacity-5"
-          />
-        </div>
+      {/* Technology Partners */}
+      <section className="py-20 bg-black relative overflow-hidden">
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">
               Powered by <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">Industry Leaders</span>
             </h2>
-            <p className="text-white">Built on enterprise-grade infrastructure</p>
+            <p className="text-gray-400">Built on enterprise-grade infrastructure</p>
           </div>
 
-          {/* Scrolling Marquee with Company Logos */}
           <div className="relative overflow-hidden">
             <style>{`
               @keyframes scroll {
-                0% {
-                  transform: translateX(0);
-                }
-                100% {
-                  transform: translateX(-50%);
-                }
+                0% { transform: translateX(0); }
+                100% { transform: translateX(-50%); }
               }
-              .marquee {
-                animation: scroll 40s linear infinite;
-              }
-              .marquee:hover {
-                animation-play-state: paused;
-              }
+              .marquee { animation: scroll 40s linear infinite; }
+              .marquee:hover { animation-play-state: paused; }
             `}</style>
             
             <div className="flex">
               <div className="flex marquee">
-                {/* First set of partners */}
-                {partners.map((partner, index) => (
+                {[...partners, ...partners].map((partner, index) => (
                   <div
-                    key={`first-${index}`}
+                    key={index}
                     className="flex-shrink-0 mx-4 px-8 py-6 bg-gray-900/50 backdrop-blur-sm rounded-lg border border-blue-500/20 hover:border-blue-500/50 transition-colors flex items-center justify-center min-w-[180px] h-24"
                   >
                     <img 
@@ -303,29 +335,7 @@ export default function Home() {
                         e.target.nextSibling.style.display = 'block';
                       }}
                     />
-                    <span className="text-white font-bold text-lg hidden">
-                      {partner.name}
-                    </span>
-                  </div>
-                ))}
-                {/* Duplicate set for seamless loop */}
-                {partners.map((partner, index) => (
-                  <div
-                    key={`second-${index}`}
-                    className="flex-shrink-0 mx-4 px-8 py-6 bg-gray-900/50 backdrop-blur-sm rounded-lg border border-blue-500/20 hover:border-blue-500/50 transition-colors flex items-center justify-center min-w-[180px] h-24"
-                  >
-                    <img 
-                      src={partner.logo} 
-                      alt={partner.name}
-                      className="h-12 w-auto max-w-[140px] object-contain filter brightness-0 invert opacity-80 hover:opacity-100 transition-opacity"
-                      onError={(e) => {
-                        e.target.style.display = 'none';
-                        e.target.nextSibling.style.display = 'block';
-                      }}
-                    />
-                    <span className="text-white font-bold text-lg hidden">
-                      {partner.name}
-                    </span>
+                    <span className="text-white font-bold text-lg hidden">{partner.name}</span>
                   </div>
                 ))}
               </div>
@@ -335,25 +345,17 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 relative overflow-hidden">
-        <div className="absolute inset-0">
-          <img 
-            src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/4c116ea06_Whisk_311edc975728fa8ad384b1950238341bdr-Copy-Copy.jpg"
-            alt="Quantum Energy"
-            className="w-full h-full object-cover opacity-20"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black" />
-        </div>
-        <div className="container mx-auto px-4 relative z-10">
+      <section className="py-20 bg-gradient-to-b from-black to-gray-900">
+        <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
               Ready to Transform Your <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">Digital Infrastructure?</span>
             </h2>
-            <p className="text-xl text-white mb-8 leading-relaxed">
-              GlyphLock is the world's first platform to bind 5 AI systems to legally enforceable contracts. Our revolutionary Master Covenant System combines cryptographic proof with $14M liability coverage, creating unprecedented accountability in AI-powered security.
+            <p className="text-xl text-gray-400 mb-8 leading-relaxed">
+              GlyphLock is the world's first platform to bind 5 AI systems to legally enforceable contracts. Our revolutionary Master Covenant System combines cryptographic proof with $14M liability coverage.
             </p>
-            <p className="text-white mb-8 leading-relaxed">
-              Built by a team that generated $340K in verified revenue within 90 days, we're addressing the $283 billion annual IP theft crisis with quantum-resistant encryption, 99.97% threat detection accuracy, and enterprise-grade infrastructure.
+            <p className="text-gray-400 mb-8 leading-relaxed">
+              Built by a team that generated $340K in verified revenue within 90 days, we're addressing the $283 billion annual IP theft crisis with quantum-resistant encryption and 99.97% threat detection accuracy.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to={createPageUrl("Consultation")}>

@@ -1,18 +1,41 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { createPageUrl } from "@/utils";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { base44 } from "@/api/base44Client";
+import { Menu, X, ChevronDown, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 
 export default function Layout({ children, currentPageName }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [user, setUser] = useState(null);
   const location = useLocation();
+
+  useEffect(() => {
+    checkUser();
+  }, []);
+
+  const checkUser = async () => {
+    try {
+      const isAuthenticated = await base44.auth.isAuthenticated();
+      if (isAuthenticated) {
+        const userData = await base44.auth.me();
+        setUser(userData);
+      }
+    } catch (err) {
+      console.error("Failed to get user:", err);
+    }
+  };
+
+  const handleLogout = () => {
+    base44.auth.logout();
+  };
 
   const isActive = (pageName) => location.pathname === createPageUrl(pageName);
 
@@ -52,22 +75,22 @@ export default function Layout({ children, currentPageName }) {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="bg-gray-900 border-blue-500/20">
-                  <DropdownMenuItem asChild className="text-white hover:text-blue-400 focus:text-blue-400 focus:bg-blue-500/20">
+                  <DropdownMenuItem asChild className="text-white hover:text-blue-400 focus:text-blue-400 focus:bg-blue-500/20 cursor-pointer">
                     <Link to={createPageUrl("MasterCovenant")}>Master Covenant</Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem asChild className="text-white hover:text-blue-400 focus:text-blue-400 focus:bg-blue-500/20">
+                  <DropdownMenuItem asChild className="text-white hover:text-blue-400 focus:text-blue-400 focus:bg-blue-500/20 cursor-pointer">
                     <Link to={createPageUrl("SecurityTools")}>Security Tools</Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem asChild className="text-white hover:text-blue-400 focus:text-blue-400 focus:bg-blue-500/20">
+                  <DropdownMenuItem asChild className="text-white hover:text-blue-400 focus:text-blue-400 focus:bg-blue-500/20 cursor-pointer">
                     <Link to={createPageUrl("QRGenerator")}>QR Generator</Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem asChild className="text-white hover:text-blue-400 focus:text-blue-400 focus:bg-blue-500/20">
+                  <DropdownMenuItem asChild className="text-white hover:text-blue-400 focus:text-blue-400 focus:bg-blue-500/20 cursor-pointer">
                     <Link to={createPageUrl("Steganography")}>Steganography</Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem asChild className="text-white hover:text-blue-400 focus:text-blue-400 focus:bg-blue-500/20">
+                  <DropdownMenuItem asChild className="text-white hover:text-blue-400 focus:text-blue-400 focus:bg-blue-500/20 cursor-pointer">
                     <Link to={createPageUrl("Blockchain")}>Blockchain Security</Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem asChild className="text-white hover:text-blue-400 focus:text-blue-400 focus:bg-blue-500/20">
+                  <DropdownMenuItem asChild className="text-white hover:text-blue-400 focus:text-blue-400 focus:bg-blue-500/20 cursor-pointer">
                     <Link to={createPageUrl("GlyphBot")}>GlyphBot AI</Link>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -90,6 +113,36 @@ export default function Layout({ children, currentPageName }) {
                   Book Consultation
                 </Button>
               </Link>
+
+              {user ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" className="ml-2">
+                      <User className="w-4 h-4 mr-2" />
+                      {user.full_name || user.email}
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="bg-gray-900 border-blue-500/20">
+                    <DropdownMenuItem className="text-white focus:bg-blue-500/20">
+                      {user.email}
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator className="bg-gray-700" />
+                    <DropdownMenuItem 
+                      onClick={handleLogout}
+                      className="text-red-400 hover:text-red-300 focus:text-red-300 focus:bg-red-500/20 cursor-pointer"
+                    >
+                      <LogOut className="w-4 h-4 mr-2" />
+                      Logout
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <Link to={createPageUrl("Login")} className="ml-2">
+                  <Button variant="outline" className="border-blue-500/50 text-white hover:bg-blue-500/10">
+                    Sign In
+                  </Button>
+                </Link>
+              )}
             </div>
 
             {/* Mobile Menu Button */}
@@ -140,6 +193,25 @@ export default function Layout({ children, currentPageName }) {
                     Book Consultation
                   </Button>
                 </Link>
+                {user ? (
+                  <Button 
+                    onClick={() => {
+                      handleLogout();
+                      setMobileMenuOpen(false);
+                    }}
+                    variant="outline" 
+                    className="w-full mt-2 border-red-500/50 text-red-400"
+                  >
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Logout
+                  </Button>
+                ) : (
+                  <Link to={createPageUrl("Login")} onClick={() => setMobileMenuOpen(false)}>
+                    <Button variant="outline" className="w-full mt-2 border-blue-500/50 text-white">
+                      Sign In
+                    </Button>
+                  </Link>
+                )}
               </div>
             </div>
           )}
@@ -171,30 +243,30 @@ export default function Layout({ children, currentPageName }) {
             <div>
               <h3 className="font-semibold mb-4 text-white">Services</h3>
               <div className="flex flex-col gap-2 text-sm">
-                <Link to={createPageUrl("MasterCovenant")} className="text-white hover:text-blue-400">Master Covenant</Link>
-                <Link to={createPageUrl("SecurityTools")} className="text-white hover:text-blue-400">Security Tools</Link>
-                <Link to={createPageUrl("QRGenerator")} className="text-white hover:text-blue-400">QR Generator</Link>
-                <Link to={createPageUrl("Blockchain")} className="text-white hover:text-blue-400">Blockchain</Link>
-                <Link to={createPageUrl("GlyphBot")} className="text-white hover:text-blue-400">GlyphBot AI</Link>
+                <Link to={createPageUrl("MasterCovenant")} className="text-white hover:text-blue-400 transition-colors">Master Covenant</Link>
+                <Link to={createPageUrl("SecurityTools")} className="text-white hover:text-blue-400 transition-colors">Security Tools</Link>
+                <Link to={createPageUrl("QRGenerator")} className="text-white hover:text-blue-400 transition-colors">QR Generator</Link>
+                <Link to={createPageUrl("Blockchain")} className="text-white hover:text-blue-400 transition-colors">Blockchain</Link>
+                <Link to={createPageUrl("GlyphBot")} className="text-white hover:text-blue-400 transition-colors">GlyphBot AI</Link>
               </div>
             </div>
 
             <div>
               <h3 className="font-semibold mb-4 text-white">Company</h3>
               <div className="flex flex-col gap-2 text-sm">
-                <Link to={createPageUrl("Home")} className="text-white hover:text-blue-400">About Us</Link>
-                <Link to={createPageUrl("Pricing")} className="text-white hover:text-blue-400">Pricing</Link>
-                <Link to={createPageUrl("Contact")} className="text-white hover:text-blue-400">Contact</Link>
-                <Link to={createPageUrl("Consultation")} className="text-white hover:text-blue-400">Book Consultation</Link>
+                <Link to={createPageUrl("Home")} className="text-white hover:text-blue-400 transition-colors">About Us</Link>
+                <Link to={createPageUrl("Pricing")} className="text-white hover:text-blue-400 transition-colors">Pricing</Link>
+                <Link to={createPageUrl("Contact")} className="text-white hover:text-blue-400 transition-colors">Contact</Link>
+                <Link to={createPageUrl("Consultation")} className="text-white hover:text-blue-400 transition-colors">Book Consultation</Link>
               </div>
             </div>
 
             <div>
               <h3 className="font-semibold mb-4 text-white">Legal</h3>
               <div className="flex flex-col gap-2 text-sm">
-                <a href="#" className="text-white hover:text-blue-400">Privacy Policy</a>
-                <a href="#" className="text-white hover:text-blue-400">Terms of Service</a>
-                <a href="#" className="text-white hover:text-blue-400">Security</a>
+                <Link to={createPageUrl("Home")} className="text-white hover:text-blue-400 transition-colors">Privacy Policy</Link>
+                <Link to={createPageUrl("Home")} className="text-white hover:text-blue-400 transition-colors">Terms of Service</Link>
+                <Link to={createPageUrl("Home")} className="text-white hover:text-blue-400 transition-colors">Security</Link>
               </div>
             </div>
           </div>
