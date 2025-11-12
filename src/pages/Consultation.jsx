@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { createPageUrl } from "@/utils";
 import { base44 } from "@/api/base44Client";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
@@ -10,6 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Calendar, CheckCircle2, Clock, Shield, Award } from "lucide-react";
 
 export default function Consultation() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     full_name: "",
     email: "",
@@ -19,21 +22,20 @@ export default function Consultation() {
     message: "",
     preferred_date: ""
   });
-  const [submitted, setSubmitted] = useState(false);
+
+  // Pre-fill email from URL parameter if available
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const emailParam = urlParams.get('email');
+    if (emailParam) {
+      setFormData(prev => ({ ...prev, email: decodeURIComponent(emailParam) }));
+    }
+  }, []);
 
   const createConsultation = useMutation({
     mutationFn: (data) => base44.entities.Consultation.create(data),
     onSuccess: () => {
-      setSubmitted(true);
-      setFormData({
-        full_name: "",
-        email: "",
-        company: "",
-        phone: "",
-        service_interest: "",
-        message: "",
-        preferred_date: ""
-      });
+      navigate(createPageUrl("ConsultationSuccess"));
     }
   });
 
@@ -49,27 +51,6 @@ export default function Consultation() {
     { icon: CheckCircle2, text: "No obligation quote" }
   ];
 
-  if (submitted) {
-    return (
-      <div className="min-h-screen bg-black text-white py-20">
-        <div className="container mx-auto px-4">
-          <div className="max-w-2xl mx-auto text-center">
-            <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
-              <CheckCircle2 className="w-10 h-10 text-green-400" />
-            </div>
-            <h1 className="text-4xl font-bold mb-4 text-white">Consultation Booked!</h1>
-            <p className="text-xl text-white mb-8">
-              Thank you for scheduling a consultation with GlyphLock. We'll contact you within 24 hours to confirm your appointment.
-            </p>
-            <Button onClick={() => setSubmitted(false)} className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white">
-              Book Another Consultation
-            </Button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-black text-white py-20">
       <div className="container mx-auto px-4">
@@ -78,7 +59,7 @@ export default function Consultation() {
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
               Book Your <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">Consultation</span>
             </h1>
-            <p className="text-xl text-white">
+            <p className="text-xl text-gray-400">
               Schedule a free consultation with our cybersecurity experts
             </p>
           </div>
@@ -202,7 +183,7 @@ export default function Consultation() {
                   {benefits.map((benefit, index) => (
                     <div key={index} className="flex items-start gap-3">
                       <benefit.icon className="w-5 h-5 text-blue-400 mt-1" />
-                      <span className="text-white">{benefit.text}</span>
+                      <span className="text-gray-300">{benefit.text}</span>
                     </div>
                   ))}
                 </CardContent>
@@ -214,19 +195,19 @@ export default function Consultation() {
                 </CardHeader>
                 <CardContent className="space-y-3 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-white">Response Time:</span>
+                    <span className="text-gray-400">Response Time:</span>
                     <span className="font-semibold text-white">24 hours</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-white">Consultation Fee:</span>
+                    <span className="text-gray-400">Consultation Fee:</span>
                     <span className="font-semibold text-green-400">Free</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-white">Duration:</span>
+                    <span className="text-gray-400">Duration:</span>
                     <span className="font-semibold text-white">60 minutes</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-white">Format:</span>
+                    <span className="text-gray-400">Format:</span>
                     <span className="font-semibold text-white">Video Call</span>
                   </div>
                 </CardContent>

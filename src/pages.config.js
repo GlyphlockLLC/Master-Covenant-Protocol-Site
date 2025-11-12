@@ -11,6 +11,12 @@ import NUPSLogin from './pages/NUPSLogin';
 import NUPSStaff from './pages/NUPSStaff';
 import NUPSOwner from './pages/NUPSOwner';
 import GlyphBot from './pages/GlyphBot';
+import About from './pages/About';
+import Roadmap from './pages/Roadmap';
+import Privacy from './pages/Privacy';
+import Terms from './pages/Terms';
+import NotFound from './pages/NotFound';
+import ConsultationSuccess from './pages/ConsultationSuccess';
 import Layout from './Layout.jsx';
 
 
@@ -28,6 +34,12 @@ export const PAGES = {
     "NUPSStaff": NUPSStaff,
     "NUPSOwner": NUPSOwner,
     "GlyphBot": GlyphBot,
+    "About": About,
+    "Roadmap": Roadmap,
+    "Privacy": Privacy,
+    "Terms": Terms,
+    "NotFound": NotFound,
+    "ConsultationSuccess": ConsultationSuccess,
 }
 
 export const pagesConfig = {
