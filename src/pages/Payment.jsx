@@ -4,13 +4,12 @@ import { createPageUrl } from "@/utils";
 import { base44 } from "@/api/base44Client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { 
   CreditCard, Lock, CheckCircle, AlertCircle, 
-  Shield, Calendar, DollarSign, Info 
+  Shield, Calendar, Loader2, Info 
 } from "lucide-react";
 
 export default function Payment() {
@@ -20,14 +19,10 @@ export default function Payment() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [error, setError] = useState(null);
-
-  const [cardDetails, setCardDetails] = useState({
-    cardNumber: "",
-    cardName: "",
-    expiryDate: "",
-    cvv: "",
-    billingZip: ""
-  });
+  const [clientSecret, setClientSecret] = useState(null);
+  const [stripe, setStripe] = useState(null);
+  const [elements, setElements] = useState(null);
+  const [isLoadingStripe, setIsLoadingStripe] = useState(true);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -38,102 +33,137 @@ export default function Payment() {
     }
   }, []);
 
+  useEffect(() => {
+    // Load Stripe.js
+    const loadStripe = async () => {
+      try {
+        const script = document.createElement('script');
+        script.src = 'https://js.stripe.com/v3/';
+        script.async = true;
+        script.onload = initializeStripe;
+        document.body.appendChild(script);
+      } catch (err) {
+        setError('Failed to load Stripe. Please refresh the page.');
+        setIsLoadingStripe(false);
+      }
+    };
+
+    loadStripe();
+  }, []);
+
+  const initializeStripe = async () => {
+    try {
+      // Note: In production, get the publishable key from backend
+      // For now, we'll initialize Stripe when we have the client secret
+      setIsLoadingStripe(false);
+    } catch (err) {
+      setError('Failed to initialize payment system');
+      setIsLoadingStripe(false);
+    }
+  };
+
   const loadConsultation = async (id) => {
     try {
       const consultations = await base44.entities.Consultation.filter({ id });
       if (consultations.length > 0) {
         setConsultation(consultations[0]);
+        await createPaymentIntent(consultations[0]);
       }
     } catch (err) {
       setError("Failed to load consultation details");
     }
   };
 
-  const formatCardNumber = (value) => {
-    const v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
-    const matches = v.match(/\d{4,16}/g);
-    const match = (matches && matches[0]) || '';
-    const parts = [];
+  const createPaymentIntent = async (consultation) => {
+    try {
+      setIsProcessing(true);
+      
+      // Call backend function to create payment intent
+      const result = await base44.functions.call('stripe-create-payment-intent', {
+        consultationId: consultation.id,
+        amount: 29900, // $299.00 in cents
+        email: consultation.email,
+        name: consultation.full_name
+      });
 
-    for (let i = 0, len = match.length; i < len; i += 4) {
-      parts.push(match.substring(i, i + 4));
-    }
+      if (!result.success) {
+        throw new Error(result.error || 'Failed to initialize payment');
+      }
 
-    if (parts.length) {
-      return parts.join(' ');
-    } else {
-      return value;
-    }
-  };
-
-  const formatExpiryDate = (value) => {
-    const v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
-    if (v.length >= 2) {
-      return v.slice(0, 2) + '/' + v.slice(2, 4);
-    }
-    return v;
-  };
-
-  const handleCardNumberChange = (e) => {
-    const formatted = formatCardNumber(e.target.value);
-    if (formatted.replace(/\s/g, '').length <= 16) {
-      setCardDetails({ ...cardDetails, cardNumber: formatted });
-    }
-  };
-
-  const handleExpiryChange = (e) => {
-    const formatted = formatExpiryDate(e.target.value);
-    if (formatted.length <= 5) {
-      setCardDetails({ ...cardDetails, expiryDate: formatted });
-    }
-  };
-
-  const handleCVVChange = (e) => {
-    const value = e.target.value.replace(/[^0-9]/gi, '');
-    if (value.length <= 4) {
-      setCardDetails({ ...cardDetails, cvv: value });
+      setClientSecret(result.clientSecret);
+      
+      // Initialize Stripe Elements
+      if (window.Stripe) {
+        // Note: Replace with your actual publishable key from secrets/config
+        const stripeInstance = window.Stripe('pk_test_YOUR_PUBLISHABLE_KEY');
+        setStripe(stripeInstance);
+        
+        const elementsInstance = stripeInstance.elements({
+          clientSecret: result.clientSecret,
+          appearance: {
+            theme: 'night',
+            variables: {
+              colorPrimary: '#3b82f6',
+              colorBackground: '#1f2937',
+              colorText: '#ffffff',
+              colorDanger: '#ef4444',
+              borderRadius: '0.5rem'
+            }
+          }
+        });
+        
+        setElements(elementsInstance);
+        
+        // Mount payment element
+        const paymentElement = elementsInstance.create('payment');
+        paymentElement.mount('#payment-element');
+      }
+      
+      setIsProcessing(false);
+    } catch (err) {
+      setError(err.message);
+      setIsProcessing(false);
     }
   };
 
   const processPayment = async (e) => {
     e.preventDefault();
+    
+    if (!stripe || !elements) {
+      setError('Payment system not ready. Please refresh the page.');
+      return;
+    }
+
     setIsProcessing(true);
     setError(null);
 
-    // Validate card details
-    if (cardDetails.cardNumber.replace(/\s/g, '').length !== 16) {
-      setError("Please enter a valid 16-digit card number");
-      setIsProcessing(false);
-      return;
-    }
-
-    if (cardDetails.cvv.length < 3) {
-      setError("Please enter a valid CVV");
-      setIsProcessing(false);
-      return;
-    }
-
     try {
-      // Simulate payment processing
-      await new Promise(resolve => setTimeout(resolve, 2000));
-
-      // Update consultation payment status
-      if (consultationId && consultation) {
-        await base44.entities.Consultation.update(consultationId, {
-          payment_status: "paid",
-          status: "confirmed"
-        });
+      const { error: submitError } = await elements.submit();
+      if (submitError) {
+        throw new Error(submitError.message);
       }
 
-      setPaymentSuccess(true);
-      
-      // Redirect to success page after 2 seconds
-      setTimeout(() => {
-        navigate(createPageUrl("PaymentSuccess") + `?consultation_id=${consultationId}`);
-      }, 2000);
+      const { error, paymentIntent } = await stripe.confirmPayment({
+        elements,
+        confirmParams: {
+          return_url: window.location.origin + createPageUrl("PaymentSuccess") + `?consultation_id=${consultationId}`,
+        },
+        redirect: 'if_required'
+      });
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      if (paymentIntent && paymentIntent.status === 'succeeded') {
+        setPaymentSuccess(true);
+        setTimeout(() => {
+          navigate(createPageUrl("PaymentSuccess") + `?consultation_id=${consultationId}`);
+        }, 2000);
+      }
 
     } catch (err) {
-      setError("Payment processing failed. Please try again.");
+      setError(err.message);
       setIsProcessing(false);
     }
   };
@@ -163,12 +193,12 @@ export default function Payment() {
           <div className="text-center mb-12">
             <Badge variant="outline" className="border-blue-500/50 bg-blue-500/10 text-blue-400 mb-6">
               <Lock className="w-4 h-4 mr-2" />
-              Secure Payment
+              Secure Payment via Stripe
             </Badge>
             <h1 className="text-4xl font-bold mb-4">
               Complete Your <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">Booking</span>
             </h1>
-            <p className="text-gray-400">256-bit SSL encryption • PCI DSS compliant</p>
+            <p className="text-gray-400">Powered by Stripe • PCI DSS Level 1 Certified</p>
           </div>
 
           <div className="grid lg:grid-cols-3 gap-8">
@@ -189,97 +219,51 @@ export default function Payment() {
                     </Alert>
                   )}
 
-                  <form onSubmit={processPayment} className="space-y-6">
-                    <div>
-                      <Label htmlFor="cardNumber" className="text-white">Card Number</Label>
-                      <Input
-                        id="cardNumber"
-                        value={cardDetails.cardNumber}
-                        onChange={handleCardNumberChange}
-                        placeholder="1234 5678 9012 3456"
-                        required
-                        className="bg-gray-800 border-gray-700 text-white text-lg"
-                      />
+                  {isLoadingStripe ? (
+                    <div className="flex items-center justify-center py-12">
+                      <Loader2 className="w-8 h-8 text-blue-400 animate-spin" />
+                      <span className="ml-3 text-gray-400">Loading payment system...</span>
                     </div>
-
-                    <div>
-                      <Label htmlFor="cardName" className="text-white">Cardholder Name</Label>
-                      <Input
-                        id="cardName"
-                        value={cardDetails.cardName}
-                        onChange={(e) => setCardDetails({ ...cardDetails, cardName: e.target.value })}
-                        placeholder="John Doe"
-                        required
-                        className="bg-gray-800 border-gray-700 text-white"
-                      />
-                    </div>
-
-                    <div className="grid grid-cols-3 gap-4">
+                  ) : (
+                    <form onSubmit={processPayment} className="space-y-6">
+                      {/* Stripe Payment Element Container */}
                       <div>
-                        <Label htmlFor="expiryDate" className="text-white">Expiry</Label>
-                        <Input
-                          id="expiryDate"
-                          value={cardDetails.expiryDate}
-                          onChange={handleExpiryChange}
-                          placeholder="MM/YY"
-                          required
-                          className="bg-gray-800 border-gray-700 text-white"
-                        />
+                        <Label className="text-white mb-3 block">Card Details</Label>
+                        <div id="payment-element" className="p-4 bg-gray-800 border border-gray-700 rounded-lg">
+                          {/* Stripe Elements will mount here */}
+                        </div>
                       </div>
-                      <div>
-                        <Label htmlFor="cvv" className="text-white">CVV</Label>
-                        <Input
-                          id="cvv"
-                          type="password"
-                          value={cardDetails.cvv}
-                          onChange={handleCVVChange}
-                          placeholder="123"
-                          required
-                          className="bg-gray-800 border-gray-700 text-white"
-                        />
-                      </div>
-                      <div>
-                        <Label htmlFor="billingZip" className="text-white">ZIP Code</Label>
-                        <Input
-                          id="billingZip"
-                          value={cardDetails.billingZip}
-                          onChange={(e) => setCardDetails({ ...cardDetails, billingZip: e.target.value })}
-                          placeholder="12345"
-                          required
-                          className="bg-gray-800 border-gray-700 text-white"
-                        />
-                      </div>
-                    </div>
 
-                    <Alert className="bg-blue-500/10 border-blue-500/30">
-                      <Info className="h-4 w-4 text-blue-400" />
-                      <AlertDescription className="text-white text-sm">
-                        Your payment information is encrypted and secure. We never store your full card details.
-                      </AlertDescription>
-                    </Alert>
+                      <Alert className="bg-blue-500/10 border-blue-500/30">
+                        <Info className="h-4 w-4 text-blue-400" />
+                        <AlertDescription className="text-white text-sm">
+                          Your payment is processed securely by Stripe. We never see or store your card details.
+                        </AlertDescription>
+                      </Alert>
 
-                    <Button
-                      type="submit"
-                      disabled={isProcessing}
-                      className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white h-12 text-lg"
-                    >
-                      {isProcessing ? (
-                        <>
-                          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2" />
-                          Processing Payment...
-                        </>
-                      ) : (
-                        <>
-                          <Lock className="w-5 h-5 mr-2" />
-                          Pay $299.00
-                        </>
-                      )}
-                    </Button>
+                      <Button
+                        type="submit"
+                        disabled={isProcessing || !clientSecret}
+                        className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white h-12 text-lg"
+                      >
+                        {isProcessing ? (
+                          <>
+                            <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                            Processing Payment...
+                          </>
+                        ) : (
+                          <>
+                            <Lock className="w-5 h-5 mr-2" />
+                            Pay $299.00
+                          </>
+                        )}
+                      </Button>
 
-                    <p className="text-center text-xs text-gray-500 mt-4">
-                      By completing this payment, you agree to our Terms of Service and Privacy Policy
-                    </p>
-                  </form>
+                      <p className="text-center text-xs text-gray-500 mt-4">
+                        By completing this payment, you agree to our Terms of Service and Privacy Policy
+                      </p>
+                    </form>
+                  )}
                 </CardContent>
               </Card>
 
@@ -287,7 +271,7 @@ export default function Payment() {
               <div className="flex items-center justify-center gap-6 mt-6 flex-wrap">
                 <div className="flex items-center gap-2 text-sm text-gray-400">
                   <Shield className="w-5 h-5 text-green-400" />
-                  256-bit SSL
+                  Stripe Powered
                 </div>
                 <div className="flex items-center gap-2 text-sm text-gray-400">
                   <Lock className="w-5 h-5 text-blue-400" />
@@ -295,7 +279,7 @@ export default function Payment() {
                 </div>
                 <div className="flex items-center gap-2 text-sm text-gray-400">
                   <CheckCircle className="w-5 h-5 text-purple-400" />
-                  GDPR Compliant
+                  256-bit SSL
                 </div>
               </div>
             </div>
@@ -330,7 +314,8 @@ export default function Payment() {
                     </>
                   ) : (
                     <div className="text-center py-4">
-                      <div className="text-sm text-gray-400">Loading consultation details...</div>
+                      <Loader2 className="w-6 h-6 text-blue-400 animate-spin mx-auto mb-2" />
+                      <div className="text-sm text-gray-400">Loading details...</div>
                     </div>
                   )}
                   
@@ -340,7 +325,7 @@ export default function Payment() {
                       <span className="text-white">$299.00</span>
                     </div>
                     <div className="flex justify-between items-center mb-2">
-                      <span className="text-gray-400">Processing Fee</span>
+                      <span className="text-gray-400">Stripe Fee</span>
                       <span className="text-white">$0.00</span>
                     </div>
                     <div className="flex justify-between items-center text-lg font-bold pt-2 border-t border-gray-700">
@@ -381,11 +366,11 @@ export default function Payment() {
 
               <Card className="bg-gray-900 border-gray-800">
                 <CardHeader>
-                  <CardTitle className="text-white text-sm">Money-Back Guarantee</CardTitle>
+                  <CardTitle className="text-white text-sm">Refund Policy</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-gray-400 text-sm">
-                    If you're not satisfied with your consultation, we offer a full refund within 48 hours. No questions asked.
+                    Not satisfied? Get a full refund within 48 hours of your consultation. No questions asked.
                   </p>
                 </CardContent>
               </Card>
