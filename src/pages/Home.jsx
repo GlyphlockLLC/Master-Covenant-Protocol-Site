@@ -61,37 +61,57 @@ export default function Home() {
       title: "Master Covenant",
       description: "Legally binding AI contracts. 5 AI systems bound with cryptographic proof and liability coverage.",
       link: "MasterCovenant",
-      image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=600&fit=crop"
+      image: "https://glyph-merge-pro-glyphlock.replit.app/assets/Whisk_c53f0a83ac0d9a4a11e40591b6298c58dr_1761196254031-DP4vmwHO.jpeg",
+      price: "Custom"
     },
     {
-      title: "Security Tools & Blockchain",
-      description: "Complete cybersecurity suite with QR Generator, Steganography, and SHA-256/512 hashing.",
-      link: "SecurityTools",
-      image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=600&fit=crop"
+      title: "N.U.P.S. POS",
+      description: "Enterprise point-of-sale system. Three-tier access (Staff, Manager, Owner). Full inventory and analytics.",
+      link: "NUPSLogin",
+      image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=600&fit=crop",
+      price: "Enterprise"
     },
     {
       title: "GlyphBot AI Assistant",
       description: "Advanced AI powered by Gemini with code execution, security scanning, and automated auditing.",
       link: "GlyphBot",
-      image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=600&fit=crop"
+      image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=600&fit=crop",
+      price: "$50/mo"
     },
     {
       title: "QR Code Generator",
-      description: "Secure QR code generation with custom branding, analytics tracking, and encryption.",
+      description: "Secure QR code generation with custom branding, analytics tracking, and AI threat detection.",
       link: "QRGenerator",
-      image: "https://images.unsplash.com/photo-1616432043562-3671ea2e5242?w=800&h=600&fit=crop"
+      image: "https://images.unsplash.com/photo-1616432043562-3671ea2e5242?w=800&h=600&fit=crop",
+      price: "$49.99"
     },
     {
       title: "Steganography",
-      description: "Hide encrypted data within images using LSB encoding for secure communications.",
+      description: "Hide encrypted data within images using LSB encoding for secure covert communications.",
       link: "Steganography",
-      image: "https://images.unsplash.com/photo-1633265486064-086b219458ec?w=800&h=600&fit=crop"
+      image: "https://images.unsplash.com/photo-1633265486064-086b219458ec?w=800&h=600&fit=crop",
+      price: "$149.99"
     },
     {
       title: "Blockchain Security",
-      description: "SHA-256/512 hashing, immutable verification, and cryptographic proof systems.",
+      description: "SHA-256/512 hashing, Merkle trees, immutable verification, and cryptographic proof systems.",
       link: "Blockchain",
-      image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800&h=600&fit=crop"
+      image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800&h=600&fit=crop",
+      price: "$99.99"
+    },
+    {
+      title: "Hotzone Mapper",
+      description: "Interactive security vulnerability mapping. Upload images and mark security hotspots with severity levels.",
+      link: "HotzoneMapper",
+      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop",
+      price: "$99.99"
+    },
+    {
+      title: "HSSS Surveillance",
+      description: "Advanced security surveillance with real-time threat monitoring, AI detection, and incident tracking.",
+      link: "HSSS",
+      image: "https://images.unsplash.com/photo-1557597774-9d273605dfa9?w=800&h=600&fit=crop",
+      price: "Enterprise"
     }
   ];
 
@@ -113,28 +133,30 @@ export default function Home() {
   return (
     <div className="bg-black text-white">
       {/* Hero Section - Video Only */}
-      <section className="relative min-h-screen overflow-hidden">
+      <section className="relative h-screen overflow-hidden">
         <video 
           autoPlay 
           loop 
           muted 
           playsInline
           className="absolute inset-0 w-full h-full object-cover"
-          style={{ filter: "brightness(0.5)" }}
         >
           <source src="https://glyph-merge-pro-glyphlock.replit.app/assets/hero-video-CxU5xRpe.mp4" type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black" />
-        
-        {/* Grid Overlay */}
-        <div className="absolute inset-0 opacity-10" style={{
-          backgroundImage: "linear-gradient(cyan 1px, transparent 1px), linear-gradient(90deg, cyan 1px, transparent 1px)",
-          backgroundSize: "50px 50px"
-        }} />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black" />
       </section>
 
+      {/* Neural/Nebula Background - Fixed */}
+      <div className="fixed inset-0 opacity-20 pointer-events-none z-0" style={{ top: '100vh' }}>
+        <img
+          src="https://glyph-merge-pro-glyphlock.replit.app/assets/Whisk_b8d67ccda4c29cba08049ef6abdb02e9dr%20-%20Copy_1761014300850-75J3e_IN.jpeg"
+          alt="Neural Background"
+          className="w-full h-full object-cover"
+        />
+      </div>
+
       {/* Content Below Hero */}
-      <section className="relative bg-black py-20 -mt-32 z-10">
+      <section className="relative bg-black py-20 z-10">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-5xl mx-auto">
             {/* Top Tagline */}
@@ -269,10 +291,10 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {services.map((service, index) => (
               <Link key={index} to={createPageUrl(service.link)}>
-                <Card className="bg-gray-800 border-gray-700 hover:border-blue-500/50 transition-all duration-300 h-full group cursor-pointer overflow-hidden">
+                <Card className="bg-gray-800/80 backdrop-blur-md border-gray-700 hover:border-blue-500/50 transition-all duration-300 h-full group cursor-pointer overflow-hidden">
                   <div className="relative h-48 overflow-hidden">
                     <img 
                       src={service.image}
@@ -280,16 +302,21 @@ export default function Home() {
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-gray-800 via-gray-800/50 to-transparent" />
+                    <div className="absolute top-3 right-3">
+                      <Badge className="bg-blue-500/80 text-white border-blue-500">
+                        {service.price}
+                      </Badge>
+                    </div>
                   </div>
                   <CardContent className="p-6">
-                    <h3 className="text-xl font-bold mb-3 text-white group-hover:text-blue-400 transition-colors">
+                    <h3 className="text-lg font-bold mb-2 text-white group-hover:text-blue-400 transition-colors">
                       {service.title}
                     </h3>
-                    <p className="text-gray-400 mb-4">
+                    <p className="text-gray-400 text-sm mb-4">
                       {service.description}
                     </p>
                     <div className="flex items-center text-blue-400 text-sm font-semibold">
-                      Learn More <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                      Try Free <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
                     </div>
                   </CardContent>
                 </Card>
@@ -344,30 +371,64 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-b from-black to-gray-900">
+      {/* CTA Section with Images */}
+      <section className="py-20 bg-gradient-to-b from-black to-gray-900 relative">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
-              Ready to Transform Your <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">Digital Infrastructure?</span>
-            </h2>
-            <p className="text-xl text-gray-400 mb-8 leading-relaxed">
-              GlyphLock is the world's first platform to bind 5 AI systems to legally enforceable contracts. Our revolutionary Master Covenant System combines cryptographic proof with $14M liability coverage.
-            </p>
-            <p className="text-gray-400 mb-8 leading-relaxed">
-              Built by a team that generated $340K in verified revenue within 90 days, we're addressing the $283 billion annual IP theft crisis with quantum-resistant encryption and 99.97% threat detection accuracy.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to={createPageUrl("Consultation")}>
-                <Button size="lg" className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white text-lg px-8">
-                  Book Consultation
-                </Button>
-              </Link>
-              <Link to={createPageUrl("Contact")}>
-                <Button size="lg" variant="outline" className="border-blue-500/50 hover:bg-blue-500/10 text-white text-lg px-8">
-                  Contact Sales
-                </Button>
-              </Link>
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
+                Ready to Transform Your <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">Digital Infrastructure?</span>
+              </h2>
+              <p className="text-xl text-gray-400 mb-6 leading-relaxed">
+                GlyphLock is the world's first platform to bind 5 AI systems to legally enforceable contracts. Our revolutionary Master Covenant System combines cryptographic proof with $14M liability coverage.
+              </p>
+              <p className="text-gray-400 mb-8 leading-relaxed">
+                Built by a team that generated $340K in verified revenue within 90 days, we're addressing the $283 billion annual IP theft crisis with quantum-resistant encryption and 99.97% threat detection accuracy.
+              </p>
+            </div>
+
+            {/* Showcase Images */}
+            <div className="grid md:grid-cols-2 gap-8 mb-12">
+              <div className="relative rounded-2xl overflow-hidden border border-blue-500/30 hover:border-blue-500/50 transition-all">
+                <img 
+                  src="https://glyph-merge-pro-glyphlock.replit.app/assets/Whisk_b8d67ccda4c29cba08049ef6abdb02e9dr%20-%20Copy_1761014300850-75J3e_IN.jpeg"
+                  alt="GlyphLock Technology"
+                  className="w-full h-80 object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                <div className="absolute bottom-6 left-6">
+                  <h3 className="text-2xl font-bold text-white mb-2">Enterprise Security</h3>
+                  <p className="text-gray-300">Quantum-resistant encryption</p>
+                </div>
+              </div>
+              
+              <div className="relative rounded-2xl overflow-hidden border border-blue-500/30 hover:border-blue-500/50 transition-all">
+                <img 
+                  src="https://glyph-merge-pro-glyphlock.replit.app/assets/Whisk_c53f0a83ac0d9a4a11e40591b6298c58dr_1761196254031-DP4vmwHO.jpeg"
+                  alt="AI Integration"
+                  className="w-full h-80 object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                <div className="absolute bottom-6 left-6">
+                  <h3 className="text-2xl font-bold text-white mb-2">AI Binding Platform</h3>
+                  <p className="text-gray-300">Legal accountability framework</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="text-center">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link to={createPageUrl("Consultation")}>
+                  <Button size="lg" className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white text-lg px-8">
+                    Book Consultation
+                  </Button>
+                </Link>
+                <Link to={createPageUrl("Contact")}>
+                  <Button size="lg" variant="outline" className="border-blue-500/50 hover:bg-blue-500/10 text-white text-lg px-8">
+                    Contact Sales
+                  </Button>
+                </Link>
+              </div>
             </div>
           </div>
         </div>
