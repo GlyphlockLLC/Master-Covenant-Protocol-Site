@@ -20,6 +20,8 @@ import ConsultationSuccess from './pages/ConsultationSuccess';
 import HotzoneMapper from './pages/HotzoneMapper';
 import HSSS from './pages/HSSS';
 import SecurityDocs from './pages/SecurityDocs';
+import Payment from './pages/Payment';
+import PaymentSuccess from './pages/PaymentSuccess';
 import Layout from './Layout.jsx';
 
 
@@ -46,6 +48,8 @@ export const PAGES = {
     "HotzoneMapper": HotzoneMapper,
     "HSSS": HSSS,
     "SecurityDocs": SecurityDocs,
+    "Payment": Payment,
+    "PaymentSuccess": PaymentSuccess,
 }
 
 export const pagesConfig = {

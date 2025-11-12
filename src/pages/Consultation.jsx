@@ -34,8 +34,9 @@ export default function Consultation() {
 
   const createConsultation = useMutation({
     mutationFn: (data) => base44.entities.Consultation.create(data),
-    onSuccess: () => {
-      navigate(createPageUrl("ConsultationSuccess"));
+    onSuccess: (result) => {
+      // Redirect to payment page with consultation ID
+      navigate(createPageUrl("Payment") + `?consultation_id=${result.id}`);
     }
   });
 
@@ -48,7 +49,7 @@ export default function Consultation() {
     { icon: Shield, text: "Free 60-minute consultation" },
     { icon: Award, text: "Expert cybersecurity analysis" },
     { icon: Clock, text: "Custom solution recommendations" },
-    { icon: CheckCircle2, text: "No obligation quote" }
+    { icon: CheckCircle2, text: "Detailed proposal document" }
   ];
 
   return (
@@ -60,8 +61,9 @@ export default function Consultation() {
               Book Your <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">Consultation</span>
             </h1>
             <p className="text-xl text-gray-400">
-              Schedule a free consultation with our cybersecurity experts
+              Schedule a consultation with our cybersecurity experts
             </p>
+            <p className="text-blue-400 mt-2">$299 consultation fee • Applied to final project cost</p>
           </div>
 
           <div className="grid lg:grid-cols-3 gap-8">
@@ -145,6 +147,7 @@ export default function Consultation() {
                           value={formData.preferred_date}
                           onChange={(e) => setFormData({...formData, preferred_date: e.target.value})}
                           className="bg-gray-800 border-gray-700 text-white"
+                          min={new Date().toISOString().split('T')[0]}
                         />
                       </div>
                     </div>
@@ -167,7 +170,7 @@ export default function Consultation() {
                       disabled={createConsultation.isPending}
                       className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white"
                     >
-                      {createConsultation.isPending ? "Booking..." : "Book Consultation"}
+                      {createConsultation.isPending ? "Processing..." : "Continue to Payment"}
                     </Button>
                   </form>
                 </CardContent>
@@ -191,16 +194,16 @@ export default function Consultation() {
 
               <Card className="bg-gray-900 border-gray-800">
                 <CardHeader>
-                  <CardTitle className="text-white">Quick Facts</CardTitle>
+                  <CardTitle className="text-white">Consultation Details</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-gray-400">Response Time:</span>
-                    <span className="font-semibold text-white">24 hours</span>
+                    <span className="text-gray-400">Consultation Fee:</span>
+                    <span className="font-semibold text-white">$299</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-400">Consultation Fee:</span>
-                    <span className="font-semibold text-green-400">Free</span>
+                    <span className="text-gray-400">Response Time:</span>
+                    <span className="font-semibold text-white">24 hours</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-400">Duration:</span>
@@ -210,6 +213,21 @@ export default function Consultation() {
                     <span className="text-gray-400">Format:</span>
                     <span className="font-semibold text-white">Video Call</span>
                   </div>
+                  <div className="pt-3 border-t border-gray-700">
+                    <p className="text-gray-400 text-xs">
+                      * Consultation fee is fully credited toward your final project cost if you proceed with our services.
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-gradient-to-br from-green-500/10 to-emerald-700/10 border-green-500/30">
+                <CardContent className="p-6 text-center">
+                  <Shield className="w-12 h-12 text-green-400 mx-auto mb-3" />
+                  <h3 className="font-bold text-white mb-2">100% Satisfaction Guarantee</h3>
+                  <p className="text-sm text-gray-300">
+                    If you're not satisfied, we'll refund your consultation fee within 48 hours.
+                  </p>
                 </CardContent>
               </Card>
             </div>
