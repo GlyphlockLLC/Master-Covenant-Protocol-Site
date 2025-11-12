@@ -23,7 +23,6 @@ export default function Payment() {
   const [stripe, setStripe] = useState(null);
   const [elements, setElements] = useState(null);
   const [isLoadingStripe, setIsLoadingStripe] = useState(true);
-  const [stripePublishableKey, setStripePublishableKey] = useState(null);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -35,29 +34,28 @@ export default function Payment() {
   }, []);
 
   useEffect(() => {
-    // Load Stripe.js
-    const loadStripe = async () => {
-      try {
-        const script = document.createElement('script');
-        script.src = 'https://js.stripe.com/v3/';
-        script.async = true;
-        script.onload = () => {
-          console.log('Stripe.js loaded successfully');
-          setIsLoadingStripe(false);
-        };
-        script.onerror = () => {
-          setError('Failed to load Stripe. Please refresh the page.');
-          setIsLoadingStripe(false);
-        };
-        document.body.appendChild(script);
-      } catch (err) {
-        setError('Failed to load Stripe. Please refresh the page.');
-        setIsLoadingStripe(false);
-      }
-    };
-
     loadStripe();
   }, []);
+
+  const loadStripe = async () => {
+    try {
+      const script = document.createElement('script');
+      script.src = 'https://js.stripe.com/v3/';
+      script.async = true;
+      script.onload = () => {
+        console.log('Stripe.js loaded successfully');
+        setIsLoadingStripe(false);
+      };
+      script.onerror = () => {
+        setError('Failed to load Stripe. Please refresh the page.');
+        setIsLoadingStripe(false);
+      };
+      document.body.appendChild(script);
+    } catch (err) {
+      setError('Failed to load Stripe. Please refresh the page.');
+      setIsLoadingStripe(false);
+    }
+  };
 
   const loadConsultation = async (id) => {
     try {
@@ -75,10 +73,19 @@ export default function Payment() {
     try {
       setIsProcessing(true);
       
-      // Call backend function to create payment intent
+      // Get Stripe publishable key from backend
+      const configResult = await base44.functions.call('get-stripe-config');
+      
+      if (!configResult.success) {
+        throw new Error('Failed to load payment configuration');
+      }
+
+      const publishableKey = configResult.publishableKey;
+      
+      // Create payment intent
       const result = await base44.functions.call('stripe-create-payment-intent', {
         consultationId: consultation.id,
-        amount: 29900, // $299.00 in cents
+        amount: 29900,
         email: consultation.email,
         name: consultation.full_name
       });
@@ -89,43 +96,17 @@ export default function Payment() {
 
       setClientSecret(result.clientSecret);
       
-      // Get Stripe publishable key from backend (via environment)
-      // For now, using a placeholder - replace with actual key retrieval
-      const pubKey = await getStripePublishableKey();
-      setStripePublishableKey(pubKey);
-      
-      // Initialize Stripe Elements after Stripe.js is loaded
-      if (window.Stripe && pubKey) {
-        initializeStripeElements(result.clientSecret, pubKey);
+      // Initialize Stripe Elements
+      if (window.Stripe && publishableKey) {
+        initializeStripeElements(result.clientSecret, publishableKey);
+      } else {
+        throw new Error('Stripe not loaded or key missing');
       }
       
       setIsProcessing(false);
     } catch (err) {
       setError(err.message);
       setIsProcessing(false);
-    }
-  };
-
-  const getStripePublishableKey = async () => {
-    // In production, fetch this from your backend/config
-    // The publishable key is safe to expose in frontend
-    
-    // Option 1: Hardcode test key (for development only)
-    // return 'pk_test_YOUR_KEY_HERE';
-    
-    // Option 2: Fetch from backend endpoint
-    try {
-      // Create a backend function that returns the publishable key
-      // const result = await base44.functions.call('get-stripe-config');
-      // return result.publishableKey;
-      
-      // For now, using placeholder - REPLACE THIS WITH YOUR ACTUAL KEY
-      console.warn('⚠️ Using placeholder Stripe key. Update with your actual publishable key from Stripe Dashboard.');
-      return 'pk_test_51PLACEHOLDER_REPLACE_WITH_YOUR_ACTUAL_KEY';
-      
-    } catch (err) {
-      console.error('Failed to get Stripe publishable key:', err);
-      throw new Error('Payment system configuration error');
     }
   };
 
@@ -151,7 +132,6 @@ export default function Payment() {
       
       setElements(elementsInstance);
       
-      // Mount payment element
       const paymentElement = elementsInstance.create('payment');
       paymentElement.mount('#payment-element');
       
@@ -266,7 +246,7 @@ export default function Payment() {
                     </Alert>
                   )}
 
-                  {isLoadingStripe || isProcessing && !clientSecret ? (
+                  {isLoadingStripe || (isProcessing && !clientSecret) ? (
                     <div className="flex items-center justify-center py-12">
                       <Loader2 className="w-8 h-8 text-blue-400 animate-spin" />
                       <span className="ml-3 text-gray-400">
@@ -275,7 +255,6 @@ export default function Payment() {
                     </div>
                   ) : (
                     <form onSubmit={processPayment} className="space-y-6">
-                      {/* Stripe Payment Element Container */}
                       <div>
                         <Label className="text-white mb-3 block">Card Details</Label>
                         <div id="payment-element" className="min-h-[200px]">
