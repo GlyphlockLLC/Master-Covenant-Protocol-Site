@@ -160,13 +160,16 @@ Respond naturally and helpfully. If suggesting a page, mention it by name.
 
   return (
     <Card 
-      className="fixed bottom-6 right-6 z-50 w-96 h-[600px] shadow-2xl border-2"
+      className="fixed bottom-6 right-6 z-50 shadow-2xl border-2"
       style={{
+        width: '420px',
+        height: flippedButton !== null ? '680px' : '600px',
         background: 'rgba(65, 105, 225, 0.15)',
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
         borderColor: 'rgba(65, 105, 225, 0.4)',
-        boxShadow: '0 0 40px rgba(65, 105, 225, 0.3), inset 0 0 20px rgba(65, 105, 225, 0.1)'
+        boxShadow: '0 0 40px rgba(65, 105, 225, 0.3), inset 0 0 20px rgba(65, 105, 225, 0.1)',
+        transition: 'all 0.3s ease'
       }}
     >
       <CardHeader 
@@ -205,18 +208,20 @@ Respond naturally and helpfully. If suggesting a page, mention it by name.
         </Button>
       </CardHeader>
 
-      <CardContent className="p-4 h-[calc(100%-140px)] flex flex-col">
-        {/* Quick Links with Flip Effect */}
+      <CardContent className="p-4 flex flex-col" style={{ height: flippedButton !== null ? 'calc(100% - 80px)' : 'calc(100% - 80px)' }}>
+        {/* Quick Links - Expanded Grid */}
         <div 
-          className="flex flex-wrap gap-2 mb-3 pb-3"
+          className="grid grid-cols-2 gap-3 mb-3 pb-3"
           style={{
-            borderBottom: '1px solid rgba(65, 105, 225, 0.3)'
+            borderBottom: '1px solid rgba(65, 105, 225, 0.3)',
+            minHeight: flippedButton !== null ? '280px' : '140px',
+            transition: 'min-height 0.3s ease'
           }}
         >
           {quickLinks.map((link, idx) => (
-            <div key={idx} className="relative group" style={{ perspective: '1000px' }}>
+            <div key={idx} className="relative" style={{ perspective: '1000px', height: flippedButton === idx ? '260px' : '60px', transition: 'height 0.3s ease' }}>
               <div
-                className={`relative transition-transform duration-500 ${
+                className={`relative w-full h-full transition-transform duration-500 ${
                   flippedButton === idx ? '[transform:rotateY(180deg)]' : ''
                 }`}
                 style={{ transformStyle: 'preserve-3d' }}
@@ -228,7 +233,7 @@ Respond naturally and helpfully. If suggesting a page, mention it by name.
                 >
                   <button
                     onClick={() => handleButtonClick(idx)}
-                    className="relative px-3 py-2 rounded-lg text-sm font-bold transition-all duration-300 text-white overflow-hidden group-hover:scale-105"
+                    className="w-full h-full relative px-3 py-3 rounded-lg text-sm font-bold transition-all duration-300 text-white overflow-hidden group hover:scale-105"
                     style={{
                       background: 'rgba(65, 105, 225, 0.3)',
                       backdropFilter: 'blur(16px)',
@@ -246,10 +251,10 @@ Respond naturally and helpfully. If suggesting a page, mention it by name.
                       }}
                     />
                     
-                    <div className="relative flex items-center gap-2">
-                      <link.icon className="w-4 h-4 flex-shrink-0 text-white" />
+                    <div className="relative flex items-center justify-center gap-2">
+                      <link.icon className="w-5 h-5 flex-shrink-0 text-white" />
                       <span
-                        className="transition-all duration-300 group-hover:blur-0 font-bold text-white"
+                        className="transition-all duration-300 group-hover:blur-0 font-bold text-white text-center"
                         style={{
                           filter: 'blur(3px)',
                           textShadow: `0 0 10px ${link.glow}, 0 0 20px ${link.glow}`
@@ -258,7 +263,7 @@ Respond naturally and helpfully. If suggesting a page, mention it by name.
                         {link.label}
                       </span>
                       <span
-                        className="absolute left-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-bold text-white"
+                        className="absolute opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-bold text-white text-center"
                         style={{ 
                           filter: 'blur(0px)',
                           textShadow: '0 2px 4px rgba(0,0,0,0.3)'
@@ -279,7 +284,7 @@ Respond naturally and helpfully. If suggesting a page, mention it by name.
                   }}
                 >
                   <div
-                    className="w-full h-full p-3 rounded-lg text-xs shadow-xl"
+                    className="w-full h-full p-4 rounded-lg text-xs shadow-xl flex flex-col"
                     style={{
                       background: 'rgba(65, 105, 225, 0.4)',
                       backdropFilter: 'blur(20px)',
@@ -288,11 +293,11 @@ Respond naturally and helpfully. If suggesting a page, mention it by name.
                       boxShadow: '0 0 30px rgba(65, 105, 225, 0.4)'
                     }}
                   >
-                    <div className="flex items-start gap-2 mb-2">
-                      <Info className="w-4 h-4 flex-shrink-0 text-white mt-0.5" />
-                      <div className="font-bold text-white">{link.label}</div>
+                    <div className="flex items-start gap-2 mb-3">
+                      <Info className="w-5 h-5 flex-shrink-0 text-white mt-0.5" />
+                      <div className="font-bold text-white text-base">{link.label}</div>
                     </div>
-                    <p className="text-xs leading-relaxed text-white/95 font-medium">
+                    <p className="text-sm leading-relaxed text-white/95 font-medium mb-3 flex-1">
                       {link.info}
                     </p>
                     <Link 
@@ -301,10 +306,11 @@ Respond naturally and helpfully. If suggesting a page, mention it by name.
                         handleQuickLink(link.label);
                         setFlippedButton(null);
                       }}
+                      className="w-full"
                     >
                       <Button
                         size="sm"
-                        className="w-full mt-2 text-xs font-bold text-white"
+                        className="w-full text-sm font-bold text-white"
                         style={{
                           background: 'linear-gradient(135deg, rgba(65, 105, 225, 0.8), rgba(30, 64, 175, 0.8))',
                           border: '1px solid rgba(255, 255, 255, 0.3)',
@@ -321,8 +327,14 @@ Respond naturally and helpfully. If suggesting a page, mention it by name.
           ))}
         </div>
 
-        {/* Messages */}
-        <div className="flex-1 overflow-y-auto space-y-3 mb-3">
+        {/* Messages - Adjust height based on expanded state */}
+        <div 
+          className="overflow-y-auto space-y-3 mb-3"
+          style={{
+            flex: 1,
+            minHeight: '200px'
+          }}
+        >
           {messages.map((msg, idx) => (
             <div
               key={idx}

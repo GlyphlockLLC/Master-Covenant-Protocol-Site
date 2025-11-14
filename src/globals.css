@@ -24,6 +24,14 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
     --radius: 0.5rem;
+    
+    /* Royal Blue Glassmorphism Colors */
+    --royal-blue: 65, 105, 225;
+    --royal-blue-dark: 30, 64, 175;
+    --glass-bg-light: rgba(255, 255, 255, 0.7);
+    --glass-bg-dark: rgba(65, 105, 225, 0.15);
+    --glass-border-light: rgba(65, 105, 225, 0.3);
+    --glass-border-dark: rgba(65, 105, 225, 0.4);
   }
 
   .dark {
@@ -58,76 +66,184 @@
   }
 }
 
-/* Glassmorphism Utilities */
+/* Royal Blue Glassmorphism Design System */
 @layer utilities {
+  /* Primary Card Styles */
   .glass-card {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(65, 105, 225, 0.15);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(65, 105, 225, 0.3);
+    box-shadow: 0 8px 32px rgba(65, 105, 225, 0.2), inset 0 0 20px rgba(65, 105, 225, 0.05);
   }
 
+  .glass-card-hover {
+    background: rgba(65, 105, 225, 0.15);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(65, 105, 225, 0.3);
+    box-shadow: 0 8px 32px rgba(65, 105, 225, 0.2), inset 0 0 20px rgba(65, 105, 225, 0.05);
+    transition: all 0.3s ease;
+  }
+
+  .glass-card-hover:hover {
+    background: rgba(65, 105, 225, 0.25);
+    border-color: rgba(65, 105, 225, 0.5);
+    box-shadow: 0 12px 40px rgba(65, 105, 225, 0.4), inset 0 0 30px rgba(65, 105, 225, 0.1);
+    transform: translateY(-2px);
+  }
+
+  /* Dark Mode Cards */
   .glass-card-dark {
-    background: rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(59, 130, 246, 0.2);
+    background: rgba(65, 105, 225, 0.15);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(65, 105, 225, 0.4);
+    box-shadow: 0 8px 32px rgba(65, 105, 225, 0.3), inset 0 0 20px rgba(65, 105, 225, 0.08);
   }
 
+  /* Light Mode Cards */
   .glass-card-light {
     background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(59, 130, 246, 0.3);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(65, 105, 225, 0.3);
+    box-shadow: 0 8px 32px rgba(65, 105, 225, 0.15), inset 0 0 20px rgba(255, 255, 255, 0.5);
   }
 
+  /* Navigation */
   .glass-nav {
     background: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(65, 105, 225, 0.2);
   }
 
   .glass-nav-light {
     background: rgba(255, 255, 255, 0.6);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(65, 105, 225, 0.3);
   }
 
+  /* Tables */
   .glass-table {
-    background: rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(59, 130, 246, 0.15);
+    background: rgba(65, 105, 225, 0.1);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(65, 105, 225, 0.25);
   }
 
   .glass-table-light {
     background: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(59, 130, 246, 0.25);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(65, 105, 225, 0.3);
+  }
+
+  /* Buttons */
+  .glass-button {
+    background: rgba(65, 105, 225, 0.3);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(65, 105, 225, 0.5);
+    box-shadow: 0 4px 16px rgba(65, 105, 225, 0.3);
+  }
+
+  .glass-button:hover {
+    background: rgba(65, 105, 225, 0.4);
+    border-color: rgba(65, 105, 225, 0.7);
+    box-shadow: 0 6px 20px rgba(65, 105, 225, 0.5);
+  }
+
+  /* Input Fields */
+  .glass-input {
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(65, 105, 225, 0.5);
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5), 0 0 10px rgba(65, 105, 225, 0.3);
+  }
+
+  .glass-input-light {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(65, 105, 225, 0.4);
+    box-shadow: inset 0 2px 8px rgba(65, 105, 225, 0.1), 0 0 10px rgba(65, 105, 225, 0.2);
+  }
+
+  /* Modal/Overlay */
+  .glass-modal {
+    background: rgba(65, 105, 225, 0.2);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(65, 105, 225, 0.4);
+    box-shadow: 0 16px 64px rgba(65, 105, 225, 0.4), inset 0 0 30px rgba(65, 105, 225, 0.1);
+  }
+
+  /* Text Styles */
+  .text-glass-white {
+    color: #ffffff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .text-royal-blue {
+    color: rgb(65, 105, 225);
+  }
+
+  /* Glow Effects */
+  .glow-royal-blue {
+    box-shadow: 0 0 20px rgba(65, 105, 225, 0.6), 0 0 40px rgba(65, 105, 225, 0.4);
+  }
+
+  .glow-royal-blue-strong {
+    box-shadow: 0 0 30px rgba(65, 105, 225, 0.8), 0 0 60px rgba(65, 105, 225, 0.6);
   }
 }
 
-/* Custom Scrollbar */
+/* Custom Scrollbar with Royal Blue Theme */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(59, 130, 246, 0.5);
-  border-radius: 4px;
+  background: rgba(65, 105, 225, 0.6);
+  border-radius: 5px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(59, 130, 246, 0.7);
+  background: rgba(65, 105, 225, 0.8);
+  background-clip: padding-box;
 }
 
 /* Smooth transitions */
 * {
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
+
+/* Color Hierarchy & Design Rules */
+/* 
+  Primary: Royal Blue (65, 105, 225)
+  Secondary: Dark Royal Blue (30, 64, 175)
+  Accent: Bright White (#ffffff)
+  Background: Black with 20% opacity neural texture
+  
+  60-30-10 Rule:
+  - 60% Black/Dark backgrounds
+  - 30% Royal Blue glassmorphism
+  - 10% Bright White text/accents
+  
+  Contrast Ratio: Always maintain 4.5:1 minimum for accessibility
+  Glassmorphism: 15-25% opacity with 16-24px blur
+  Borders: Royal blue at 30-50% opacity
+  Shadows: Royal blue glow at 20-40% opacity
+*/
