@@ -27,6 +27,7 @@ import Dashboard from './pages/Dashboard';
 import Admin from './pages/Admin';
 import NUPSManager from './pages/NUPSManager';
 import DreamTeam from './pages/DreamTeam';
+import CovenantDashboard from './pages/CovenantDashboard';
 import Layout from './Layout.jsx';
 
 
@@ -60,6 +61,7 @@ export const PAGES = {
     "Admin": Admin,
     "NUPSManager": NUPSManager,
     "DreamTeam": DreamTeam,
+    "CovenantDashboard": CovenantDashboard,
 }
 
 export const pagesConfig = {
