@@ -14,34 +14,34 @@ export default function SecurityDocs() {
   const securityFeatures = [
     {
       icon: Lock,
-      title: "HTTPS/TLS Encryption",
-      level: "Enterprise-Grade",
-      description: "All data transmitted between your browser and our servers is encrypted using TLS 1.3, the latest industry standard.",
+      title: "Post-Quantum Ready (Hybrid)",
+      level: "Next-Gen",
+      description: "Hybrid cryptographic system using safe transition mode with quantum-resistant algorithms.",
       details: [
-        "256-bit AES encryption for data in transit",
+        "AES-256 encryption standard",
+        "PQC Key Exchange implementation",
         "Perfect Forward Secrecy (PFS) enabled",
-        "HSTS (HTTP Strict Transport Security) enforced",
-        "A+ SSL Labs rating",
-        "Automatic HTTP to HTTPS redirect"
+        "Quantum-safe algorithm integration",
+        "Future-proof security architecture"
       ]
     },
     {
       icon: Key,
       title: "Quantum-Resistant Cryptography",
-      level: "Next-Gen",
-      description: "Preparing for the post-quantum era with hybrid cryptographic systems that resist attacks from quantum computers.",
+      level: "Military-Grade",
+      description: "Advanced post-quantum cryptography protecting against quantum computing attacks.",
       details: [
         "SHA-256/512 hashing algorithms",
         "RSA-4096 key encryption",
         "ECDSA (Elliptic Curve) signatures",
-        "Quantum-safe algorithm research integration",
-        "Future-proof security architecture"
+        "NIST PQC standards compliance",
+        "Hybrid encryption protocols"
       ]
     },
     {
       icon: Database,
       title: "Data Protection",
-      level: "Military-Grade",
+      level: "Enterprise",
       description: "Your data is protected at rest and in transit with multiple layers of encryption and access controls.",
       details: [
         "AES-256 encryption at rest",
@@ -99,6 +99,11 @@ export default function SecurityDocs() {
       status: "Active"
     },
     {
+      name: "PQC Key Exchange",
+      description: "Post-Quantum Cryptography",
+      status: "Hybrid Mode"
+    },
+    {
       name: "HSTS",
       description: "HTTP Strict Transport Security",
       status: "Enforced"
@@ -109,13 +114,8 @@ export default function SecurityDocs() {
       status: "Implemented"
     },
     {
-      name: "CORS",
-      description: "Cross-Origin Resource Sharing",
-      status: "Configured"
-    },
-    {
-      name: "XSS Protection",
-      description: "Cross-Site Scripting prevention",
+      name: "AES-256",
+      description: "Advanced Encryption Standard",
       status: "Active"
     },
     {
@@ -135,26 +135,26 @@ export default function SecurityDocs() {
   ];
 
   const httpsExplained = {
-    title: "Understanding HTTPS",
+    title: "Understanding Post-Quantum Security",
     sections: [
       {
-        heading: "What is HTTPS?",
-        content: "HTTPS (HyperText Transfer Protocol Secure) is the secure version of HTTP. It uses SSL/TLS encryption to protect all data transmitted between your browser and our servers.",
+        heading: "Post-Quantum Ready",
+        content: "GlyphLock uses hybrid cryptographic systems that combine traditional encryption with quantum-resistant algorithms, ensuring security even against future quantum computers.",
         icon: Lock
       },
       {
-        heading: "How Does It Work?",
-        content: "When you connect to GlyphLock, your browser and our server perform a 'TLS handshake' to establish an encrypted connection. All data is then encrypted before transmission, making it unreadable to anyone intercepting the connection.",
+        heading: "Hybrid Transition Mode",
+        content: "Our safe hybrid transition mode implements both classical and post-quantum cryptography, providing backwards compatibility while preparing for the quantum era.",
         icon: Key
       },
       {
-        heading: "Why It Matters",
-        content: "HTTPS prevents eavesdropping, tampering, and message forgery. For GlyphLock, this means your Master Covenant agreements, QR codes, payment data, and personal information are always protected.",
+        heading: "AES-256 Standard",
+        content: "All data is encrypted using AES-256, the industry-standard encryption algorithm trusted by governments and enterprises worldwide for top-secret information.",
         icon: Shield
       },
       {
-        heading: "Visual Indicators",
-        content: "Look for the padlock icon (🔒) in your browser's address bar and 'https://' at the start of the URL. These confirm you're on a secure connection.",
+        heading: "PQC Key Exchange",
+        content: "Post-Quantum Cryptography (PQC) key exchange protocols ensure that even quantum computers cannot decrypt your secure communications.",
         icon: Eye
       }
     ]
@@ -179,14 +179,25 @@ export default function SecurityDocs() {
           <div className="text-center mb-12">
             <Badge variant="outline" className="border-blue-500/50 bg-blue-500/10 text-blue-400 mb-6 px-4 py-2">
               <Shield className="w-4 h-4 mr-2" />
-              Enterprise Security Documentation
+              Post-Quantum Ready (Hybrid)
             </Badge>
             <h1 className="text-5xl font-bold mb-4">
               Security <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">Architecture</span>
             </h1>
-            <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+            <p className="text-xl text-gray-400 max-w-3xl mx-auto mb-4">
               Comprehensive overview of GlyphLock's security infrastructure, encryption protocols, and compliance standards
             </p>
+            <div className="flex items-center justify-center gap-3 text-sm text-blue-300">
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-4 h-4" />
+                <span className="font-semibold">AES-256</span>
+              </div>
+              <span className="text-gray-500">•</span>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-4 h-4" />
+                <span className="font-semibold">PQC Key Exchange</span>
+              </div>
+            </div>
           </div>
 
           {/* Security Score */}
@@ -202,8 +213,8 @@ export default function SecurityDocs() {
                   <div className="text-sm text-gray-400">Threat Detection</div>
                 </div>
                 <div>
-                  <div className="text-5xl font-bold text-purple-400 mb-2">256-bit</div>
-                  <div className="text-sm text-gray-400">AES Encryption</div>
+                  <div className="text-5xl font-bold text-purple-400 mb-2">AES-256</div>
+                  <div className="text-sm text-gray-400">Encryption</div>
                 </div>
                 <div>
                   <div className="text-5xl font-bold text-orange-400 mb-2">$14M</div>
@@ -213,10 +224,10 @@ export default function SecurityDocs() {
             </CardContent>
           </Card>
 
-          {/* HTTPS Explained */}
+          {/* Post-Quantum Explained */}
           <div className="mb-12">
             <h2 className="text-3xl font-bold mb-6 text-white">
-              Understanding <span className="text-blue-400">HTTPS</span>
+              Understanding <span className="text-blue-400">Post-Quantum Security</span>
             </h2>
             <div className="grid md:grid-cols-2 gap-6">
               {httpsExplained.sections.map((section, index) => {
@@ -356,7 +367,7 @@ export default function SecurityDocs() {
           <Alert className="bg-red-500/10 border-red-500/30 mb-8">
             <AlertTriangle className="h-4 w-4 text-red-400" />
             <AlertDescription className="text-white">
-              <strong>Security Incident?</strong> Report immediately to security@glyphlock.com or use our 24/7 incident hotline: +1 (555) SEC-HELP
+              <strong>Security Incident?</strong> Report immediately to security@glyphlock.com or use our 24/7 incident hotline: +1 (424) 246-6499
             </AlertDescription>
           </Alert>
 
