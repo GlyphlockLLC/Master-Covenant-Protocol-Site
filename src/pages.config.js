@@ -29,6 +29,7 @@ import NUPSManager from './pages/NUPSManager';
 import DreamTeam from './pages/DreamTeam';
 import CovenantDashboard from './pages/CovenantDashboard';
 import RefactorTaskList from './pages/RefactorTaskList';
+import IntegrationPlan from './pages/IntegrationPlan';
 import Layout from './Layout.jsx';
 
 
@@ -64,6 +65,7 @@ export const PAGES = {
     "DreamTeam": DreamTeam,
     "CovenantDashboard": CovenantDashboard,
     "RefactorTaskList": RefactorTaskList,
+    "IntegrationPlan": IntegrationPlan,
 }
 
 export const pagesConfig = {
