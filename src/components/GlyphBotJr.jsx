@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
-import { MessageCircle, X, Send, Bot, Menu } from "lucide-react";
+import { MessageCircle, X, Send, Menu } from "lucide-react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { Button } from "@/components/ui/button";
@@ -87,7 +87,11 @@ Provide a helpful, professional response (2-3 sentences max). No emojis. Guide t
         >
           <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Bot className="w-6 h-6 text-white" />
+              <img 
+                src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/61e45d108_glyphbot-size-lg.png"
+                alt="GlyphBot"
+                className="w-8 h-8 rounded-full bg-white/10 p-1"
+              />
               <div>
                 <span className="font-bold text-white block">GlyphBot Jr.</span>
                 <span className="text-xs text-white/80">Navigation Assistant</span>
