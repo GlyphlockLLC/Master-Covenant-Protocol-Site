@@ -8,6 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ChevronRight, Shield, ArrowUp, Lock, Eye, Zap, CheckCircle2, FileText, Scale } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import AnimatedBackground from "@/components/AnimatedBackground";
+import DreamTeamRoster from "@/components/DreamTeamRoster";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -301,6 +302,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Dream Team Roster Section - NEW */}
+      <DreamTeamRoster />
 
       {/* Features Section */}
       <section className="py-24 relative">
