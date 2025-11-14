@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ChevronRight, Shield, ArrowUp, Lock, Eye, Zap, CheckCircle2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import AnimatedBackground from "@/components/AnimatedBackground";
+import TechStackCarousel from "@/components/TechStackCarousel";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -74,16 +75,16 @@ export default function Home() {
     icon: Lock
   },
   {
-    title: "Hotzone Mapper",
-    description: "Interactive vulnerability mapping with severity tracking.",
-    link: "HotzoneMapper",
+    title: "HSSS Hotzone Mapper",
+    description: "Interactive security mapping with real-time threat monitoring and AI detection.",
+    link: "HSSS",
     image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/7e319a981_Whisk_429a6543b81e30d9bab4065457f3b62ddr.jpg",
     price: "$99.99",
     icon: Shield
   },
   {
     title: "HSSS Surveillance",
-    description: "Real-time threat monitoring with AI detection.",
+    description: "Real-time threat monitoring with AI detection and incident tracking.",
     link: "HSSS",
     image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/144d647a1_Whisk_938e90eff0a4d8da277467baf360248edr.jpg",
     price: "Enterprise",
@@ -349,6 +350,13 @@ export default function Home() {
               );
             })}
           </div>
+        </div>
+      </section>
+
+      {/* Tech Stack Carousel */}
+      <section className="py-24 relative">
+        <div className="container mx-auto px-4 relative z-10">
+          <TechStackCarousel />
         </div>
       </section>
 

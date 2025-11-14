@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
@@ -171,6 +170,9 @@ export default function Layout({ children, currentPageName }) {
                     <Link to={createPageUrl("MasterCovenant")}>Master Covenant</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild className={`${darkMode ? 'text-white hover:text-blue-400 focus:text-blue-400 focus:bg-blue-500/20' : 'text-gray-900 hover:text-blue-600 focus:text-blue-600 focus:bg-blue-500/10'} cursor-pointer`}>
+                    <Link to={createPageUrl("CovenantDashboard")}>Covenant Dashboard</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild className={`${darkMode ? 'text-white hover:text-blue-400 focus:text-blue-400 focus:bg-blue-500/20' : 'text-gray-900 hover:text-blue-600 focus:text-blue-600 focus:bg-blue-500/10'} cursor-pointer`}>
                     <Link to={createPageUrl("DreamTeam")}>Dream Team</Link>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -319,6 +321,11 @@ export default function Layout({ children, currentPageName }) {
                 <Link to={createPageUrl("MasterCovenant")} onClick={() => setMobileMenuOpen(false)}>
                   <Button variant="ghost" className={`w-full justify-start ${darkMode ? 'text-white' : 'text-gray-900'}`}>
                     Master Covenant
+                  </Button>
+                </Link>
+                <Link to={createPageUrl("CovenantDashboard")} onClick={() => setMobileMenuOpen(false)}>
+                  <Button variant="ghost" className={`w-full justify-start ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                    Covenant Dashboard
                   </Button>
                 </Link>
                 <Link to={createPageUrl("DreamTeam")} onClick={() => setMobileMenuOpen(false)}>
