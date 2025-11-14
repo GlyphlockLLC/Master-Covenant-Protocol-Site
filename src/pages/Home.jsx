@@ -4,7 +4,7 @@ import { createPageUrl } from "@/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-import { ChevronRight, Shield, ArrowUp, Lock, Eye, Zap, CheckCircle2, Star } from "lucide-react";
+import { ChevronRight, Shield, ArrowUp, Lock, Eye, Zap, CheckCircle2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 export default function Home() {
@@ -152,24 +152,24 @@ export default function Home() {
         >
           <source src="https://glyph-merge-pro-glyphlock.replit.app/assets/hero-video-CxU5xRpe.mp4" type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/70" />
         
         <div className="relative z-20 container mx-auto px-4 py-20">
           <div className="max-w-5xl mx-auto text-center">
-            <Badge className="mb-6 bg-blue-500/20 text-blue-400 border-blue-500/50 px-6 py-2 text-sm">
+            <Badge className="mb-6 bg-blue-500/20 text-blue-400 border-blue-500/50 px-6 py-2 text-sm backdrop-blur-md">
               <Shield className="w-4 h-4 mr-2" />
               Quantum-Resistant Security Platform
             </Badge>
             
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold mb-8 leading-tight">
-              <span className="text-white">Secure Your</span>
+              <span className="text-white drop-shadow-2xl">Secure Your</span>
               <br />
-              <span className="bg-gradient-to-r from-blue-400 via-blue-600 to-blue-800 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-400 via-blue-600 to-blue-800 bg-clip-text text-transparent drop-shadow-2xl">
                 Digital Future
               </span>
             </h1>
 
-            <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl md:text-2xl text-gray-200 mb-12 max-w-3xl mx-auto leading-relaxed drop-shadow-lg">
               Enterprise-grade cybersecurity with AI integration, quantum-resistant encryption, and zero-trust architecture
             </p>
 
@@ -190,9 +190,9 @@ export default function Home() {
             {/* Stats */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
               {stats.map((stat, idx) => (
-                <div key={idx} className="glass-card-dark border-blue-500/30 p-6 rounded-xl">
+                <div key={idx} className="glass-card backdrop-blur-xl bg-black/20 border-blue-500/30 p-6 rounded-xl">
                   <div className="text-3xl md:text-4xl font-bold text-blue-400 mb-2">{stat.value}</div>
-                  <div className="text-sm text-gray-400">{stat.label}</div>
+                  <div className="text-sm text-gray-300">{stat.label}</div>
                 </div>
               ))}
             </div>
@@ -201,8 +201,8 @@ export default function Home() {
       </section>
 
       {/* Features Section */}
-      <section className="py-24 bg-gradient-to-b from-black to-gray-900 relative">
-        <div className="container mx-auto px-4">
+      <section className="py-24 relative">
+        <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
               Why Choose <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">GlyphLock</span>
@@ -216,7 +216,7 @@ export default function Home() {
             {features.map((feature, idx) => {
               const Icon = feature.icon;
               return (
-                <div key={idx} className="glass-card-dark border-blue-500/30 p-8 rounded-2xl hover:border-blue-500/60 transition-all duration-300 group">
+                <div key={idx} className="glass-card backdrop-blur-xl bg-black/30 border-blue-500/30 p-8 rounded-2xl hover:border-blue-500/60 transition-all duration-300 group">
                   <div className="bg-blue-500/20 w-16 h-16 rounded-xl flex items-center justify-center mb-6 group-hover:bg-blue-500/30 transition-colors">
                     <Icon className="w-8 h-8 text-blue-400" />
                   </div>
@@ -284,8 +284,8 @@ export default function Home() {
       </section>
 
       {/* Services Grid */}
-      <section className="py-24 bg-black">
-        <div className="container mx-auto px-4">
+      <section className="py-24 relative">
+        <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
               Complete Security <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">Ecosystem</span>
@@ -300,7 +300,7 @@ export default function Home() {
               const Icon = service.icon;
               return (
                 <Link key={index} to={createPageUrl(service.link)}>
-                  <Card className="glass-card-dark border-blue-500/30 hover:border-blue-500/60 transition-all duration-300 h-full group cursor-pointer overflow-hidden">
+                  <Card className="glass-card backdrop-blur-xl bg-black/30 border-blue-500/30 hover:border-blue-500/60 transition-all duration-300 h-full group cursor-pointer overflow-hidden">
                     <div className="relative h-48 overflow-hidden">
                       <img 
                         src={service.image}
@@ -336,8 +336,8 @@ export default function Home() {
       </section>
 
       {/* Social Proof */}
-      <section className="py-24 bg-gradient-to-b from-black to-gray-900">
-        <div className="container mx-auto px-4">
+      <section className="py-24 relative">
+        <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
               Trusted by <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">Industry Leaders</span>
@@ -346,15 +346,15 @@ export default function Home() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8 mb-16">
-            <div className="glass-card-dark border-blue-500/30 p-8 rounded-2xl text-center">
+            <div className="glass-card backdrop-blur-xl bg-black/30 border-blue-500/30 p-8 rounded-2xl text-center">
               <div className="text-5xl font-bold text-blue-400 mb-2">500+</div>
               <div className="text-gray-400">Enterprise Clients</div>
             </div>
-            <div className="glass-card-dark border-blue-500/30 p-8 rounded-2xl text-center">
+            <div className="glass-card backdrop-blur-xl bg-black/30 border-blue-500/30 p-8 rounded-2xl text-center">
               <div className="text-5xl font-bold text-blue-400 mb-2">99.97%</div>
               <div className="text-gray-400">Uptime Guarantee</div>
             </div>
-            <div className="glass-card-dark border-blue-500/30 p-8 rounded-2xl text-center">
+            <div className="glass-card backdrop-blur-xl bg-black/30 border-blue-500/30 p-8 rounded-2xl text-center">
               <div className="text-5xl font-bold text-blue-400 mb-2">24/7</div>
               <div className="text-gray-400">Security Monitoring</div>
             </div>
@@ -363,7 +363,7 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 bg-black relative overflow-hidden">
+      <section className="py-24 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent" />
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
@@ -381,7 +381,7 @@ export default function Home() {
                   placeholder="Enter your work email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="glass-input border-blue-500/50 text-white placeholder:text-gray-400 h-14 text-lg flex-1"
+                  className="glass-input backdrop-blur-xl bg-black/30 border-blue-500/50 text-white placeholder:text-gray-400 h-14 text-lg flex-1"
                   required
                 />
                 <Button 

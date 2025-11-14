@@ -56,7 +56,7 @@
   }
 }
 
-/* Nebula/Neural Background - Fixed and Always Visible */
+/* Nebula/Neural Background - Now more visible */
 html, body {
   position: relative;
   min-height: 100vh;
@@ -76,8 +76,8 @@ body::before {
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  opacity: 0.4;
-  z-index: 0;
+  opacity: 0.6;
+  z-index: 1;
   pointer-events: none;
 }
 
@@ -106,7 +106,7 @@ body::before {
 @layer utilities {
   /* Primary Card Styles */
   .glass-card {
-    background: rgba(65, 105, 225, 0.15);
+    background: rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid rgba(65, 105, 225, 0.3);
@@ -114,7 +114,7 @@ body::before {
   }
 
   .glass-card-hover {
-    background: rgba(65, 105, 225, 0.15);
+    background: rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid rgba(65, 105, 225, 0.3);
@@ -131,7 +131,7 @@ body::before {
 
   /* Dark Mode Cards */
   .glass-card-dark {
-    background: rgba(65, 105, 225, 0.15);
+    background: rgba(0, 0, 0, 0.4);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid rgba(65, 105, 225, 0.4);
@@ -164,7 +164,7 @@ body::before {
 
   /* Tables */
   .glass-table {
-    background: rgba(65, 105, 225, 0.1);
+    background: rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border: 1px solid rgba(65, 105, 225, 0.25);
@@ -211,7 +211,7 @@ body::before {
 
   /* Modal/Overlay */
   .glass-modal {
-    background: rgba(65, 105, 225, 0.2);
+    background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
     border: 1px solid rgba(65, 105, 225, 0.4);
