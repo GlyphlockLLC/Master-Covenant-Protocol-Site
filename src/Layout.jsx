@@ -60,14 +60,17 @@ export default function Layout({ children, currentPageName }) {
 
   return (
     <div className={`min-h-screen ${darkMode ? 'bg-black text-white' : 'bg-gray-50 text-gray-900'}`}>
-      {/* Fixed Neural/Nebula Background - 0.5 opacity (50%) */}
-      <div className="fixed inset-0 z-0 pointer-events-none" style={{ opacity: 0.5 }}>
-        <img
-          src="https://glyph-merge-pro-glyphlock.replit.app/assets/Whisk_b8d67ccda4c29cba08049ef6abdb02e9dr%20-%20Copy_1761014300850-75J3e_IN.jpeg"
-          alt="Neural Background"
-          className="w-full h-full object-cover"
-        />
-      </div>
+      {/* Fixed Neural/Nebula Background */}
+      <div 
+        className="fixed inset-0 z-0 pointer-events-none"
+        style={{
+          backgroundImage: 'url(https://glyph-merge-pro-glyphlock.replit.app/assets/Whisk_b8d67ccda4c29cba08049ef6abdb02e9dr%20-%20Copy_1761014300850-75J3e_IN.jpeg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          opacity: 0.5
+        }}
+      />
 
       {/* Navigation */}
       <nav className={`fixed top-0 left-0 right-0 z-50 ${darkMode ? 'bg-black/60' : 'bg-white/60'} backdrop-blur-xl border-b ${darkMode ? 'border-blue-500/20' : 'border-blue-500/30'}`}>
@@ -107,6 +110,12 @@ export default function Layout({ children, currentPageName }) {
                   Home
                 </Button>
               </Link>
+
+              <Link to={createPageUrl("NUPSLogin")}>
+                <Button variant="ghost" className={isActive("NUPSLogin") ? "text-blue-400" : `${darkMode ? 'text-white' : 'text-gray-900'} hover:text-blue-400`}>
+                  N.U.P.S. POS
+                </Button>
+              </Link>
               
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -115,9 +124,6 @@ export default function Layout({ children, currentPageName }) {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className={`${darkMode ? 'bg-gray-900 border-blue-500/20' : 'bg-white border-blue-500/30'} backdrop-blur-xl`}>
-                  <DropdownMenuItem asChild className={`${darkMode ? 'text-white hover:text-blue-400 focus:text-blue-400 focus:bg-blue-500/20' : 'text-gray-900 hover:text-blue-600 focus:text-blue-600 focus:bg-blue-500/10'} cursor-pointer`}>
-                    <Link to={createPageUrl("NUPSLogin")}>N.U.P.S. POS System</Link>
-                  </DropdownMenuItem>
                   <DropdownMenuItem asChild className={`${darkMode ? 'text-white hover:text-blue-400 focus:text-blue-400 focus:bg-blue-500/20' : 'text-gray-900 hover:text-blue-600 focus:text-blue-600 focus:bg-blue-500/10'} cursor-pointer`}>
                     <Link to={createPageUrl("SecurityTools")}>Security Tools</Link>
                   </DropdownMenuItem>
@@ -237,6 +243,11 @@ export default function Layout({ children, currentPageName }) {
                     Home
                   </Button>
                 </Link>
+                <Link to={createPageUrl("NUPSLogin")} onClick={() => setMobileMenuOpen(false)}>
+                  <Button variant="ghost" className={`w-full justify-start ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                    N.U.P.S. POS
+                  </Button>
+                </Link>
                 {user && (
                   <Link to={createPageUrl("Dashboard")} onClick={() => setMobileMenuOpen(false)}>
                     <Button variant="ghost" className={`w-full justify-start ${darkMode ? 'text-white' : 'text-gray-900'}`}>
@@ -244,11 +255,6 @@ export default function Layout({ children, currentPageName }) {
                     </Button>
                   </Link>
                 )}
-                <Link to={createPageUrl("NUPSLogin")} onClick={() => setMobileMenuOpen(false)}>
-                  <Button variant="ghost" className={`w-full justify-start ${darkMode ? 'text-white' : 'text-gray-900'}`}>
-                    N.U.P.S. POS System
-                  </Button>
-                </Link>
                 <Link to={createPageUrl("SecurityTools")} onClick={() => setMobileMenuOpen(false)}>
                   <Button variant="ghost" className={`w-full justify-start ${darkMode ? 'text-white' : 'text-gray-900'}`}>
                     Security Tools
