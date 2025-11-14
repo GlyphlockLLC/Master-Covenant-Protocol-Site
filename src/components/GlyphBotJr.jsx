@@ -5,19 +5,25 @@ import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { MessageCircle, X, Send, Bot, Home, Shield, Zap, Mail, FileText, Info } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
+import { MessageCircle, X, Send, Bot, Home, Shield, Zap, Mail, FileText, Menu, Sparkles } from "lucide-react";
 
 export default function GlyphBotJr({ darkMode }) {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
     {
       role: "assistant",
-      content: "Hi! I'm GlyphBot Jr. 🤖 I can help you navigate the GlyphLock ecosystem. Ask me about our services, find pages, or get quick info!"
+      content: "Hi! I'm GlyphBot Jr. 🤖 I can help you navigate the GlyphLock ecosystem. Ask me about our services or use the Quick Access menu!"
     }
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const [flippedButton, setFlippedButton] = useState(null);
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -33,36 +39,37 @@ export default function GlyphBotJr({ darkMode }) {
       icon: Home, 
       label: "Home", 
       page: "Home",
-      info: "Return to the main landing page. Explore GlyphLock's quantum security platform and see our 5 bound AI systems.",
-      glow: "rgba(65, 105, 225, 0.8)"
+      description: "Main landing page & platform overview"
     },
     { 
       icon: Shield, 
       label: "Security Tools", 
       page: "SecurityTools",
-      info: "Access our suite of cybersecurity tools: QR Generator, Steganography, Blockchain verification, and Hotzone Mapper.",
-      glow: "rgba(65, 105, 225, 0.8)"
+      description: "QR, Steganography, Blockchain & Mapper"
     },
     { 
       icon: Zap, 
       label: "Master Covenant", 
       page: "MasterCovenant",
-      info: "Legal AI binding system with $14M liability coverage. Five AI systems bound through cryptographic proof.",
-      glow: "rgba(65, 105, 225, 0.8)"
+      description: "Legal AI binding with $14M coverage"
     },
     { 
-      icon: Mail, 
-      label: "Contact", 
-      page: "Contact",
-      info: "Get in touch with our team. Email, phone, and office location in El Mirage, Arizona.",
-      glow: "rgba(65, 105, 225, 0.8)"
+      icon: Sparkles, 
+      label: "GlyphBot AI", 
+      page: "GlyphBot",
+      description: "Full AI assistant with code execution"
     },
     { 
       icon: FileText, 
       label: "Pricing", 
       page: "Pricing",
-      info: "View pricing for all GlyphLock services. Enterprise solutions, security tools, and consultation packages.",
-      glow: "rgba(65, 105, 225, 0.8)"
+      description: "Plans & service packages"
+    },
+    { 
+      icon: Mail, 
+      label: "Contact", 
+      page: "Contact",
+      description: "Get in touch with our team"
     },
   ];
 
@@ -121,7 +128,7 @@ Respond naturally and helpfully. If suggesting a page, mention it by name.
       console.error("GlyphBot Jr. error:", error);
       setMessages(prev => [...prev, { 
         role: "assistant", 
-        content: "Oops! I had trouble processing that. Try asking about our services or use the quick links above!" 
+        content: "Oops! I had trouble processing that. Try asking about our services or use the Quick Access menu!" 
       }]);
     } finally {
       setLoading(false);
@@ -131,16 +138,8 @@ Respond naturally and helpfully. If suggesting a page, mention it by name.
   const handleQuickLink = (pageName) => {
     setMessages(prev => [...prev, { 
       role: "assistant", 
-      content: `Taking you to ${pageName}! Click the link below or use the navigation menu.` 
+      content: `Taking you to ${pageName}! 🚀` 
     }]);
-  };
-
-  const handleButtonClick = (idx) => {
-    if (flippedButton === idx) {
-      setFlippedButton(null);
-    } else {
-      setFlippedButton(idx);
-    }
   };
 
   if (!isOpen) {
@@ -162,14 +161,13 @@ Respond naturally and helpfully. If suggesting a page, mention it by name.
     <Card 
       className="fixed bottom-6 right-6 z-50 shadow-2xl border-2"
       style={{
-        width: '420px',
-        height: flippedButton !== null ? '680px' : '600px',
+        width: '400px',
+        height: '550px',
         background: 'rgba(65, 105, 225, 0.15)',
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
         borderColor: 'rgba(65, 105, 225, 0.4)',
-        boxShadow: '0 0 40px rgba(65, 105, 225, 0.3), inset 0 0 20px rgba(65, 105, 225, 0.1)',
-        transition: 'all 0.3s ease'
+        boxShadow: '0 0 40px rgba(65, 105, 225, 0.3), inset 0 0 20px rgba(65, 105, 225, 0.1)'
       }}
     >
       <CardHeader 
@@ -198,141 +196,87 @@ Respond naturally and helpfully. If suggesting a page, mention it by name.
             <p className="text-xs text-white/90 font-medium">Navigation Assistant</p>
           </div>
         </div>
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => setIsOpen(false)}
-          className="text-white hover:text-red-400 hover:bg-white/10"
-        >
-          <X className="w-5 h-5" />
-        </Button>
-      </CardHeader>
-
-      <CardContent className="p-4 flex flex-col" style={{ height: flippedButton !== null ? 'calc(100% - 80px)' : 'calc(100% - 80px)' }}>
-        {/* Quick Links - Expanded Grid */}
-        <div 
-          className="grid grid-cols-2 gap-3 mb-3 pb-3"
-          style={{
-            borderBottom: '1px solid rgba(65, 105, 225, 0.3)',
-            minHeight: flippedButton !== null ? '280px' : '140px',
-            transition: 'min-height 0.3s ease'
-          }}
-        >
-          {quickLinks.map((link, idx) => (
-            <div key={idx} className="relative" style={{ perspective: '1000px', height: flippedButton === idx ? '260px' : '60px', transition: 'height 0.3s ease' }}>
-              <div
-                className={`relative w-full h-full transition-transform duration-500 ${
-                  flippedButton === idx ? '[transform:rotateY(180deg)]' : ''
-                }`}
-                style={{ transformStyle: 'preserve-3d' }}
+        <div className="flex items-center gap-2">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                size="sm"
+                className="text-white font-bold"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(65, 105, 225, 0.7), rgba(30, 64, 175, 0.7))',
+                  border: '1px solid rgba(255, 255, 255, 0.3)',
+                  boxShadow: '0 0 20px rgba(65, 105, 225, 0.5)'
+                }}
               >
-                {/* Front of Button */}
-                <div
-                  className="absolute inset-0"
-                  style={{ backfaceVisibility: 'hidden' }}
-                >
-                  <button
-                    onClick={() => handleButtonClick(idx)}
-                    className="w-full h-full relative px-3 py-3 rounded-lg text-sm font-bold transition-all duration-300 text-white overflow-hidden group hover:scale-105"
-                    style={{
-                      background: 'rgba(65, 105, 225, 0.3)',
-                      backdropFilter: 'blur(16px)',
-                      WebkitBackdropFilter: 'blur(16px)',
-                      border: '1px solid rgba(65, 105, 225, 0.5)',
-                      boxShadow: `0 0 20px ${link.glow}, 0 0 40px ${link.glow}`,
-                      animation: 'pulse-glow 2s ease-in-out infinite'
-                    }}
-                  >
-                    {/* Glow effect */}
-                    <div
-                      className="absolute inset-0 opacity-50 group-hover:opacity-0 transition-opacity duration-300"
-                      style={{
-                        background: `radial-gradient(circle at center, ${link.glow} 0%, transparent 70%)`
-                      }}
-                    />
-                    
-                    <div className="relative flex items-center justify-center gap-2">
-                      <link.icon className="w-5 h-5 flex-shrink-0 text-white" />
-                      <span
-                        className="transition-all duration-300 group-hover:blur-0 font-bold text-white text-center"
-                        style={{
-                          filter: 'blur(3px)',
-                          textShadow: `0 0 10px ${link.glow}, 0 0 20px ${link.glow}`
-                        }}
-                      >
-                        {link.label}
-                      </span>
-                      <span
-                        className="absolute opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-bold text-white text-center"
-                        style={{ 
-                          filter: 'blur(0px)',
-                          textShadow: '0 2px 4px rgba(0,0,0,0.3)'
-                        }}
-                      >
-                        {link.label}
-                      </span>
-                    </div>
-                  </button>
-                </div>
-
-                {/* Back of Button - Info */}
-                <div
-                  className="absolute inset-0"
-                  style={{ 
-                    backfaceVisibility: 'hidden',
-                    transform: 'rotateY(180deg)'
+                <Menu className="w-4 h-4 mr-2" />
+                Quick Access
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent 
+              align="end"
+              className="w-72"
+              style={{
+                background: 'rgba(65, 105, 225, 0.25)',
+                backdropFilter: 'blur(24px)',
+                WebkitBackdropFilter: 'blur(24px)',
+                border: '1px solid rgba(65, 105, 225, 0.5)',
+                boxShadow: '0 8px 32px rgba(65, 105, 225, 0.4)'
+              }}
+            >
+              <div className="px-2 py-2">
+                <p className="text-xs font-bold text-white/90 mb-2">Navigate to:</p>
+              </div>
+              <DropdownMenuSeparator style={{ background: 'rgba(65, 105, 225, 0.3)' }} />
+              {quickLinks.map((link, idx) => (
+                <DropdownMenuItem 
+                  key={idx}
+                  asChild
+                  className="cursor-pointer"
+                  style={{
+                    padding: '0'
                   }}
                 >
-                  <div
-                    className="w-full h-full p-4 rounded-lg text-xs shadow-xl flex flex-col"
-                    style={{
-                      background: 'rgba(65, 105, 225, 0.4)',
-                      backdropFilter: 'blur(20px)',
-                      WebkitBackdropFilter: 'blur(20px)',
-                      border: '1px solid rgba(65, 105, 225, 0.6)',
-                      boxShadow: '0 0 30px rgba(65, 105, 225, 0.4)'
-                    }}
+                  <Link 
+                    to={createPageUrl(link.page)}
+                    onClick={() => handleQuickLink(link.label)}
+                    className="flex items-start gap-3 px-3 py-2.5 w-full hover:bg-white/10 transition-colors"
                   >
-                    <div className="flex items-start gap-2 mb-3">
-                      <Info className="w-5 h-5 flex-shrink-0 text-white mt-0.5" />
-                      <div className="font-bold text-white text-base">{link.label}</div>
-                    </div>
-                    <p className="text-sm leading-relaxed text-white/95 font-medium mb-3 flex-1">
-                      {link.info}
-                    </p>
-                    <Link 
-                      to={createPageUrl(link.page)}
-                      onClick={() => {
-                        handleQuickLink(link.label);
-                        setFlippedButton(null);
+                    <div 
+                      className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
+                      style={{
+                        background: 'linear-gradient(135deg, rgba(65, 105, 225, 0.6), rgba(30, 64, 175, 0.6))',
+                        boxShadow: '0 0 10px rgba(65, 105, 225, 0.4)'
                       }}
-                      className="w-full"
                     >
-                      <Button
-                        size="sm"
-                        className="w-full text-sm font-bold text-white"
-                        style={{
-                          background: 'linear-gradient(135deg, rgba(65, 105, 225, 0.8), rgba(30, 64, 175, 0.8))',
-                          border: '1px solid rgba(255, 255, 255, 0.3)',
-                          boxShadow: '0 4px 10px rgba(65, 105, 225, 0.5)'
-                        }}
-                      >
-                        Go to {link.label}
-                      </Button>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
+                      <link.icon className="w-4 h-4 text-white" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="font-bold text-white text-sm mb-0.5">{link.label}</div>
+                      <div className="text-xs text-white/80 font-medium leading-tight">{link.description}</div>
+                    </div>
+                  </Link>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+          
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setIsOpen(false)}
+            className="text-white hover:text-red-400 hover:bg-white/10"
+          >
+            <X className="w-5 h-5" />
+          </Button>
         </div>
+      </CardHeader>
 
-        {/* Messages - Adjust height based on expanded state */}
+      <CardContent className="p-4 flex flex-col h-[calc(100%-80px)]">
+        {/* Messages */}
         <div 
-          className="overflow-y-auto space-y-3 mb-3"
+          className="overflow-y-auto space-y-3 mb-3 flex-1"
           style={{
-            flex: 1,
-            minHeight: '200px'
+            minHeight: '300px'
           }}
         >
           {messages.map((msg, idx) => (
@@ -341,7 +285,7 @@ Respond naturally and helpfully. If suggesting a page, mention it by name.
               className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
             >
               <div
-                className={`max-w-[80%] rounded-lg px-3 py-2 ${
+                className={`max-w-[85%] rounded-lg px-3 py-2 ${
                   msg.role === 'user'
                     ? 'text-white font-semibold'
                     : 'text-white font-medium'
@@ -424,15 +368,6 @@ Respond naturally and helpfully. If suggesting a page, mention it by name.
       </CardContent>
 
       <style>{`
-        @keyframes pulse-glow {
-          0%, 100% {
-            box-shadow: 0 0 20px rgba(65, 105, 225, 0.8), 0 0 40px rgba(65, 105, 225, 0.8);
-          }
-          50% {
-            box-shadow: 0 0 30px rgba(65, 105, 225, 1), 0 0 60px rgba(65, 105, 225, 1);
-          }
-        }
-
         input::placeholder {
           color: rgba(255, 255, 255, 0.6) !important;
           font-weight: 600;
