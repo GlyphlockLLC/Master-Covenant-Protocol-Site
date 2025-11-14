@@ -1,14 +1,12 @@
-
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-import { ChevronRight, Shield, ArrowUp, Lock, Eye, Zap, CheckCircle2, FileText, Scale } from "lucide-react";
+import { ChevronRight, Shield, ArrowUp, Lock, Eye, Zap, CheckCircle2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import AnimatedBackground from "@/components/AnimatedBackground";
-import DreamTeamRoster from "@/components/DreamTeamRoster";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -161,7 +159,7 @@ export default function Home() {
         </video>
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black pointer-events-none" />
         
-        {/* GlyphLock Logo Overlay - Covering Veo Watermark */}
+        {/* GlyphLock Logo Overlay */}
         <div className="absolute bottom-[24%] right-[18%] z-10">
           <img
             src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/08025b614_gl-logo.png"
@@ -171,7 +169,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Hero Content - Below Video */}
+      {/* Hero Content */}
       <section className="relative py-24 z-10">
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto text-center">
@@ -218,93 +216,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* Master Covenant Section */}
-      <section className="py-24 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-purple-500/5" />
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-16">
-              <Badge className="mb-6 bg-blue-500/20 text-blue-400 border-blue-500/50 px-6 py-2 text-sm backdrop-blur-md">
-                <Scale className="w-4 h-4 mr-2" />
-                Revolutionary Legal Framework
-              </Badge>
-              <h2 className="text-4xl md:text-6xl font-bold mb-6">
-                <span className="bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">Master Covenant</span>
-              </h2>
-              <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-                The world's first AI-enforced binding agreement. A revolutionary legal framework that combines smart contracts with traditional law.
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-8 mb-12">
-              <div className="relative group overflow-hidden rounded-2xl">
-                <img
-                  src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/b0a1e2ef9_Whisk_05f17d65a57cf59bf1a4fdd31ffd7d8edr-Copy.jpg"
-                  alt="AI Covenant Binding"
-                  className="w-full h-96 object-cover group-hover:scale-110 transition-transform duration-700" />
-
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-8">
-                  <h3 className="text-2xl font-bold text-white mb-3">AI-Enforced Agreements</h3>
-                  <p className="text-gray-300">Automated enforcement through blockchain and AI verification</p>
-                </div>
-              </div>
-
-              <div className="relative group overflow-hidden rounded-2xl">
-                <img
-                  src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/e2aed6aef_Whisk_65cb3b2c5bdc26b9c3d4d3986ceae795dr.jpg"
-                  alt="First Ever AI Covenant"
-                  className="w-full h-96 object-cover group-hover:scale-110 transition-transform duration-700" />
-
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-8">
-                  <h3 className="text-2xl font-bold text-white mb-3">Legally Binding Framework</h3>
-                  <p className="text-gray-300">Recognized by law firms and enforceable in court</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="glass-card backdrop-blur-xl bg-black/30 border-blue-500/30 p-8 rounded-2xl">
-              <div className="grid md:grid-cols-3 gap-8 mb-8">
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-blue-500/20 rounded-xl flex items-center justify-center mx-auto mb-4">
-                    <FileText className="w-8 h-8 text-blue-400" />
-                  </div>
-                  <h4 className="text-xl font-bold text-white mb-2">Smart Contract Integration</h4>
-                  <p className="text-gray-400 text-sm">Blockchain-verified terms and conditions</p>
-                </div>
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-blue-500/20 rounded-xl flex items-center justify-center mx-auto mb-4">
-                    <Scale className="w-8 h-8 text-blue-400" />
-                  </div>
-                  <h4 className="text-xl font-bold text-white mb-2">Legal Compliance</h4>
-                  <p className="text-gray-400 text-sm">Meets all regulatory requirements</p>
-                </div>
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-blue-500/20 rounded-xl flex items-center justify-center mx-auto mb-4">
-                    <Shield className="w-8 h-8 text-blue-400" />
-                  </div>
-                  <h4 className="text-xl font-bold text-white mb-2">Ironclad Protection</h4>
-                  <p className="text-gray-400 text-sm">Immutable and tamper-proof agreements</p>
-                </div>
-              </div>
-
-              <div className="text-center">
-                <Link to={createPageUrl("MasterCovenant")}>
-                  <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white">
-                    View Master Covenant
-                    <ChevronRight className="w-5 h-5 ml-2" />
-                  </Button>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Dream Team Roster Section - NEW */}
-      <DreamTeamRoster />
 
       {/* Features Section */}
       <section className="py-24 relative">
