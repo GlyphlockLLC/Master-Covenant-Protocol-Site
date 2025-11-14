@@ -4,7 +4,7 @@ import { createPageUrl } from "@/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-import { ChevronRight, Shield, Zap, ArrowUp } from "lucide-react";
+import { ChevronRight, Shield, Zap, ArrowUp, Lock, Eye } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 export default function Home() {
@@ -170,6 +170,64 @@ export default function Home() {
                   Explore Tools
                 </Button>
               </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Security Features Section with Images */}
+      <section className="py-16 bg-gradient-to-b from-black to-gray-900 relative">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="relative group overflow-hidden rounded-2xl">
+              <img 
+                src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/584a72f27_quantum-encryption-visualization-with-glowing-part.jpg"
+                alt="Quantum Encryption"
+                className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent flex items-end p-6">
+                <div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <Lock className="w-6 h-6 text-blue-400" />
+                    <h3 className="text-xl font-bold text-white">Quantum Encryption</h3>
+                  </div>
+                  <p className="text-gray-300 text-sm">Next-gen protection against quantum threats</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="relative group overflow-hidden rounded-2xl">
+              <img 
+                src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/a86b74f69_data-security-encryption-protection.jpg"
+                alt="Data Security"
+                className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent flex items-end p-6">
+                <div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <Shield className="w-6 h-6 text-blue-400" />
+                    <h3 className="text-xl font-bold text-white">Multi-Layer Protection</h3>
+                  </div>
+                  <p className="text-gray-300 text-sm">Advanced encryption and data security</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="relative group overflow-hidden rounded-2xl">
+              <img 
+                src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/9774d266e_openai-logo-inspired-abstract.png"
+                alt="AI Integration"
+                className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent flex items-end p-6">
+                <div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <Eye className="w-6 h-6 text-blue-400" />
+                    <h3 className="text-xl font-bold text-white">AI-Powered Detection</h3>
+                  </div>
+                  <p className="text-gray-300 text-sm">Real-time threat monitoring and response</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

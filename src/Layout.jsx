@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
@@ -64,7 +63,7 @@ export default function Layout({ children, currentPageName }) {
     { name: "Google Cloud", logo: "https://upload.wikimedia.org/wikipedia/commons/5/51/Google_Cloud_logo.svg" },
     { name: "Microsoft Azure", logo: "https://upload.wikimedia.org/wikipedia/commons/f/fa/Microsoft_Azure.svg" },
     { name: "Stripe", logo: "https://upload.wikimedia.org/wikipedia/commons/b/ba/Stripe_Logo%2C_revised_2016.svg" },
-    { name: "OpenAI", logo: "https://upload.wikimedia.org/wikipedia/commons/4/4d/OpenAI_Logo.svg" },
+    { name: "OpenAI", logo: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/9774d266e_openai-logo-inspired-abstract.png" },
     { name: "Anthropic", logo: "https://upload.wikimedia.org/wikipedia/commons/7/78/Anthropic_logo.svg" },
     { name: "Vercel", logo: "https://assets.vercel.com/image/upload/front/favicon/vercel/180x180.png" },
     { name: "Supabase", logo: "https://supabase.com/favicon/favicon-32x32.png" },
@@ -82,7 +81,14 @@ export default function Layout({ children, currentPageName }) {
     { name: "Node.js", logo: "https://upload.wikimedia.org/wikipedia/commons/d/d9/Node.js_logo.svg" },
     { name: "React", logo: "https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg" },
     { name: "TensorFlow", logo: "https://upload.wikimedia.org/wikipedia/commons/2/2d/Tensorflow_logo.svg" },
-    { name: "PyTorch", logo: "https://upload.wikimedia.org/wikipedia/commons/1/10/PyTorch_logo_icon.svg" }
+    { name: "PyTorch", logo: "https://upload.wikimedia.org/wikipedia/commons/1/10/PyTorch_logo_icon.svg" },
+    { name: "Terraform", logo: "https://upload.wikimedia.org/wikipedia/commons/0/04/Terraform_Logo.svg" },
+    { name: "Jenkins", logo: "https://upload.wikimedia.org/wikipedia/commons/e/e9/Jenkins_logo.svg" },
+    { name: "Grafana", logo: "https://upload.wikimedia.org/wikipedia/commons/3/3b/Grafana_icon.svg" },
+    { name: "Prometheus", logo: "https://upload.wikimedia.org/wikipedia/commons/3/38/Prometheus_software_logo.svg" },
+    { name: "Elasticsearch", logo: "https://upload.wikimedia.org/wikipedia/commons/f/f4/Elasticsearch_logo.svg" },
+    { name: "RabbitMQ", logo: "https://upload.wikimedia.org/wikipedia/commons/7/71/RabbitMQ_logo.svg" },
+    { name: "Apache Kafka", logo: "https://upload.wikimedia.org/wikipedia/commons/0/05/Apache_kafka.svg" }
   ];
 
   const securityCompliance = [
@@ -109,7 +115,6 @@ export default function Layout({ children, currentPageName }) {
       <nav className={`fixed top-0 left-0 right-0 z-50 ${darkMode ? 'bg-black/40' : 'bg-white/40'} backdrop-blur-xl border-b ${darkMode ? 'border-blue-500/20' : 'border-blue-500/30'}`}>
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-20">
-            {/* Back Arrow + Logo */}
             <div className="flex items-center gap-4">
               {canGoBack && (
                 <Button
@@ -136,7 +141,6 @@ export default function Layout({ children, currentPageName }) {
               </Link>
             </div>
 
-            {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center gap-1">
               <Link to={createPageUrl("Home")}>
                 <Button variant="ghost" className={isActive("Home") ? "text-blue-400" : `${darkMode ? 'text-white' : 'text-gray-900'} hover:text-blue-400`}>
@@ -248,7 +252,6 @@ export default function Layout({ children, currentPageName }) {
               )}
             </div>
 
-            {/* Mobile Menu Button */}
             <div className="flex items-center gap-2 lg:hidden">
               <Button
                 variant="ghost"
@@ -267,7 +270,6 @@ export default function Layout({ children, currentPageName }) {
             </div>
           </div>
 
-          {/* Mobile Menu */}
           {mobileMenuOpen && (
             <div className={`lg:hidden py-4 border-t ${darkMode ? 'border-blue-500/20' : 'border-blue-500/30'}`}>
               <div className="flex flex-col gap-2">
@@ -348,12 +350,10 @@ export default function Layout({ children, currentPageName }) {
         </div>
       </nav>
 
-      {/* Main Content */}
       <main className="pt-20 relative z-10">
         {children}
       </main>
 
-      {/* GlyphBot Jr. Assistant */}
       <GlyphBotJr darkMode={darkMode} />
 
       {/* Footer */}
@@ -502,7 +502,7 @@ export default function Layout({ children, currentPageName }) {
           }
         }
         .animate-marquee {
-          animation: marquee 40s linear infinite;
+          animation: marquee 50s linear infinite;
         }
         .animate-marquee:hover {
           animation-play-state: paused;
