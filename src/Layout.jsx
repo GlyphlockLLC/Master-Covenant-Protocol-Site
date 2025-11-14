@@ -22,7 +22,6 @@ export default function Layout({ children, currentPageName }) {
 
   useEffect(() => {
     checkUser();
-    // Load theme preference
     const savedTheme = localStorage.getItem('glyphlock_theme');
     if (savedTheme) {
       setDarkMode(savedTheme === 'dark');
@@ -30,7 +29,6 @@ export default function Layout({ children, currentPageName }) {
   }, []);
 
   useEffect(() => {
-    // Scroll to top on navigation
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [location.pathname]);
 
@@ -62,12 +60,12 @@ export default function Layout({ children, currentPageName }) {
 
   return (
     <div className={`min-h-screen ${darkMode ? 'bg-black text-white' : 'bg-gray-50 text-gray-900'}`}>
-      {/* Fixed Neural/Nebula Background */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
+      {/* Fixed Neural/Nebula Background - 0.5 opacity (50%) */}
+      <div className="fixed inset-0 z-0 pointer-events-none" style={{ opacity: 0.5 }}>
         <img
           src="https://glyph-merge-pro-glyphlock.replit.app/assets/Whisk_b8d67ccda4c29cba08049ef6abdb02e9dr%20-%20Copy_1761014300850-75J3e_IN.jpeg"
           alt="Neural Background"
-          className="w-full h-full object-cover opacity-20"
+          className="w-full h-full object-cover"
         />
       </div>
 

@@ -23,35 +23,35 @@ export default function Home() {
       name: "Alfred",
       role: "Contract Architect",
       status: "Bound",
-      image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=400&fit=crop",
+      image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/d92107808_glyphlock-3d-logo.png",
       specialty: "Legal Framework Design"
     },
     {
       name: "Claude",
       role: "Security Engineer",
       status: "Bound",
-      image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=400&h=400&fit=crop",
+      image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/08025b614_gl-logo.png",
       specialty: "Code & Audit Systems"
     },
     {
       name: "GitHub Copilot",
       role: "Development Assistant",
       status: "Bound",
-      image: "https://images.unsplash.com/photo-1618004912476-29818d81ae2e?w=400&h=400&fit=crop",
+      image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/d92107808_glyphlock-3d-logo.png",
       specialty: "Automated Code Generation"
     },
     {
       name: "Perplexity",
       role: "Research Analyst",
       status: "Bound",
-      image: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=400&h=400&fit=crop",
+      image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/08025b614_gl-logo.png",
       specialty: "Threat Intelligence"
     },
     {
       name: "OpenAI GPT",
       role: "Integration Specialist",
       status: "Bound",
-      image: "https://images.unsplash.com/photo-1677756119517-756a188d2d94?w=400&h=400&fit=crop",
+      image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/d92107808_glyphlock-3d-logo.png",
       specialty: "Natural Language Processing"
     }
   ];
@@ -68,49 +68,49 @@ export default function Home() {
       title: "N.U.P.S. POS",
       description: "Enterprise point-of-sale system. Three-tier access (Staff, Manager, Owner). Full inventory and analytics.",
       link: "NUPSLogin",
-      image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=600&fit=crop",
+      image: "https://glyph-merge-pro-glyphlock.replit.app/assets/Whisk_b8d67ccda4c29cba08049ef6abdb02e9dr%20-%20Copy_1761014300850-75J3e_IN.jpeg",
       price: "Enterprise"
     },
     {
       title: "GlyphBot AI Assistant",
       description: "Advanced AI powered by Gemini with code execution, security scanning, and automated auditing.",
       link: "GlyphBot",
-      image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=600&fit=crop",
+      image: "https://glyph-merge-pro-glyphlock.replit.app/assets/Whisk_c53f0a83ac0d9a4a11e40591b6298c58dr_1761196254031-DP4vmwHO.jpeg",
       price: "$50/mo"
     },
     {
       title: "QR Code Generator",
       description: "Secure QR code generation with custom branding, analytics tracking, and AI threat detection.",
       link: "QRGenerator",
-      image: "https://images.unsplash.com/photo-1616432043562-3671ea2e5242?w=800&h=600&fit=crop",
+      image: "https://glyph-merge-pro-glyphlock.replit.app/assets/Whisk_b8d67ccda4c29cba08049ef6abdb02e9dr%20-%20Copy_1761014300850-75J3e_IN.jpeg",
       price: "$49.99"
     },
     {
       title: "Steganography",
       description: "Hide encrypted data within images using LSB encoding for secure covert communications.",
       link: "Steganography",
-      image: "https://images.unsplash.com/photo-1633265486064-086b219458ec?w=800&h=600&fit=crop",
+      image: "https://glyph-merge-pro-glyphlock.replit.app/assets/Whisk_c53f0a83ac0d9a4a11e40591b6298c58dr_1761196254031-DP4vmwHO.jpeg",
       price: "$149.99"
     },
     {
       title: "Blockchain Security",
       description: "SHA-256/512 hashing, Merkle trees, immutable verification, and cryptographic proof systems.",
       link: "Blockchain",
-      image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800&h=600&fit=crop",
+      image: "https://glyph-merge-pro-glyphlock.replit.app/assets/Whisk_b8d67ccda4c29cba08049ef6abdb02e9dr%20-%20Copy_1761014300850-75J3e_IN.jpeg",
       price: "$99.99"
     },
     {
       title: "Hotzone Mapper",
       description: "Interactive security vulnerability mapping. Upload images and mark security hotspots with severity levels.",
       link: "HotzoneMapper",
-      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop",
+      image: "https://glyph-merge-pro-glyphlock.replit.app/assets/Whisk_c53f0a83ac0d9a4a11e40591b6298c58dr_1761196254031-DP4vmwHO.jpeg",
       price: "$99.99"
     },
     {
       title: "HSSS Surveillance",
       description: "Advanced security surveillance with real-time threat monitoring, AI detection, and incident tracking.",
       link: "HSSS",
-      image: "https://images.unsplash.com/photo-1557597774-9d273605dfa9?w=800&h=600&fit=crop",
+      image: "https://glyph-merge-pro-glyphlock.replit.app/assets/Whisk_b8d67ccda4c29cba08049ef6abdb02e9dr%20-%20Copy_1761014300850-75J3e_IN.jpeg",
       price: "Enterprise"
     }
   ];
@@ -145,15 +145,6 @@ export default function Home() {
         </video>
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black" />
       </section>
-
-      {/* Neural/Nebula Background - Fixed */}
-      <div className="fixed inset-0 opacity-20 pointer-events-none z-0" style={{ top: '100vh' }}>
-        <img
-          src="https://glyph-merge-pro-glyphlock.replit.app/assets/Whisk_b8d67ccda4c29cba08049ef6abdb02e9dr%20-%20Copy_1761014300850-75J3e_IN.jpeg"
-          alt="Neural Background"
-          className="w-full h-full object-cover"
-        />
-      </div>
 
       {/* Content Below Hero */}
       <section className="relative bg-black py-20 z-10">
