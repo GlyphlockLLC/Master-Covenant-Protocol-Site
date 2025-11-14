@@ -1,15 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-import { ChevronRight, Shield, Zap } from "lucide-react";
+import { ChevronRight, Shield, Zap, ArrowUp } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 export default function Home() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
+  const [showBackToTop, setShowBackToTop] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowBackToTop(window.scrollY > 400);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const handleEmailSubmit = (e) => {
     e.preventDefault();
@@ -89,9 +102,28 @@ export default function Home() {
   ];
 
   return (
-    <div className="bg-black text-white">
-      {/* Hero Section - Full Screen Video */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <div className="bg-black text-white relative">
+      {/* Back to Top Button */}
+      {showBackToTop && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-6 left-6 z-50 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110"
+        >
+          <ArrowUp className="w-6 h-6" />
+        </button>
+      )}
+
+      {/* Top Tagline - Under Navbar */}
+      <div className="relative bg-black/80 backdrop-blur-sm py-3 border-b border-blue-500/20 z-10">
+        <div className="container mx-auto px-4 text-center">
+          <p className="text-blue-400 text-sm md:text-base font-bold tracking-widest uppercase">
+            Quantum-Resistant Security Platform
+          </p>
+        </div>
+      </div>
+
+      {/* Hero Section - Full Screen Video with Grid */}
+      <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden">
         <video 
           autoPlay 
           loop 
@@ -101,18 +133,27 @@ export default function Home() {
         >
           <source src="https://glyph-merge-pro-glyphlock.replit.app/assets/hero-video-CxU5xRpe.mp4" type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/80" />
+        <div className="grid-overlay"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/90" />
       </section>
 
-      {/* Tagline Section - Below Video */}
-      <section className="relative bg-black py-16 z-10 border-t border-blue-500/20">
+      {/* Main Tagline - Directly Below Video (Tight) */}
+      <section className="relative bg-gradient-to-b from-black to-gray-900 py-8 z-10 -mt-1">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-5xl mx-auto">
-            <p className="text-gray-400 text-lg md:text-xl font-medium tracking-wider uppercase mb-6">
-              Invisible Layers. Infinite Possibilities. Absolute Protection.
-            </p>
+            {/* Tagline with Typo Overlay */}
+            <div className="relative inline-block mb-4">
+              <p className="text-gray-400 text-base md:text-lg font-medium tracking-wider uppercase">
+                Invisible Layers. <span className="relative">
+                  Infinite Possibilities
+                  <span className="absolute inset-0 bg-blue-500/20 backdrop-blur-sm rounded px-1 flex items-center justify-center text-blue-300 text-xs border border-blue-500/40">
+                    *INFINITE
+                  </span>
+                </span>. Absolute Protection.
+              </p>
+            </div>
             
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+            <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight">
               <span className="text-white">Universal Security Platform</span>
               <br />
               <span className="bg-gradient-to-r from-blue-400 via-blue-600 to-blue-700 bg-clip-text text-transparent">
@@ -120,19 +161,19 @@ export default function Home() {
               </span>
             </h1>
 
-            <p className="text-xl md:text-2xl text-gray-300 mb-10 max-w-3xl mx-auto">
+            <p className="text-lg md:text-xl text-gray-300 mb-6 max-w-3xl mx-auto">
               Enterprise cybersecurity with AI integration and $14M liability coverage.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link to={createPageUrl("Consultation")}>
-                <Button size="lg" className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white text-lg px-8">
+                <Button size="lg" className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white">
                   Get Started
                   <ChevronRight className="w-5 h-5 ml-2" />
                 </Button>
               </Link>
               <Link to={createPageUrl("SecurityTools")}>
-                <Button size="lg" variant="outline" className="border-blue-500/50 hover:bg-blue-500/10 text-white text-lg px-8">
+                <Button size="lg" variant="outline" className="border-blue-500/50 hover:bg-blue-500/10 text-white">
                   Explore Tools
                 </Button>
               </Link>
@@ -142,14 +183,14 @@ export default function Home() {
       </section>
 
       {/* Stats Section */}
-      <section className="relative bg-black py-20 z-10">
+      <section className="relative bg-gray-900 py-12 z-10">
         <div className="container mx-auto px-4">
-          <div className="text-center max-w-5xl mx-auto mb-12">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-wide mb-8 text-white">
+          <div className="text-center max-w-5xl mx-auto mb-8">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold tracking-wide mb-6 text-white">
               Protecting the $10 Trillion Digital Economy
             </h2>
 
-            <div className="flex flex-wrap items-center justify-center gap-3 mb-8">
+            <div className="flex flex-wrap items-center justify-center gap-3 mb-6">
               <Badge variant="outline" className="border-green-500/50 bg-green-500/10 text-green-400 px-4 py-2 text-sm font-mono">
                 <Zap className="w-4 h-4 mr-2" />
                 $340K Revenue in 90 Days
@@ -160,16 +201,16 @@ export default function Home() {
               </Badge>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-12">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[
                 { label: "Annual IP Theft", value: "$283B" },
                 { label: "Market Size", value: "$10T" },
                 { label: "Insurance", value: "$14M" },
                 { label: "Detection Rate", value: "99.97%" }
               ].map((stat, index) => (
-                <div key={index} className="glass-card-dark border-blue-500/30 rounded-lg p-6">
-                  <div className="text-3xl font-bold text-white mb-1">{stat.value}</div>
-                  <div className="text-sm text-gray-400">{stat.label}</div>
+                <div key={index} className="glass-card-dark border-blue-500/30 rounded-lg p-4">
+                  <div className="text-2xl md:text-3xl font-bold text-white mb-1">{stat.value}</div>
+                  <div className="text-xs md:text-sm text-gray-400">{stat.label}</div>
                 </div>
               ))}
             </div>
@@ -178,39 +219,39 @@ export default function Home() {
       </section>
 
       {/* Services Grid */}
-      <section className="py-20 bg-gray-900">
+      <section className="py-12 bg-black">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl md:text-4xl font-bold mb-3 text-white">
               Security <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">Platform</span>
             </h2>
-            <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+            <p className="text-lg text-gray-400 max-w-3xl mx-auto">
               Enterprise-grade tools with quantum-resistant encryption
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
             {services.map((service, index) => (
               <Link key={index} to={createPageUrl(service.link)}>
                 <Card className="bg-gray-800/80 backdrop-blur-md border-gray-700 hover:border-blue-500/50 transition-all duration-300 h-full group cursor-pointer overflow-hidden">
-                  <div className="relative h-48 overflow-hidden">
+                  <div className="relative h-40 overflow-hidden">
                     <img 
                       src={service.image}
                       alt={service.title}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-gray-800 via-gray-800/50 to-transparent" />
-                    <div className="absolute top-3 right-3">
-                      <Badge className="bg-blue-500/80 text-white border-blue-500">
+                    <div className="absolute top-2 right-2">
+                      <Badge className="bg-blue-500/80 text-white border-blue-500 text-xs">
                         {service.price}
                       </Badge>
                     </div>
                   </div>
-                  <CardContent className="p-6">
-                    <h3 className="text-lg font-bold mb-2 text-white group-hover:text-blue-400 transition-colors">
+                  <CardContent className="p-4">
+                    <h3 className="text-base font-bold mb-2 text-white group-hover:text-blue-400 transition-colors">
                       {service.title}
                     </h3>
-                    <p className="text-gray-400 text-sm">
+                    <p className="text-gray-400 text-xs">
                       {service.description}
                     </p>
                   </CardContent>
@@ -222,19 +263,19 @@ export default function Home() {
       </section>
 
       {/* Technology Partners */}
-      <section className="py-20 bg-black relative overflow-hidden">
+      <section className="py-12 bg-gray-900 relative overflow-hidden">
         <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl md:text-3xl font-bold mb-3 text-white">
               Powered by <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">Industry Leaders</span>
             </h2>
             <p className="text-gray-400">Enterprise infrastructure trusted by Fortune 500</p>
           </div>
 
-          <div className="flex flex-wrap justify-center items-center gap-8">
+          <div className="flex flex-wrap justify-center items-center gap-6">
             {partners.map((partner, index) => (
-              <div key={index} className="glass-card-dark border-blue-500/20 rounded-lg px-8 py-4">
-                <span className="text-white font-bold text-lg">{partner.name}</span>
+              <div key={index} className="glass-card-dark border-blue-500/20 rounded-lg px-6 py-3">
+                <span className="text-white font-bold text-base">{partner.name}</span>
               </div>
             ))}
           </div>
@@ -242,30 +283,30 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-b from-black to-gray-900 relative">
+      <section className="py-12 bg-gradient-to-b from-black to-gray-900 relative">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">
               Ready to Secure Your <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">Digital Assets?</span>
             </h2>
-            <p className="text-xl text-gray-400 mb-8 leading-relaxed">
+            <p className="text-lg text-gray-400 mb-6 leading-relaxed">
               Join enterprises protecting against the $283 billion IP theft crisis with quantum-resistant encryption and 99.97% threat detection.
             </p>
 
-            <form onSubmit={handleEmailSubmit} className="max-w-2xl mx-auto mb-8">
+            <form onSubmit={handleEmailSubmit} className="max-w-2xl mx-auto mb-6">
               <div className="flex flex-col sm:flex-row gap-3">
                 <Input
                   type="email"
                   placeholder="Enter your work email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="bg-gray-800/50 border-gray-700 text-white placeholder:text-gray-400 h-12 text-lg flex-1"
+                  className="bg-gray-800/50 border-gray-700 text-white placeholder:text-gray-400 h-11 flex-1"
                   required
                 />
                 <Button 
                   type="submit"
                   size="lg" 
-                  className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white text-lg px-8 h-12"
+                  className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white h-11"
                 >
                   Book Demo
                   <ChevronRight className="w-5 h-5 ml-2" />
@@ -273,9 +314,9 @@ export default function Home() {
               </div>
             </form>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link to={createPageUrl("Contact")}>
-                <Button size="lg" variant="outline" className="border-blue-500/50 hover:bg-blue-500/10 text-white text-lg px-8">
+                <Button size="lg" variant="outline" className="border-blue-500/50 hover:bg-blue-500/10 text-white">
                   Contact Sales
                 </Button>
               </Link>
