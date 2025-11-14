@@ -1,8 +1,9 @@
+
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { base44 } from "@/api/base44Client";
-import { Menu, X, ChevronDown, User, LogOut, Sun, Moon, ArrowLeft } from "lucide-react";
+import { Menu, X, ChevronDown, User, LogOut, Sun, Moon, ArrowLeft, Shield, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -82,6 +83,24 @@ export default function Layout({ children, currentPageName }) {
     { name: "React", logo: "https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg" },
     { name: "TensorFlow", logo: "https://upload.wikimedia.org/wikipedia/commons/2/2d/Tensorflow_logo.svg" },
     { name: "PyTorch", logo: "https://upload.wikimedia.org/wikipedia/commons/1/10/PyTorch_logo_icon.svg" }
+  ];
+
+  const securityCompliance = [
+    { name: "TLS 1.3", icon: Shield },
+    { name: "HSTS", icon: Shield },
+    { name: "CSP", icon: Shield },
+    { name: "CORS", icon: Shield },
+    { name: "XSS Protection", icon: Shield },
+    { name: "CSRF Tokens", icon: Shield }
+  ];
+
+  const certifications = [
+    { name: "SOC 2 Type II", status: "Certified" },
+    { name: "GDPR", status: "Compliant" },
+    { name: "CCPA", status: "Compliant" },
+    { name: "ISO 27001", status: "In Progress" },
+    { name: "PCI DSS", status: "Compliant" },
+    { name: "HIPAA", status: "Ready" }
   ];
 
   return (
@@ -417,40 +436,41 @@ export default function Layout({ children, currentPageName }) {
           </div>
           
           <div className={`mt-8 pt-8 border-t ${darkMode ? 'border-gray-800' : 'border-gray-300'}`}>
-            {/* Compliance Badges */}
-            <div className="mb-8">
+            {/* Security Protocols */}
+            <div className="mb-6">
               <h4 className={`text-center text-sm font-semibold mb-4 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                Compliance & Certifications
+                Security Protocols
               </h4>
-              <div className="flex flex-wrap items-center justify-center gap-6">
-                <div className="flex flex-col items-center gap-2">
-                  <img src="https://logos-world.net/wp-content/uploads/2021/02/SOC-2-Logo.png" alt="SOC 2" className="h-12 object-contain opacity-70 hover:opacity-100 transition-opacity" />
-                  <span className="text-xs text-gray-500">SOC 2 Type II</span>
-                </div>
-                <div className="flex flex-col items-center gap-2">
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/8/85/GDPR_logo.png" alt="GDPR" className="h-12 object-contain opacity-70 hover:opacity-100 transition-opacity" />
-                  <span className="text-xs text-gray-500">GDPR Compliant</span>
-                </div>
-                <div className="flex flex-col items-center gap-2">
-                  <img src="https://oag.ca.gov/sites/default/files/CCPA%20logo.png" alt="CCPA" className="h-12 object-contain opacity-70 hover:opacity-100 transition-opacity" />
-                  <span className="text-xs text-gray-500">CCPA Compliant</span>
-                </div>
-                <div className="flex flex-col items-center gap-2">
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/ISO_IEC_27001_logo.svg" alt="ISO 27001" className="h-12 object-contain opacity-70 hover:opacity-100 transition-opacity" />
-                  <span className="text-xs text-gray-500">ISO 27001</span>
-                </div>
-                <div className="flex flex-col items-center gap-2">
-                  <img src="https://www.pcisecuritystandards.org/wp-content/uploads/2022/03/pci-logo.png" alt="PCI DSS" className="h-12 object-contain opacity-70 hover:opacity-100 transition-opacity" />
-                  <span className="text-xs text-gray-500">PCI DSS</span>
-                </div>
-                <div className="flex flex-col items-center gap-2">
-                  <img src="https://companieslogo.com/img/orig/hipaa-b4e2d5d3.png" alt="HIPAA" className="h-12 object-contain opacity-70 hover:opacity-100 transition-opacity" />
-                  <span className="text-xs text-gray-500">HIPAA Ready</span>
-                </div>
+              <div className="flex flex-wrap items-center justify-center gap-4">
+                {securityCompliance.map((item, idx) => {
+                  const Icon = item.icon;
+                  return (
+                    <div key={idx} className={`flex items-center gap-2 ${darkMode ? 'bg-green-500/10' : 'bg-green-500/20'} px-3 py-2 rounded-lg border ${darkMode ? 'border-green-500/30' : 'border-green-500/40'}`}>
+                      <Icon className="w-4 h-4 text-green-400" />
+                      <span className="text-xs text-green-400 font-semibold">{item.name}</span>
+                      <CheckCircle2 className="w-3 h-3 text-green-400" />
+                    </div>
+                  );
+                })}
               </div>
             </div>
 
-            <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-4 text-center">
+            {/* Compliance Certifications */}
+            <div className="mb-6">
+              <h4 className={`text-center text-sm font-semibold mb-4 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                Compliance & Certifications
+              </h4>
+              <div className="flex flex-wrap items-center justify-center gap-4">
+                {certifications.map((cert, idx) => (
+                  <div key={idx} className={`${darkMode ? 'bg-blue-500/10' : 'bg-blue-500/20'} px-4 py-2 rounded-lg border ${darkMode ? 'border-blue-500/30' : 'border-blue-500/40'}`}>
+                    <div className="text-xs font-bold text-blue-400">{cert.name}</div>
+                    <div className="text-xs text-gray-500">{cert.status}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-center">
               <div className={`text-sm ${darkMode ? 'text-white' : 'text-gray-900'}`}>
                 <p>© 2025 GlyphLock Security LLC. All rights reserved.</p>
               </div>
@@ -468,9 +488,6 @@ export default function Layout({ children, currentPageName }) {
                 </p>
               </div>
             </div>
-            <p className="text-xs text-gray-500 text-center">
-              $340K D&B Verified Revenue • $14M Liability Coverage
-            </p>
           </div>
         </div>
       </footer>

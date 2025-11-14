@@ -117,7 +117,7 @@ export default function Home() {
       {/* Top Tagline */}
       <div className="relative bg-black/80 backdrop-blur-sm py-3 border-b border-blue-500/20 z-10">
         <div className="container mx-auto px-4 text-center">
-          <p className="text-blue-400 text-sm md:text-base font-bold tracking-widest uppercase">
+          <p className="text-blue-400 text-sm md:text-base font-bold tracking-widest uppercase animate-pulse-slow">
             Quantum-Resistant Security Platform
           </p>
         </div>
@@ -136,83 +136,40 @@ export default function Home() {
         </video>
         <div className="grid-overlay"></div>
         <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black" />
-      </section>
-
-      {/* Taglines - Tight Under Video */}
-      <section className="relative bg-black py-6 z-10">
-        <div className="container mx-auto px-4">
-          <div className="text-center max-w-5xl mx-auto">
-            <div className="relative inline-block mb-3">
-              <p className="text-gray-400 text-base md:text-lg font-medium tracking-wider uppercase">
-                Invisible Layers. <span className="relative">
-                  Infinite Possibilities
-                  <span className="absolute -top-1 left-0 right-0 bg-blue-500/20 backdrop-blur-sm rounded px-1 text-blue-300 text-xs border border-blue-500/40">
-                    *INFINITE
-                  </span>
-                </span>. Absolute Protection.
+        
+        {/* Taglines & Buttons Overlay */}
+        <div className="absolute inset-0 flex items-center justify-center z-20">
+          <div className="text-center max-w-5xl mx-auto px-4">
+            <div className="relative inline-block mb-6 animate-pulse-slow">
+              <p className="text-white text-xl md:text-2xl font-bold tracking-wider uppercase bg-black/60 backdrop-blur-md px-6 py-3 rounded-lg border border-blue-500/50 shadow-2xl">
+                Invisible Layers. <span className="text-blue-400">Infinite Possibilities</span>. Absolute Protection.
               </p>
             </div>
             
-            <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-3 leading-tight">
-              <span className="text-white">Universal Security Platform</span>
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight drop-shadow-2xl">
+              <span className="text-white bg-black/60 backdrop-blur-md px-4 py-2 rounded-lg">Universal Security Platform</span>
               <br />
               <span className="bg-gradient-to-r from-blue-400 via-blue-600 to-blue-700 bg-clip-text text-transparent">
                 with Smart Contracts
               </span>
             </h1>
 
-            <p className="text-lg md:text-xl text-gray-300 mb-5 max-w-3xl mx-auto">
-              Enterprise cybersecurity with AI integration and $14M liability coverage.
+            <p className="text-xl md:text-2xl text-white mb-8 max-w-3xl mx-auto bg-black/60 backdrop-blur-md px-6 py-3 rounded-lg shadow-xl animate-pulse-slow">
+              Enterprise cybersecurity with AI integration
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center animate-pulse-slow">
               <Link to={createPageUrl("Consultation")}>
-                <Button size="lg" className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white">
+                <Button size="lg" className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white text-lg px-8 py-6 shadow-2xl">
                   Get Started
                   <ChevronRight className="w-5 h-5 ml-2" />
                 </Button>
               </Link>
               <Link to={createPageUrl("SecurityTools")}>
-                <Button size="lg" variant="outline" className="border-blue-500/50 hover:bg-blue-500/10 text-white">
+                <Button size="lg" variant="outline" className="border-2 border-blue-500 bg-black/60 backdrop-blur-md hover:bg-blue-500/20 text-white text-lg px-8 py-6 shadow-2xl">
                   Explore Tools
                 </Button>
               </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Stats Section */}
-      <section className="relative bg-gray-900 py-10 z-10">
-        <div className="container mx-auto px-4">
-          <div className="text-center max-w-5xl mx-auto mb-6">
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold tracking-wide mb-4 text-white">
-              Protecting the $10 Trillion Digital Economy
-            </h2>
-
-            <div className="flex flex-wrap items-center justify-center gap-3 mb-6">
-              <Badge variant="outline" className="border-green-500/50 bg-green-500/10 text-green-400 px-4 py-2 text-sm font-mono">
-                <Zap className="w-4 h-4 mr-2" />
-                $340K Revenue in 90 Days
-              </Badge>
-              <Badge variant="outline" className="border-blue-500/50 bg-blue-500/10 text-blue-400 px-4 py-2 text-sm font-mono">
-                <Shield className="w-4 h-4 mr-2" />
-                99.97% Threat Detection
-              </Badge>
-            </div>
-
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {[
-                { label: "Annual IP Theft", value: "$283B" },
-                { label: "Market Size", value: "$10T" },
-                { label: "Insurance", value: "$14M" },
-                { label: "Detection Rate", value: "99.97%" }
-              ].map((stat, index) => (
-                <div key={index} className="glass-card-dark border-blue-500/30 rounded-lg p-4">
-                  <div className="text-2xl md:text-3xl font-bold text-white mb-1">{stat.value}</div>
-                  <div className="text-xs md:text-sm text-gray-400">{stat.label}</div>
-                </div>
-              ))}
             </div>
           </div>
         </div>
@@ -290,7 +247,7 @@ export default function Home() {
               Ready to Secure Your <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">Digital Assets?</span>
             </h2>
             <p className="text-lg text-gray-400 mb-5 leading-relaxed">
-              Join enterprises protecting against the $283 billion IP theft crisis with quantum-resistant encryption and 99.97% threat detection.
+              Join enterprises protecting with quantum-resistant encryption and 99.97% threat detection.
             </p>
 
             <form onSubmit={handleEmailSubmit} className="max-w-2xl mx-auto mb-5">
