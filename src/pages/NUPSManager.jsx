@@ -1,23 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, lazy, Suspense } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   Store, DollarSign, ShoppingCart, Package, TrendingUp, 
-  Users, LogOut, MapPin, BarChart3, Calendar, UserCheck, DoorOpen, FileText
+  Users, LogOut, UserCheck, DoorOpen, FileText
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import NUPSInventoryManagement from "../components/nups/InventoryManagement.jsx";
-import NUPSLocationManagement from "../components/nups/LocationManagement.jsx";
-import NUPSStaffManagement from "../components/nups/StaffManagement.jsx";
-import NUPSAdvancedReporting from "../components/nups/AdvancedReporting.jsx";
-import NUPSLoyaltyProgram from "../components/nups/LoyaltyProgram.jsx";
-import EntertainerCheckIn from "../components/nups/EntertainerCheckIn.jsx";
-import VIPRoomManagement from "../components/nups/VIPRoomManagement.jsx";
-import GuestTracking from "../components/nups/GuestTracking.jsx";
-import ZReportGenerator from "../components/nups/ZReportGenerator.jsx";
+
+// Lazy load heavy components
+const EntertainerCheckIn = lazy(() => import("../components/nups/EntertainerCheckIn.jsx"));
+const VIPRoomManagement = lazy(() => import("../components/nups/VIPRoomManagement.jsx"));
+const GuestTracking = lazy(() => import("../components/nups/GuestTracking.jsx"));
+const ZReportGenerator = lazy(() => import("../components/nups/ZReportGenerator.jsx"));
+const NUPSInventoryManagement = lazy(() => import("../components/nups/InventoryManagement.jsx"));
+const NUPSLocationManagement = lazy(() => import("../components/nups/LocationManagement.jsx"));
+const NUPSLoyaltyProgram = lazy(() => import("../components/nups/LoyaltyProgram.jsx"));
+const NUPSAdvancedReporting = lazy(() => import("../components/nups/AdvancedReporting.jsx"));
 
 export default function NUPSManager() {
   const [user, setUser] = useState(null);
@@ -79,14 +80,12 @@ export default function NUPSManager() {
   });
 
   const todayRevenue = todayTransactions.reduce((sum, t) => sum + (t.total || 0), 0);
-  const totalRevenue = transactions.reduce((sum, t) => sum + (t.total || 0), 0);
   const lowStockProducts = products.filter(p => p.stock_quantity <= (p.low_stock_threshold || 10));
   const activeGuestsCount = vipGuests.filter(g => g.status === 'in_building').length;
   const occupiedRooms = vipRooms.filter(r => r.status === 'occupied').length;
 
   return (
     <div className="min-h-screen bg-black text-white">
-      {/* Header */}
       <header className="glass-nav border-b border-green-500/20 p-4">
         <div className="container mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -115,7 +114,6 @@ export default function NUPSManager() {
       </header>
 
       <div className="container mx-auto p-6">
-        {/* Stats Overview */}
         <div className="grid md:grid-cols-6 gap-4 mb-8">
           <Card className="glass-card-hover border-green-500/30">
             <CardContent className="p-4">
@@ -181,79 +179,51 @@ export default function NUPSManager() {
           </Card>
         </div>
 
-        {/* Tabs */}
         <Tabs defaultValue="floor" className="space-y-6">
           <TabsList className="glass-card-dark border-gray-800">
-            <TabsTrigger value="floor" className="text-white data-[state=active]:text-green-400">
+            <TabsTrigger value="floor">
               <UserCheck className="w-4 h-4 mr-2" />
               Floor Management
             </TabsTrigger>
-            <TabsTrigger value="vip" className="text-white data-[state=active]:text-purple-400">
+            <TabsTrigger value="vip">
               <DoorOpen className="w-4 h-4 mr-2" />
               VIP Rooms
             </TabsTrigger>
-            <TabsTrigger value="guests" className="text-white data-[state=active]:text-cyan-400">
+            <TabsTrigger value="guests">
               <Users className="w-4 h-4 mr-2" />
               Guest Tracking
             </TabsTrigger>
-            <TabsTrigger value="zreport" className="text-white data-[state=active]:text-yellow-400">
+            <TabsTrigger value="zreport">
               <FileText className="w-4 h-4 mr-2" />
               Z-Report
             </TabsTrigger>
-            <TabsTrigger value="inventory" className="text-white data-[state=active]:text-green-400">
+            <TabsTrigger value="inventory">
               <Package className="w-4 h-4 mr-2" />
               Inventory
             </TabsTrigger>
-            <TabsTrigger value="locations" className="text-white data-[state=active]:text-green-400">
-              <MapPin className="w-4 h-4 mr-2" />
-              Locations
-            </TabsTrigger>
-            <TabsTrigger value="loyalty" className="text-white data-[state=active]:text-green-400">
-              <TrendingUp className="w-4 h-4 mr-2" />
-              Loyalty
-            </TabsTrigger>
-            <TabsTrigger value="reports" className="text-white data-[state=active]:text-green-400">
-              <BarChart3 className="w-4 h-4 mr-2" />
-              Reports
-            </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="floor">
-            <EntertainerCheckIn />
-          </TabsContent>
+          <Suspense fallback={<div className="text-center py-8 text-gray-400">Loading...</div>}>
+            <TabsContent value="floor">
+              <EntertainerCheckIn />
+            </TabsContent>
 
-          <TabsContent value="vip">
-            <VIPRoomManagement />
-          </TabsContent>
+            <TabsContent value="vip">
+              <VIPRoomManagement />
+            </TabsContent>
 
-          <TabsContent value="guests">
-            <GuestTracking />
-          </TabsContent>
+            <TabsContent value="guests">
+              <GuestTracking />
+            </TabsContent>
 
-          <TabsContent value="zreport">
-            <ZReportGenerator user={user} />
-          </TabsContent>
+            <TabsContent value="zreport">
+              <ZReportGenerator user={user} />
+            </TabsContent>
 
-          <TabsContent value="inventory">
-            <NUPSInventoryManagement products={products} />
-          </TabsContent>
-
-          <TabsContent value="locations">
-            <NUPSLocationManagement locations={locations} />
-          </TabsContent>
-
-          <TabsContent value="loyalty">
-            <NUPSLoyaltyProgram customers={customers} />
-          </TabsContent>
-
-          <TabsContent value="reports">
-            <NUPSAdvancedReporting 
-              transactions={transactions}
-              products={products}
-              customers={customers}
-              locations={locations}
-            />
-          </TabsContent>
+            <TabsContent value="inventory">
+              <NUPSInventoryManagement products={products} />
+            </TabsContent>
+          </Suspense>
         </Tabs>
       </div>
     </div>
