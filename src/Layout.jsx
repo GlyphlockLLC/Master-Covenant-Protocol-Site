@@ -12,6 +12,7 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import GlyphBotJr from "@/components/GlyphBotJr";
+import TechStackCarousel from "@/components/TechStackCarousel";
 
 export default function Layout({ children, currentPageName }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -57,39 +58,6 @@ export default function Layout({ children, currentPageName }) {
   const isActive = (pageName) => location.pathname === createPageUrl(pageName);
 
   const canGoBack = window.history.length > 1 && location.pathname !== createPageUrl("Home");
-
-  const techCompanies = [
-    { name: "AWS", logo: "https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg" },
-    { name: "Google Cloud", logo: "https://www.vectorlogo.zone/logos/google_cloud/google_cloud-ar21.svg" },
-    { name: "Microsoft Azure", logo: "https://www.vectorlogo.zone/logos/microsoft_azure/microsoft_azure-ar21.svg" },
-    { name: "Stripe", logo: "https://www.vectorlogo.zone/logos/stripe/stripe-ar21.svg" },
-    { name: "OpenAI", logo: "https://www.vectorlogo.zone/logos/openai/openai-ar21.svg" },
-    { name: "Anthropic", logo: "https://upload.wikimedia.org/wikipedia/commons/7/78/Anthropic_logo.svg" },
-    { name: "Vercel", logo: "https://www.vectorlogo.zone/logos/vercel/vercel-ar21.svg" },
-    { name: "Supabase", logo: "https://www.vectorlogo.zone/logos/supabase/supabase-ar21.svg" },
-    { name: "MongoDB", logo: "https://www.vectorlogo.zone/logos/mongodb/mongodb-ar21.svg" },
-    { name: "PostgreSQL", logo: "https://www.vectorlogo.zone/logos/postgresql/postgresql-ar21.svg" },
-    { name: "Docker", logo: "https://www.vectorlogo.zone/logos/docker/docker-ar21.svg" },
-    { name: "Kubernetes", logo: "https://www.vectorlogo.zone/logos/kubernetes/kubernetes-ar21.svg" },
-    { name: "GitHub", logo: "https://www.vectorlogo.zone/logos/github/github-ar21.svg" },
-    { name: "GitLab", logo: "https://www.vectorlogo.zone/logos/gitlab/gitlab-ar21.svg" },
-    { name: "Cloudflare", logo: "https://www.vectorlogo.zone/logos/cloudflare/cloudflare-ar21.svg" },
-    { name: "Twilio", logo: "https://www.vectorlogo.zone/logos/twilio/twilio-ar21.svg" },
-    { name: "SendGrid", logo: "https://www.vectorlogo.zone/logos/sendgrid/sendgrid-ar21.svg" },
-    { name: "Redis", logo: "https://www.vectorlogo.zone/logos/redis/redis-ar21.svg" },
-    { name: "Nginx", logo: "https://www.vectorlogo.zone/logos/nginx/nginx-ar21.svg" },
-    { name: "Node.js", logo: "https://www.vectorlogo.zone/logos/nodejs/nodejs-ar21.svg" },
-    { name: "React", logo: "https://www.vectorlogo.zone/logos/reactjs/reactjs-ar21.svg" },
-    { name: "TensorFlow", logo: "https://www.vectorlogo.zone/logos/tensorflow/tensorflow-ar21.svg" },
-    { name: "PyTorch", logo: "https://www.vectorlogo.zone/logos/pytorch/pytorch-ar21.svg" },
-    { name: "Terraform", logo: "https://www.vectorlogo.zone/logos/terraformio/terraformio-ar21.svg" },
-    { name: "Jenkins", logo: "https://www.vectorlogo.zone/logos/jenkins/jenkins-ar21.svg" },
-    { name: "Grafana", logo: "https://www.vectorlogo.zone/logos/grafana/grafana-ar21.svg" },
-    { name: "Prometheus", logo: "https://www.vectorlogo.zone/logos/prometheusio/prometheusio-ar21.svg" },
-    { name: "Elasticsearch", logo: "https://www.vectorlogo.zone/logos/elastic/elastic-ar21.svg" },
-    { name: "RabbitMQ", logo: "https://www.vectorlogo.zone/logos/rabbitmq/rabbitmq-ar21.svg" },
-    { name: "Apache Kafka", logo: "https://www.vectorlogo.zone/logos/apache_kafka/apache_kafka-ar21.svg" }
-  ];
 
   const certifications = [
     { 
@@ -414,27 +382,9 @@ export default function Layout({ children, currentPageName }) {
       {/* Footer */}
       <footer className={`${darkMode ? 'bg-gray-900/60' : 'bg-white/60'} backdrop-blur-xl border-t ${darkMode ? 'border-blue-500/20' : 'border-blue-500/30'} py-12 relative z-10`}>
         <div className="container mx-auto px-4">
-          {/* Technology Partners Marquee */}
-          <div className="mb-12 overflow-hidden">
-            <h3 className={`text-center text-xl font-bold mb-6 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
-              Powered by <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">Industry Leaders</span>
-            </h3>
-            <div className="relative">
-              <div className="flex animate-marquee">
-                {[...techCompanies, ...techCompanies].map((company, idx) => (
-                  <div key={idx} className="flex-shrink-0 mx-4">
-                    <div className={`${darkMode ? 'bg-white/5' : 'bg-gray-100/50'} backdrop-blur-sm rounded-lg p-3 h-16 w-28 flex items-center justify-center hover:scale-110 transition-transform`}>
-                      <img 
-                        src={company.logo} 
-                        alt={company.name}
-                        className="max-h-10 max-w-full object-contain opacity-70 hover:opacity-100 transition-opacity"
-                        loading="lazy"
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+          {/* Technology Partners Carousel */}
+          <div className="mb-12">
+            <TechStackCarousel />
           </div>
 
           <div className="grid md:grid-cols-4 gap-8 mb-12">
@@ -521,23 +471,6 @@ export default function Layout({ children, currentPageName }) {
           </div>
         </div>
       </footer>
-
-      <style jsx>{`
-        @keyframes marquee {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(-50%);
-          }
-        }
-        .animate-marquee {
-          animation: marquee 50s linear infinite;
-        }
-        .animate-marquee:hover {
-          animation-play-state: paused;
-        }
-      `}</style>
     </div>
   );
 }
