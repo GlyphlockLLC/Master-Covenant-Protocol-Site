@@ -26,6 +26,7 @@ import StripeSetup from './pages/StripeSetup';
 import Dashboard from './pages/Dashboard';
 import Admin from './pages/Admin';
 import NUPSManager from './pages/NUPSManager';
+import DreamTeam from './pages/DreamTeam';
 import Layout from './Layout.jsx';
 
 
@@ -58,6 +59,7 @@ export const PAGES = {
     "Dashboard": Dashboard,
     "Admin": Admin,
     "NUPSManager": NUPSManager,
+    "DreamTeam": DreamTeam,
 }
 
 export const pagesConfig = {
