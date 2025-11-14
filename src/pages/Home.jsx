@@ -145,28 +145,26 @@ export default function Home() {
         </button>
       }
 
-      {/* Hero Video Section - 1080p optimized */}
+      {/* Hero Video Section - Mobile Optimized */}
       <section className="relative h-screen w-full overflow-hidden flex items-center justify-center bg-black">
         <video
           autoPlay
           loop
           muted
           playsInline
-          preload="auto" className="rounded-[10px] max-w-[1920px] max-h-[1080px] w-auto h-auto"
-
+          preload="auto"
+          className="absolute inset-0 w-full h-full object-cover"
           style={{ filter: 'brightness(1.1) contrast(1.1)' }}>
-
           <source src="https://i.imgur.com/zs3sPzJ.mp4" type="video/mp4" />
         </video>
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black pointer-events-none" />
         
-        {/* GlyphLock Logo Overlay */}
-        <div className="absolute bottom-[24%] right-[18%] z-10">
+        {/* GlyphLock Logo Overlay - Responsive */}
+        <div className="absolute bottom-[20%] right-[10%] md:bottom-[24%] md:right-[18%] z-10">
           <img
             src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/08025b614_gl-logo.png"
             alt="GlyphLock"
-            className="h-16 w-auto" />
-
+            className="h-12 md:h-16 w-auto" />
         </div>
       </section>
 
