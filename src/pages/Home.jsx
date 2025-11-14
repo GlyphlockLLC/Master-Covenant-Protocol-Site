@@ -152,7 +152,9 @@ export default function Home() {
           loop 
           muted 
           playsInline
+          preload="auto"
           className="absolute inset-0 w-full h-full object-cover"
+          style={{ filter: 'brightness(1.1) contrast(1.1)' }}
         >
           <source src="https://i.imgur.com/zs3sPzJ.mp4" type="video/mp4" />
         </video>
