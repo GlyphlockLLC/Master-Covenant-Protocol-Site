@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
@@ -145,28 +146,29 @@ export default function Home() {
         </button>
       }
 
-      {/* Hero Video Section - Full Video Visible */}
+      {/* Hero Video Section - Video scaled to fit with logo at bottom-right corner */}
       <section className="relative h-screen w-full overflow-hidden flex items-center justify-center bg-black">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          className="w-full h-full object-contain"
-          style={{ filter: 'brightness(1.1) contrast(1.1)' }}>
-          <source src="https://i.imgur.com/zs3sPzJ.mp4" type="video/mp4" />
-        </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black pointer-events-none" />
-        
-        {/* GlyphLock Logo Overlay - Scales with video viewport */}
-        <div className="absolute z-10" style={{ bottom: '18vh', right: '12vw' }}>
-          <img
-            src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/08025b614_gl-logo.png"
-            alt="GlyphLock"
-            className="w-auto"
-            style={{ height: '8vh' }} />
+        <div className="relative max-w-full max-h-full">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+            className="max-w-full max-h-screen"
+            style={{ filter: 'brightness(1.1) contrast(1.1)' }}>
+            <source src="https://i.imgur.com/zs3sPzJ.mp4" type="video/mp4" />
+          </video>
+          
+          {/* GlyphLock Logo - Positioned at video's bottom-right corner */}
+          <div className="absolute bottom-4 right-4 md:bottom-6 md:right-6 z-10">
+            <img
+              src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/08025b614_gl-logo.png"
+              alt="GlyphLock"
+              className="h-12 md:h-16 lg:h-20 w-auto" />
+          </div>
         </div>
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black pointer-events-none" />
       </section>
 
       {/* Hero Content */}
