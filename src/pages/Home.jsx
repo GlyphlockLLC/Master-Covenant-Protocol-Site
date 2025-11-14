@@ -159,12 +159,12 @@ export default function Home() {
         </video>
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black pointer-events-none" />
         
-        {/* GlyphLock Logo Overlay - Responsive */}
-        <div className="absolute bottom-[20%] right-[10%] md:bottom-[24%] md:right-[18%] z-10">
+        {/* GlyphLock Logo Overlay - Scales with video and covers watermark */}
+        <div className="absolute bottom-[15%] right-[8%] sm:bottom-[18%] sm:right-[12%] md:bottom-[22%] md:right-[16%] z-10">
           <img
             src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/08025b614_gl-logo.png"
             alt="GlyphLock"
-            className="h-12 md:h-16 w-auto" />
+            className="h-16 sm:h-20 md:h-24 lg:h-28 w-auto" />
         </div>
       </section>
 
