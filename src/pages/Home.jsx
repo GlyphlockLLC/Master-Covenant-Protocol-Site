@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
@@ -37,7 +38,7 @@ export default function Home() {
       title: "N.U.P.S. POS",
       description: "Enterprise point-of-sale with three-tier access control and real-time analytics.",
       link: "NUPSLogin",
-      image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/9be80d6ca_Whisk_43831818b9d5e77953345c3626f3d976eg.jpg",
+      image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/b6f63d51b_Whisk_b9fd7532ee1e87a9152439bac427f256dr.jpg",
       price: "Enterprise",
       icon: Shield
     },
@@ -69,7 +70,7 @@ export default function Home() {
       title: "Blockchain Security",
       description: "SHA-256/512 hashing, Merkle trees, and immutable verification.",
       link: "Blockchain",
-      image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/b6f63d51b_Whisk_b9fd7532ee1e87a9152439bac427f256dr.jpg",
+      image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/9be80d6ca_Whisk_43831818b9d5e77953345c3626f3d976eg.jpg",
       price: "$99.99",
       icon: Lock
     },
