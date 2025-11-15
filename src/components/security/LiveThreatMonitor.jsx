@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -20,12 +20,10 @@ export default function LiveThreatMonitor({ threats, onRefresh }) {
     api: 'operational'
   });
 
-  // Simulate real-time threat detection
   useEffect(() => {
     if (!isLive) return;
 
     const interval = setInterval(() => {
-      // Check for new threats (last 5 minutes)
       const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
       const newThreats = threats.filter(t => 
         new Date(t.created_date) > fiveMinutesAgo
@@ -48,8 +46,6 @@ export default function LiveThreatMonitor({ threats, onRefresh }) {
     if ('Notification' in window && Notification.permission === 'granted') {
       new Notification('🚨 Critical Security Alert', {
         body: `${threat.threat_type} detected at ${threat.hotspot_name}`,
-        icon: '/icon.png',
-        badge: '/badge.png',
         tag: threat.id,
         requireInteraction: true
       });
@@ -113,7 +109,6 @@ export default function LiveThreatMonitor({ threats, onRefresh }) {
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
-        {/* System Status */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {Object.entries(systemStatus).map(([system, status]) => (
             <div key={system} className="bg-gray-800/50 rounded-lg p-3">
@@ -130,7 +125,6 @@ export default function LiveThreatMonitor({ threats, onRefresh }) {
           ))}
         </div>
 
-        {/* Critical Alerts */}
         <AnimatePresence>
           {criticalCount > 0 && (
             <motion.div
@@ -148,7 +142,6 @@ export default function LiveThreatMonitor({ threats, onRefresh }) {
           )}
         </AnimatePresence>
 
-        {/* Recent Activity Feed */}
         <div>
           <div className="flex items-center gap-2 mb-3">
             <Activity className="w-4 h-4 text-blue-400" />
