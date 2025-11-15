@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
@@ -7,8 +6,10 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { ChevronRight, Shield, ArrowUp, Lock, Eye, Zap, CheckCircle2, Server } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import AnimatedBackground from "@/components/AnimatedBackground";
 import TechStackCarousel from "@/components/TechStackCarousel";
+import TestimonialsSection from "@/components/TestimonialsSection";
+import ComparisonSection from "@/components/ComparisonSection";
+import InteractiveDemoSection from "@/components/InteractiveDemoSection";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -117,20 +118,17 @@ export default function Home() {
 
   return (
     <div className="bg-black text-white relative overflow-hidden">
-      <AnimatedBackground />
-      
-      {/* Back to Top Button */}
       {showBackToTop &&
       <button
         onClick={scrollToTop}
-        className="fixed bottom-8 right-8 z-50 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white p-4 rounded-full shadow-2xl transition-all duration-300 hover:scale-110 glow-royal-blue"
+        className="fixed bottom-8 right-8 z-50 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white p-4 rounded-full shadow-2xl transition-all duration-300 hover:scale-110 glow-royal"
         aria-label="Back to top">
 
           <ArrowUp className="w-6 h-6" />
         </button>
       }
 
-      {/* Hero Video Section - Video scaled to fit with logo at bottom-right corner */}
+      {/* Hero Video Section */}
       <section className="relative h-screen w-full overflow-hidden flex items-center justify-center bg-black">
         <div className="relative max-w-full max-h-full">
           <video
@@ -144,7 +142,6 @@ export default function Home() {
             <source src="https://i.imgur.com/zs3sPzJ.mp4" type="video/mp4" />
           </video>
           
-          {/* GlyphLock Logo - Slightly adjusted position */}
           <div className="absolute z-10" style={{ bottom: '-24px', right: '-24px' }}>
             <img
               src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/08025b614_gl-logo.png"
@@ -159,7 +156,7 @@ export default function Home() {
       <section className="relative py-24 z-10">
         <div className="container mx-auto px-4">
           <div className="max-w-5xl mx-auto text-center">
-            <Badge className="mb-6 bg-blue-500/20 text-blue-400 border-blue-500/50 px-6 py-2 text-sm backdrop-blur-md">
+            <Badge className="mb-6 glass-royal text-blue-400 border-blue-500/50 px-6 py-2 text-sm">
               <Shield className="w-4 h-4 mr-2" />
               Post-Quantum Ready (Hybrid)
             </Badge>
@@ -172,7 +169,7 @@ export default function Home() {
               </span>
             </h1>
 
-            <p className="text-xl md:text-2xl text-gray-300 mb-4 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl md:text-2xl text-white/80 mb-4 max-w-3xl mx-auto leading-relaxed">
               Enterprise-grade cybersecurity with AI integration, quantum-resistant encryption, and zero-trust architecture
             </p>
             
@@ -190,14 +187,14 @@ export default function Home() {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
               <Link to={createPageUrl("Consultation")}>
-                <Button size="lg" className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white text-lg px-10 py-7 shadow-2xl glow-royal-blue">
+                <Button size="lg" className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white text-lg px-10 py-7 shadow-2xl glow-royal">
                   Book Free Consultation
                   <ChevronRight className="w-5 h-5 ml-2" />
                 </Button>
               </Link>
               <Link to={createPageUrl("SecurityTools")}>
-                <Button size="lg" variant="outline" className="border-2 border-white/30 bg-white/10 backdrop-blur-md hover:bg-white/20 text-white text-lg px-10 py-7">
-                  Explore Complete Security Ecosystem
+                <Button size="lg" variant="outline" className="border-2 border-blue-500/50 glass-dark text-white text-lg px-10 py-7">
+                  Explore Security Ecosystem
                 </Button>
               </Link>
             </div>
@@ -205,9 +202,9 @@ export default function Home() {
             {/* Stats */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
               {stats.map((stat, idx) =>
-              <div key={idx} className="glass-card backdrop-blur-xl bg-black/20 border-blue-500/30 p-6 rounded-xl">
+              <div key={idx} className="glass-royal p-6 rounded-xl">
                   <div className="text-3xl md:text-4xl font-bold text-blue-400 mb-2">{stat.value}</div>
-                  <div className="text-sm text-gray-300">{stat.label}</div>
+                  <div className="text-sm text-white/80">{stat.label}</div>
                 </div>
               )}
             </div>
@@ -219,10 +216,10 @@ export default function Home() {
       <section className="py-24 relative">
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
               Why Choose <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">GlyphLock</span>
             </h2>
-            <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+            <p className="text-xl text-white/70 max-w-3xl mx-auto">
               Military-grade security that adapts to emerging threats
             </p>
           </div>
@@ -231,12 +228,12 @@ export default function Home() {
             {features.map((feature, idx) => {
               const Icon = feature.icon;
               return (
-                <div key={idx} className="glass-card backdrop-blur-xl bg-black/30 border-blue-500/30 p-8 rounded-2xl hover:border-blue-500/60 transition-all duration-300 group">
+                <div key={idx} className="glass-royal p-8 rounded-2xl hover:border-blue-500/60 transition-all duration-300 group">
                   <div className="bg-blue-500/20 w-16 h-16 rounded-xl flex items-center justify-center mb-6 group-hover:bg-blue-500/30 transition-colors">
                     <Icon className="w-8 h-8 text-blue-400" />
                   </div>
                   <h3 className="text-xl font-bold mb-3 text-white">{feature.title}</h3>
-                  <p className="text-gray-400">{feature.description}</p>
+                  <p className="text-white/70">{feature.description}</p>
                 </div>
               );
             })}
@@ -256,7 +253,7 @@ export default function Home() {
                     <Lock className="w-7 h-7 text-blue-400" />
                     <h3 className="text-2xl font-bold text-white">Smart Contracts</h3>
                   </div>
-                  <p className="text-gray-300">Automated, secure, and transparent agreements</p>
+                  <p className="text-white/80">Automated, secure, and transparent agreements</p>
                 </div>
               </div>
             </div>
@@ -273,7 +270,7 @@ export default function Home() {
                     <Shield className="w-7 h-7 text-blue-400" />
                     <h3 className="text-2xl font-bold text-white">Full Stack Security</h3>
                   </div>
-                  <p className="text-gray-300">End-to-end protection for your entire stack</p>
+                  <p className="text-white/80">End-to-end protection for your entire stack</p>
                 </div>
               </div>
             </div>
@@ -290,7 +287,7 @@ export default function Home() {
                     <Eye className="w-7 h-7 text-blue-400" />
                     <h3 className="text-2xl font-bold text-white">Secure Development</h3>
                   </div>
-                  <p className="text-gray-300">Build with security at the foundation</p>
+                  <p className="text-white/80">Build with security at the foundation</p>
                 </div>
               </div>
             </div>
@@ -298,14 +295,16 @@ export default function Home() {
         </div>
       </section>
 
+      <InteractiveDemoSection />
+
       {/* Services Grid */}
       <section className="py-24 relative">
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
               Complete Security <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">Ecosystem</span>
             </h2>
-            <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+            <p className="text-xl text-white/70 max-w-3xl mx-auto">
               Integrated tools designed for enterprise-level protection
             </p>
           </div>
@@ -315,7 +314,7 @@ export default function Home() {
               const Icon = service.icon;
               return (
                 <Link key={index} to={createPageUrl(service.link)}>
-                  <Card className="glass-card backdrop-blur-xl bg-black/30 border-blue-500/30 hover:border-blue-500/60 transition-all duration-300 h-full group cursor-pointer overflow-hidden">
+                  <Card className="glass-royal border-blue-500/30 hover:border-blue-500/60 transition-all duration-300 h-full group cursor-pointer overflow-hidden">
                     <div className="relative h-48 overflow-hidden">
                       <img
                         src={service.image}
@@ -338,7 +337,7 @@ export default function Home() {
                       <h3 className="text-lg font-bold mb-3 text-white group-hover:text-blue-400 transition-colors">
                         {service.title}
                       </h3>
-                      <p className="text-gray-400 text-sm leading-relaxed">
+                      <p className="text-white/70 text-sm leading-relaxed">
                         {service.description}
                       </p>
                     </CardContent>
@@ -349,6 +348,10 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <ComparisonSection />
+
+      <TestimonialsSection />
 
       {/* Tech Stack Carousel */}
       <section className="py-24 relative">
@@ -361,17 +364,17 @@ export default function Home() {
       <section className="py-24 relative">
         <div className="container mx-auto px-4 relative z-10">
           <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            <div className="glass-card backdrop-blur-xl bg-black/30 border-blue-500/30 p-8 rounded-2xl text-center">
-              <div className="text-5xl font-bold mb-2" style={{ color: '#00BFFF' }}>1.5PB+</div>
-              <div className="text-gray-300">Petabytes of Threat Data Analyzed</div>
+            <div className="glass-royal p-8 rounded-2xl text-center">
+              <div className="text-5xl font-bold mb-2 text-blue-400">1.5PB+</div>
+              <div className="text-white/80">Petabytes of Threat Data Analyzed</div>
             </div>
-            <div className="glass-card backdrop-blur-xl bg-black/30 border-blue-500/30 p-8 rounded-2xl text-center">
-              <div className="text-5xl font-bold mb-2" style={{ color: '#00BFFF' }}>4 Million+</div>
-              <div className="text-gray-300">Malicious Events Neutralized</div>
+            <div className="glass-royal p-8 rounded-2xl text-center">
+              <div className="text-5xl font-bold mb-2 text-blue-400">4 Million+</div>
+              <div className="text-white/80">Malicious Events Neutralized</div>
             </div>
-            <div className="glass-card backdrop-blur-xl bg-black/30 border-blue-500/30 p-8 rounded-2xl text-center">
-              <div className="text-5xl font-bold mb-2" style={{ color: '#00BFFF' }}>120+</div>
-              <div className="text-gray-300">Zero-Day Vulnerabilities Identified</div>
+            <div className="glass-royal p-8 rounded-2xl text-center">
+              <div className="text-5xl font-bold mb-2 text-blue-400">120+</div>
+              <div className="text-white/80">Zero-Day Vulnerabilities Identified</div>
             </div>
           </div>
         </div>
@@ -382,10 +385,10 @@ export default function Home() {
         <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent" />
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
               Ready to Secure Your <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">Enterprise?</span>
             </h2>
-            <p className="text-xl text-gray-400 mb-10 leading-relaxed">
+            <p className="text-xl text-white/70 mb-10 leading-relaxed">
               Join Fortune 500 companies protecting their digital assets with quantum-resistant encryption
             </p>
 
@@ -396,13 +399,13 @@ export default function Home() {
                   placeholder="Enter your work email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="glass-input backdrop-blur-xl bg-black/30 border-blue-500/50 text-white placeholder:text-gray-400 h-14 text-lg flex-1"
+                  className="glass-input text-white h-14 text-lg flex-1"
                   required />
 
                 <Button
                   type="submit"
                   size="lg"
-                  className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white h-14 px-8 text-lg glow-royal-blue">
+                  className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white h-14 px-8 text-lg glow-royal">
 
                   Get Started Free
                   <ChevronRight className="w-5 h-5 ml-2" />
@@ -410,7 +413,7 @@ export default function Home() {
               </div>
             </form>
 
-            <div className="flex flex-wrap items-center justify-center gap-8 text-sm text-gray-400">
+            <div className="flex flex-wrap items-center justify-center gap-8 text-sm text-white/70">
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-5 h-5 text-green-400" />
                 <span>Free 14-day trial</span>
