@@ -21,6 +21,7 @@ export const navigationConfig = {
       ]
     },
     { label: "GlyphBot AI", page: "GlyphBot" },
+    { label: "AI Image Generator", page: "ImageGenerator" },
     { label: "N.U.P.S. POS", page: "NUPSLogin" },
     { label: "Pricing", page: "Pricing" },
     { label: "Contact", page: "Contact" },
@@ -39,6 +40,7 @@ export const navigationConfig = {
       { label: "Blockchain", page: "Blockchain" },
       { label: "Security Operations", page: "SecurityOperationsCenter" },
       { label: "GlyphBot AI", page: "GlyphBot" },
+      { label: "AI Image Generator", page: "ImageGenerator" },
       { label: "N.U.P.S. POS", page: "NUPSLogin" },
     ],
     legal: [
