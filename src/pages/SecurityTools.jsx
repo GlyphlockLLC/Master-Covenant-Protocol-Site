@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ChevronRight, Shield, Lock, Eye, FileCode } from "lucide-react";
+import { ChevronRight, Shield, Lock, Eye, FileCode, Zap, Server } from "lucide-react";
 
 export default function SecurityTools() {
   const tools = [
@@ -21,7 +21,7 @@ export default function SecurityTools() {
       price: "$99.99",
       link: "Blockchain",
       icon: Lock,
-      image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800&h=600&fit=crop"
+      image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/9be80d6ca_Whisk_43831818b9d5e77953345c3626f3d976eg.jpg"
     },
     {
       title: "HSSS Command Suite",
@@ -32,12 +32,28 @@ export default function SecurityTools() {
       image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/7e319a981_Whisk_429a6543b81e30d9bab4065457f3b62ddr.jpg"
     },
     {
+      title: "GlyphBot AI",
+      description: "AI assistant with code execution, security scanning, and automated auditing capabilities.",
+      price: "$50/mo",
+      link: "GlyphBot",
+      icon: Zap,
+      image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/9774d266e_openai-logo-inspired-abstract.png"
+    },
+    {
+      title: "N.U.P.S. POS",
+      description: "Enterprise point-of-sale with three-tier access control and real-time analytics.",
+      price: "Enterprise",
+      link: "NUPSLogin",
+      icon: Server,
+      image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/b6f63d51b_Whisk_b9fd7532ee1e87a9152439bac427f256dr.jpg"
+    },
+    {
       title: "Smart Contracts",
       description: "Generate and validate smart contracts with automated security auditing and deployment tools.",
       price: "Coming Soon",
       link: "SmartContracts",
       icon: FileCode,
-      image: "https://images.unsplash.com/photo-1620321023374-d1a68fbc720d?w=800&h=600&fit=crop"
+      image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/11242d8a3_Whisk_ecd15257dc62aafae4b457b73ff01aa9dr.jpg"
     }
   ];
 
@@ -57,7 +73,7 @@ export default function SecurityTools() {
               <Shield className="w-8 h-8 text-white" />
             </div>
             <h1 className="text-5xl md:text-6xl font-bold mb-6">
-              Security <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">Tools</span>
+              Complete Security <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">Ecosystem</span>
             </h1>
             <p className="text-xl text-gray-300 mb-8 leading-relaxed">
               Professional-grade cybersecurity suites for visual cryptography, blockchain security, and real-time surveillance.
@@ -108,24 +124,6 @@ export default function SecurityTools() {
                 </Card>
               </Link>
             ))}
-
-            {/* Custom Solution Card */}
-            <Card className="bg-gradient-to-br from-blue-500/10 to-purple-600/10 border-blue-500/30 hover:border-blue-500/50 transition-all h-full">
-              <CardContent className="p-6 flex flex-col items-center justify-center text-center h-full">
-                <Shield className="w-16 h-16 text-blue-400 mb-4" />
-                <h3 className="text-2xl font-bold text-white mb-3">
-                  Custom Security Solution
-                </h3>
-                <p className="text-gray-400 mb-6">
-                  Need a specialized security tool or enterprise solution? Our team can build it for you.
-                </p>
-                <Link to={createPageUrl("Contact")}>
-                  <Button className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white">
-                    Contact Us
-                  </Button>
-                </Link>
-              </CardContent>
-            </Card>
           </div>
         </div>
       </section>
@@ -135,7 +133,7 @@ export default function SecurityTools() {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-4xl font-bold mb-4 text-white">
-              Why Choose Our <span className="text-blue-400">Security Tools?</span>
+              Why Choose Our <span className="text-blue-400">Complete Security Ecosystem?</span>
             </h2>
             <p className="text-gray-400 mb-12">
               Enterprise-grade security features for modern threats

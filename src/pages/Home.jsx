@@ -4,7 +4,7 @@ import { createPageUrl } from "@/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-import { ChevronRight, Shield, ArrowUp, Lock, Eye, Zap, CheckCircle2 } from "lucide-react";
+import { ChevronRight, Shield, ArrowUp, Lock, Eye, Zap, CheckCircle2, Server } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import AnimatedBackground from "@/components/AnimatedBackground";
 import TechStackCarousel from "@/components/TechStackCarousel";
@@ -40,7 +40,7 @@ export default function Home() {
     link: "NUPSLogin",
     image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/b6f63d51b_Whisk_b9fd7532ee1e87a9152439bac427f256dr.jpg",
     price: "Enterprise",
-    icon: Shield
+    icon: Server
   },
   {
     title: "GlyphBot AI",
@@ -75,10 +75,10 @@ export default function Home() {
     icon: Shield
   },
   {
-    title: "Security Suite",
+    title: "Complete Security Ecosystem",
     description: "Comprehensive security tools with quantum-resistant encryption.",
     link: "SecurityTools",
-    image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=800&h=600&fit=crop",
+    image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/11242d8a3_Whisk_ecd15257dc62aafae4b457b73ff01aa9dr.jpg",
     price: "Custom",
     icon: Shield
   }];
@@ -196,7 +196,7 @@ export default function Home() {
               </Link>
               <Link to={createPageUrl("SecurityTools")}>
                 <Button size="lg" variant="outline" className="border-2 border-white/30 bg-white/10 backdrop-blur-md hover:bg-white/20 text-white text-lg px-10 py-7">
-                  Explore Security Tools
+                  Explore Complete Security Ecosystem
                 </Button>
               </Link>
             </div>
