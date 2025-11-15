@@ -16,7 +16,7 @@ export const navigationConfig = {
     {
       label: "Services",
       dropdown: [
-        { label: "Security Tools", page: "SecurityTools" },
+        { label: "Complete Security Ecosystem", page: "SecurityTools" },
         { label: "QR Generator", page: "QRGenerator" },
         { label: "Steganography", page: "Steganography" },
         { label: "Blockchain Security", page: "Blockchain" },
@@ -40,7 +40,7 @@ export const navigationConfig = {
       { label: "Contact", page: "Contact" },
     ],
     services: [
-      { label: "Security Tools", page: "SecurityTools" },
+      { label: "Complete Security Ecosystem", page: "SecurityTools" },
       { label: "QR Generator", page: "QRGenerator" },
       { label: "Steganography", page: "Steganography" },
       { label: "Blockchain", page: "Blockchain" },
