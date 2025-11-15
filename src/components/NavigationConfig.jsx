@@ -12,10 +12,10 @@ export const navigationConfig = {
       ]
     },
     {
-      label: "Services",
+      label: "Security",
       dropdown: [
         { label: "Visual Cryptography", page: "VisualCryptography" },
-        { label: "Blockchain", page: "Blockchain" },
+        { label: "Blockchain Security", page: "Blockchain" },
         { label: "Security Operations", page: "SecurityOperationsCenter" },
         { label: "Complete Ecosystem", page: "SecurityTools" },
       ]
