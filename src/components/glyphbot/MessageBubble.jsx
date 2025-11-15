@@ -25,16 +25,16 @@ function FunctionDisplay({ toolCall }) {
     );
     
     const statusConfig = {
-        pending: { icon: Clock, color: 'text-slate-400', text: 'Pending' },
-        running: { icon: Loader2, color: 'text-slate-500', text: 'Running...', spin: true },
-        in_progress: { icon: Loader2, color: 'text-slate-500', text: 'Running...', spin: true },
+        pending: { icon: Clock, color: 'text-blue-400', text: 'Pending' },
+        running: { icon: Loader2, color: 'text-blue-400', text: 'Running...', spin: true },
+        in_progress: { icon: Loader2, color: 'text-blue-400', text: 'Running...', spin: true },
         completed: isError ? 
-            { icon: AlertCircle, color: 'text-red-500', text: 'Failed' } : 
-            { icon: CheckCircle2, color: 'text-green-600', text: 'Success' },
-        success: { icon: CheckCircle2, color: 'text-green-600', text: 'Success' },
-        failed: { icon: AlertCircle, color: 'text-red-500', text: 'Failed' },
-        error: { icon: AlertCircle, color: 'text-red-500', text: 'Failed' }
-    }[status] || { icon: Zap, color: 'text-slate-500', text: '' };
+            { icon: AlertCircle, color: 'text-red-400', text: 'Failed' } : 
+            { icon: CheckCircle2, color: 'text-green-400', text: 'Success' },
+        success: { icon: CheckCircle2, color: 'text-green-400', text: 'Success' },
+        failed: { icon: AlertCircle, color: 'text-red-400', text: 'Failed' },
+        error: { icon: AlertCircle, color: 'text-red-400', text: 'Failed' }
+    }[status] || { icon: Zap, color: 'text-blue-400', text: '' };
     
     const Icon = statusConfig.icon;
     const formattedName = name.split('.').reverse().join(' ').toLowerCase();
@@ -44,30 +44,30 @@ function FunctionDisplay({ toolCall }) {
             <button
                 onClick={() => setExpanded(!expanded)}
                 className={cn(
-                    "flex items-center gap-2 px-3 py-1.5 rounded-lg border transition-all",
-                    "hover:bg-gray-700",
-                    expanded ? "bg-gray-700 border-cyan-500/50" : "bg-gray-800 border-gray-700"
+                    "flex items-center gap-2 px-3 py-1.5 rounded-lg border transition-all glass-dark",
+                    "hover:bg-blue-500/20",
+                    expanded ? "bg-blue-500/20 border-blue-500/50" : "border-blue-500/30"
                 )}
             >
                 <Icon className={cn("h-3 w-3", statusConfig.color, statusConfig.spin && "animate-spin")} />
-                <span className="text-gray-300">{formattedName}</span>
+                <span className="text-white">{formattedName}</span>
                 {statusConfig.text && (
-                    <span className={cn("text-gray-400", isError && "text-red-400")}>
+                    <span className={cn("text-white/70", isError && "text-red-400")}>
                         • {statusConfig.text}
                     </span>
                 )}
                 {!statusConfig.spin && (toolCall.arguments_string || results) && (
-                    <ChevronRight className={cn("h-3 w-3 text-gray-400 transition-transform ml-auto", 
+                    <ChevronRight className={cn("h-3 w-3 text-white/70 transition-transform ml-auto", 
                         expanded && "rotate-90")} />
                 )}
             </button>
             
             {expanded && !statusConfig.spin && (
-                <div className="mt-1.5 ml-3 pl-3 border-l-2 border-gray-700 space-y-2">
+                <div className="mt-1.5 ml-3 pl-3 border-l-2 border-blue-500/30 space-y-2">
                     {toolCall.arguments_string && (
                         <div>
-                            <div className="text-xs text-gray-400 mb-1">Parameters:</div>
-                            <pre className="bg-gray-800 rounded-md p-2 text-xs text-gray-300 whitespace-pre-wrap">
+                            <div className="text-xs text-blue-400 mb-1">Parameters:</div>
+                            <pre className="glass-dark rounded-md p-2 text-xs text-white whitespace-pre-wrap">
                                 {(() => {
                                     try {
                                         return JSON.stringify(JSON.parse(toolCall.arguments_string), null, 2);
@@ -80,8 +80,8 @@ function FunctionDisplay({ toolCall }) {
                     )}
                     {parsedResults && (
                         <div>
-                            <div className="text-xs text-gray-400 mb-1">Result:</div>
-                            <pre className="bg-gray-800 rounded-md p-2 text-xs text-gray-300 whitespace-pre-wrap max-h-48 overflow-auto">
+                            <div className="text-xs text-blue-400 mb-1">Result:</div>
+                            <pre className="glass-dark rounded-md p-2 text-xs text-white whitespace-pre-wrap max-h-48 overflow-auto">
                                 {typeof parsedResults === 'object' ? 
                                     JSON.stringify(parsedResults, null, 2) : parsedResults}
                             </pre>
@@ -103,7 +103,7 @@ export default function MessageBubble({ message }) {
     return (
         <div className={cn("flex gap-3", isUser ? "justify-end" : "justify-start")}>
             {!isUser && (
-                <div className="h-7 w-7 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center mt-0.5">
+                <div className="h-7 w-7 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center mt-0.5 glow-royal">
                     <Zap className="h-4 w-4 text-white" />
                 </div>
             )}
@@ -111,10 +111,10 @@ export default function MessageBubble({ message }) {
                 {message.content && (
                     <div className={cn(
                         "rounded-2xl px-4 py-2.5",
-                        isUser ? "bg-cyan-600 text-white" : "bg-gray-800 border border-gray-700"
+                        isUser ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white" : "glass-royal text-white"
                     )}>
                         {isUser ? (
-                            <p className="text-sm leading-relaxed">{message.content}</p>
+                            <p className="text-sm leading-relaxed text-white">{message.content}</p>
                         ) : (
                             <ReactMarkdown 
                                 className="text-sm prose prose-sm prose-invert max-w-none [&>*:first-child]:mt-0 [&>*:last-child]:mb-0"
@@ -123,40 +123,40 @@ export default function MessageBubble({ message }) {
                                         const match = /language-(\w+)/.exec(className || '');
                                         return !inline && match ? (
                                             <div className="relative group/code">
-                                                <pre className="bg-gray-900 text-gray-100 rounded-lg p-3 overflow-x-auto my-2">
+                                                <pre className="glass-dark text-white rounded-lg p-3 overflow-x-auto my-2">
                                                     <code className={className} {...props}>{children}</code>
                                                 </pre>
                                                 <Button
                                                     size="icon"
                                                     variant="ghost"
-                                                    className="absolute top-2 right-2 h-6 w-6 opacity-0 group-hover/code:opacity-100 bg-gray-800 hover:bg-gray-700"
+                                                    className="absolute top-2 right-2 h-6 w-6 opacity-0 group-hover/code:opacity-100 glass-dark hover:bg-blue-500/20"
                                                     onClick={() => {
                                                         copyToClipboard(String(children).replace(/\n$/, ''));
                                                     }}
                                                 >
-                                                    <Copy className="h-3 w-3 text-gray-400" />
+                                                    <Copy className="h-3 w-3 text-white" />
                                                 </Button>
                                             </div>
                                         ) : (
-                                            <code className="px-1 py-0.5 rounded bg-gray-900 text-cyan-400 text-xs">
+                                            <code className="px-1 py-0.5 rounded glass-dark text-blue-400 text-xs">
                                                 {children}
                                             </code>
                                         );
                                     },
                                     a: ({ children, ...props }) => (
-                                        <a {...props} target="_blank" rel="noopener noreferrer" className="text-cyan-400 hover:text-cyan-300">
+                                        <a {...props} target="_blank" rel="noopener noreferrer" className="text-blue-300 hover:text-blue-200 underline">
                                             {children}
                                         </a>
                                     ),
-                                    p: ({ children }) => <p className="my-1 leading-relaxed">{children}</p>,
-                                    ul: ({ children }) => <ul className="my-1 ml-4 list-disc">{children}</ul>,
-                                    ol: ({ children }) => <ol className="my-1 ml-4 list-decimal">{children}</ol>,
-                                    li: ({ children }) => <li className="my-0.5">{children}</li>,
-                                    h1: ({ children }) => <h1 className="text-lg font-semibold my-2">{children}</h1>,
-                                    h2: ({ children }) => <h2 className="text-base font-semibold my-2">{children}</h2>,
-                                    h3: ({ children }) => <h3 className="text-sm font-semibold my-2">{children}</h3>,
+                                    p: ({ children }) => <p className="my-1 leading-relaxed text-white">{children}</p>,
+                                    ul: ({ children }) => <ul className="my-1 ml-4 list-disc text-white">{children}</ul>,
+                                    ol: ({ children }) => <ol className="my-1 ml-4 list-decimal text-white">{children}</ol>,
+                                    li: ({ children }) => <li className="my-0.5 text-white">{children}</li>,
+                                    h1: ({ children }) => <h1 className="text-lg font-semibold my-2 text-white">{children}</h1>,
+                                    h2: ({ children }) => <h2 className="text-base font-semibold my-2 text-white">{children}</h2>,
+                                    h3: ({ children }) => <h3 className="text-sm font-semibold my-2 text-white">{children}</h3>,
                                     blockquote: ({ children }) => (
-                                        <blockquote className="border-l-2 border-cyan-500 pl-3 my-2 text-gray-400">
+                                        <blockquote className="border-l-2 border-blue-400 pl-3 my-2 text-white/80">
                                             {children}
                                         </blockquote>
                                     ),
@@ -184,7 +184,7 @@ export default function MessageBubble({ message }) {
                                 href={url}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-xs bg-gray-800 border border-gray-700 rounded px-2 py-1 hover:border-cyan-500/50 transition-colors"
+                                className="text-xs glass-dark rounded px-2 py-1 hover:bg-blue-500/20 transition-colors text-white border border-blue-500/30"
                             >
                                 📎 File {idx + 1}
                             </a>
