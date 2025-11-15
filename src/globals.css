@@ -43,52 +43,52 @@
 
   /* Force white text everywhere */
   p, span, div, label, h1, h2, h3, h4, h5, h6, li, a, button {
-    @apply text-white;
+    color: white !important;
   }
 
   input, textarea, select {
-    @apply text-white;
+    color: white !important;
   }
 
   input::placeholder, textarea::placeholder {
-    @apply text-white/50;
+    color: rgba(255, 255, 255, 0.5) !important;
   }
 }
 
-@layer utilities {
+@layer components {
   /* Royal Blue Glassmorphism */
   .glass-royal {
     background: linear-gradient(135deg, 
       rgba(65, 105, 225, 0.15) 0%, 
       rgba(30, 64, 175, 0.1) 100%
-    );
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(65, 105, 225, 0.4);
+    ) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(65, 105, 225, 0.4) !important;
     box-shadow: 
       0 8px 32px rgba(65, 105, 225, 0.2),
       inset 0 1px 0 rgba(255, 255, 255, 0.1),
-      0 0 20px rgba(65, 105, 225, 0.1);
+      0 0 20px rgba(65, 105, 225, 0.1) !important;
   }
 
   .glass-dark {
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(65, 105, 225, 0.3);
+    background: rgba(0, 0, 0, 0.6) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(65, 105, 225, 0.3) !important;
     box-shadow: 
       0 8px 32px rgba(0, 0, 0, 0.5),
       inset 0 1px 0 rgba(255, 255, 255, 0.05),
-      0 0 15px rgba(65, 105, 225, 0.15);
+      0 0 15px rgba(65, 105, 225, 0.15) !important;
   }
 
   .glass-input {
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(65, 105, 225, 0.4);
+    background: rgba(0, 0, 0, 0.6) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border: 1px solid rgba(65, 105, 225, 0.4) !important;
     color: white !important;
-    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5) !important;
   }
 
   .glass-input::placeholder {
@@ -96,49 +96,48 @@
   }
 
   .glass-card {
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(65, 105, 225, 0.3);
-    box-shadow: 0 8px 32px rgba(65, 105, 225, 0.2);
+    background: rgba(0, 0, 0, 0.5) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(65, 105, 225, 0.3) !important;
+    box-shadow: 0 8px 32px rgba(65, 105, 225, 0.2) !important;
   }
 
   .glass-card-dark {
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(65, 105, 225, 0.4);
-    box-shadow: 0 8px 32px rgba(65, 105, 225, 0.3);
+    background: rgba(0, 0, 0, 0.6) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(65, 105, 225, 0.4) !important;
+    box-shadow: 0 8px 32px rgba(65, 105, 225, 0.3) !important;
   }
 
   .glow-royal {
     box-shadow: 
       0 0 20px rgba(65, 105, 225, 0.6),
       0 0 40px rgba(65, 105, 225, 0.4),
-      0 0 60px rgba(65, 105, 225, 0.2);
-  }
-
-  /* Ensure white text on all interactive elements */
-  .text-glyphlock {
-    color: white !important;
+      0 0 60px rgba(65, 105, 225, 0.2) !important;
   }
 }
 
-/* Global Button Styles */
-button {
-  @apply text-white;
+/* FORCE GLASSMORPHISM ON ALL CARDS - HIGHEST PRIORITY */
+div[class*="card"],
+div[class*="Card"],
+[role="dialog"],
+[data-radix-dialog-content] {
+  background: linear-gradient(135deg, 
+    rgba(65, 105, 225, 0.15) 0%, 
+    rgba(30, 64, 175, 0.1) 100%
+  ) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(65, 105, 225, 0.4) !important;
+  box-shadow: 
+    0 8px 32px rgba(65, 105, 225, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 0 20px rgba(65, 105, 225, 0.1) !important;
 }
 
-button[class*="bg-gradient"] {
-  @apply text-white;
-}
-
-/* Card overrides - apply glassmorphism to all cards */
-[class*="card"] {
-  @apply glass-royal border-blue-500/30;
-}
-
-/* Input field overrides - glassmorphism for all inputs */
+/* FORCE GLASSMORPHISM ON ALL INPUTS */
 input[type="text"],
 input[type="email"],
 input[type="password"],
@@ -148,9 +147,15 @@ input[type="url"],
 input[type="search"],
 input[type="date"],
 input[type="time"],
+input[type="file"],
 textarea,
 select {
-  @apply glass-input text-white;
+  background: rgba(0, 0, 0, 0.6) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(65, 105, 225, 0.4) !important;
+  color: white !important;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5) !important;
 }
 
 input[type="text"]::placeholder,
@@ -161,23 +166,98 @@ input[type="tel"]::placeholder,
 input[type="url"]::placeholder,
 input[type="search"]::placeholder,
 textarea::placeholder {
-  @apply text-white/50;
+  color: rgba(255, 255, 255, 0.5) !important;
 }
 
-/* Dropdown menus - glassmorphism */
+/* FORCE GLASSMORPHISM ON ALL BUTTONS */
+button:not([class*="gradient"]) {
+  background: linear-gradient(135deg, 
+    rgba(65, 105, 225, 0.15) 0%, 
+    rgba(30, 64, 175, 0.1) 100%
+  ) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(65, 105, 225, 0.4) !important;
+  color: white !important;
+}
+
+button:not([class*="gradient"]):hover {
+  background: linear-gradient(135deg, 
+    rgba(65, 105, 225, 0.25) 0%, 
+    rgba(30, 64, 175, 0.2) 100%
+  ) !important;
+  border-color: rgba(65, 105, 225, 0.6) !important;
+}
+
+/* Keep gradient buttons as they are but ensure white text */
+button[class*="gradient"] {
+  color: white !important;
+}
+
+/* FORCE GLASSMORPHISM ON DROPDOWNS AND MENUS */
 [role="menu"],
 [role="listbox"],
-[data-radix-popper-content-wrapper] {
-  @apply glass-royal border-blue-500/30;
+[data-radix-popper-content-wrapper],
+[data-radix-dropdown-menu-content],
+[data-radix-select-content],
+div[class*="dropdown"],
+div[class*="menu"],
+div[class*="popover"] {
+  background: linear-gradient(135deg, 
+    rgba(65, 105, 225, 0.15) 0%, 
+    rgba(30, 64, 175, 0.1) 100%
+  ) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(65, 105, 225, 0.4) !important;
+  box-shadow: 
+    0 8px 32px rgba(65, 105, 225, 0.2),
+    0 0 20px rgba(65, 105, 225, 0.1) !important;
 }
 
-/* Button variants with glassmorphism */
-button[class*="outline"] {
-  @apply glass-royal border-blue-500/50 text-white hover:bg-blue-500/20;
+/* FORCE WHITE TEXT ON DROPDOWN ITEMS */
+[role="menuitem"],
+[role="option"],
+button[role="menuitem"] {
+  color: white !important;
 }
 
-button[class*="ghost"] {
-  @apply text-white hover:bg-blue-500/20 hover:text-blue-400;
+[role="menuitem"]:hover,
+[role="option"]:hover {
+  background: rgba(65, 105, 225, 0.2) !important;
+  color: white !important;
+}
+
+/* FORCE GLASSMORPHISM ON BADGES */
+span[class*="badge"],
+div[class*="badge"] {
+  background: linear-gradient(135deg, 
+    rgba(65, 105, 225, 0.15) 0%, 
+    rgba(30, 64, 175, 0.1) 100%
+  ) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(65, 105, 225, 0.4) !important;
+  color: white !important;
+}
+
+/* FORCE WHITE TEXT ON ALL ELEMENTS */
+* {
+  color: white !important;
+}
+
+/* Exception for elements that should have blue/colored text */
+.text-blue-400,
+.text-blue-500,
+.text-blue-600,
+[class*="text-blue"],
+[class*="text-green"],
+[class*="text-red"],
+[class*="text-yellow"],
+[class*="text-purple"],
+[class*="text-orange"],
+[class*="gradient"] {
+  color: inherit !important;
 }
 
 /* Scrollbar styling */
@@ -215,26 +295,81 @@ button[class*="ghost"] {
 
 /* Markdown content styling */
 .prose {
-  @apply text-white;
+  color: white !important;
 }
 
 .prose p, .prose li, .prose span {
-  @apply text-white;
+  color: white !important;
 }
 
 .prose code {
-  @apply text-white bg-black/40 px-1 py-0.5 rounded;
+  background: rgba(0, 0, 0, 0.4) !important;
+  color: white !important;
 }
 
 .prose pre {
-  @apply bg-black/60 text-white;
+  background: rgba(0, 0, 0, 0.6) !important;
+  color: white !important;
 }
 
 .prose a {
-  @apply text-blue-400 hover:text-blue-300;
+  color: rgb(96, 165, 250) !important;
 }
 
-/* Animation for nebula particles */
+/* Tables */
+table {
+  background: linear-gradient(135deg, 
+    rgba(65, 105, 225, 0.15) 0%, 
+    rgba(30, 64, 175, 0.1) 100%
+  ) !important;
+  backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(65, 105, 225, 0.4) !important;
+}
+
+th {
+  background: rgba(65, 105, 225, 0.2) !important;
+  color: white !important;
+}
+
+td {
+  color: white !important;
+}
+
+tr:hover {
+  background: rgba(65, 105, 225, 0.1) !important;
+}
+
+/* Tabs */
+[role="tablist"] button {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+[role="tablist"] button[data-state="active"] {
+  background: linear-gradient(135deg, 
+    rgba(65, 105, 225, 0.15) 0%, 
+    rgba(30, 64, 175, 0.1) 100%
+  ) !important;
+  backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(65, 105, 225, 0.5) !important;
+  color: white !important;
+}
+
+/* Separator */
+hr, [role="separator"] {
+  border-color: rgba(65, 105, 225, 0.3) !important;
+}
+
+/* Checkbox and Radio */
+input[type="checkbox"],
+input[type="radio"] {
+  background: linear-gradient(135deg, 
+    rgba(65, 105, 225, 0.15) 0%, 
+    rgba(30, 64, 175, 0.1) 100%
+  ) !important;
+  border: 1px solid rgba(65, 105, 225, 0.5) !important;
+}
+
+/* Animation keyframes */
 @keyframes float {
   0%, 100% {
     transform: translateY(0px);
@@ -261,80 +396,18 @@ button[class*="ghost"] {
   animation: pulse-glow 3s ease-in-out infinite;
 }
 
-/* Badge styles */
-[class*="badge"] {
-  @apply glass-royal border-blue-500/50 text-white;
+/* Override any white backgrounds */
+[class*="bg-white"] {
+  background: linear-gradient(135deg, 
+    rgba(65, 105, 225, 0.15) 0%, 
+    rgba(30, 64, 175, 0.1) 100%
+  ) !important;
+  backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(65, 105, 225, 0.4) !important;
 }
 
-/* Dialog/Modal styles */
-[role="dialog"] {
-  @apply glass-royal border-blue-500/30;
-}
-
-/* Tabs */
-[role="tablist"] button {
-  @apply text-white/70 hover:text-white;
-}
-
-[role="tablist"] button[data-state="active"] {
-  @apply text-white glass-royal border-blue-500/50;
-}
-
-/* Alert/Toast components */
-[role="alert"],
-[role="status"] {
-  @apply glass-royal border-blue-500/30 text-white;
-}
-
-/* Progress bars */
-[role="progressbar"] {
-  @apply glass-royal border-blue-500/30;
-}
-
-/* Tables */
-table {
-  @apply glass-royal border-blue-500/30;
-}
-
-th {
-  @apply text-white bg-blue-500/20;
-}
-
-td {
-  @apply text-white;
-}
-
-tr:hover {
-  @apply bg-blue-500/10;
-}
-
-/* Accordion */
-[data-radix-accordion-item] {
-  @apply glass-royal border-blue-500/30;
-}
-
-/* Tooltip */
-[role="tooltip"] {
-  @apply glass-royal border-blue-500/30 text-white;
-}
-
-/* Separator */
-hr, [role="separator"] {
-  @apply border-blue-500/30;
-}
-
-/* Switch/Toggle */
-button[role="switch"] {
-  @apply glass-royal border-blue-500/30;
-}
-
-/* Slider */
-[role="slider"] {
-  @apply glass-royal border-blue-500/30;
-}
-
-/* Checkbox and Radio */
-input[type="checkbox"],
-input[type="radio"] {
-  @apply glass-royal border-blue-500/50;
+/* Override any gray backgrounds */
+[class*="bg-gray"] {
+  background: rgba(0, 0, 0, 0.6) !important;
+  backdrop-filter: blur(20px) !important;
 }
