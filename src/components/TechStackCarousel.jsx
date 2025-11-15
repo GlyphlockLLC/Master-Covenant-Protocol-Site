@@ -77,6 +77,7 @@ export default function TechStackCarousel() {
                 alt={company.name}
                 className="logo-img"
               />
+              <span className="logo-name">{company.name}</span>
             </div>
           ))}
         </div>
@@ -92,6 +93,7 @@ export default function TechStackCarousel() {
                 alt={company.name}
                 className="logo-img"
               />
+              <span className="logo-name">{company.name}</span>
             </div>
           ))}
         </div>
@@ -124,23 +126,30 @@ export default function TechStackCarousel() {
 
         .logo-item {
           flex-shrink: 0;
-          width: 80px;
-          height: 40px;
+          width: 100px;
           display: flex;
+          flex-direction: column;
           align-items: center;
           justify-content: center;
-          padding: 4px;
+          gap: 8px;
         }
 
         .logo-img {
-          max-width: 100%;
-          max-height: 100%;
-          width: auto;
-          height: auto;
+          width: 80px;
+          height: 40px;
           object-fit: contain;
           filter: grayscale(100%) brightness(0) invert(1);
           opacity: 0.85;
           transition: all 0.3s ease-in-out;
+        }
+
+        .logo-name {
+          font-size: 11px;
+          color: rgba(255, 255, 255, 0.6);
+          text-align: center;
+          white-space: nowrap;
+          transition: all 0.3s ease-in-out;
+          font-weight: 500;
         }
 
         .logo-item:hover .logo-img {
@@ -148,6 +157,11 @@ export default function TechStackCarousel() {
           opacity: 1;
           transform: scale(1.2);
           filter: drop-shadow(0 0 15px #00BFFF);
+        }
+
+        .logo-item:hover .logo-name {
+          color: #00BFFF;
+          font-weight: 600;
         }
 
         @keyframes scroll-left {
