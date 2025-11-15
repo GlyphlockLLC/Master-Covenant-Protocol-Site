@@ -110,11 +110,11 @@
   }
 }
 
-/* FORCE GLASSMORPHISM ON ALL CARDS */
-div[class*="card"],
-div[class*="Card"],
-[role="dialog"],
-[data-radix-dialog-content] {
+/* FORCE GLASSMORPHISM ON DARK CARDS ONLY */
+div[class*="card"]:not([class*="bg-white"]),
+div[class*="Card"]:not([class*="bg-white"]),
+[role="dialog"]:not([class*="bg-white"]),
+[data-radix-dialog-content]:not([class*="bg-white"]) {
   background: linear-gradient(135deg, 
     rgba(65, 105, 225, 0.15) 0%, 
     rgba(30, 64, 175, 0.1) 100%
@@ -126,29 +126,52 @@ div[class*="Card"],
     0 8px 32px rgba(65, 105, 225, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.1),
     0 0 20px rgba(65, 105, 225, 0.1) !important;
-}
-
-/* Card text should be white on dark glass backgrounds */
-div[class*="card"] *,
-div[class*="Card"] *,
-[role="dialog"] *,
-[data-radix-dialog-content] * {
   color: white !important;
 }
 
+/* Dark glass cards have white text */
+div[class*="card"]:not([class*="bg-white"]) *:not(.text-blue-400):not(.text-blue-500):not(.text-blue-600):not([class*="text-blue"]):not([class*="text-green"]):not([class*="text-red"]):not([class*="text-yellow"]):not([class*="text-purple"]):not([class*="text-orange"]):not(.bg-clip-text),
+div[class*="Card"]:not([class*="bg-white"]) *:not(.text-blue-400):not(.text-blue-500):not(.text-blue-600):not([class*="text-blue"]):not([class*="text-green"]):not([class*="text-red"]):not([class*="text-yellow"]):not([class*="text-purple"]):not([class*="text-orange"]):not(.bg-clip-text),
+[role="dialog"]:not([class*="bg-white"]) *:not(.text-blue-400):not(.text-blue-500):not(.text-blue-600):not([class*="text-blue"]):not([class*="text-green"]):not([class*="text-red"]):not([class*="text-yellow"]):not([class*="text-purple"]):not([class*="text-orange"]):not(.bg-clip-text) {
+  color: white !important;
+}
+
+/* White/Light background cards have dark text */
+[class*="bg-white"] {
+  color: rgb(30, 30, 30) !important;
+}
+
+[class*="bg-white"] * {
+  color: rgb(30, 30, 30) !important;
+}
+
+[class*="bg-white"] button {
+  color: rgb(30, 30, 30) !important;
+}
+
+[class*="bg-white"] input {
+  color: rgb(30, 30, 30) !important;
+  background: white !important;
+  border: 1px solid rgba(65, 105, 225, 0.3) !important;
+}
+
+[class*="bg-white"] input::placeholder {
+  color: rgba(30, 30, 30, 0.5) !important;
+}
+
 /* FORCE GLASSMORPHISM ON ALL INPUTS */
-input[type="text"],
-input[type="email"],
-input[type="password"],
-input[type="number"],
-input[type="tel"],
-input[type="url"],
-input[type="search"],
-input[type="date"],
-input[type="time"],
-input[type="file"],
-textarea,
-select {
+input[type="text"]:not([class*="bg-white"] input),
+input[type="email"]:not([class*="bg-white"] input),
+input[type="password"]:not([class*="bg-white"] input),
+input[type="number"]:not([class*="bg-white"] input),
+input[type="tel"]:not([class*="bg-white"] input),
+input[type="url"]:not([class*="bg-white"] input),
+input[type="search"]:not([class*="bg-white"] input),
+input[type="date"]:not([class*="bg-white"] input),
+input[type="time"]:not([class*="bg-white"] input),
+input[type="file"]:not([class*="bg-white"] input),
+textarea:not([class*="bg-white"] textarea),
+select:not([class*="bg-white"] select) {
   background: rgba(0, 0, 0, 0.6) !important;
   backdrop-filter: blur(16px) !important;
   -webkit-backdrop-filter: blur(16px) !important;
@@ -157,13 +180,13 @@ select {
   box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5) !important;
 }
 
-input::placeholder,
-textarea::placeholder {
+input:not([class*="bg-white"] input)::placeholder,
+textarea:not([class*="bg-white"] textarea)::placeholder {
   color: rgba(255, 255, 255, 0.5) !important;
 }
 
-/* FORCE GLASSMORPHISM ON BUTTONS - with proper text colors */
-button:not([class*="gradient"]):not([class*="bg-gradient"]) {
+/* FORCE GLASSMORPHISM ON DARK BUTTONS */
+button:not([class*="gradient"]):not([class*="bg-gradient"]):not([class*="bg-white"] button):not([class*="bg-blue"]) {
   background: linear-gradient(135deg, 
     rgba(65, 105, 225, 0.15) 0%, 
     rgba(30, 64, 175, 0.1) 100%
@@ -174,11 +197,11 @@ button:not([class*="gradient"]):not([class*="bg-gradient"]) {
   color: white !important;
 }
 
-button:not([class*="gradient"]):not([class*="bg-gradient"]) * {
+button:not([class*="gradient"]):not([class*="bg-gradient"]):not([class*="bg-white"] button):not([class*="bg-blue"]) * {
   color: white !important;
 }
 
-button:not([class*="gradient"]):not([class*="bg-gradient"]):hover {
+button:not([class*="gradient"]):not([class*="bg-gradient"]):not([class*="bg-white"] button):not([class*="bg-blue"]):hover {
   background: linear-gradient(135deg, 
     rgba(65, 105, 225, 0.25) 0%, 
     rgba(30, 64, 175, 0.2) 100%
@@ -186,15 +209,38 @@ button:not([class*="gradient"]):not([class*="bg-gradient"]):hover {
   border-color: rgba(65, 105, 225, 0.6) !important;
 }
 
-/* Gradient buttons keep white text */
+/* Blue buttons keep white text */
+button[class*="bg-blue"],
 button[class*="gradient"],
 button[class*="bg-gradient"] {
   color: white !important;
 }
 
+button[class*="bg-blue"] *,
 button[class*="gradient"] *,
 button[class*="bg-gradient"] * {
   color: white !important;
+}
+
+/* Buttons on white backgrounds get dark text */
+[class*="bg-white"] button:not([class*="bg-blue"]):not([class*="gradient"]) {
+  color: rgb(65, 105, 225) !important;
+  background: linear-gradient(135deg, 
+    rgba(65, 105, 225, 0.1) 0%, 
+    rgba(30, 64, 175, 0.05) 100%
+  ) !important;
+  border: 1px solid rgba(65, 105, 225, 0.3) !important;
+}
+
+[class*="bg-white"] button:not([class*="bg-blue"]):not([class*="gradient"]) * {
+  color: rgb(65, 105, 225) !important;
+}
+
+[class*="bg-white"] button:not([class*="bg-blue"]):not([class*="gradient"]):hover {
+  background: linear-gradient(135deg, 
+    rgba(65, 105, 225, 0.2) 0%, 
+    rgba(30, 64, 175, 0.1) 100%
+  ) !important;
 }
 
 /* FORCE GLASSMORPHISM ON DROPDOWNS AND MENUS */
@@ -218,27 +264,30 @@ div[class*="popover"] {
     0 0 20px rgba(65, 105, 225, 0.1) !important;
 }
 
-/* Menu items should be white on glass backgrounds */
+/* Menu items have white text on dark glass */
 [role="menuitem"],
 [role="option"],
-button[role="menuitem"] {
+button[role="menuitem"],
+[data-radix-dropdown-menu-item] {
   color: white !important;
 }
 
 [role="menuitem"] *,
 [role="option"] *,
-button[role="menuitem"] * {
+button[role="menuitem"] *,
+[data-radix-dropdown-menu-item] * {
   color: white !important;
 }
 
 [role="menuitem"]:hover,
-[role="option"]:hover {
+[role="option"]:hover,
+[data-radix-dropdown-menu-item]:hover {
   background: rgba(65, 105, 225, 0.2) !important;
 }
 
 /* FORCE GLASSMORPHISM ON BADGES */
-span[class*="badge"],
-div[class*="badge"] {
+span[class*="badge"]:not([class*="bg-white"]),
+div[class*="badge"]:not([class*="bg-white"]) {
   background: linear-gradient(135deg, 
     rgba(65, 105, 225, 0.15) 0%, 
     rgba(30, 64, 175, 0.1) 100%
@@ -249,7 +298,7 @@ div[class*="badge"] {
   color: white !important;
 }
 
-/* Preserve colored text classes */
+/* Preserve all colored text classes */
 .text-blue-400,
 .text-blue-500,
 .text-blue-600,
@@ -259,6 +308,9 @@ div[class*="badge"] {
 [class*="text-yellow"],
 [class*="text-purple"],
 [class*="text-orange"],
+[class*="text-gray"],
+[class*="text-white"],
+[class*="text-black"],
 .bg-clip-text {
   color: inherit !important;
 }
@@ -428,14 +480,4 @@ body {
 /* Main content areas */
 main {
   color: white !important;
-}
-
-/* Override any white/gray backgrounds with glass */
-[class*="bg-white"],
-[class*="bg-gray"] {
-  background: linear-gradient(135deg, 
-    rgba(65, 105, 225, 0.15) 0%, 
-    rgba(30, 64, 175, 0.1) 100%
-  ) !important;
-  backdrop-filter: blur(20px) !important;
 }
