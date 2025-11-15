@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
@@ -32,6 +31,7 @@ export default function Layout({ children, currentPageName }) {
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    setMobileMenuOpen(false);
   }, [location.pathname]);
 
   const checkUser = async () => {
@@ -70,8 +70,8 @@ export default function Layout({ children, currentPageName }) {
 
   return (
     <div className={`min-h-screen ${darkMode ? 'bg-black text-white' : 'bg-gray-50 text-gray-900'} relative`}>
-      {/* Navigation */}
-      <nav className={`fixed top-0 left-0 right-0 z-50 ${darkMode ? 'bg-black/40' : 'bg-white/40'} backdrop-blur-xl border-b ${darkMode ? 'border-blue-500/20' : 'border-blue-500/30'}`}>
+      {/* Navigation - Fixed with higher z-index */}
+      <nav className={`fixed top-0 left-0 right-0 z-[100] ${darkMode ? 'bg-black/95' : 'bg-white/95'} backdrop-blur-xl border-b ${darkMode ? 'border-blue-500/20' : 'border-blue-500/30'} shadow-lg`}>
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-20">
             <div className="flex items-center gap-4">
@@ -110,7 +110,7 @@ export default function Layout({ children, currentPageName }) {
                           {item.label} <ChevronDown className="w-4 h-4 ml-1" />
                         </Button>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent className={`${darkMode ? 'bg-gray-900/90 border-blue-500/20' : 'bg-white/90 border-blue-500/30'} backdrop-blur-xl`}>
+                      <DropdownMenuContent className={`${darkMode ? 'bg-gray-900/95 border-blue-500/20' : 'bg-white/95 border-blue-500/30'} backdrop-blur-xl z-[110]`}>
                         {item.dropdown.map((subItem) => (
                           <DropdownMenuItem key={subItem.page} asChild className={`${darkMode ? 'text-white hover:text-blue-400 focus:text-blue-400 focus:bg-blue-500/20' : 'text-gray-900 hover:text-blue-600 focus:text-blue-600 focus:bg-blue-500/10'} cursor-pointer`}>
                             <Link to={createPageUrl(subItem.page)}>{subItem.label}</Link>
@@ -152,7 +152,7 @@ export default function Layout({ children, currentPageName }) {
                       {user.full_name || user.email}
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent className={`${darkMode ? 'bg-gray-900/90 border-blue-500/20' : 'bg-white/90 border-blue-500/30'} backdrop-blur-xl`}>
+                  <DropdownMenuContent className={`${darkMode ? 'bg-gray-900/95 border-blue-500/20' : 'bg-white/95 border-blue-500/30'} backdrop-blur-xl z-[110]`}>
                     <DropdownMenuItem asChild className={`${darkMode ? 'text-white hover:text-blue-400 focus:text-blue-400 focus:bg-blue-500/20' : 'text-gray-900 hover:text-blue-600 focus:text-blue-600 focus:bg-blue-500/10'} cursor-pointer`}>
                       <Link to={createPageUrl("Dashboard")}>
                         <User className="w-4 h-4 mr-2" />
@@ -200,7 +200,7 @@ export default function Layout({ children, currentPageName }) {
           </div>
 
           {mobileMenuOpen && (
-            <div className={`lg:hidden py-4 border-t ${darkMode ? 'border-blue-500/20' : 'border-blue-500/30'}`}>
+            <div className={`lg:hidden py-4 border-t ${darkMode ? 'border-blue-500/20 bg-black/95' : 'border-blue-500/30 bg-white/95'} backdrop-blur-xl max-h-[calc(100vh-5rem)] overflow-y-auto`}>
               <div className="flex flex-col gap-2">
                 {navigationConfig.main.map((item) => {
                   if (item.dropdown) {
@@ -264,7 +264,7 @@ export default function Layout({ children, currentPageName }) {
         </div>
       </nav>
 
-      <main className="pt-20 relative z-10">
+      <main className="pt-24 pb-8 relative z-10">
         {children}
       </main>
 
