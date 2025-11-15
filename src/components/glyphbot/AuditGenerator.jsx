@@ -5,16 +5,16 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { FileText, Loader2, Download, Shield, CheckCircle2, AlertTriangle, TrendingUp, TrendingDown } from "lucide-react";
+import { FileText, Loader2, Download, Shield, CheckCircle2, AlertTriangle, TrendingUp, TrendingDown, Link as LinkIcon, Globe } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 
 export default function AuditGenerator() {
   const [auditConfig, setAuditConfig] = useState({
     project_name: "",
-    audit_type: "full",
+    audit_type: "web-application",
     description: "",
-    scope: "",
+    website_urls: "",
     technology_stack: "",
     deployment_environment: ""
   });
@@ -22,135 +22,143 @@ export default function AuditGenerator() {
   const [isGenerating, setIsGenerating] = useState(false);
 
   const generateAudit = async () => {
-    if (!auditConfig.project_name) return;
+    if (!auditConfig.project_name || !auditConfig.website_urls) return;
     
     setIsGenerating(true);
     setAuditReport(null);
 
     try {
       const result = await base44.integrations.Core.InvokeLLM({
-        prompt: `You are a professional security auditor conducting a REAL, THOROUGH security audit. Analyze the project details below and provide HONEST, VARIED, and SPECIFIC findings based on the actual information provided. DO NOT provide generic results - make findings relevant to the specific project type, technology stack, and scope described.
+        prompt: `Perform a professional security audit for the following web application. Analyze actual security risks based on the information provided.
 
-Project Details:
-- Name: ${auditConfig.project_name}
-- Type: ${auditConfig.audit_type}
-- Description: ${auditConfig.description || "Not provided"}
-- Scope: ${auditConfig.scope || "Not provided"}
-- Technology Stack: ${auditConfig.technology_stack || "Not specified"}
-- Environment: ${auditConfig.deployment_environment || "Not specified"}
+Project: ${auditConfig.project_name}
+Type: ${auditConfig.audit_type}
+Description: ${auditConfig.description || "Web application security assessment"}
+Website URLs: ${auditConfig.website_urls}
+Technology Stack: ${auditConfig.technology_stack || "Not specified"}
+Deployment: ${auditConfig.deployment_environment || "Not specified"}
 
-IMPORTANT: Base your analysis on:
-1. The specific technologies mentioned
-2. The actual project scope and features
-3. The deployment environment
-4. Industry best practices for this type of project
-5. OWASP Top 10 and CWE standards relevant to this stack
+Provide a security assessment in JSON format that evaluates:
 
-Provide a REALISTIC and VARIED security audit in JSON format:
+1. Website Security Posture - Analyze the URLs provided for common vulnerabilities
+2. Technology Stack Risks - Based on the technologies mentioned
+3. OWASP Top 10 Compliance - Real assessment against current standards
+4. Attack Surface - Evaluate endpoints and potential entry points
+5. Security Controls - What's implemented vs. what's missing
 
+Return structured JSON with:
 {
-  "executive_summary": "2-3 paragraph honest assessment of security posture",
-  "audit_scope": ["List 5-8 specific areas actually audited based on the project"],
-  "methodology": "Detailed description of audit methodology used (penetration testing, code review, configuration analysis, etc.)",
+  "executive_summary": "Clear 2-3 paragraph summary of security findings",
+  "website_analysis": {
+    "urls_tested": ["list of URLs"],
+    "security_grade": "A|B|C|D|F",
+    "ssl_status": "Valid|Invalid|Missing",
+    "header_security": {
+      "score": 0-100,
+      "missing_headers": ["list headers"],
+      "present_headers": ["list headers"]
+    }
+  },
   "test_categories": [
     {
-      "category": "Authentication & Authorization",
-      "tests_performed": ["specific test 1", "test 2", "test 3"],
+      "category": "Authentication & Access Control",
+      "tests_performed": ["specific tests"],
       "pass_rate": 0-100,
       "findings_count": number
     },
     {
-      "category": "Input Validation & Injection Prevention",
-      "tests_performed": ["specific test 1", "test 2"],
+      "category": "Data Protection",
+      "tests_performed": ["specific tests"],
       "pass_rate": 0-100,
       "findings_count": number
     },
     {
-      "category": "Session Management",
-      "tests_performed": ["specific test 1", "test 2"],
+      "category": "Input Validation",
+      "tests_performed": ["specific tests"],
       "pass_rate": 0-100,
       "findings_count": number
     },
     {
-      "category": "Cryptography",
-      "tests_performed": ["specific test 1", "test 2"],
+      "category": "Session Security",
+      "tests_performed": ["specific tests"],
       "pass_rate": 0-100,
       "findings_count": number
     },
     {
-      "category": "Error Handling & Logging",
-      "tests_performed": ["specific test 1", "test 2"],
+      "category": "Error Handling",
+      "tests_performed": ["specific tests"],
       "pass_rate": 0-100,
       "findings_count": number
     },
     {
-      "category": "Configuration & Deployment",
-      "tests_performed": ["specific test 1", "test 2"],
+      "category": "Security Configuration",
+      "tests_performed": ["specific tests"],
       "pass_rate": 0-100,
       "findings_count": number
     }
   ],
   "findings": [
     {
-      "id": "unique-id-with-category-prefix",
-      "severity": "Critical"|"High"|"Medium"|"Low" (vary based on actual risks),
-      "title": "Specific, detailed vulnerability name",
-      "description": "Technical description of the specific issue found",
-      "affected_component": "Exact component/file/endpoint affected",
-      "impact": "Real business and technical impact",
-      "likelihood": "High"|"Medium"|"Low",
-      "cvss_score": number between 1-10,
-      "cwe_id": "Relevant CWE number",
-      "recommendation": "Specific, actionable remediation steps",
-      "effort": "Low"|"Medium"|"High",
+      "id": "finding-001",
+      "severity": "Critical|High|Medium|Low",
+      "title": "Specific security issue",
+      "description": "Clear technical explanation",
+      "affected_urls": ["specific URLs affected"],
+      "impact": "Business and security impact",
+      "likelihood": "High|Medium|Low",
+      "cvss_score": 1-10,
+      "cwe_reference": "CWE-###",
+      "remediation": "Step-by-step fix instructions",
+      "effort_hours": number,
       "status": "Open"
     }
   ],
   "positive_findings": [
-    "List 3-5 things done well (security strengths)"
+    "Security practices implemented correctly"
   ],
   "risk_assessment": {
-    "overall_risk": "Critical"|"High"|"Moderate"|"Low" (be honest),
-    "technical_risk": 1-10 (vary based on findings),
-    "business_risk": 1-10 (vary based on findings),
-    "compliance_risk": 1-10 (vary based on findings),
-    "risk_trend": "Improving"|"Stable"|"Declining",
-    "time_to_remediate": "Estimated hours/days"
+    "overall_risk": "Critical|High|Moderate|Low",
+    "data_exposure_risk": 1-10,
+    "reputational_risk": 1-10,
+    "compliance_risk": 1-10,
+    "risk_trend": "Improving|Stable|Declining",
+    "estimated_remediation_time": "X hours/days"
   },
-  "compliance_status": [
+  "owasp_top10_compliance": [
     {
-      "standard": "OWASP Top 10"|"PCI-DSS"|"GDPR"|"SOC2"|"HIPAA",
-      "status": "Compliant"|"Partial"|"Non-Compliant",
-      "score": 0-100,
-      "gaps": ["specific gap 1", "gap 2"]
+      "item": "A01:2021 – Broken Access Control",
+      "status": "Pass|Fail|Partial",
+      "findings": ["specific issues"],
+      "score": 0-100
+    },
+    {
+      "item": "A02:2021 – Cryptographic Failures",
+      "status": "Pass|Fail|Partial",
+      "findings": ["specific issues"],
+      "score": 0-100
+    },
+    {
+      "item": "A03:2021 – Injection",
+      "status": "Pass|Fail|Partial",
+      "findings": ["specific issues"],
+      "score": 0-100
     }
   ],
-  "security_controls": [
-    {
-      "category": "Network Security"|"Application Security"|"Data Protection"|etc,
-      "implemented": number,
-      "missing": number,
-      "effectiveness": "High"|"Medium"|"Low"
-    }
-  ],
-  "attack_surface_analysis": {
-    "external_endpoints": number,
-    "api_endpoints": number,
-    "authentication_points": number,
-    "data_stores": number,
-    "third_party_integrations": number,
-    "high_value_targets": ["target 1", "target 2"]
+  "attack_surface": {
+    "public_endpoints": number,
+    "api_routes": number,
+    "forms_detected": number,
+    "file_uploads": number,
+    "authentication_pages": number,
+    "high_risk_areas": ["specific areas"]
   },
-  "recommendations": [
-    "Prioritized, specific action items (5-10)"
-  ],
-  "action_plan": [
+  "security_recommendations": [
     {
-      "priority": "Critical"|"High"|"Medium"|"Low",
-      "action": "Specific action item",
-      "timeline": "Realistic timeline",
-      "owner": "Role responsible",
-      "cost": "Low"|"Medium"|"High"
+      "priority": "Critical|High|Medium|Low",
+      "recommendation": "Actionable recommendation",
+      "timeline": "Immediate|1 week|1 month",
+      "impact": "High|Medium|Low",
+      "cost_estimate": "Low|Medium|High"
     }
   ],
   "metrics": {
@@ -165,23 +173,30 @@ Provide a REALISTIC and VARIED security audit in JSON format:
       "low": number
     }
   },
-  "conclusion": "Honest 2-3 paragraph conclusion with specific next steps and overall assessment"
+  "conclusion": "Honest assessment with clear next steps"
 }
 
-CRITICAL REQUIREMENTS:
-- Findings MUST be specific to the project type and technologies mentioned
-- Risk scores MUST vary based on actual findings
-- Test results MUST show realistic pass/fail rates (not perfect scores)
-- Include BOTH vulnerabilities AND positive findings
-- Be HONEST - if limited info provided, state assumptions made
-- Provide ACTIONABLE recommendations
-- Include realistic effort and cost estimates`,
+Make findings realistic and specific to the URLs and technologies mentioned. Be honest about risks.`,
         response_json_schema: {
           type: "object",
           properties: {
             executive_summary: { type: "string" },
-            audit_scope: { type: "array", items: { type: "string" } },
-            methodology: { type: "string" },
+            website_analysis: {
+              type: "object",
+              properties: {
+                urls_tested: { type: "array", items: { type: "string" } },
+                security_grade: { type: "string" },
+                ssl_status: { type: "string" },
+                header_security: {
+                  type: "object",
+                  properties: {
+                    score: { type: "number" },
+                    missing_headers: { type: "array", items: { type: "string" } },
+                    present_headers: { type: "array", items: { type: "string" } }
+                  }
+                }
+              }
+            },
             test_categories: {
               type: "array",
               items: {
@@ -203,13 +218,13 @@ CRITICAL REQUIREMENTS:
                   severity: { type: "string" },
                   title: { type: "string" },
                   description: { type: "string" },
-                  affected_component: { type: "string" },
+                  affected_urls: { type: "array", items: { type: "string" } },
                   impact: { type: "string" },
                   likelihood: { type: "string" },
                   cvss_score: { type: "number" },
-                  cwe_id: { type: "string" },
-                  recommendation: { type: "string" },
-                  effort: { type: "string" },
+                  cwe_reference: { type: "string" },
+                  remediation: { type: "string" },
+                  effort_hours: { type: "number" },
                   status: { type: "string" }
                 }
               }
@@ -219,59 +234,46 @@ CRITICAL REQUIREMENTS:
               type: "object",
               properties: {
                 overall_risk: { type: "string" },
-                technical_risk: { type: "number" },
-                business_risk: { type: "number" },
+                data_exposure_risk: { type: "number" },
+                reputational_risk: { type: "number" },
                 compliance_risk: { type: "number" },
                 risk_trend: { type: "string" },
-                time_to_remediate: { type: "string" }
+                estimated_remediation_time: { type: "string" }
               }
             },
-            compliance_status: {
+            owasp_top10_compliance: {
               type: "array",
               items: {
                 type: "object",
                 properties: {
-                  standard: { type: "string" },
+                  item: { type: "string" },
                   status: { type: "string" },
-                  score: { type: "number" },
-                  gaps: { type: "array", items: { type: "string" } }
+                  findings: { type: "array", items: { type: "string" } },
+                  score: { type: "number" }
                 }
               }
             },
-            security_controls: {
-              type: "array",
-              items: {
-                type: "object",
-                properties: {
-                  category: { type: "string" },
-                  implemented: { type: "number" },
-                  missing: { type: "number" },
-                  effectiveness: { type: "string" }
-                }
-              }
-            },
-            attack_surface_analysis: {
+            attack_surface: {
               type: "object",
               properties: {
-                external_endpoints: { type: "number" },
-                api_endpoints: { type: "number" },
-                authentication_points: { type: "number" },
-                data_stores: { type: "number" },
-                third_party_integrations: { type: "number" },
-                high_value_targets: { type: "array", items: { type: "string" } }
+                public_endpoints: { type: "number" },
+                api_routes: { type: "number" },
+                forms_detected: { type: "number" },
+                file_uploads: { type: "number" },
+                authentication_pages: { type: "number" },
+                high_risk_areas: { type: "array", items: { type: "string" } }
               }
             },
-            recommendations: { type: "array", items: { type: "string" } },
-            action_plan: {
+            security_recommendations: {
               type: "array",
               items: {
                 type: "object",
                 properties: {
                   priority: { type: "string" },
-                  action: { type: "string" },
+                  recommendation: { type: "string" },
                   timeline: { type: "string" },
-                  owner: { type: "string" },
-                  cost: { type: "string" }
+                  impact: { type: "string" },
+                  cost_estimate: { type: "string" }
                 }
               }
             },
@@ -311,43 +313,45 @@ CRITICAL REQUIREMENTS:
     
     const reportText = `
 ╔════════════════════════════════════════════════════════════════╗
-║            PROFESSIONAL SECURITY AUDIT REPORT                  ║
+║              WEB APPLICATION SECURITY AUDIT REPORT             ║
 ╚════════════════════════════════════════════════════════════════╝
 
 Project: ${auditConfig.project_name}
 Date: ${new Date().toLocaleDateString()}
 Audit Type: ${auditConfig.audit_type}
-Auditor: GlyphBot Advanced Security Systems
+Auditor: GlyphBot Security Assessment
 
 ════════════════════════════════════════════════════════════════
+
+TESTED WEBSITES
+---------------
+${auditReport.website_analysis.urls_tested.map(url => `• ${url}`).join('\n')}
+
+Security Grade: ${auditReport.website_analysis.security_grade}
+SSL Status: ${auditReport.website_analysis.ssl_status}
+Security Headers Score: ${auditReport.website_analysis.header_security.score}/100
+
+Missing Security Headers:
+${auditReport.website_analysis.header_security.missing_headers.map(h => `  ⚠ ${h}`).join('\n')}
 
 EXECUTIVE SUMMARY
 -----------------
 ${auditReport.executive_summary}
 
-AUDIT SCOPE
------------
-${auditReport.audit_scope.map((item, idx) => `${idx + 1}. ${item}`).join('\n')}
-
-METHODOLOGY
------------
-${auditReport.methodology}
-
-TEST RESULTS SUMMARY
---------------------
-Total Tests Performed: ${auditReport.metrics.total_tests}
-Tests Passed: ${auditReport.metrics.passed}
-Tests Failed: ${auditReport.metrics.failed}
+VULNERABILITY SUMMARY
+---------------------
+Total Tests: ${auditReport.metrics.total_tests}
+Passed: ${auditReport.metrics.passed}
+Failed: ${auditReport.metrics.failed}
 Warnings: ${auditReport.metrics.warnings}
 
-Vulnerabilities by Severity:
-  • Critical: ${auditReport.metrics.vulnerabilities_by_severity.critical}
-  • High: ${auditReport.metrics.vulnerabilities_by_severity.high}
-  • Medium: ${auditReport.metrics.vulnerabilities_by_severity.medium}
-  • Low: ${auditReport.metrics.vulnerabilities_by_severity.low}
+Critical Issues: ${auditReport.metrics.vulnerabilities_by_severity.critical}
+High Severity: ${auditReport.metrics.vulnerabilities_by_severity.high}
+Medium Severity: ${auditReport.metrics.vulnerabilities_by_severity.medium}
+Low Severity: ${auditReport.metrics.vulnerabilities_by_severity.low}
 
-TEST CATEGORIES
----------------
+TEST RESULTS BY CATEGORY
+------------------------
 ${auditReport.test_categories.map(cat => `
 ${cat.category}
   Pass Rate: ${cat.pass_rate}%
@@ -360,74 +364,57 @@ SECURITY FINDINGS
 ${auditReport.findings.map((f, idx) => `
 ${idx + 1}. [${f.severity}] ${f.title}
    ID: ${f.id}
-   CVSS Score: ${f.cvss_score}/10
-   CWE: ${f.cwe_id}
-   Status: ${f.status}
-   Likelihood: ${f.likelihood}
-   Effort to Fix: ${f.effort}
+   CVSS: ${f.cvss_score}/10 | ${f.cwe_reference}
+   Likelihood: ${f.likelihood} | Effort: ${f.effort_hours}h
    
-   Affected Component: ${f.affected_component}
+   Affected URLs: ${f.affected_urls.join(', ')}
    
    Description: ${f.description}
    
    Impact: ${f.impact}
    
-   Recommendation: ${f.recommendation}
+   Remediation: ${f.remediation}
 `).join('\n')}
 
-POSITIVE FINDINGS
------------------
+OWASP TOP 10 COMPLIANCE
+-----------------------
+${auditReport.owasp_top10_compliance.map(item => `
+${item.item}
+  Status: ${item.status} (${item.score}%)
+  Findings: ${item.findings.join(', ')}
+`).join('\n')}
+
+SECURITY STRENGTHS
+------------------
 ${auditReport.positive_findings.map((pf, idx) => `${idx + 1}. ${pf}`).join('\n')}
 
 ATTACK SURFACE ANALYSIS
-------------------------
-External Endpoints: ${auditReport.attack_surface_analysis.external_endpoints}
-API Endpoints: ${auditReport.attack_surface_analysis.api_endpoints}
-Authentication Points: ${auditReport.attack_surface_analysis.authentication_points}
-Data Stores: ${auditReport.attack_surface_analysis.data_stores}
-Third-Party Integrations: ${auditReport.attack_surface_analysis.third_party_integrations}
+-----------------------
+Public Endpoints: ${auditReport.attack_surface.public_endpoints}
+API Routes: ${auditReport.attack_surface.api_routes}
+Forms Detected: ${auditReport.attack_surface.forms_detected}
+File Uploads: ${auditReport.attack_surface.file_uploads}
+Authentication Pages: ${auditReport.attack_surface.authentication_pages}
 
-High-Value Targets:
-${auditReport.attack_surface_analysis.high_value_targets.map((t, idx) => `  ${idx + 1}. ${t}`).join('\n')}
+High-Risk Areas:
+${auditReport.attack_surface.high_risk_areas.map((area, idx) => `  ${idx + 1}. ${area}`).join('\n')}
 
 RISK ASSESSMENT
 ---------------
 Overall Risk: ${auditReport.risk_assessment.overall_risk}
-Technical Risk: ${auditReport.risk_assessment.technical_risk}/10
-Business Risk: ${auditReport.risk_assessment.business_risk}/10
+Data Exposure: ${auditReport.risk_assessment.data_exposure_risk}/10
+Reputational Risk: ${auditReport.risk_assessment.reputational_risk}/10
 Compliance Risk: ${auditReport.risk_assessment.compliance_risk}/10
-Risk Trend: ${auditReport.risk_assessment.risk_trend}
-Time to Remediate: ${auditReport.risk_assessment.time_to_remediate}
+Trend: ${auditReport.risk_assessment.risk_trend}
+Remediation Time: ${auditReport.risk_assessment.estimated_remediation_time}
 
-COMPLIANCE STATUS
------------------
-${auditReport.compliance_status.map(comp => `
-${comp.standard}
-  Status: ${comp.status}
-  Score: ${comp.score}%
-  Gaps: ${comp.gaps.join(', ')}
-`).join('\n')}
-
-SECURITY CONTROLS
------------------
-${auditReport.security_controls.map(ctrl => `
-${ctrl.category}
-  Implemented: ${ctrl.implemented}
-  Missing: ${ctrl.missing}
-  Effectiveness: ${ctrl.effectiveness}
-`).join('\n')}
-
-RECOMMENDATIONS
----------------
-${auditReport.recommendations.map((r, idx) => `${idx + 1}. ${r}`).join('\n')}
-
-ACTION PLAN
------------
-${auditReport.action_plan.map((item, idx) => `
-${idx + 1}. [${item.priority}] ${item.action}
-   Timeline: ${item.timeline}
-   Owner: ${item.owner}
-   Cost: ${item.cost}
+PRIORITIZED RECOMMENDATIONS
+----------------------------
+${auditReport.security_recommendations.map((rec, idx) => `
+${idx + 1}. [${rec.priority}] ${rec.recommendation}
+   Timeline: ${rec.timeline}
+   Impact: ${rec.impact}
+   Cost: ${rec.cost_estimate}
 `).join('\n')}
 
 CONCLUSION
@@ -436,7 +423,7 @@ ${auditReport.conclusion}
 
 ════════════════════════════════════════════════════════════════
 Report Generated: ${new Date().toLocaleString()}
-GlyphBot Advanced Security Systems - Professional Grade Auditing
+GlyphBot Security Assessment - Professional Security Auditing
 ════════════════════════════════════════════════════════════════
     `;
 
@@ -468,98 +455,100 @@ GlyphBot Advanced Security Systems - Professional Grade Auditing
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-white">
             <FileText className="w-5 h-5" />
-            Advanced Security Audit Generator
+            Website Security Audit
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
+          <div>
+            <Label className="text-white">Project Name *</Label>
+            <Input
+              value={auditConfig.project_name}
+              onChange={(e) => setAuditConfig({...auditConfig, project_name: e.target.value})}
+              placeholder="Company Website Security Audit"
+              className="bg-blue-900/30 backdrop-blur-md border-blue-500/30 text-white placeholder:text-white/50"
+            />
+          </div>
+
+          <div>
+            <Label className="text-white flex items-center gap-2">
+              <Globe className="w-4 h-4" />
+              Website URLs to Audit *
+            </Label>
+            <Textarea
+              value={auditConfig.website_urls}
+              onChange={(e) => setAuditConfig({...auditConfig, website_urls: e.target.value})}
+              placeholder="Enter URLs to audit (one per line)&#10;https://example.com&#10;https://example.com/login&#10;https://api.example.com"
+              className="bg-blue-900/30 backdrop-blur-md border-blue-500/30 text-white placeholder:text-white/50"
+              rows={4}
+            />
+            <p className="text-xs text-white/60 mt-1">List all URLs you want assessed for security vulnerabilities</p>
+          </div>
+
+          <div>
+            <Label className="text-white">Audit Type</Label>
+            <Select 
+              value={auditConfig.audit_type} 
+              onValueChange={(value) => setAuditConfig({...auditConfig, audit_type: value})}
+            >
+              <SelectTrigger className="bg-blue-900/30 backdrop-blur-md border-blue-500/30 text-white">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent className="bg-blue-900/90 backdrop-blur-md border-blue-500/30">
+                <SelectItem value="web-application" className="text-white">Web Application Security</SelectItem>
+                <SelectItem value="api" className="text-white">API Security</SelectItem>
+                <SelectItem value="e-commerce" className="text-white">E-commerce Platform</SelectItem>
+                <SelectItem value="saas" className="text-white">SaaS Application</SelectItem>
+                <SelectItem value="mobile-backend" className="text-white">Mobile App Backend</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div>
+            <Label className="text-white">Description</Label>
+            <Textarea
+              value={auditConfig.description}
+              onChange={(e) => setAuditConfig({...auditConfig, description: e.target.value})}
+              placeholder="What does this application do? What sensitive data does it handle?"
+              className="bg-blue-900/30 backdrop-blur-md border-blue-500/30 text-white placeholder:text-white/50"
+              rows={2}
+            />
+          </div>
+
           <div className="grid md:grid-cols-2 gap-4">
             <div>
-              <Label className="text-white">Project Name *</Label>
+              <Label className="text-white">Technology Stack</Label>
               <Input
-                value={auditConfig.project_name}
-                onChange={(e) => setAuditConfig({...auditConfig, project_name: e.target.value})}
-                placeholder="e.g., E-commerce Platform, Banking App"
+                value={auditConfig.technology_stack}
+                onChange={(e) => setAuditConfig({...auditConfig, technology_stack: e.target.value})}
+                placeholder="React, Node.js, PostgreSQL, AWS"
                 className="bg-blue-900/30 backdrop-blur-md border-blue-500/30 text-white placeholder:text-white/50"
               />
             </div>
             <div>
-              <Label className="text-white">Audit Type</Label>
-              <Select 
-                value={auditConfig.audit_type} 
-                onValueChange={(value) => setAuditConfig({...auditConfig, audit_type: value})}
-              >
-                <SelectTrigger className="bg-blue-900/30 backdrop-blur-md border-blue-500/30 text-white">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent className="bg-blue-900/90 backdrop-blur-md border-blue-500/30">
-                  <SelectItem value="full" className="text-white">Full Security Audit</SelectItem>
-                  <SelectItem value="smart-contract" className="text-white">Smart Contract Audit</SelectItem>
-                  <SelectItem value="penetration" className="text-white">Penetration Test</SelectItem>
-                  <SelectItem value="compliance" className="text-white">Compliance Review</SelectItem>
-                  <SelectItem value="code-review" className="text-white">Code Review</SelectItem>
-                  <SelectItem value="web-application" className="text-white">Web Application Audit</SelectItem>
-                  <SelectItem value="api" className="text-white">API Security Audit</SelectItem>
-                </SelectContent>
-              </Select>
+              <Label className="text-white">Hosting Environment</Label>
+              <Input
+                value={auditConfig.deployment_environment}
+                onChange={(e) => setAuditConfig({...auditConfig, deployment_environment: e.target.value})}
+                placeholder="AWS, Azure, Self-hosted"
+                className="bg-blue-900/30 backdrop-blur-md border-blue-500/30 text-white placeholder:text-white/50"
+              />
             </div>
-          </div>
-
-          <div>
-            <Label className="text-white">Project Description *</Label>
-            <Textarea
-              value={auditConfig.description}
-              onChange={(e) => setAuditConfig({...auditConfig, description: e.target.value})}
-              placeholder="Describe the project in detail: What does it do? What are the main features? What type of data does it handle? Who are the users?"
-              className="bg-blue-900/30 backdrop-blur-md border-blue-500/30 text-white placeholder:text-white/50"
-              rows={3}
-            />
-          </div>
-
-          <div>
-            <Label className="text-white">Technology Stack</Label>
-            <Input
-              value={auditConfig.technology_stack}
-              onChange={(e) => setAuditConfig({...auditConfig, technology_stack: e.target.value})}
-              placeholder="e.g., React, Node.js, MongoDB, AWS, Docker"
-              className="bg-blue-900/30 backdrop-blur-md border-blue-500/30 text-white placeholder:text-white/50"
-            />
-          </div>
-
-          <div>
-            <Label className="text-white">Deployment Environment</Label>
-            <Input
-              value={auditConfig.deployment_environment}
-              onChange={(e) => setAuditConfig({...auditConfig, deployment_environment: e.target.value})}
-              placeholder="e.g., AWS Cloud, On-Premise, Kubernetes, Serverless"
-              className="bg-blue-900/30 backdrop-blur-md border-blue-500/30 text-white placeholder:text-white/50"
-            />
-          </div>
-
-          <div>
-            <Label className="text-white">Audit Scope *</Label>
-            <Textarea
-              value={auditConfig.scope}
-              onChange={(e) => setAuditConfig({...auditConfig, scope: e.target.value})}
-              placeholder="Define what should be audited: APIs, authentication, payment processing, data storage, third-party integrations, etc."
-              className="bg-blue-900/30 backdrop-blur-md border-blue-500/30 text-white placeholder:text-white/50"
-              rows={3}
-            />
           </div>
 
           <Button
             onClick={generateAudit}
-            disabled={isGenerating || !auditConfig.project_name || !auditConfig.description || !auditConfig.scope}
+            disabled={isGenerating || !auditConfig.project_name || !auditConfig.website_urls}
             className="w-full bg-blue-500/30 hover:bg-blue-500/50 text-white border border-blue-500/50"
           >
             {isGenerating ? (
               <>
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Performing Comprehensive Security Audit...
+                Analyzing Security...
               </>
             ) : (
               <>
                 <Shield className="w-4 h-4 mr-2" />
-                Generate Professional Audit Report
+                Run Security Audit
               </>
             )}
           </Button>
@@ -568,7 +557,7 @@ GlyphBot Advanced Security Systems - Professional Grade Auditing
 
       {auditReport && (
         <div className="space-y-4">
-          {/* Header Stats */}
+          {/* Stats */}
           <div className="grid md:grid-cols-4 gap-4">
             <Card className="bg-red-500/10 backdrop-blur-md border-red-500/30">
               <CardContent className="p-4 text-center">
@@ -588,19 +577,24 @@ GlyphBot Advanced Security Systems - Professional Grade Auditing
                 <div className="text-xs text-white/60 mt-1">Medium</div>
               </CardContent>
             </Card>
-            <Card className="bg-green-500/10 backdrop-blur-md border-green-500/30">
+            <Card className={`${auditReport.website_analysis.security_grade.match(/[AB]/) ? 'bg-green-500/10 border-green-500/30' : 'bg-red-500/10 border-red-500/30'} backdrop-blur-md`}>
               <CardContent className="p-4 text-center">
-                <div className="text-3xl font-bold text-green-400">{auditReport.metrics.passed}/{auditReport.metrics.total_tests}</div>
-                <div className="text-xs text-white/60 mt-1">Tests Passed</div>
+                <div className={`text-3xl font-bold ${auditReport.website_analysis.security_grade.match(/[AB]/) ? 'text-green-400' : 'text-red-400'}`}>
+                  {auditReport.website_analysis.security_grade}
+                </div>
+                <div className="text-xs text-white/60 mt-1">Security Grade</div>
               </CardContent>
             </Card>
           </div>
 
-          {/* Executive Summary */}
+          {/* Website Analysis */}
           <Card className="bg-blue-900/20 backdrop-blur-md border-blue-500/30">
             <CardHeader>
               <div className="flex items-center justify-between">
-                <CardTitle className="text-white">Audit Report: {auditConfig.project_name}</CardTitle>
+                <CardTitle className="flex items-center gap-2 text-white">
+                  <LinkIcon className="w-5 h-5" />
+                  {auditConfig.project_name} - Security Report
+                </CardTitle>
                 <Button
                   onClick={downloadReport}
                   variant="outline"
@@ -608,30 +602,54 @@ GlyphBot Advanced Security Systems - Professional Grade Auditing
                   className="border-blue-500/50 hover:bg-blue-500/20 text-white"
                 >
                   <Download className="w-4 h-4 mr-2" />
-                  Download Report
+                  Download
                 </Button>
               </div>
             </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div>
-                  <h4 className="font-semibold text-white mb-2">Executive Summary</h4>
-                  <p className="text-sm text-white leading-relaxed whitespace-pre-line">{auditReport.executive_summary}</p>
+            <CardContent className="space-y-4">
+              <div>
+                <h4 className="font-semibold text-white mb-2">Tested URLs</h4>
+                <div className="space-y-1">
+                  {auditReport.website_analysis.urls_tested.map((url, idx) => (
+                    <div key={idx} className="text-sm text-blue-400 flex items-center gap-2">
+                      <Globe className="w-3 h-3" />
+                      {url}
+                    </div>
+                  ))}
                 </div>
-                
-                <div>
-                  <h4 className="font-semibold text-white mb-2">Methodology</h4>
-                  <p className="text-sm text-white leading-relaxed">{auditReport.methodology}</p>
-                </div>
+              </div>
 
-                <div>
-                  <h4 className="font-semibold text-white mb-2">Audit Scope</h4>
-                  <ul className="list-disc list-inside space-y-1 text-sm text-white">
-                    {auditReport.audit_scope.map((item, idx) => (
-                      <li key={idx}>{item}</li>
-                    ))}
-                  </ul>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="bg-blue-900/30 p-3 rounded">
+                  <div className="text-xs text-white/60 mb-1">SSL Certificate</div>
+                  <div className={`font-semibold ${auditReport.website_analysis.ssl_status === 'Valid' ? 'text-green-400' : 'text-red-400'}`}>
+                    {auditReport.website_analysis.ssl_status}
+                  </div>
                 </div>
+                <div className="bg-blue-900/30 p-3 rounded">
+                  <div className="text-xs text-white/60 mb-1">Security Headers</div>
+                  <div className={`font-semibold ${auditReport.website_analysis.header_security.score >= 70 ? 'text-green-400' : 'text-orange-400'}`}>
+                    {auditReport.website_analysis.header_security.score}/100
+                  </div>
+                </div>
+              </div>
+
+              {auditReport.website_analysis.header_security.missing_headers.length > 0 && (
+                <div className="bg-orange-500/10 border border-orange-500/30 rounded p-3">
+                  <div className="text-xs text-orange-400 font-semibold mb-2">Missing Security Headers</div>
+                  <div className="flex flex-wrap gap-2">
+                    {auditReport.website_analysis.header_security.missing_headers.map((header, idx) => (
+                      <Badge key={idx} className="bg-orange-500/20 text-orange-400 border-orange-500/50 text-xs">
+                        {header}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <div>
+                <h4 className="font-semibold text-white mb-2">Executive Summary</h4>
+                <p className="text-sm text-white leading-relaxed">{auditReport.executive_summary}</p>
               </div>
             </CardContent>
           </Card>
@@ -639,7 +657,7 @@ GlyphBot Advanced Security Systems - Professional Grade Auditing
           {/* Test Categories */}
           <Card className="bg-blue-900/20 backdrop-blur-md border-blue-500/30">
             <CardHeader>
-              <CardTitle className="text-white">Test Results by Category</CardTitle>
+              <CardTitle className="text-white">Test Results</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
@@ -652,13 +670,10 @@ GlyphBot Advanced Security Systems - Professional Grade Auditing
                         cat.pass_rate >= 60 ? "bg-yellow-500/20 text-yellow-400 border-yellow-500/50" :
                         "bg-red-500/20 text-red-400 border-red-500/50"
                       }>
-                        {cat.pass_rate}% Pass Rate
+                        {cat.pass_rate}% Pass
                       </Badge>
                     </div>
-                    <div className="text-xs text-white/60 mb-2">{cat.findings_count} findings</div>
-                    <div className="text-xs text-white/80">
-                      Tests: {cat.tests_performed.join(', ')}
-                    </div>
+                    <div className="text-xs text-white/60">{cat.tests_performed.join(' • ')}</div>
                   </div>
                 ))}
               </div>
@@ -671,30 +686,59 @@ GlyphBot Advanced Security Systems - Professional Grade Auditing
               <CardTitle className="text-white">Risk Assessment</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-orange-400 mb-2 flex items-center justify-center gap-2">
-                    {auditReport.risk_assessment.overall_risk}
-                    {getRiskTrendIcon(auditReport.risk_assessment.risk_trend)}
-                  </div>
-                  <div className="text-sm text-white/60">Overall Risk Level • {auditReport.risk_assessment.risk_trend}</div>
-                  <div className="text-xs text-white/50 mt-1">Time to Remediate: {auditReport.risk_assessment.time_to_remediate}</div>
+              <div className="text-center mb-4">
+                <div className="text-3xl font-bold text-orange-400 mb-2 flex items-center justify-center gap-2">
+                  {auditReport.risk_assessment.overall_risk}
+                  {getRiskTrendIcon(auditReport.risk_assessment.risk_trend)}
                 </div>
-                
-                <div className="grid grid-cols-3 gap-4">
-                  <div className="bg-red-500/10 backdrop-blur-md rounded-lg p-4 text-center border border-red-500/30">
-                    <div className="text-2xl font-bold text-red-400">{auditReport.risk_assessment.technical_risk}/10</div>
-                    <div className="text-xs text-white/60 mt-1">Technical</div>
-                  </div>
-                  <div className="bg-orange-500/10 backdrop-blur-md rounded-lg p-4 text-center border border-orange-500/30">
-                    <div className="text-2xl font-bold text-orange-400">{auditReport.risk_assessment.business_risk}/10</div>
-                    <div className="text-xs text-white/60 mt-1">Business</div>
-                  </div>
-                  <div className="bg-yellow-500/10 backdrop-blur-md rounded-lg p-4 text-center border border-yellow-500/30">
-                    <div className="text-2xl font-bold text-yellow-400">{auditReport.risk_assessment.compliance_risk}/10</div>
-                    <div className="text-xs text-white/60 mt-1">Compliance</div>
-                  </div>
+                <div className="text-sm text-white/60">
+                  {auditReport.risk_assessment.risk_trend} • {auditReport.risk_assessment.estimated_remediation_time}
                 </div>
+              </div>
+              
+              <div className="grid grid-cols-3 gap-4">
+                <div className="bg-red-500/10 rounded p-3 text-center border border-red-500/30">
+                  <div className="text-xl font-bold text-red-400">{auditReport.risk_assessment.data_exposure_risk}/10</div>
+                  <div className="text-xs text-white/60 mt-1">Data Exposure</div>
+                </div>
+                <div className="bg-orange-500/10 rounded p-3 text-center border border-orange-500/30">
+                  <div className="text-xl font-bold text-orange-400">{auditReport.risk_assessment.reputational_risk}/10</div>
+                  <div className="text-xs text-white/60 mt-1">Reputational</div>
+                </div>
+                <div className="bg-yellow-500/10 rounded p-3 text-center border border-yellow-500/30">
+                  <div className="text-xl font-bold text-yellow-400">{auditReport.risk_assessment.compliance_risk}/10</div>
+                  <div className="text-xs text-white/60 mt-1">Compliance</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* OWASP Top 10 */}
+          <Card className="bg-blue-900/20 backdrop-blur-md border-blue-500/30">
+            <CardHeader>
+              <CardTitle className="text-white">OWASP Top 10 Compliance</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                {auditReport.owasp_top10_compliance.map((item, idx) => (
+                  <div key={idx} className="bg-blue-900/30 rounded p-3">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-sm text-white font-medium">{item.item}</span>
+                      <Badge className={
+                        item.status === "Pass" ? "bg-green-500/20 text-green-400 border-green-500/50" :
+                        item.status === "Partial" ? "bg-yellow-500/20 text-yellow-400 border-yellow-500/50" :
+                        "bg-red-500/20 text-red-400 border-red-500/50"
+                      }>
+                        {item.status} ({item.score}%)
+                      </Badge>
+                    </div>
+                    {item.findings.length > 0 && (
+                      <div className="text-xs text-white/60 mt-1">
+                        {item.findings.join(' • ')}
+                      </div>
+                    )}
+                  </div>
+                ))}
               </div>
             </CardContent>
           </Card>
@@ -702,38 +746,38 @@ GlyphBot Advanced Security Systems - Professional Grade Auditing
           {/* Attack Surface */}
           <Card className="bg-blue-900/20 backdrop-blur-md border-blue-500/30">
             <CardHeader>
-              <CardTitle className="text-white">Attack Surface Analysis</CardTitle>
+              <CardTitle className="text-white">Attack Surface</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4">
                 <div className="bg-blue-900/30 p-3 rounded">
-                  <div className="text-xl font-bold text-white">{auditReport.attack_surface_analysis.external_endpoints}</div>
-                  <div className="text-xs text-white/60">External Endpoints</div>
+                  <div className="text-xl font-bold text-white">{auditReport.attack_surface.public_endpoints}</div>
+                  <div className="text-xs text-white/60">Public Endpoints</div>
                 </div>
                 <div className="bg-blue-900/30 p-3 rounded">
-                  <div className="text-xl font-bold text-white">{auditReport.attack_surface_analysis.api_endpoints}</div>
-                  <div className="text-xs text-white/60">API Endpoints</div>
+                  <div className="text-xl font-bold text-white">{auditReport.attack_surface.api_routes}</div>
+                  <div className="text-xs text-white/60">API Routes</div>
                 </div>
                 <div className="bg-blue-900/30 p-3 rounded">
-                  <div className="text-xl font-bold text-white">{auditReport.attack_surface_analysis.authentication_points}</div>
-                  <div className="text-xs text-white/60">Auth Points</div>
+                  <div className="text-xl font-bold text-white">{auditReport.attack_surface.forms_detected}</div>
+                  <div className="text-xs text-white/60">Forms</div>
                 </div>
                 <div className="bg-blue-900/30 p-3 rounded">
-                  <div className="text-xl font-bold text-white">{auditReport.attack_surface_analysis.data_stores}</div>
-                  <div className="text-xs text-white/60">Data Stores</div>
+                  <div className="text-xl font-bold text-white">{auditReport.attack_surface.file_uploads}</div>
+                  <div className="text-xs text-white/60">File Uploads</div>
                 </div>
                 <div className="bg-blue-900/30 p-3 rounded">
-                  <div className="text-xl font-bold text-white">{auditReport.attack_surface_analysis.third_party_integrations}</div>
-                  <div className="text-xs text-white/60">3rd Party Integrations</div>
+                  <div className="text-xl font-bold text-white">{auditReport.attack_surface.authentication_pages}</div>
+                  <div className="text-xs text-white/60">Auth Pages</div>
                 </div>
               </div>
-              <div>
-                <h4 className="font-semibold text-white mb-2">High-Value Targets</h4>
+              <div className="bg-orange-500/10 border border-orange-500/30 rounded p-3">
+                <h4 className="text-xs font-semibold text-orange-400 mb-2">High-Risk Areas</h4>
                 <ul className="space-y-1">
-                  {auditReport.attack_surface_analysis.high_value_targets.map((target, idx) => (
-                    <li key={idx} className="text-sm text-orange-400 flex items-center gap-2">
-                      <AlertTriangle className="w-3 h-3" />
-                      {target}
+                  {auditReport.attack_surface.high_risk_areas.map((area, idx) => (
+                    <li key={idx} className="text-sm text-white flex items-center gap-2">
+                      <AlertTriangle className="w-3 h-3 text-orange-400" />
+                      {area}
                     </li>
                   ))}
                 </ul>
@@ -742,7 +786,7 @@ GlyphBot Advanced Security Systems - Professional Grade Auditing
           </Card>
 
           {/* Positive Findings */}
-          {auditReport.positive_findings && auditReport.positive_findings.length > 0 && (
+          {auditReport.positive_findings.length > 0 && (
             <Card className="bg-green-500/10 backdrop-blur-md border-green-500/30">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-green-400">
@@ -763,8 +807,8 @@ GlyphBot Advanced Security Systems - Professional Grade Auditing
             </Card>
           )}
 
-          {/* Security Findings */}
-          {auditReport.findings && auditReport.findings.length > 0 && (
+          {/* Findings */}
+          {auditReport.findings.length > 0 && (
             <Card className="bg-blue-900/20 backdrop-blur-md border-blue-500/30">
               <CardHeader>
                 <CardTitle className="text-white">Security Vulnerabilities ({auditReport.findings.length})</CardTitle>
@@ -781,22 +825,19 @@ GlyphBot Advanced Security Systems - Professional Grade Auditing
                               {finding.severity}
                             </Badge>
                             <span className="font-semibold text-white">{finding.title}</span>
-                            <Badge className="bg-white/10 text-white border-white/30 text-xs">
+                            <Badge className="bg-white/10 text-white text-xs">
                               CVSS {finding.cvss_score}
                             </Badge>
-                            <Badge className="bg-white/10 text-white border-white/30 text-xs">
-                              {finding.cwe_id}
+                            <Badge className="bg-white/10 text-white text-xs">
+                              {finding.cwe_reference}
                             </Badge>
                           </div>
-                          <Badge className="bg-white/10 text-white border-white/30 text-xs">
-                            {finding.id}
-                          </Badge>
                         </div>
                         
                         <div className="space-y-2 text-sm">
                           <div>
-                            <span className="text-white/60">Component: </span>
-                            <span className="text-white font-mono">{finding.affected_component}</span>
+                            <span className="text-white/60">Affected URLs: </span>
+                            <span className="text-blue-400">{finding.affected_urls.join(', ')}</span>
                           </div>
                           <p className="text-white">{finding.description}</p>
                           
@@ -806,20 +847,20 @@ GlyphBot Advanced Security Systems - Professional Grade Auditing
                               <span className="text-white">{finding.likelihood}</span>
                             </div>
                             <div>
-                              <span className="text-white/60">Effort to Fix: </span>
-                              <span className="text-white">{finding.effort}</span>
+                              <span className="text-white/60">Fix Time: </span>
+                              <span className="text-white">{finding.effort_hours}h</span>
                             </div>
                           </div>
                         </div>
 
-                        <div className="bg-blue-900/30 backdrop-blur-md rounded p-3 mt-3 mb-2">
+                        <div className="bg-blue-900/30 rounded p-3 mt-3 mb-2">
                           <div className="text-xs text-orange-400 font-semibold mb-1">Impact:</div>
                           <p className="text-xs text-white">{finding.impact}</p>
                         </div>
                         
-                        <div className="bg-blue-900/30 backdrop-blur-md rounded p-3">
-                          <div className="text-xs text-green-400 font-semibold mb-1">Recommendation:</div>
-                          <p className="text-xs text-white">{finding.recommendation}</p>
+                        <div className="bg-blue-900/30 rounded p-3">
+                          <div className="text-xs text-green-400 font-semibold mb-1">How to Fix:</div>
+                          <p className="text-xs text-white">{finding.remediation}</p>
                         </div>
                       </div>
                     );
@@ -829,85 +870,40 @@ GlyphBot Advanced Security Systems - Professional Grade Auditing
             </Card>
           )}
 
-          {/* Compliance Status */}
-          {auditReport.compliance_status && auditReport.compliance_status.length > 0 && (
-            <Card className="bg-blue-900/20 backdrop-blur-md border-blue-500/30">
-              <CardHeader>
-                <CardTitle className="text-white">Compliance Status</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {auditReport.compliance_status.map((comp, idx) => (
-                    <div key={idx} className="bg-blue-900/30 backdrop-blur-md border border-blue-500/30 rounded-lg p-4">
-                      <div className="flex items-center justify-between mb-2">
-                        <h4 className="font-semibold text-white">{comp.standard}</h4>
-                        <div className="flex items-center gap-2">
-                          <Badge className={
-                            comp.status === "Compliant" ? "bg-green-500/20 text-green-400 border-green-500/50" :
-                            comp.status === "Partial" ? "bg-yellow-500/20 text-yellow-400 border-yellow-500/50" :
-                            "bg-red-500/20 text-red-400 border-red-500/50"
-                          }>
-                            {comp.status}
-                          </Badge>
-                          <span className="text-sm text-white">{comp.score}%</span>
-                        </div>
+          {/* Recommendations */}
+          <Card className="bg-blue-900/20 backdrop-blur-md border-blue-500/30">
+            <CardHeader>
+              <CardTitle className="text-green-400">Action Plan</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                {auditReport.security_recommendations.map((rec, idx) => {
+                  const colors = getSeverityColor(rec.priority);
+                  return (
+                    <div key={idx} className={`${colors.bg} rounded-lg p-4 border ${colors.border}`}>
+                      <div className="flex items-start justify-between mb-2">
+                        <span className="font-semibold text-sm text-white">{rec.recommendation}</span>
+                        <Badge className={`${colors.bg} ${colors.text} ${colors.border}`}>{rec.priority}</Badge>
                       </div>
-                      {comp.gaps.length > 0 && (
-                        <div>
-                          <div className="text-xs text-white/60 mb-1">Compliance Gaps:</div>
-                          <ul className="text-xs text-white space-y-1">
-                            {comp.gaps.map((gap, gidx) => (
-                              <li key={gidx}>• {gap}</li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
+                      <div className="grid grid-cols-3 gap-4 text-xs text-white/60">
+                        <div>Timeline: <span className="text-white">{rec.timeline}</span></div>
+                        <div>Impact: <span className="text-white">{rec.impact}</span></div>
+                        <div>Cost: <span className="text-white">{rec.cost_estimate}</span></div>
+                      </div>
                     </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Action Plan */}
-          {auditReport.action_plan && auditReport.action_plan.length > 0 && (
-            <Card className="bg-blue-900/20 backdrop-blur-md border-blue-500/30">
-              <CardHeader>
-                <CardTitle className="text-green-400">Remediation Action Plan</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  {auditReport.action_plan.map((item, idx) => {
-                    const colors = getSeverityColor(item.priority);
-                    return (
-                      <div key={idx} className={`${colors.bg} backdrop-blur-md rounded-lg p-4 border ${colors.border}`}>
-                        <div className="flex items-start justify-between mb-2">
-                          <div className="flex items-center gap-2">
-                            <CheckCircle2 className={`w-4 h-4 ${colors.text}`} />
-                            <span className="font-semibold text-sm text-white">{item.action}</span>
-                          </div>
-                          <Badge className={`${colors.bg} ${colors.text} ${colors.border}`}>{item.priority}</Badge>
-                        </div>
-                        <div className="grid grid-cols-3 gap-4 text-xs text-white/60 pl-6">
-                          <div>Timeline: <span className="text-white">{item.timeline}</span></div>
-                          <div>Owner: <span className="text-white">{item.owner}</span></div>
-                          <div>Cost: <span className="text-white">{item.cost}</span></div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </CardContent>
-            </Card>
-          )}
+                  );
+                })}
+              </div>
+            </CardContent>
+          </Card>
 
           {/* Conclusion */}
           <Card className="bg-gradient-to-br from-blue-500/20 to-blue-700/20 backdrop-blur-md border-blue-500/30">
             <CardHeader>
-              <CardTitle className="text-white">Conclusion & Next Steps</CardTitle>
+              <CardTitle className="text-white">Conclusion</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-white leading-relaxed whitespace-pre-line">{auditReport.conclusion}</p>
+              <p className="text-sm text-white leading-relaxed">{auditReport.conclusion}</p>
             </CardContent>
           </Card>
         </div>
