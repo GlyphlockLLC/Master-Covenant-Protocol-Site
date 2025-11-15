@@ -71,9 +71,9 @@ export default function Layout({ children, currentPageName }) {
               {canGoBack && (
                 <Button
                   variant="ghost"
-                  size="sm"
+                  size="icon"
                   onClick={() => navigate(-1)}
-                  className="glass-royal border border-blue-500/30 text-white hover:text-blue-400 hover:bg-blue-500/30 text-xs"
+                  className="glass-royal border border-blue-500/30 text-white hover:text-blue-400 hover:bg-blue-500/30 h-8 w-8"
                 >
                   <ArrowLeft className="w-4 h-4" />
                 </Button>
@@ -84,7 +84,7 @@ export default function Layout({ children, currentPageName }) {
                   alt="GlyphLock"
                   className="h-8 w-auto transform group-hover:scale-110 transition-transform"
                 />
-                <h1 className="text-base font-bold text-white">
+                <h1 className="text-lg font-bold text-white">
                   GlyphLock
                 </h1>
               </Link>
@@ -96,13 +96,13 @@ export default function Layout({ children, currentPageName }) {
                   return (
                     <DropdownMenu key={item.label}>
                       <DropdownMenuTrigger asChild>
-                        <Button size="sm" className="glass-royal border border-blue-500/30 text-white hover:text-blue-400 hover:bg-blue-500/30 text-xs">
+                        <Button className="glass-royal border border-blue-500/30 text-white hover:text-blue-400 hover:bg-blue-500/30 text-xs h-8 px-3">
                           {item.label} <ChevronDown className="w-3 h-3 ml-1" />
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent className="glass-royal border-blue-500/50 shadow-2xl z-[110]">
                         {item.dropdown.map((subItem) => (
-                          <DropdownMenuItem key={subItem.page} asChild className="text-white hover:text-blue-400 hover:bg-blue-500/30 focus:text-blue-400 focus:bg-blue-500/30 cursor-pointer text-xs">
+                          <DropdownMenuItem key={subItem.page} asChild className="text-white hover:text-blue-400 hover:bg-blue-500/30 focus:text-blue-400 focus:bg-blue-500/30 cursor-pointer text-sm">
                             <Link to={createPageUrl(subItem.page)}>{subItem.label}</Link>
                           </DropdownMenuItem>
                         ))}
@@ -112,29 +112,29 @@ export default function Layout({ children, currentPageName }) {
                 }
                 return (
                   <Link key={item.page} to={createPageUrl(item.page)}>
-                    <Button size="sm" className={isActive(item.page) ? "glass-royal border border-blue-500/50 text-blue-400 bg-blue-500/30 text-xs" : "glass-royal border border-blue-500/30 text-white hover:text-blue-400 hover:bg-blue-500/30 text-xs"}>
+                    <Button className={isActive(item.page) ? "glass-royal border border-blue-500/50 text-blue-400 bg-blue-500/30 text-xs h-8 px-3" : "glass-royal border border-blue-500/30 text-white hover:text-blue-400 hover:bg-blue-500/30 text-xs h-8 px-3"}>
                       {item.label}
                     </Button>
                   </Link>
                 );
               })}
 
-              <Link to={createPageUrl("Consultation")} className="ml-2">
-                <Button size="sm" className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white glow-royal shadow-xl text-xs">
-                  Get Started
+              <Link to={createPageUrl("Consultation")} className="ml-3">
+                <Button className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white glow-royal shadow-xl text-xs h-8 px-4">
+                  Book Consultation
                 </Button>
               </Link>
 
               {user ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button size="sm" className="ml-1 glass-royal border border-blue-500/30 text-white hover:bg-blue-500/30 text-xs">
+                    <Button className="ml-2 glass-royal border border-blue-500/30 text-white hover:bg-blue-500/30 text-xs h-8 px-3">
                       <User className="w-3 h-3 mr-1" />
                       {user.full_name || user.email}
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="glass-royal border-blue-500/50 shadow-2xl z-[110]">
-                    <DropdownMenuItem asChild className="text-white hover:text-blue-400 hover:bg-blue-500/30 focus:text-blue-400 focus:bg-blue-500/30 cursor-pointer text-xs">
+                    <DropdownMenuItem asChild className="text-white hover:text-blue-400 hover:bg-blue-500/30 focus:text-blue-400 focus:bg-blue-500/30 cursor-pointer text-sm">
                       <Link to={createPageUrl("Dashboard")}>
                         <User className="w-3 h-3 mr-2" />
                         Dashboard
@@ -146,7 +146,7 @@ export default function Layout({ children, currentPageName }) {
                     <DropdownMenuSeparator className="bg-blue-500/30" />
                     <DropdownMenuItem 
                       onClick={handleLogout}
-                      className="text-red-400 hover:text-red-300 hover:bg-red-500/20 focus:text-red-300 focus:bg-red-500/20 cursor-pointer text-xs"
+                      className="text-red-400 hover:text-red-300 hover:bg-red-500/20 focus:text-red-300 focus:bg-red-500/20 cursor-pointer text-sm"
                     >
                       <LogOut className="w-3 h-3 mr-2" />
                       Logout
@@ -154,8 +154,8 @@ export default function Layout({ children, currentPageName }) {
                   </DropdownMenuContent>
                 </DropdownMenu>
               ) : (
-                <Link to={createPageUrl("Login")} className="ml-1">
-                  <Button size="sm" className="glass-royal border border-blue-500/50 text-white hover:bg-blue-500/30 text-xs">
+                <Link to={createPageUrl("Login")} className="ml-2">
+                  <Button className="glass-royal border border-blue-500/50 text-white hover:bg-blue-500/30 text-xs h-8 px-3">
                     Sign In
                   </Button>
                 </Link>
@@ -179,12 +179,12 @@ export default function Layout({ children, currentPageName }) {
                   if (item.dropdown) {
                     return (
                       <React.Fragment key={item.label}>
-                        <div className="px-2 py-1 font-semibold text-blue-400 text-xs">
+                        <div className="px-2 py-1 font-semibold text-blue-400 text-sm">
                           {item.label}
                         </div>
                         {item.dropdown.map((subItem) => (
                           <Link key={subItem.page} to={createPageUrl(subItem.page)} onClick={() => setMobileMenuOpen(false)}>
-                            <Button size="sm" className="w-full justify-start pl-6 glass-royal border border-blue-500/30 text-white hover:bg-blue-500/30 text-xs">
+                            <Button className="w-full justify-start pl-6 glass-royal border border-blue-500/30 text-white hover:bg-blue-500/30 text-sm">
                               {subItem.label}
                             </Button>
                           </Link>
@@ -194,7 +194,7 @@ export default function Layout({ children, currentPageName }) {
                   }
                   return (
                     <Link key={item.page} to={createPageUrl(item.page)} onClick={() => setMobileMenuOpen(false)}>
-                      <Button size="sm" className="w-full justify-start glass-royal border border-blue-500/30 text-white hover:bg-blue-500/30 text-xs">
+                      <Button className="w-full justify-start glass-royal border border-blue-500/30 text-white hover:bg-blue-500/30 text-sm">
                         {item.label}
                       </Button>
                     </Link>
@@ -202,28 +202,27 @@ export default function Layout({ children, currentPageName }) {
                 })}
                 {user && (
                   <Link to={createPageUrl("Dashboard")} onClick={() => setMobileMenuOpen(false)}>
-                    <Button size="sm" className="w-full justify-start glass-royal border border-blue-500/30 text-white hover:bg-blue-500/30 text-xs">
+                    <Button className="w-full justify-start glass-royal border border-blue-500/30 text-white hover:bg-blue-500/30 text-sm">
                       Dashboard
                     </Button>
                   </Link>
                 )}
                 <Link to={createPageUrl("Consultation")} onClick={() => setMobileMenuOpen(false)}>
-                  <Button size="sm" className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white mt-2 shadow-xl text-xs">
-                    Get Started
+                  <Button className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white mt-2 shadow-xl text-sm">
+                    Book Consultation
                   </Button>
                 </Link>
                 {user ? (
                   <Button 
-                    size="sm"
                     onClick={handleLogout}
-                    className="w-full mt-2 glass-royal border border-red-500/50 text-red-400 hover:bg-red-500/20 text-xs"
+                    className="w-full mt-2 glass-royal border border-red-500/50 text-red-400 hover:bg-red-500/20 text-sm"
                   >
                     <LogOut className="w-3 h-3 mr-2" />
                     Logout
                   </Button>
                 ) : (
                   <Link to={createPageUrl("Login")} onClick={() => setMobileMenuOpen(false)}>
-                    <Button size="sm" className="w-full mt-2 glass-royal border border-blue-500/50 text-white hover:bg-blue-500/30 text-xs">
+                    <Button className="w-full mt-2 glass-royal border border-blue-500/50 text-white hover:bg-blue-500/30 text-sm">
                       Sign In
                     </Button>
                   </Link>
