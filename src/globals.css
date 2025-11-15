@@ -110,11 +110,105 @@
   }
 }
 
-/* FORCE GLASSMORPHISM ON DARK CARDS ONLY */
-div[class*="card"]:not([class*="bg-white"]),
-div[class*="Card"]:not([class*="bg-white"]),
-[role="dialog"]:not([class*="bg-white"]),
-[data-radix-dialog-content]:not([class*="bg-white"]) {
+/* =================================================================
+   CRITICAL: WHITE/LIGHT BACKGROUNDS GET DARK TEXT
+   ================================================================= */
+
+/* Target ANY white or light background - super aggressive */
+[style*="background: white"],
+[style*="background: #fff"],
+[style*="background: #FFF"],
+[style*="background-color: white"],
+[style*="background-color: #fff"],
+[style*="background-color: #FFF"],
+[style*="background-color: rgb(255"],
+[style*="background: rgb(255"],
+[class*="bg-white"],
+.bg-white {
+  color: rgb(30, 30, 30) !important;
+}
+
+[style*="background: white"] *:not([class*="text-"]):not([style*="color"]),
+[style*="background: #fff"] *:not([class*="text-"]):not([style*="color"]),
+[style*="background: #FFF"] *:not([class*="text-"]):not([style*="color"]),
+[style*="background-color: white"] *:not([class*="text-"]):not([style*="color"]),
+[style*="background-color: #fff"] *:not([class*="text-"]):not([style*="color"]),
+[style*="background-color: #FFF"] *:not([class*="text-"]):not([style*="color"]),
+[style*="background-color: rgb(255"] *:not([class*="text-"]):not([style*="color"]),
+[style*="background: rgb(255"] *:not([class*="text-"]):not([style*="color"]),
+[class*="bg-white"] *:not([class*="text-"]):not([style*="color"]),
+.bg-white *:not([class*="text-"]):not([style*="color"]) {
+  color: rgb(30, 30, 30) !important;
+}
+
+/* White background buttons get blue text */
+[style*="background: white"] button:not([class*="bg-blue"]),
+[style*="background: #fff"] button:not([class*="bg-blue"]),
+[style*="background-color: white"] button:not([class*="bg-blue"]),
+[style*="background-color: #fff"] button:not([class*="bg-blue"]),
+[class*="bg-white"] button:not([class*="bg-blue"]),
+.bg-white button:not([class*="bg-blue"]) {
+  color: rgb(65, 105, 225) !important;
+}
+
+[style*="background: white"] button:not([class*="bg-blue"]) *,
+[style*="background: #fff"] button:not([class*="bg-blue"]) *,
+[style*="background-color: white"] button:not([class*="bg-blue"]) *,
+[style*="background-color: #fff"] button:not([class*="bg-blue"]) *,
+[class*="bg-white"] button:not([class*="bg-blue"]) *,
+.bg-white button:not([class*="bg-blue"]) * {
+  color: rgb(65, 105, 225) !important;
+}
+
+/* White background inputs get dark text */
+[style*="background: white"] input,
+[style*="background: #fff"] input,
+[style*="background-color: white"] input,
+[style*="background-color: #fff"] input,
+[class*="bg-white"] input,
+.bg-white input {
+  color: rgb(30, 30, 30) !important;
+  background: white !important;
+  border: 1px solid rgba(65, 105, 225, 0.3) !important;
+}
+
+[style*="background: white"] input::placeholder,
+[style*="background: #fff"] input::placeholder,
+[style*="background-color: white"] input::placeholder,
+[style*="background-color: #fff"] input::placeholder,
+[class*="bg-white"] input::placeholder,
+.bg-white input::placeholder {
+  color: rgba(30, 30, 30, 0.5) !important;
+}
+
+/* Specific Radix UI components that might have light backgrounds */
+[data-radix-dialog-content][style*="background: white"],
+[data-radix-dialog-content][style*="background-color: white"],
+[data-radix-popover-content][style*="background: white"],
+[data-radix-popover-content][style*="background-color: white"],
+[data-radix-dropdown-menu-content][style*="background: white"],
+[data-radix-dropdown-menu-content][style*="background-color: white"] {
+  color: rgb(30, 30, 30) !important;
+}
+
+[data-radix-dialog-content][style*="background: white"] *:not([class*="text-"]),
+[data-radix-dialog-content][style*="background-color: white"] *:not([class*="text-"]),
+[data-radix-popover-content][style*="background: white"] *:not([class*="text-"]),
+[data-radix-popover-content][style*="background-color: white"] *:not([class*="text-"]),
+[data-radix-dropdown-menu-content][style*="background: white"] *:not([class*="text-"]),
+[data-radix-dropdown-menu-content][style*="background-color: white"] *:not([class*="text-"]) {
+  color: rgb(30, 30, 30) !important;
+}
+
+/* =================================================================
+   DARK BACKGROUNDS GET WHITE TEXT (Glassmorphism)
+   ================================================================= */
+
+/* FORCE GLASSMORPHISM ON DARK CARDS */
+div[class*="card"]:not([class*="bg-white"]):not([style*="background: white"]),
+div[class*="Card"]:not([class*="bg-white"]):not([style*="background: white"]),
+[role="dialog"]:not([class*="bg-white"]):not([style*="background: white"]),
+[data-radix-dialog-content]:not([class*="bg-white"]):not([style*="background: white"]) {
   background: linear-gradient(135deg, 
     rgba(65, 105, 225, 0.15) 0%, 
     rgba(30, 64, 175, 0.1) 100%
@@ -130,36 +224,13 @@ div[class*="Card"]:not([class*="bg-white"]),
 }
 
 /* Dark glass cards have white text */
-div[class*="card"]:not([class*="bg-white"]) *:not(.text-blue-400):not(.text-blue-500):not(.text-blue-600):not([class*="text-blue"]):not([class*="text-green"]):not([class*="text-red"]):not([class*="text-yellow"]):not([class*="text-purple"]):not([class*="text-orange"]):not(.bg-clip-text),
-div[class*="Card"]:not([class*="bg-white"]) *:not(.text-blue-400):not(.text-blue-500):not(.text-blue-600):not([class*="text-blue"]):not([class*="text-green"]):not([class*="text-red"]):not([class*="text-yellow"]):not([class*="text-purple"]):not([class*="text-orange"]):not(.bg-clip-text),
-[role="dialog"]:not([class*="bg-white"]) *:not(.text-blue-400):not(.text-blue-500):not(.text-blue-600):not([class*="text-blue"]):not([class*="text-green"]):not([class*="text-red"]):not([class*="text-yellow"]):not([class*="text-purple"]):not([class*="text-orange"]):not(.bg-clip-text) {
+div[class*="card"]:not([class*="bg-white"]) *:not([class*="text-"]):not(.bg-clip-text),
+div[class*="Card"]:not([class*="bg-white"]) *:not([class*="text-"]):not(.bg-clip-text),
+[role="dialog"]:not([class*="bg-white"]) *:not([class*="text-"]):not(.bg-clip-text) {
   color: white !important;
 }
 
-/* White/Light background cards have dark text */
-[class*="bg-white"] {
-  color: rgb(30, 30, 30) !important;
-}
-
-[class*="bg-white"] * {
-  color: rgb(30, 30, 30) !important;
-}
-
-[class*="bg-white"] button {
-  color: rgb(30, 30, 30) !important;
-}
-
-[class*="bg-white"] input {
-  color: rgb(30, 30, 30) !important;
-  background: white !important;
-  border: 1px solid rgba(65, 105, 225, 0.3) !important;
-}
-
-[class*="bg-white"] input::placeholder {
-  color: rgba(30, 30, 30, 0.5) !important;
-}
-
-/* FORCE GLASSMORPHISM ON ALL INPUTS */
+/* FORCE GLASSMORPHISM ON ALL DARK INPUTS */
 input[type="text"]:not([class*="bg-white"] input),
 input[type="email"]:not([class*="bg-white"] input),
 input[type="password"]:not([class*="bg-white"] input),
@@ -186,7 +257,7 @@ textarea:not([class*="bg-white"] textarea)::placeholder {
 }
 
 /* FORCE GLASSMORPHISM ON DARK BUTTONS */
-button:not([class*="gradient"]):not([class*="bg-gradient"]):not([class*="bg-white"] button):not([class*="bg-blue"]) {
+button:not([class*="gradient"]):not([class*="bg-gradient"]):not([class*="bg-white"] button):not([class*="bg-blue"]):not([style*="background: white"]) {
   background: linear-gradient(135deg, 
     rgba(65, 105, 225, 0.15) 0%, 
     rgba(30, 64, 175, 0.1) 100%
@@ -197,11 +268,11 @@ button:not([class*="gradient"]):not([class*="bg-gradient"]):not([class*="bg-whit
   color: white !important;
 }
 
-button:not([class*="gradient"]):not([class*="bg-gradient"]):not([class*="bg-white"] button):not([class*="bg-blue"]) * {
+button:not([class*="gradient"]):not([class*="bg-gradient"]):not([class*="bg-white"] button):not([class*="bg-blue"]):not([style*="background: white"]) * {
   color: white !important;
 }
 
-button:not([class*="gradient"]):not([class*="bg-gradient"]):not([class*="bg-white"] button):not([class*="bg-blue"]):hover {
+button:not([class*="gradient"]):not([class*="bg-gradient"]):not([class*="bg-white"] button):not([class*="bg-blue"]):not([style*="background: white"]):hover {
   background: linear-gradient(135deg, 
     rgba(65, 105, 225, 0.25) 0%, 
     rgba(30, 64, 175, 0.2) 100%
@@ -209,7 +280,7 @@ button:not([class*="gradient"]):not([class*="bg-gradient"]):not([class*="bg-whit
   border-color: rgba(65, 105, 225, 0.6) !important;
 }
 
-/* Blue buttons keep white text */
+/* Blue/gradient buttons keep white text */
 button[class*="bg-blue"],
 button[class*="gradient"],
 button[class*="bg-gradient"] {
@@ -222,36 +293,15 @@ button[class*="bg-gradient"] * {
   color: white !important;
 }
 
-/* Buttons on white backgrounds get dark text */
-[class*="bg-white"] button:not([class*="bg-blue"]):not([class*="gradient"]) {
-  color: rgb(65, 105, 225) !important;
-  background: linear-gradient(135deg, 
-    rgba(65, 105, 225, 0.1) 0%, 
-    rgba(30, 64, 175, 0.05) 100%
-  ) !important;
-  border: 1px solid rgba(65, 105, 225, 0.3) !important;
-}
-
-[class*="bg-white"] button:not([class*="bg-blue"]):not([class*="gradient"]) * {
-  color: rgb(65, 105, 225) !important;
-}
-
-[class*="bg-white"] button:not([class*="bg-blue"]):not([class*="gradient"]):hover {
-  background: linear-gradient(135deg, 
-    rgba(65, 105, 225, 0.2) 0%, 
-    rgba(30, 64, 175, 0.1) 100%
-  ) !important;
-}
-
 /* FORCE GLASSMORPHISM ON DROPDOWNS AND MENUS */
-[role="menu"],
-[role="listbox"],
-[data-radix-popper-content-wrapper],
-[data-radix-dropdown-menu-content],
-[data-radix-select-content],
-div[class*="dropdown"],
-div[class*="menu"],
-div[class*="popover"] {
+[role="menu"]:not([style*="background: white"]),
+[role="listbox"]:not([style*="background: white"]),
+[data-radix-popper-content-wrapper]:not([style*="background: white"]),
+[data-radix-dropdown-menu-content]:not([style*="background: white"]),
+[data-radix-select-content]:not([style*="background: white"]),
+div[class*="dropdown"]:not([style*="background: white"]),
+div[class*="menu"]:not([style*="background: white"]),
+div[class*="popover"]:not([style*="background: white"]) {
   background: linear-gradient(135deg, 
     rgba(65, 105, 225, 0.15) 0%, 
     rgba(30, 64, 175, 0.1) 100%
@@ -265,17 +315,17 @@ div[class*="popover"] {
 }
 
 /* Menu items have white text on dark glass */
-[role="menuitem"],
-[role="option"],
-button[role="menuitem"],
-[data-radix-dropdown-menu-item] {
+[role="menuitem"]:not([style*="background: white"]),
+[role="option"]:not([style*="background: white"]),
+button[role="menuitem"]:not([style*="background: white"]),
+[data-radix-dropdown-menu-item]:not([style*="background: white"]) {
   color: white !important;
 }
 
-[role="menuitem"] *,
-[role="option"] *,
-button[role="menuitem"] *,
-[data-radix-dropdown-menu-item] * {
+[role="menuitem"]:not([style*="background: white"]) *,
+[role="option"]:not([style*="background: white"]) *,
+button[role="menuitem"]:not([style*="background: white"]) *,
+[data-radix-dropdown-menu-item]:not([style*="background: white"]) * {
   color: white !important;
 }
 
@@ -298,19 +348,40 @@ div[class*="badge"]:not([class*="bg-white"]) {
   color: white !important;
 }
 
-/* Preserve all colored text classes */
+/* =================================================================
+   PRESERVE COLORED TEXT CLASSES
+   ================================================================= */
+
 .text-blue-400,
 .text-blue-500,
 .text-blue-600,
-[class*="text-blue"],
-[class*="text-green"],
-[class*="text-red"],
-[class*="text-yellow"],
-[class*="text-purple"],
-[class*="text-orange"],
-[class*="text-gray"],
-[class*="text-white"],
-[class*="text-black"],
+.text-green-400,
+.text-green-500,
+.text-green-600,
+.text-red-400,
+.text-red-500,
+.text-red-600,
+.text-yellow-400,
+.text-yellow-500,
+.text-yellow-600,
+.text-purple-400,
+.text-purple-500,
+.text-purple-600,
+.text-orange-400,
+.text-orange-500,
+.text-orange-600,
+.text-gray-400,
+.text-gray-500,
+.text-gray-600,
+.text-white,
+.text-black,
+[class*="text-blue-"],
+[class*="text-green-"],
+[class*="text-red-"],
+[class*="text-yellow-"],
+[class*="text-purple-"],
+[class*="text-orange-"],
+[class*="text-gray-"],
 .bg-clip-text {
   color: inherit !important;
 }
