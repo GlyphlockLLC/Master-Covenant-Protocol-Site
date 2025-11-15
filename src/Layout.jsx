@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
@@ -139,7 +140,7 @@ export default function Layout({ children, currentPageName }) {
 
               <Link to={createPageUrl("Consultation")} className="ml-4">
                 <Button className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white">
-                  Book Consultation
+                  Get Started
                 </Button>
               </Link>
 
@@ -235,7 +236,7 @@ export default function Layout({ children, currentPageName }) {
                 )}
                 <Link to={createPageUrl("Consultation")} onClick={() => setMobileMenuOpen(false)}>
                   <Button className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white mt-2">
-                    Book Consultation
+                    Get Started
                   </Button>
                 </Link>
                 {user ? (
