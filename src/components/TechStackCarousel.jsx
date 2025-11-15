@@ -15,7 +15,7 @@ export default function TechStackCarousel() {
     { name: "Snowflake", logo: "https://www.vectorlogo.zone/logos/snowflake/snowflake-ar21.svg" },
     { name: "OpenAI", logo: "https://www.vectorlogo.zone/logos/openai/openai-ar21.svg" },
     { name: "NVIDIA", logo: "https://www.vectorlogo.zone/logos/nvidia/nvidia-ar21.svg" },
-    { name: "Hugging Face", logo: "https://huggingface.co/front/assets/huggingface_logo.svg" },
+    { name: "Anthropic", logo: "https://www.vectorlogo.zone/logos/anthropic/anthropic-ar21.svg" },
     { name: "GitHub", logo: "https://www.vectorlogo.zone/logos/github/github-ar21.svg" },
     { name: "GitLab", logo: "https://www.vectorlogo.zone/logos/gitlab/gitlab-ar21.svg" },
     { name: "Datadog", logo: "https://www.vectorlogo.zone/logos/datadoghq/datadoghq-ar21.svg" },
@@ -38,19 +38,19 @@ export default function TechStackCarousel() {
     { name: "Terraform", logo: "https://www.vectorlogo.zone/logos/terraformio/terraformio-ar21.svg" },
     { name: "Supabase", logo: "https://www.vectorlogo.zone/logos/supabase/supabase-ar21.svg" },
     { name: "MySQL", logo: "https://www.vectorlogo.zone/logos/mysql/mysql-ar21.svg" },
-    { name: "PlanetScale", logo: "https://planetscale.com/favicon.svg" },
+    { name: "PlanetScale", logo: "https://www.vectorlogo.zone/logos/planetscale/planetscale-ar21.svg" },
     { name: "CockroachDB", logo: "https://www.vectorlogo.zone/logos/cockroachlabs/cockroachlabs-ar21.svg" },
-    { name: "Anthropic", logo: "https://www.anthropic.com/images/icons/safari-pinned-tab.svg" },
-    { name: "Cohere", logo: "https://cohere.com/favicon.svg" },
+    { name: "Meta", logo: "https://www.vectorlogo.zone/logos/meta/meta-ar21.svg" },
+    { name: "Cohere", logo: "https://www.vectorlogo.zone/logos/cohere/cohere-ar21.svg" },
     { name: "New Relic", logo: "https://www.vectorlogo.zone/logos/newrelic/newrelic-ar21.svg" },
     { name: "Grafana", logo: "https://www.vectorlogo.zone/logos/grafana/grafana-ar21.svg" },
     { name: "Jenkins", logo: "https://www.vectorlogo.zone/logos/jenkins/jenkins-ar21.svg" },
     { name: "Sentry", logo: "https://www.vectorlogo.zone/logos/sentry/sentry-ar21.svg" },
     { name: "Auth0", logo: "https://www.vectorlogo.zone/logos/auth0/auth0-ar21.svg" },
-    { name: "CrowdStrike", logo: "https://www.crowdstrike.com/wp-content/uploads/2020/08/crowdstrike-logo-2.svg" },
+    { name: "Palo Alto", logo: "https://www.vectorlogo.zone/logos/paloaltonetworks/paloaltonetworks-ar21.svg" },
     { name: "HashiCorp", logo: "https://www.vectorlogo.zone/logos/hashicorp/hashicorp-ar21.svg" },
-    { name: "Adyen", logo: "https://www.adyen.com/assets/logo.svg" },
-    { name: "Braintree", logo: "https://www.braintreepayments.com/images/braintree-logo.svg" },
+    { name: "Square", logo: "https://www.vectorlogo.zone/logos/squareup/squareup-ar21.svg" },
+    { name: "Braintree", logo: "https://www.vectorlogo.zone/logos/braintreepayments/braintreepayments-ar21.svg" },
     { name: "SAP", logo: "https://www.vectorlogo.zone/logos/sap/sap-ar21.svg" },
     { name: "IBM", logo: "https://www.vectorlogo.zone/logos/ibm/ibm-ar21.svg" },
     { name: "Postman", logo: "https://www.vectorlogo.zone/logos/getpostman/getpostman-ar21.svg" },
@@ -78,6 +78,9 @@ export default function TechStackCarousel() {
                 alt={company.name}
                 className="h-12 w-auto object-contain tech-logo"
                 loading="lazy"
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                }}
               />
             </div>
           ))}
@@ -94,6 +97,9 @@ export default function TechStackCarousel() {
                 alt={company.name}
                 className="h-12 w-auto object-contain tech-logo"
                 loading="lazy"
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                }}
               />
             </div>
           ))}
