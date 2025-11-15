@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
@@ -47,8 +46,13 @@ export default function Layout({ children, currentPageName }) {
     }
   };
 
-  const handleLogout = () => {
-    base44.auth.logout();
+  const handleLogout = async () => {
+    try {
+      await base44.auth.logout(createPageUrl("Home"));
+    } catch (err) {
+      console.error("Logout error:", err);
+      window.location.href = createPageUrl("Home");
+    }
   };
 
   const toggleTheme = () => {
@@ -239,9 +243,9 @@ export default function Layout({ children, currentPageName }) {
                 </Link>
                 {user ? (
                   <Button 
-                    onClick={() => {
-                      handleLogout();
+                    onClick={async () => {
                       setMobileMenuOpen(false);
+                      await handleLogout();
                     }}
                     variant="outline" 
                     className="w-full mt-2 border-red-500/50 text-red-400"
