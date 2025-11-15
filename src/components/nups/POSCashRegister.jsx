@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -16,12 +17,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label"; // Ensure Label is imported
 
 export default function POSCashRegister({ user }) {
   const queryClient = useQueryClient();
   const [cart, setCart] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [barcodeInput, setBarcode Input] = useState("");
+  const [barcodeInput, setBarcodeInput] = useState(""); // Fixed typo here
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState("Cash");
   const [showPaymentDialog, setShowPaymentDialog] = useState(false);
@@ -141,7 +143,10 @@ export default function POSCashRegister({ user }) {
       total,
       payment_method: paymentMethod,
       cashier: user?.email,
-      status: "completed"
+      status: "completed",
+      batch_id: activeBatch?.id, // Ensure batch_id is included
+      cash_tendered: paymentMethod === "Cash" ? cashTendered : undefined, // Only for cash payments
+      change_due: paymentMethod === "Cash" ? change : undefined, // Only for cash payments
     };
 
     createTransaction.mutate(transactionData);
@@ -203,13 +208,14 @@ export default function POSCashRegister({ user }) {
           <CardContent className="p-4">
             <Label className="text-sm text-gray-400 mb-2 block">Customer (Optional)</Label>
             <Select
-              value={selectedCustomer?.id}
-              onValueChange={(id) => setSelectedCustomer(customers.find(c => c.id === id))}
+              value={selectedCustomer?.id || ""}
+              onValueChange={(id) => setSelectedCustomer(customers.find(c => c.id === id) || null)}
             >
               <SelectTrigger className="glass-input text-white">
                 <SelectValue placeholder="Walk-in Customer" />
               </SelectTrigger>
               <SelectContent className="glass-card-dark border-gray-700">
+                <SelectItem value={null}>Walk-in Customer</SelectItem> {/* Option to deselect customer */}
                 {customers.map((customer) => (
                   <SelectItem key={customer.id} value={customer.id}>
                     {customer.full_name} - {customer.loyalty_tier}
