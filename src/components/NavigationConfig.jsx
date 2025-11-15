@@ -8,18 +8,16 @@ export const navigationConfig = {
       dropdown: [
         { label: "About Us", page: "About" },
         { label: "Roadmap", page: "Roadmap" },
-        { label: "Master Covenant", page: "MasterCovenant" },
-        { label: "Dream Team", page: "DreamTeam" },
+        { label: "Governance Hub", page: "GovernanceHub" },
       ]
     },
     {
       label: "Services",
       dropdown: [
-        { label: "QR Generator", page: "QRGenerator" },
-        { label: "Steganography", page: "Steganography" },
-        { label: "Blockchain Security", page: "Blockchain" },
-        { label: "Security Operations", page: "SecurityOperations" },
-        { label: "Complete Security Ecosystem", page: "SecurityTools" },
+        { label: "Visual Cryptography", page: "VisualCryptography" },
+        { label: "Blockchain", page: "Blockchain" },
+        { label: "Security Operations", page: "SecurityOperationsCenter" },
+        { label: "Complete Ecosystem", page: "SecurityTools" },
       ]
     },
     { label: "GlyphBot AI", page: "GlyphBot" },
@@ -32,16 +30,14 @@ export const navigationConfig = {
     company: [
       { label: "About Us", page: "About" },
       { label: "Roadmap", page: "Roadmap" },
-      { label: "Master Covenant", page: "MasterCovenant" },
-      { label: "Dream Team", page: "DreamTeam" },
+      { label: "Governance Hub", page: "GovernanceHub" },
       { label: "Contact", page: "Contact" },
     ],
     services: [
       { label: "Complete Security Ecosystem", page: "SecurityTools" },
-      { label: "QR Generator", page: "QRGenerator" },
-      { label: "Steganography", page: "Steganography" },
+      { label: "Visual Cryptography", page: "VisualCryptography" },
       { label: "Blockchain", page: "Blockchain" },
-      { label: "Security Operations", page: "SecurityOperations" },
+      { label: "Security Operations", page: "SecurityOperationsCenter" },
       { label: "GlyphBot AI", page: "GlyphBot" },
       { label: "N.U.P.S. POS", page: "NUPSLogin" },
     ],

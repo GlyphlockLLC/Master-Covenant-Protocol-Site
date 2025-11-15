@@ -31,6 +31,8 @@ import IntegrationPlan from './pages/IntegrationPlan';
 import SecurityOperations from './pages/SecurityOperations';
 import DreamTeam from './pages/DreamTeam';
 import VisualCryptography from './pages/VisualCryptography';
+import SecurityOperationsCenter from './pages/SecurityOperationsCenter';
+import GovernanceHub from './pages/GovernanceHub';
 import Layout from './Layout.jsx';
 
 
@@ -68,6 +70,8 @@ export const PAGES = {
     "SecurityOperations": SecurityOperations,
     "DreamTeam": DreamTeam,
     "VisualCryptography": VisualCryptography,
+    "SecurityOperationsCenter": SecurityOperationsCenter,
+    "GovernanceHub": GovernanceHub,
 }
 
 export const pagesConfig = {
