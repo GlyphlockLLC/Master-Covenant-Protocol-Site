@@ -3,7 +3,7 @@ import React from "react";
 export default function HeroSection() {
   return (
     <div className="w-full max-w-7xl mx-auto px-4">
-      <div className="relative w-full h-[60vh] overflow-hidden rounded-2xl">
+      <div className="relative w-full h-[50vh] overflow-hidden rounded-2xl">
         <video
           autoPlay
           loop
