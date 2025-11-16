@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { ArrowUp } from "lucide-react";
 import TechStackCarousel from "@/components/TechStackCarousel";
 import ComparisonSection from "@/components/ComparisonSection";
@@ -9,16 +9,41 @@ import CTASection from "@/components/home/CTASection";
 
 export default function Home() {
   const [showBackToTop, setShowBackToTop] = useState(false);
+  const contentRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => {
       setShowBackToTop(window.scrollY > 400);
+      
+      if (!contentRef.current) return;
+      
+      const sections = contentRef.current.querySelectorAll('section');
+      const viewportCenter = window.innerHeight / 2;
+      
+      sections.forEach(section => {
+        const rect = section.getBoundingClientRect();
+        const elementCenter = rect.top + (rect.height / 2);
+        const distanceFromCenter = Math.abs(elementCenter - viewportCenter);
+        const maxDistance = window.innerHeight * 0.8;
+        const normalizedDistance = Math.min(distanceFromCenter / maxDistance, 1);
+        
+        const opacity = 1 - (normalizedDistance * 0.7);
+        const scale = 1 - (normalizedDistance * 0.15);
+        const translateZ = -normalizedDistance * 400;
+        
+        section.style.transform = `perspective(2000px) translateZ(${translateZ}px) scale(${scale})`;
+        section.style.opacity = Math.max(opacity, 0.3);
+        section.style.transition = 'transform 0.1s ease-out, opacity 0.1s ease-out';
+      });
     };
 
+    handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll);
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
     };
   }, []);
 
@@ -27,7 +52,10 @@ export default function Home() {
   };
 
   return (
-    <div className="text-white relative">
+    <div className="text-white relative" style={{ 
+      perspective: '2000px',
+      perspectiveOrigin: '50% 50%'
+    }}>
       {showBackToTop && (
         <button
           onClick={scrollToTop}
@@ -38,7 +66,7 @@ export default function Home() {
         </button>
       )}
 
-      <div className="relative z-50">
+      <div ref={contentRef} style={{ transformStyle: 'preserve-3d', position: 'relative', zIndex: 50 }}>
         <HeroSection />
         <FeaturesSection />
         <ServicesGrid />
