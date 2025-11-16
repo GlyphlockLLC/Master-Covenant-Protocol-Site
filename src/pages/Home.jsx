@@ -57,7 +57,7 @@ const ScrollSection = ({ children, containerRef }) => {
   const style = useScrollEffect(sectionRef, containerRef);
   return (
     <section ref={sectionRef} className="h-screen w-full flex items-center justify-center relative">
-      <div style={style} className="w-full transition-transform duration-100 ease-out">
+      <div style={style} className="w-full transition-transform duration-100 ease-out pointer-events-auto">
         {children}
       </div>
     </section>
@@ -77,7 +77,7 @@ export default function Home() {
   };
 
   return (
-    <div ref={scrollContainerRef} className="h-screen w-full overflow-y-scroll overflow-x-hidden">
+    <div ref={scrollContainerRef} className="h-screen w-full overflow-y-scroll overflow-x-hidden" style={{ pointerEvents: 'auto' }}>
         
         <ScrollSection containerRef={scrollContainerRef}>
             <HeroSection />
