@@ -16,7 +16,7 @@ export default function DataTable({ selectedModel }) {
 
   if (!selectedModel) {
     return (
-      <div className="flex-1 flex items-center justify-center bg-black">
+      <div className="flex-1 flex items-center justify-center bg-black" style={{ backgroundColor: '#000000' }}>
         <div className="text-center">
           <Database className="w-20 h-20 mx-auto mb-4 text-gray-700" />
           <h3 className="text-2xl font-bold mb-2 text-white">
@@ -32,7 +32,7 @@ export default function DataTable({ selectedModel }) {
 
   if (isLoading) {
     return (
-      <div className="flex-1 p-8 bg-black">
+      <div className="flex-1 p-8 bg-black" style={{ backgroundColor: '#000000' }}>
         <LoadingSpinner message={`Loading ${selectedModel.label}...`} />
       </div>
     );
@@ -41,8 +41,8 @@ export default function DataTable({ selectedModel }) {
   const columns = records.length > 0 ? Object.keys(records[0]) : [];
 
   return (
-    <div className="flex-1 p-8 bg-black overflow-auto">
-      <Card className="glass-card-dark">
+    <div className="flex-1 p-8 bg-black overflow-auto" style={{ backgroundColor: '#000000' }}>
+      <Card className="glass-card-dark" style={{ backgroundColor: 'rgba(10, 10, 20, 0.85)', border: '1px solid rgba(65, 105, 225, 0.4)' }}>
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle className="text-white">
@@ -53,6 +53,7 @@ export default function DataTable({ selectedModel }) {
               size="sm"
               variant="outline"
               className="border-blue-500/50 text-white hover:bg-blue-500/20"
+              style={{ backgroundColor: 'rgba(20, 20, 30, 0.8)', borderColor: 'rgba(65, 105, 225, 0.5)' }}
             >
               <RefreshCw className="w-4 h-4 mr-2" />
               Refresh
@@ -68,7 +69,7 @@ export default function DataTable({ selectedModel }) {
             />
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full">
+              <table className="w-full" style={{ backgroundColor: 'transparent' }}>
                 <thead>
                   <tr className="border-b border-blue-500/30">
                     {columns.map((col) => (
@@ -83,6 +84,7 @@ export default function DataTable({ selectedModel }) {
                     <tr 
                       key={idx} 
                       className="border-b border-blue-500/20 hover:bg-blue-500/10"
+                      style={{ backgroundColor: 'transparent' }}
                     >
                       {columns.map((col) => (
                         <td key={col} className="p-3 text-sm text-gray-300">

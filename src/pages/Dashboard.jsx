@@ -39,13 +39,13 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-black flex">
+    <div className="min-h-screen bg-black flex" style={{ backgroundColor: '#000000' }}>
       <DashboardSidebar 
         selectedModel={selectedModel} 
         setSelectedModel={setSelectedModel}
       />
       
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col" style={{ backgroundColor: '#000000' }}>
         <div className="glass-royal border-b border-blue-500/30 px-6 py-4 flex items-center justify-between sticky top-0 z-10">
           <div>
             <h1 className="text-2xl font-bold text-white">
