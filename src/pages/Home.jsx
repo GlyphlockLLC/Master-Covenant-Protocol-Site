@@ -12,28 +12,37 @@ export default function Home() {
   const contentRef = useRef(null);
 
   useEffect(() => {
+    let ticking = false;
+    
     const handleScroll = () => {
-      setShowBackToTop(window.scrollY > 400);
-      
-      if (!contentRef.current) return;
-      
-      const sections = contentRef.current.querySelectorAll('section');
-      const viewportCenter = window.innerHeight / 2;
-      
-      sections.forEach(section => {
-        const rect = section.getBoundingClientRect();
-        const elementCenter = rect.top + (rect.height / 2);
-        const distanceFromCenter = Math.abs(elementCenter - viewportCenter);
-        const maxDistance = window.innerHeight;
-        const normalizedDistance = Math.min(distanceFromCenter / maxDistance, 1);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setShowBackToTop(window.scrollY > 400);
+          
+          if (contentRef.current) {
+            const sections = contentRef.current.querySelectorAll('section');
+            const viewportCenter = window.innerHeight / 2;
+            
+            sections.forEach(section => {
+              const rect = section.getBoundingClientRect();
+              const elementCenter = rect.top + (rect.height / 2);
+              const distanceFromCenter = Math.abs(elementCenter - viewportCenter);
+              const maxDistance = window.innerHeight * 0.7;
+              const normalized = Math.min(distanceFromCenter / maxDistance, 1);
+              
+              const opacity = 1 - (normalized * 0.4);
+              const translateZ = -normalized * 150;
+              
+              section.style.transform = `translateZ(${translateZ}px)`;
+              section.style.opacity = `${Math.max(opacity, 0.6)}`;
+            });
+          }
+          
+          ticking = false;
+        });
         
-        const opacity = 1 - (normalizedDistance * 0.5);
-        const scale = 1;
-        const translateZ = -normalizedDistance * 200;
-        
-        section.style.transform = `translateZ(${translateZ}px)`;
-        section.style.opacity = Math.max(opacity, 0.5);
-      });
+        ticking = true;
+      }
     };
 
     handleScroll();
@@ -50,19 +59,23 @@ export default function Home() {
 
   return (
     <div className="text-white relative" style={{ 
-      perspective: '1500px',
-      perspectiveOrigin: '50% 50%'
+      perspective: '1200px',
+      perspectiveOrigin: '50% 50%',
+      overflow: 'visible'
     }}>
-      {showBackToTop && (
-        <button
-          onClick={scrollToTop}
-          className="fixed bottom-8 right-8 z-[999] bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white p-4 rounded-full shadow-2xl transition-all duration-300 hover:scale-110"
-          style={{ boxShadow: '0 0 20px rgba(65, 105, 225, 0.3)', cursor: 'pointer', pointerEvents: 'auto' }}
-          aria-label="Back to top"
-        >
-          <ArrowUp className="w-6 h-6" />
-        </button>
-      )}
+      <button
+        onClick={scrollToTop}
+        className="fixed bottom-8 right-8 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white p-4 rounded-full shadow-2xl transition-all duration-300 hover:scale-110"
+        style={{ 
+          display: showBackToTop ? 'block' : 'none',
+          zIndex: 9999,
+          cursor: 'pointer',
+          pointerEvents: 'auto'
+        }}
+        aria-label="Back to top"
+      >
+        <ArrowUp className="w-6 h-6" />
+      </button>
 
       <div ref={contentRef} style={{ transformStyle: 'preserve-3d' }}>
         <HeroSection />

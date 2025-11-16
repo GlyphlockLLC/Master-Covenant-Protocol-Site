@@ -30,18 +30,17 @@
 @layer base {
   * {
     @apply border-border;
-    cursor: pointer !important;
   }
   body {
     @apply bg-black text-white;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   }
   
-  a, button, input, select, textarea {
+  a, button, [role="button"], input, select, textarea, label {
     cursor: pointer !important;
     pointer-events: auto !important;
-    position: relative;
-    z-index: 100 !important;
+    position: relative !important;
+    z-index: 1000 !important;
   }
 }
 
@@ -84,12 +83,6 @@
     border: 1px solid rgba(65, 105, 225, 0.4) !important;
     box-shadow: 0 8px 32px rgba(65, 105, 225, 0.3) !important;
     color: white !important;
-  }
-
-  .glow-royal {
-    box-shadow: 
-      0 0 20px rgba(65, 105, 225, 0.4),
-      0 0 40px rgba(65, 105, 225, 0.2) !important;
   }
 }
 
@@ -178,10 +171,6 @@ button:not(.bg-gradient-to-r):not([class*="gradient"]) {
   color: white !important;
   background: rgba(20, 20, 30, 0.8) !important;
   border: 1px solid rgba(65, 105, 225, 0.4) !important;
-  cursor: pointer !important;
-  pointer-events: auto !important;
-  position: relative;
-  z-index: 100;
 }
 
 button:hover:not(.bg-gradient-to-r):not([class*="gradient"]) {
@@ -195,7 +184,6 @@ select {
   background: rgba(20, 20, 30, 0.9) !important;
   border: 1px solid rgba(65, 105, 225, 0.5) !important;
   color: white !important;
-  cursor: pointer !important;
 }
 
 input::placeholder,
@@ -276,11 +264,6 @@ tbody {
   50% { transform: translateY(-20px); }
 }
 
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(65, 105, 225, 0.4); }
-  50% { box-shadow: 0 0 40px rgba(65, 105, 225, 0.8); }
-}
-
 @keyframes scroll {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
@@ -288,10 +271,6 @@ tbody {
 
 .animate-float {
   animation: float 6s ease-in-out infinite;
-}
-
-.animate-pulse-glow {
-  animation: pulse-glow 3s ease-in-out infinite;
 }
 
 .animate-scroll {
