@@ -72,7 +72,7 @@ export default function FeaturesSection() {
 
           <div className="relative group overflow-hidden rounded-2xl">
             <img
-              src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/f5f3a5e3b_Whisk_d839f8faee191cd9bbb4d6b3701c0a99dr.jpg"
+              src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/fd28593b3_Whisk_938e90eff0a4d8da277467baf360248edr.jpg"
               alt="Full Stack Development"
               className="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-700"
             />
@@ -89,7 +89,7 @@ export default function FeaturesSection() {
 
           <div className="relative group overflow-hidden rounded-2xl">
             <img
-              src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/fd28593b3_Whisk_938e90eff0a4d8da277467baf360248edr.jpg"
+              src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/870d85755_Whisk_429a6543b81e30d9bab4065457f3b62ddr.jpg"
               alt="Web Development"
               className="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-700"
             />
