@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { createPageUrl } from "@/utils";
@@ -179,7 +178,6 @@ COVENANT: MASTER_COVENANT_001
           </TabsList>
 
           <TabsContent value="covenant">
-            {/* AUTO-BINDING NOTICE */}
             <Card className="glass-card-dark border-red-500/50 mb-8 bg-red-500/10">
               <CardContent className="p-6">
                 <div className="flex items-start gap-4">
@@ -199,7 +197,6 @@ COVENANT: MASTER_COVENANT_001
             </Card>
 
             <div className="grid lg:grid-cols-4 gap-8">
-              {/* Sidebar Navigation */}
               <div className="lg:col-span-1">
                 <Card className="glass-card-dark border-cyan-500/30 sticky top-24">
                   <CardHeader>
@@ -227,9 +224,7 @@ COVENANT: MASTER_COVENANT_001
                 </Card>
               </div>
 
-              {/* Content Area */}
               <div className="lg:col-span-3 space-y-6">
-                {/* OVERVIEW SECTION */}
                 {activeCovenantSection === "overview" && (
                   <>
                     <Card className="glass-card-dark border-cyan-500/30">
@@ -287,7 +282,6 @@ COVENANT: MASTER_COVENANT_001
                   </>
                 )}
 
-                {/* PREAMBLE SECTION */}
                 {activeCovenantSection === "preamble" && (
                   <Card className="glass-card-dark border-cyan-500/30">
                     <CardHeader>
@@ -347,7 +341,6 @@ COVENANT: MASTER_COVENANT_001
                   </Card>
                 )}
 
-                {/* DEFINITIONS SECTION */}
                 {activeCovenantSection === "definitions" && (
                   <Card className="glass-card-dark border-cyan-500/30">
                     <CardHeader>
@@ -411,7 +404,6 @@ COVENANT: MASTER_COVENANT_001
                   </Card>
                 )}
 
-                {/* PROVISIONS SECTION */}
                 {activeCovenantSection === "provisions" && (
                   <Card className="glass-card-dark border-cyan-500/30">
                     <CardHeader>
@@ -474,12 +466,11 @@ COVENANT: MASTER_COVENANT_001
                             </li>
                           </ul>
                         </div>
-                      </CardContent>
-                    </Card>
+                      </div>
+                    </CardContent>
                   </Card>
                 )}
 
-                {/* ENFORCEMENT SECTION */}
                 {activeCovenantSection === "enforcement" && (
                   <Card className="glass-card-dark border-cyan-500/30">
                     <CardHeader>
@@ -535,7 +526,6 @@ COVENANT: MASTER_COVENANT_001
                   </Card>
                 )}
 
-                {/* FINAL BINDING SECTION */}
                 {activeCovenantSection === "final" && (
                   <Card className="glass-card-dark border-cyan-500/30">
                     <CardHeader>
@@ -593,7 +583,6 @@ COVENANT: MASTER_COVENANT_001
                   </Card>
                 )}
 
-                {/* PDF Purchase CTA */}
                 <Card className="glass-card-dark border-cyan-500/30">
                   <CardContent className="p-8">
                     <div className="text-center">
@@ -643,7 +632,6 @@ COVENANT: MASTER_COVENANT_001
 
           <TabsContent value="team">
             <div className="space-y-12">
-              {/* Origin Story */}
               <Card className="glass-card border-purple-500/30 p-10 rounded-3xl">
                 <div className="flex items-center gap-3 mb-6">
                   <Trophy className="w-8 h-8 text-cyan-400" />
@@ -755,7 +743,6 @@ COVENANT: MASTER_COVENANT_001
                 </div>
               </Card>
 
-              {/* Team Cards */}
               <div>
                 <h2 className="text-2xl font-bold text-cyan-300 text-center mb-8">
                   Click each card to flip and view detailed stats
@@ -767,7 +754,6 @@ COVENANT: MASTER_COVENANT_001
                 </div>
               </div>
 
-              {/* Binding Protocols */}
               <Card className="glass-card border-purple-500/30 rounded-2xl">
                 <CardHeader>
                   <CardTitle className="text-2xl font-bold text-cyan-300 text-center">
