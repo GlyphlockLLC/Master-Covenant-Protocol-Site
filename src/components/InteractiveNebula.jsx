@@ -1,130 +1,132 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from "react";
 
 export default function InteractiveNebula() {
   const canvasRef = useRef(null);
-  const mousePos = useRef({ x: 0, y: 0 });
-  const particles = useRef([]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d');
-    let animationFrameId;
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
-    const resizeCanvas = () => {
+    let mouseX = canvas.width / 2;
+    let mouseY = canvas.height / 2;
+    let particles = [];
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2 + 0.5;
+        this.speedX = Math.random() * 0.5 - 0.25;
+        this.speedY = Math.random() * 0.5 - 0.25;
+        this.color = `hsla(${Math.random() * 60 + 200}, 100%, ${Math.random() * 30 + 50}%, ${Math.random() * 0.5 + 0.3})`;
+      }
+
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+
+        const dx = mouseX - this.x;
+        const dy = mouseY - this.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        if (distance < 150) {
+          this.x -= dx * 0.01;
+          this.y -= dy * 0.01;
+        }
+
+        if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+      }
+
+      draw() {
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    for (let i = 0; i < 100; i++) {
+      particles.push(new Particle());
+    }
+
+    const handleMouseMove = (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    };
+
+    const handleTouchMove = (e) => {
+      if (e.touches.length > 0) {
+        mouseX = e.touches[0].clientX;
+        mouseY = e.touches[0].clientY;
+      }
+    };
+
+    const handleResize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     };
 
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("touchmove", handleTouchMove);
+    window.addEventListener("resize", handleResize);
 
-    const initParticles = () => {
-      particles.current = [];
-      const particleCount = 150;
-      for (let i = 0; i < particleCount; i++) {
-        particles.current.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          size: Math.random() * 2 + 0.5,
-          speedX: (Math.random() - 0.5) * 0.5,
-          speedY: (Math.random() - 0.5) * 0.5,
-          color: `rgba(${65 + Math.random() * 60}, ${105 + Math.random() * 60}, ${225}, ${Math.random() * 0.6 + 0.2})`
-        });
-      }
-    };
-
-    initParticles();
-
-    const handleMouseMove = (e) => {
-      mousePos.current = { x: e.clientX, y: e.clientY };
-    };
-
-    const handleTouchMove = (e) => {
-      if (e.touches[0]) {
-        mousePos.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-      }
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('touchmove', handleTouchMove);
-
-    const drawNebula = () => {
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+    function animate() {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      const gradient = ctx.createRadialGradient(
-        mousePos.current.x,
-        mousePos.current.y,
-        0,
-        mousePos.current.x,
-        mousePos.current.y,
-        300
-      );
-      gradient.addColorStop(0, 'rgba(65, 105, 225, 0.15)');
-      gradient.addColorStop(0.5, 'rgba(30, 64, 175, 0.08)');
-      gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      const gradient = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, 200);
+      gradient.addColorStop(0, "rgba(65, 105, 225, 0.15)");
+      gradient.addColorStop(0.5, "rgba(30, 64, 175, 0.08)");
+      gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      particles.current.forEach((particle) => {
-        const dx = mousePos.current.x - particle.x;
-        const dy = mousePos.current.y - particle.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
+      particles.forEach((particle) => {
+        particle.update();
+        particle.draw();
+      });
 
-        if (distance < 200) {
-          particle.x += dx * 0.002;
-          particle.y += dy * 0.002;
-        }
-
-        particle.x += particle.speedX;
-        particle.y += particle.speedY;
-
-        if (particle.x < 0) particle.x = canvas.width;
-        if (particle.x > canvas.width) particle.x = 0;
-        if (particle.y < 0) particle.y = canvas.height;
-        if (particle.y > canvas.height) particle.y = 0;
-
-        ctx.beginPath();
-        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-        ctx.fillStyle = particle.color;
-        ctx.fill();
-
-        particles.current.forEach((otherParticle) => {
-          const dx = particle.x - otherParticle.x;
-          const dy = particle.y - otherParticle.y;
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
           const distance = Math.sqrt(dx * dx + dy * dy);
 
           if (distance < 100) {
-            ctx.beginPath();
-            ctx.strokeStyle = `rgba(65, 105, 225, ${0.2 * (1 - distance / 100)})`;
+            ctx.strokeStyle = `rgba(65, 105, 225, ${0.2 - distance / 500})`;
             ctx.lineWidth = 0.5;
-            ctx.moveTo(particle.x, particle.y);
-            ctx.lineTo(otherParticle.x, otherParticle.y);
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
             ctx.stroke();
           }
-        });
-      });
+        }
+      }
 
-      animationFrameId = requestAnimationFrame(drawNebula);
-    };
+      requestAnimationFrame(animate);
+    }
 
-    drawNebula();
+    animate();
 
     return () => {
-      window.removeEventListener('resize', resizeCanvas);
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('touchmove', handleTouchMove);
-      cancelAnimationFrame(animationFrameId);
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 pointer-events-none z-0"
-      style={{ background: 'linear-gradient(135deg, #000000 0%, #0a0a1a 50%, #000000 100%)' }}
+      className="fixed top-0 left-0 w-full h-full pointer-events-none"
+      style={{ 
+        zIndex: 0,
+        background: "radial-gradient(ellipse at center, rgba(10, 10, 30, 1) 0%, rgba(0, 0, 0, 1) 100%)"
+      }}
     />
   );
 }

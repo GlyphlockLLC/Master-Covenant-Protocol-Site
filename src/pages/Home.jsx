@@ -27,20 +27,18 @@ export default function Home() {
         const maxDistance = window.innerHeight * 0.8;
         const normalizedDistance = Math.min(distanceFromCenter / maxDistance, 1);
         
-        // Smooth cylindrical fade based on distance from center
-        const opacity = 1 - (normalizedDistance * 0.6);
-        const scale = 1 - (normalizedDistance * 0.15);
+        // Cylindrical effect with minimal fade - keep brightness
+        const scale = 1 - (normalizedDistance * 0.12);
         const translateZ = -normalizedDistance * 350;
-        const blur = normalizedDistance * 2;
         
         element.style.transform = `
           perspective(1500px) 
           translateZ(${translateZ}px) 
           scale(${scale})
         `;
-        element.style.opacity = Math.max(0.4, opacity);
-        element.style.filter = `blur(${blur}px)`;
-        element.style.transition = 'transform 0.1s ease-out, opacity 0.1s ease-out, filter 0.1s ease-out';
+        element.style.opacity = 1;
+        element.style.filter = 'none';
+        element.style.transition = 'transform 0.1s ease-out';
       });
     };
 
