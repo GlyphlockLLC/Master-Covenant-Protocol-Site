@@ -1,33 +1,37 @@
-import React from "react";
-import TechStackCarousel from "@/components/TechStackCarousel";
-import ComparisonSection from "@/components/ComparisonSection";
-import HeroSection from "@/components/home/HeroSection";
-import FeaturesSection from "@/components/home/FeaturesSection";
-import ServicesGrid from "@/components/home/ServicesGrid";
-import CTASection from "@/components/home/CTASection";
+import React from 'react';
+import { useHistory } from "wouter";
+import { createPageUrl } from "@/utils";
+import TechStackCarousel from '@/components/TechStackCarousel';
+import ComparisonSection from '@/components/ComparisonSection';
+import HeroSection from '@/components/home/HeroSection';
+import FeaturesSection from '@/components/home/FeaturesSection';
+import ServicesGrid from '@/components/home/ServicesGrid';
+import CTASection from '@/components/home/CTASection';
 
 export default function Home() {
+  const history = useHistory();
+  const [email, setEmail] = React.useState('');
+
+  const handleEmailSubmit = (e) => {
+    e.preventDefault();
+    if (email) {
+      history.push(createPageUrl("Consultation") + `?email=${encodeURIComponent(email)}`);
+    }
+  };
+
   return (
-    <div className="snap-scroll-container">
+    <div className="scroll-snap-y scroll-snap-mandatory h-screen w-full overflow-y-scroll overflow-x-hidden">
+      
       <style jsx>{`
-        .snap-scroll-container {
-          scroll-snap-type: y mandatory;
-          height: 100vh;
-          width: 100vw;
-          overflow-y: scroll;
-          overflow-x: hidden;
-        }
-        
         .snap-section {
           scroll-snap-align: start;
           min-height: 100vh;
           width: 100%;
+          padding-top: 5rem;
+          padding-bottom: 5rem;
           display: flex;
-          flex-direction: column;
           align-items: center;
           justify-content: center;
-          padding-top: 5rem;
-          padding-bottom: 2rem;
         }
       `}</style>
 
@@ -41,7 +45,7 @@ export default function Home() {
       
       <section className="snap-section">
         <div className="w-full max-w-7xl mx-auto px-4">
-          <TechStackCarousel />
+            <TechStackCarousel />
         </div>
       </section>
 
@@ -56,6 +60,7 @@ export default function Home() {
       <section className="snap-section">
         <CTASection />
       </section>
+
     </div>
   );
 }
