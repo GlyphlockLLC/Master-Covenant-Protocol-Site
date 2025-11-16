@@ -8,48 +8,42 @@ const services = [
     title: "NEXUS N.U.P.S.",
     description: "AI-powered POS system with advanced analytics",
     link: "NUPSLogin",
-    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80",
-    price: "Enterprise",
+    image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/9184b512b_Whisk_b9fd7532ee1e87a9152439bac427f256dr.jpg",
     icon: Zap
   },
   {
     title: "Master Covenant",
     description: "Smart contract platform with blockchain security",
     link: "MasterCovenant",
-    image: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800&q=80",
-    price: "$50/mo",
+    image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/8f4e28351_Whisk_05f17d65a57cf59bf1a4fdd31ffd7d8edr.jpg",
     icon: FileCode
   },
   {
     title: "Visual Cryptography",
     description: "QR generation and steganography tools",
     link: "VisualCryptography",
-    image: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=800&q=80",
-    price: "$179.99",
+    image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/ef8ed5e35_ee8d4930-e046-49b0-8beb-87745181d506.jpg",
     icon: Eye
   },
   {
     title: "Blockchain Solutions",
     description: "Decentralized security infrastructure",
     link: "Blockchain",
-    image: "https://images.unsplash.com/photo-1639762681057-408e52192e55?w=800&q=80",
-    price: "$99.99",
+    image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/b91660fea_Whisk_8fdb6d2b015dc9e846648880fcd03ca1dr.jpg",
     icon: Lock
   },
   {
     title: "Security Operations Center",
     description: "24/7 threat monitoring and response",
     link: "SecurityOperationsCenter",
-    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&q=80",
-    price: "Enterprise",
+    image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/9167e5df2_08f33231-115f-4c95-9719-682f4e9679cc.jpg",
     icon: Shield
   },
   {
     title: "GlyphBot AI Assistant",
     description: "Intelligent security automation",
     link: "GlyphBot",
-    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&q=80",
-    price: "Custom",
+    image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/0e2155dc3_Whisk_df925aca34d95e09a3b4274e0bd16f08dr.jpg",
     icon: Brain
   }
 ];
@@ -76,9 +70,6 @@ export default function ServicesGrid() {
                   alt={service.title}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />
-                <div className="absolute top-4 right-4 bg-blue-500/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-white">
-                  {service.price}
-                </div>
               </div>
               <div className="p-6">
                 <div className="flex items-center gap-3 mb-3">
