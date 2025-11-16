@@ -8,34 +8,35 @@ import FeaturesSection from '@/components/home/FeaturesSection';
 import ServicesGrid from '@/components/home/ServicesGrid';
 import CTASection from '@/components/home/CTASection';
 
-const useScrollEffect = (ref) => {
-  const [style, setStyle] = useState({});
+const useScrollEffect = (sectionRef, containerRef) => {
+  const [style, setStyle] = useState({ transform: 'perspective(1000px)', opacity: 0 });
 
   useEffect(() => {
     const handleScroll = () => {
-      if (ref.current) {
-        const { top, height } = ref.current.getBoundingClientRect();
+      if (sectionRef.current) {
+        const { top, height } = sectionRef.current.getBoundingClientRect();
         const screenHeight = window.innerHeight;
         
         const elementCenter = top + height / 2;
         const screenCenter = screenHeight / 2;
         const distance = screenCenter - elementCenter;
         
-        const factor = distance / (screenCenter * 1.2);
+        const factor = distance / (screenCenter * 1.1);
 
         const rotation = -factor * 15;
-        const scale = 1 - Math.abs(factor) * 0.15;
-        const opacity = 1 - Math.abs(factor) * 0.5;
+        const scale = 1 - Math.abs(factor) * 0.1;
+        const opacity = 1 - Math.abs(factor) * 0.4;
 
-        setStyle({
-          transform: `perspective(1000px) rotateX(${rotation}deg) scale(${scale})`,
-          opacity: Math.max(0, opacity),
-          transition: 'transform 0.1s linear, opacity 0.1s linear',
+        requestAnimationFrame(() => {
+            setStyle({
+              transform: `perspective(1000px) rotateX(${rotation}deg) scale(${scale})`,
+              opacity: Math.max(0, opacity),
+            });
         });
       }
     };
     
-    const scrollContainer = document.getElementById('scroll-container');
+    const scrollContainer = containerRef.current;
     if (scrollContainer) {
       scrollContainer.addEventListener('scroll', handleScroll, { passive: true });
       handleScroll();
@@ -46,17 +47,17 @@ const useScrollEffect = (ref) => {
         scrollContainer.removeEventListener('scroll', handleScroll);
       }
     };
-  }, [ref]);
+  }, [sectionRef, containerRef]);
 
   return style;
 };
 
-const ScrollSection = ({ children }) => {
-  const ref = useRef(null);
-  const style = useScrollEffect(ref);
+const ScrollSection = ({ children, containerRef }) => {
+  const sectionRef = useRef(null);
+  const style = useScrollEffect(sectionRef, containerRef);
   return (
-    <section ref={ref} className="h-screen w-full flex items-center justify-center relative">
-      <div style={style} className="w-full">
+    <section ref={sectionRef} className="h-screen w-full flex items-center justify-center relative">
+      <div style={style} className="w-full transition-transform duration-100 ease-out">
         {children}
       </div>
     </section>
@@ -66,6 +67,7 @@ const ScrollSection = ({ children }) => {
 export default function Home() {
   const navigate = useNavigate();
   const [email, setEmail] = React.useState('');
+  const scrollContainerRef = useRef(null);
 
   const handleEmailSubmit = (e) => {
     e.preventDefault();
@@ -75,31 +77,31 @@ export default function Home() {
   };
 
   return (
-    <div id="scroll-container" className="h-screen w-full overflow-y-scroll overflow-x-hidden">
+    <div ref={scrollContainerRef} className="h-screen w-full overflow-y-scroll overflow-x-hidden">
         
-        <ScrollSection>
+        <ScrollSection containerRef={scrollContainerRef}>
             <HeroSection />
         </ScrollSection>
 
-        <ScrollSection>
+        <ScrollSection containerRef={scrollContainerRef}>
             <ServicesGrid />
         </ScrollSection>
         
-        <ScrollSection>
+        <ScrollSection containerRef={scrollContainerRef}>
             <div className="w-full max-w-7xl mx-auto px-4">
                 <TechStackCarousel />
             </div>
         </ScrollSection>
 
-        <ScrollSection>
+        <ScrollSection containerRef={scrollContainerRef}>
             <FeaturesSection />
         </ScrollSection>
         
-        <ScrollSection>
+        <ScrollSection containerRef={scrollContainerRef}>
             <ComparisonSection />
         </ScrollSection>
 
-        <ScrollSection>
+        <ScrollSection containerRef={scrollContainerRef}>
             <CTASection />
         </ScrollSection>
     </div>
