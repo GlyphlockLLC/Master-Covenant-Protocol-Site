@@ -65,7 +65,10 @@ const ScrollSection = ({ children }) => {
   const sectionRef = useRef(null);
   const style = useScrollEffect(sectionRef);
   return (
-    <section ref={sectionRef} className="w-full min-h-screen flex items-center justify-center snap-start">
+    <section ref={sectionRef} className="w-full min-h-screen flex items-center justify-center snap-start relative py-12">
+      <div className="absolute inset-0 -z-10">
+        <div className="glass-card w-[95%] h-[90%] mx-auto my-auto absolute inset-0 rounded-3xl" />
+      </div>
       <div style={style} className="w-full transition-all duration-150 ease-out">
         {children}
       </div>
