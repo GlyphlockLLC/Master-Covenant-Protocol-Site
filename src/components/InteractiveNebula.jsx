@@ -122,10 +122,11 @@ export default function InteractiveNebula() {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed top-0 left-0 w-full h-full pointer-events-none"
+      className="fixed top-0 left-0 w-full h-full"
       style={{ 
-        zIndex: 0,
-        background: "radial-gradient(ellipse at center, rgba(10, 10, 30, 1) 0%, rgba(0, 0, 0, 1) 100%)"
+        zIndex: 1,
+        background: "radial-gradient(ellipse at center, rgba(10, 10, 30, 1) 0%, rgba(0, 0, 0, 1) 100%)",
+        pointerEvents: 'none'
       }}
     />
   );
