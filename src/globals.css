@@ -7,9 +7,9 @@ css
   :root {
     --background: 0 0% 0%;
     --foreground: 0 0% 100%;
-    --card: 0 0% 5%;
+    --card: 0 0% 8%;
     --card-foreground: 0 0% 100%;
-    --popover: 0 0% 5%;
+    --popover: 0 0% 8%;
     --popover-foreground: 0 0% 100%;
     --primary: 217 91% 60%;
     --primary-foreground: 0 0% 100%;
@@ -89,43 +89,53 @@ css
   }
 }
 
-/* =================================================================
-   ULTIMATE DARK MODE ENFORCEMENT - NO WHITE BACKGROUNDS ALLOWED
-   ================================================================= */
-
-/* FORCE DARK ON EVERYTHING */
+/* ULTIMATE NUCLEAR ANNIHILATION OF ALL WHITE BACKGROUNDS */
 *,
 *::before,
-*::after {
+*::after,
+div,
+section,
+article,
+aside,
+header,
+footer,
+nav,
+main,
+form,
+fieldset,
+legend {
+  background-color: transparent !important;
   border-color: rgba(65, 105, 225, 0.3) !important;
 }
 
-body, html, #root, main {
+body,
+html,
+#root {
   background: rgb(0, 0, 0) !important;
   background-color: rgb(0, 0, 0) !important;
   color: white !important;
 }
 
-/* KILL ALL WHITE/LIGHT BACKGROUNDS */
-div, section, article, aside, header, footer, nav, main,
-[class*="bg-white"],
-[class*="bg-gray-50"],
-[class*="bg-gray-100"],
-[style*="background:#fff"],
-[style*="background: #fff"],
-[style*="background:#FFF"],
-[style*="background: #FFF"],
-[style*="background:white"],
-[style*="background: white"],
-[style*="background-color:#fff"],
-[style*="background-color: #fff"],
-[style*="background-color:white"],
-[style*="background-color: white"] {
-  background: transparent !important;
-  background-color: transparent !important;
+/* SHADCN CARD COMPONENT - ABSOLUTE DESTRUCTION */
+[data-card],
+.card,
+[class*="Card"],
+[class*="card-"],
+[role="region"],
+div[class*="rounded"],
+div[class*="border"] {
+  background: rgba(15, 15, 25, 0.9) !important;
+  background-color: rgba(15, 15, 25, 0.9) !important;
+  border-color: rgba(65, 105, 225, 0.4) !important;
+  color: white !important;
 }
 
-/* SHADCN UI COMPONENTS - FORCE DARK */
+/* FORCE ALL TEXT TO WHITE */
+*:not(.bg-gradient-to-r):not([class*="gradient"]) {
+  color: white !important;
+}
+
+/* SHADCN UI COMPONENTS */
 [data-radix-popper-content-wrapper],
 [data-radix-select-viewport],
 [data-radix-select-content],
@@ -133,12 +143,9 @@ div, section, article, aside, header, footer, nav, main,
 [data-radix-popover-content],
 [data-radix-context-menu-content],
 [data-radix-dialog-content],
-[data-radix-alert-dialog-content],
-[data-radix-menubar-content],
 [role="menu"],
 [role="listbox"],
-[role="dialog"],
-[role="menubar"] {
+[role="dialog"] {
   background: rgba(10, 10, 20, 0.98) !important;
   background-color: rgba(10, 10, 20, 0.98) !important;
   backdrop-filter: blur(20px) !important;
@@ -147,71 +154,38 @@ div, section, article, aside, header, footer, nav, main,
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8) !important;
 }
 
-/* ALL TEXT IN DROPDOWNS/MENUS = WHITE */
-[data-radix-select-viewport] *,
-[data-radix-select-content] *,
-[data-radix-dropdown-menu-content] *,
-[data-radix-popover-content] *,
-[role="menu"] *,
-[role="listbox"] *,
-[role="option"],
-[role="menuitem"],
+/* MENU ITEMS */
 [data-radix-select-item],
-[data-radix-dropdown-menu-item] {
+[data-radix-dropdown-menu-item],
+[role="menuitem"],
+[role="option"] {
   color: white !important;
   background: transparent !important;
 }
 
-/* HOVER STATES FOR MENU ITEMS */
-[role="menuitem"]:hover,
-[role="option"]:hover,
 [data-radix-select-item]:hover,
 [data-radix-dropdown-menu-item]:hover,
 [data-radix-select-item][data-highlighted],
-[data-radix-dropdown-menu-item][data-highlighted],
-[data-radix-menubar-item][data-highlighted] {
+[data-radix-dropdown-menu-item][data-highlighted] {
   background: rgba(65, 105, 225, 0.3) !important;
-  background-color: rgba(65, 105, 225, 0.3) !important;
-  color: white !important;
-}
-
-/* SELECTED STATES */
-[data-radix-select-item][data-state="checked"],
-[data-radix-dropdown-menu-item][data-state="checked"] {
-  background: rgba(65, 105, 225, 0.4) !important;
-  color: white !important;
-}
-
-/* CARDS */
-[class*="Card"],
-[class*="card"],
-.card,
-.Card {
-  background: rgba(15, 15, 25, 0.8) !important;
-  border: 1px solid rgba(65, 105, 225, 0.4) !important;
-  color: white !important;
-}
-
-[class*="Card"] *,
-[class*="card"] *,
-.card *,
-.Card * {
   color: white !important;
 }
 
 /* BUTTONS */
 button {
   color: white !important;
-}
-
-button:not(.bg-gradient-to-r):not([class*="gradient"]) {
   background: rgba(20, 20, 30, 0.8) !important;
   border: 1px solid rgba(65, 105, 225, 0.4) !important;
 }
 
-button:hover:not(.bg-gradient-to-r):not([class*="gradient"]) {
+button:hover {
   background: rgba(30, 30, 45, 0.9) !important;
   border-color: rgba(65, 105, 225, 0.6) !important;
+}
+
+button.bg-gradient-to-r,
+button[class*="gradient"] {
+  background: linear-gradient(to right, rgb(37 99 235), rgb(29 78 216)) !important;
 }
 
 /* INPUTS */
@@ -228,21 +202,14 @@ textarea::placeholder {
   color: rgba(255, 255, 255, 0.5) !important;
 }
 
-input:focus,
-textarea:focus,
-select:focus {
-  border-color: rgba(65, 105, 225, 0.8) !important;
-  outline: none !important;
-  box-shadow: 0 0 0 2px rgba(65, 105, 225, 0.2) !important;
-}
-
 /* TABLES */
 table {
   background: rgba(15, 15, 25, 0.8) !important;
   border: 1px solid rgba(65, 105, 225, 0.4) !important;
 }
 
-th, td {
+th,
+td {
   color: white !important;
   border-color: rgba(65, 105, 225, 0.2) !important;
 }
@@ -263,11 +230,13 @@ tr:hover {
   border: 1px solid rgba(65, 105, 225, 0.4) !important;
 }
 
-/* NAVIGATION BAR */
-nav {
-  background: rgba(10, 10, 20, 0.95) !important;
-  backdrop-filter: blur(20px) !important;
-  border-color: rgba(65, 105, 225, 0.5) !important;
+/* PRESERVE GRADIENT TEXT */
+.bg-clip-text,
+[style*="background-clip: text"],
+[style*="-webkit-background-clip: text"] {
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  background-color: transparent !important;
 }
 
 /* SCROLLBAR */
@@ -286,28 +255,6 @@ nav {
     rgba(30, 64, 175, 0.6) 100%
   );
   border-radius: 6px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, 
-    rgba(65, 105, 225, 0.8) 0%, 
-    rgba(30, 64, 175, 0.8) 100%
-  );
-}
-
-/* SELECTION */
-::selection {
-  background: rgba(65, 105, 225, 0.5);
-  color: white;
-}
-
-/* PRESERVE GRADIENT TEXT */
-.bg-clip-text,
-[style*="background-clip: text"],
-[style*="-webkit-background-clip: text"] {
-  color: transparent !important;
-  -webkit-text-fill-color: transparent !important;
-  background-color: transparent !important;
 }
 
 /* ANIMATIONS */
@@ -336,26 +283,4 @@ nav {
 
 .animate-scroll {
   animation: scroll 30s linear infinite;
-}
-
-/* TOAST/NOTIFICATION OVERRIDES */
-[data-sonner-toast],
-[data-sonner-toaster] {
-  background: rgba(10, 10, 20, 0.95) !important;
-  border: 1px solid rgba(65, 105, 225, 0.5) !important;
-  color: white !important;
-}
-
-/* TOOLTIPS */
-[role="tooltip"] {
-  background: rgba(10, 10, 20, 0.95) !important;
-  color: white !important;
-  border: 1px solid rgba(65, 105, 225, 0.5) !important;
-}
-
-/* MODAL/DIALOG OVERLAYS */
-[data-radix-dialog-overlay],
-[data-radix-alert-dialog-overlay] {
-  background: rgba(0, 0, 0, 0.8) !important;
-  backdrop-filter: blur(8px) !important;
 }
