@@ -26,26 +26,30 @@ export default function Home() {
         const distanceFromCenter = sectionCenter - viewportCenter;
         const normalizedDistance = distanceFromCenter / viewportHeight;
         
-        // Subtle rotation for cylinder effect (max 2deg)
-        const rotateX = normalizedDistance * 1.5;
+        // Calculate fade and depth based on position
+        // Below center (coming from bottom): fade in and come forward
+        // Above center (going to top): fade out and go back
         
-        // Parallax depth - elements further move slower
-        const depth = index * 40;
-        const translateZ = -depth + (normalizedDistance * -60);
+        let opacity, scale, translateZ;
         
-        // Scale up as approaching center, scale down when away
-        const scale = 1 - Math.abs(normalizedDistance) * 0.12;
-        
-        // Opacity fade for distant elements
-        const opacity = 1 - Math.abs(normalizedDistance) * 0.2;
+        if (normalizedDistance > 0) {
+          // Below viewport center - coming from bottom
+          opacity = Math.max(0, 1 - (normalizedDistance * 1.2));
+          scale = Math.max(0.7, 1 - (normalizedDistance * 0.3));
+          translateZ = -normalizedDistance * 400;
+        } else {
+          // Above viewport center - going to top
+          opacity = Math.max(0, 1 + (normalizedDistance * 1.2));
+          scale = Math.max(0.7, 1 + (normalizedDistance * 0.3));
+          translateZ = normalizedDistance * 400;
+        }
 
         section.style.transform = `
-          perspective(2000px) 
-          rotateX(${Math.max(-2, Math.min(2, rotateX))}deg) 
+          perspective(1500px) 
           translateZ(${translateZ}px) 
-          scale(${Math.max(0.9, Math.min(1, scale))})`
-        ;
-        section.style.opacity = Math.max(0.7, Math.min(1, opacity));
+          scale(${scale})
+        `;
+        section.style.opacity = opacity;
       });
     };
 
@@ -65,7 +69,7 @@ export default function Home() {
 
   return (
     <div className="text-white relative overflow-x-hidden" style={{ 
-      perspective: '2000px',
+      perspective: '1500px',
       perspectiveOrigin: '50% 50%'
     }}>
       {showBackToTop && (
