@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { ArrowUp } from "lucide-react";
 import TechStackCarousel from "@/components/TechStackCarousel";
-import TestimonialsSection from "@/components/TestimonialsSection";
 import ComparisonSection from "@/components/ComparisonSection";
 import HeroSection from "@/components/home/HeroSection";
 import FeaturesSection from "@/components/home/FeaturesSection";
@@ -39,7 +38,6 @@ export default function Home() {
       <FeaturesSection />
       <ServicesGrid />
       <ComparisonSection />
-      <TestimonialsSection />
 
       <section className="py-24 relative">
         <div className="container mx-auto px-4 relative z-10">
