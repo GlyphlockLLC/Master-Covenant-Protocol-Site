@@ -65,7 +65,7 @@ const ScrollSection = ({ children }) => {
   const sectionRef = useRef(null);
   const style = useScrollEffect(sectionRef);
   return (
-    <section ref={sectionRef} className="w-full">
+    <section ref={sectionRef} className="w-full snap-start snap-always">
       <div style={style} className="w-full transition-all duration-150 ease-out pointer-events-auto">
         {children}
       </div>
@@ -85,7 +85,7 @@ export default function Home() {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full h-screen overflow-y-scroll snap-y snap-mandatory">
         
         <ScrollSection>
             <HeroSection />
