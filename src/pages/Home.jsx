@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory } from "wouter";
+import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import TechStackCarousel from '@/components/TechStackCarousel';
 import ComparisonSection from '@/components/ComparisonSection';
@@ -9,13 +9,13 @@ import ServicesGrid from '@/components/home/ServicesGrid';
 import CTASection from '@/components/home/CTASection';
 
 export default function Home() {
-  const history = useHistory();
+  const navigate = useNavigate();
   const [email, setEmail] = React.useState('');
 
   const handleEmailSubmit = (e) => {
     e.preventDefault();
     if (email) {
-      history.push(createPageUrl("Consultation") + `?email=${encodeURIComponent(email)}`);
+      navigate(createPageUrl("Consultation") + `?email=${encodeURIComponent(email)}`);
     }
   };
 
