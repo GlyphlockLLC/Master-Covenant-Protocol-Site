@@ -23,18 +23,28 @@ const useScrollEffect = (sectionRef, containerRef) => {
         
         const factor = distance / (screenCenter * 1.1);
 
-        const rotation = -factor * 15;
-        const scale = 1 - Math.abs(factor) * 0.1;
-        
-        // Improved continuous fade: smoother transition from 0 to 1 to 0
-        const normalizedDistance = Math.abs(factor);
-        const opacity = Math.max(0, Math.min(1, 1 - Math.pow(normalizedDistance, 1.5) * 0.8));
+        let rotation = 0;
+        let scale = 1;
+        let opacity = 1;
+
+        if (factor < 0) {
+          // Section is below center (coming from bottom)
+          const progress = Math.min(1, (1 + factor) * 1.2);
+          rotation = (1 - progress) * 25;
+          scale = 0.85 + (progress * 0.15);
+          opacity = Math.max(0, progress);
+        } else if (factor > 0) {
+          // Section is above center (leaving to top)
+          const progress = Math.min(1, factor * 1.2);
+          rotation = -progress * 25;
+          scale = 1 - (progress * 0.15);
+          opacity = Math.max(0, 1 - progress);
+        }
 
         requestAnimationFrame(() => {
             setStyle({
               transform: `perspective(1000px) rotateX(${rotation}deg) scale(${scale})`,
               opacity: opacity,
-              transition: 'opacity 0.15s ease-out',
             });
         });
       }
@@ -61,7 +71,7 @@ const ScrollSection = ({ children, containerRef }) => {
   const style = useScrollEffect(sectionRef, containerRef);
   return (
     <section ref={sectionRef} className="h-screen w-full flex items-center justify-center relative">
-      <div style={style} className="w-full transition-transform duration-100 ease-out pointer-events-auto">
+      <div style={style} className="w-full transition-all duration-150 ease-out pointer-events-auto">
         {children}
       </div>
     </section>
