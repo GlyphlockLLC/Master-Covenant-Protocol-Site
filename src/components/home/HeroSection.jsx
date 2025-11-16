@@ -2,15 +2,15 @@ import React from "react";
 
 export default function HeroSection() {
   return (
-    <div className="w-full">
-      <div className="relative w-full h-[40vh]">
+    <div className="w-full flex justify-center">
+      <div className="relative" style={{ width: '70%', aspectRatio: '16/9' }}>
         <video
           autoPlay
           loop
           muted
           playsInline
           preload="auto"
-          className="w-full h-full object-contain"
+          className="w-full h-full"
           style={{ filter: 'brightness(1.1) contrast(1.1)' }}
         >
           <source src="https://i.imgur.com/zs3sPzJ.mp4" type="video/mp4" />
