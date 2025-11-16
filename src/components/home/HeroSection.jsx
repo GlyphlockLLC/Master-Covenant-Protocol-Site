@@ -3,14 +3,14 @@ import React from "react";
 export default function HeroSection() {
   return (
     <div className="w-full">
-      <div className="relative w-full h-[50vh] overflow-hidden">
+      <div className="relative w-full h-[50vh]">
         <video
           autoPlay
           loop
           muted
           playsInline
           preload="auto"
-          className="w-full h-full object-contain"
+          className="w-full h-full object-cover"
           style={{ filter: 'brightness(1.1) contrast(1.1)' }}
         >
           <source src="https://i.imgur.com/zs3sPzJ.mp4" type="video/mp4" />
