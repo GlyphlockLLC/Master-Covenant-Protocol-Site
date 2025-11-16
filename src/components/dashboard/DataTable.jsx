@@ -7,7 +7,7 @@ import { RefreshCw, Database } from "lucide-react";
 import LoadingSpinner from "@/components/shared/LoadingSpinner";
 import EmptyState from "@/components/shared/EmptyState";
 
-export default function DataTable({ selectedModel, darkMode }) {
+export default function DataTable({ selectedModel }) {
   const { data: records = [], isLoading, refetch } = useQuery({
     queryKey: ['entity-data', selectedModel?.entity],
     queryFn: () => selectedModel ? base44.entities[selectedModel.entity].list() : [],
@@ -16,13 +16,13 @@ export default function DataTable({ selectedModel, darkMode }) {
 
   if (!selectedModel) {
     return (
-      <div className={`flex-1 flex items-center justify-center ${darkMode ? 'bg-gray-950' : 'bg-gray-50'}`}>
+      <div className="flex-1 flex items-center justify-center bg-black">
         <div className="text-center">
-          <Database className={`w-20 h-20 mx-auto mb-4 ${darkMode ? 'text-gray-700' : 'text-gray-300'}`} />
-          <h3 className={`text-2xl font-bold mb-2 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+          <Database className="w-20 h-20 mx-auto mb-4 text-gray-700" />
+          <h3 className="text-2xl font-bold mb-2 text-white">
             Select a Data Model
           </h3>
-          <p className={darkMode ? 'text-gray-400' : 'text-gray-600'}>
+          <p className="text-gray-400">
             Choose a model from the sidebar to view and manage data
           </p>
         </div>
@@ -32,7 +32,7 @@ export default function DataTable({ selectedModel, darkMode }) {
 
   if (isLoading) {
     return (
-      <div className={`flex-1 p-8 ${darkMode ? 'bg-gray-950' : 'bg-gray-50'}`}>
+      <div className="flex-1 p-8 bg-black">
         <LoadingSpinner message={`Loading ${selectedModel.label}...`} />
       </div>
     );
@@ -41,18 +41,18 @@ export default function DataTable({ selectedModel, darkMode }) {
   const columns = records.length > 0 ? Object.keys(records[0]) : [];
 
   return (
-    <div className={`flex-1 p-8 ${darkMode ? 'bg-gray-950' : 'bg-gray-50'} overflow-auto`}>
-      <Card className={`${darkMode ? 'bg-gray-900 border-gray-800' : 'bg-white border-gray-200'}`}>
+    <div className="flex-1 p-8 bg-black overflow-auto">
+      <Card className="glass-card-dark">
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle className={darkMode ? 'text-white' : 'text-gray-900'}>
+            <CardTitle className="text-white">
               {selectedModel.label} ({records.length})
             </CardTitle>
             <Button
               onClick={() => refetch()}
               size="sm"
               variant="outline"
-              className={darkMode ? 'border-gray-700 text-white' : 'border-gray-300'}
+              className="border-blue-500/50 text-white hover:bg-blue-500/20"
             >
               <RefreshCw className="w-4 h-4 mr-2" />
               Refresh
@@ -70,9 +70,9 @@ export default function DataTable({ selectedModel, darkMode }) {
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className={`border-b ${darkMode ? 'border-gray-800' : 'border-gray-200'}`}>
+                  <tr className="border-b border-blue-500/30">
                     {columns.map((col) => (
-                      <th key={col} className={`text-left p-3 font-semibold text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                      <th key={col} className="text-left p-3 font-semibold text-sm text-gray-400">
                         {col}
                       </th>
                     ))}
@@ -82,10 +82,10 @@ export default function DataTable({ selectedModel, darkMode }) {
                   {records.map((record, idx) => (
                     <tr 
                       key={idx} 
-                      className={`border-b ${darkMode ? 'border-gray-800 hover:bg-gray-800/50' : 'border-gray-100 hover:bg-gray-50'}`}
+                      className="border-b border-blue-500/20 hover:bg-blue-500/10"
                     >
                       {columns.map((col) => (
-                        <td key={col} className={`p-3 text-sm ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                        <td key={col} className="p-3 text-sm text-gray-300">
                           {typeof record[col] === 'object' 
                             ? JSON.stringify(record[col]) 
                             : String(record[col] || '-')}
