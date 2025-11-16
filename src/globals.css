@@ -1,4 +1,3 @@
-css
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -114,14 +113,16 @@ aside,
 header,
 footer,
 nav {
-  background: transparent !important;
   color: white !important;
 }
 
 [data-card],
 [class*="Card"],
-[class*="card"] {
-  background: rgba(15, 15, 25, 0.9) !important;
+[class*="card"],
+[role="dialog"],
+[data-dialog] {
+  background: rgba(15, 15, 25, 0.95) !important;
+  backdrop-filter: blur(20px) !important;
   border-color: rgba(65, 105, 225, 0.4) !important;
   color: white !important;
 }
@@ -136,7 +137,10 @@ h1, h2, h3, h4, h5, h6, p, span, a, li, td, th, label, legend {
 [data-radix-popover-content],
 [role="menu"],
 [role="listbox"],
-[role="dialog"] {
+[role="dialog"],
+.dropdown-content,
+.popover-content,
+.select-content {
   background: rgba(10, 10, 20, 0.98) !important;
   backdrop-filter: blur(20px) !important;
   border: 1px solid rgba(65, 105, 225, 0.5) !important;
@@ -209,4 +213,19 @@ textarea::placeholder {
 ::-webkit-scrollbar-thumb {
   background: linear-gradient(135deg, rgba(65, 105, 225, 0.6) 0%, rgba(30, 64, 175, 0.6) 100%) !important;
   border-radius: 6px;
+}
+
+/* Force all white backgrounds to dark */
+.bg-white,
+[class*="bg-white"] {
+  background: rgba(15, 15, 25, 0.9) !important;
+  backdrop-filter: blur(20px) !important;
+}
+
+/* Force card components */
+.card,
+[class*="Card"] {
+  background: rgba(15, 15, 25, 0.9) !important;
+  backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(65, 105, 225, 0.3) !important;
 }
