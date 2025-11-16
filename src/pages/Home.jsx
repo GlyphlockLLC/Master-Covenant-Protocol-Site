@@ -4,6 +4,7 @@ import { createPageUrl } from "@/utils";
 import TechStackCarousel from '@/components/TechStackCarousel';
 import ComparisonSection from '@/components/ComparisonSection';
 import HeroSection from '@/components/home/HeroSection';
+import HeroContent from '@/components/home/HeroContent';
 import FeaturesSection from '@/components/home/FeaturesSection';
 import ServicesGrid from '@/components/home/ServicesGrid';
 import CTASection from '@/components/home/CTASection';
@@ -93,6 +94,10 @@ export default function Home() {
         
         <ScrollSection containerRef={scrollContainerRef}>
             <HeroSection />
+        </ScrollSection>
+
+        <ScrollSection containerRef={scrollContainerRef}>
+            <HeroContent />
         </ScrollSection>
 
         <ScrollSection containerRef={scrollContainerRef}>
