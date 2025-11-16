@@ -30,10 +30,12 @@
 @layer base {
   * {
     @apply border-border;
+    cursor: pointer !important;
   }
   body {
     @apply bg-black text-white;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    cursor: pointer !important;
   }
 }
 
@@ -103,11 +105,23 @@ nav {
   color: white !important;
 }
 
-a, button, [role="button"], input, select, textarea, label, [class*="Card"], [data-card] {
+a, 
+button, 
+[role="button"], 
+input, 
+select, 
+textarea, 
+label, 
+[class*="Card"],
+[class*="card"],
+[data-card],
+img,
+.logo-item,
+.marquee-content {
   cursor: pointer !important;
   pointer-events: auto !important;
   position: relative !important;
-  z-index: 1000 !important;
+  z-index: 5000 !important;
 }
 
 [data-card],
@@ -119,15 +133,19 @@ a, button, [role="button"], input, select, textarea, label, [class*="Card"], [da
 div[class*="rounded-"],
 div[class*="bg-white"],
 div[class*="bg-gray-50"],
+div[class*="bg-slate"],
+div[class*="bg-zinc"],
 .bg-white,
-.bg-gray-50 {
+.bg-gray-50,
+.bg-slate-50,
+.bg-zinc-50 {
   background: rgba(15, 15, 25, 0.9) !important;
   background-color: rgba(15, 15, 25, 0.9) !important;
   border-color: rgba(65, 105, 225, 0.4) !important;
   color: white !important;
 }
 
-h1, h2, h3, h4, h5, h6, p, span, a, li, td, th, label, legend {
+h1, h2, h3, h4, h5, h6, p, span, a, li, td, th, label, legend, div {
   color: white !important;
 }
 
@@ -141,36 +159,47 @@ h1, h2, h3, h4, h5, h6, p, span, a, li, td, th, label, legend {
 [role="menu"],
 [role="listbox"],
 [role="dialog"],
-[role="alertdialog"] {
+[role="alertdialog"],
+[data-radix-menu-content],
+[data-radix-dropdown-content] {
   background: rgba(10, 10, 20, 0.98) !important;
   background-color: rgba(10, 10, 20, 0.98) !important;
   backdrop-filter: blur(20px) !important;
   border: 1px solid rgba(65, 105, 225, 0.5) !important;
   color: white !important;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8) !important;
-  z-index: 9999 !important;
+  z-index: 99999 !important;
+  pointer-events: auto !important;
 }
 
 [data-radix-select-item],
 [data-radix-dropdown-menu-item],
+[data-radix-menu-item],
 [role="menuitem"],
 [role="option"] {
   color: white !important;
   background: transparent !important;
+  cursor: pointer !important;
+  pointer-events: auto !important;
 }
 
 [data-radix-select-item]:hover,
 [data-radix-dropdown-menu-item]:hover,
+[data-radix-menu-item]:hover,
 [data-radix-select-item][data-highlighted],
-[data-radix-dropdown-menu-item][data-highlighted] {
+[data-radix-dropdown-menu-item][data-highlighted],
+[data-radix-menu-item][data-highlighted] {
   background: rgba(65, 105, 225, 0.3) !important;
   color: white !important;
+  cursor: pointer !important;
 }
 
 button:not(.bg-gradient-to-r):not([class*="gradient"]) {
   color: white !important;
   background: rgba(20, 20, 30, 0.8) !important;
   border: 1px solid rgba(65, 105, 225, 0.4) !important;
+  cursor: pointer !important;
+  pointer-events: auto !important;
 }
 
 button:hover:not(.bg-gradient-to-r):not([class*="gradient"]) {
@@ -184,6 +213,7 @@ select {
   background: rgba(20, 20, 30, 0.9) !important;
   border: 1px solid rgba(65, 105, 225, 0.5) !important;
   color: white !important;
+  cursor: pointer !important;
 }
 
 input::placeholder,
@@ -223,6 +253,8 @@ tbody {
   background: rgba(65, 105, 225, 0.2) !important;
   color: white !important;
   border: 1px solid rgba(65, 105, 225, 0.4) !important;
+  pointer-events: auto !important;
+  z-index: 5000 !important;
 }
 
 .bg-gradient-to-r,
