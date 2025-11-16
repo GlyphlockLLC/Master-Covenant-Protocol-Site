@@ -1,7 +1,6 @@
 import React from "react";
 
 export default function TechStackCarousel() {
-  // Row 1: 25 logos (logos with text built-in don't need labels)
   const row1Companies = [
     { name: "AWS", logo: "https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg", hasText: true },
     { name: "Google Cloud", logo: "https://upload.wikimedia.org/wikipedia/commons/5/51/Google_Cloud_logo.svg", hasText: true },
@@ -30,7 +29,6 @@ export default function TechStackCarousel() {
     { name: "Netlify", logo: "https://www.vectorlogo.zone/logos/netlify/netlify-icon.svg", hasText: false }
   ];
 
-  // Row 2: 25 logos
   const row2Companies = [
     { name: "DigitalOcean", logo: "https://upload.wikimedia.org/wikipedia/commons/f/ff/DigitalOcean_logo.svg", hasText: true },
     { name: "Terraform", logo: "https://www.vectorlogo.zone/logos/terraformio/terraformio-icon.svg", hasText: false },
@@ -60,7 +58,7 @@ export default function TechStackCarousel() {
   ];
 
   return (
-    <div className="py-16 overflow-hidden relative z-50">
+    <div className="py-16 overflow-hidden" style={{ position: 'relative', zIndex: 50 }}>
       <div className="container mx-auto px-4 mb-12 text-center">
         <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
           Integrated with <span style={{ color: '#00BFFF' }}>World-Class Technologies</span>
@@ -68,11 +66,10 @@ export default function TechStackCarousel() {
         <p className="text-gray-400 text-lg">Built on the world's most reliable and secure infrastructure</p>
       </div>
 
-      {/* Row 1 - Scrolls Left */}
       <div className="marquee-wrapper mb-8">
         <div className="marquee-content marquee-left">
           {[...row1Companies, ...row1Companies, ...row1Companies].map((company, idx) => (
-            <div key={`row1-${idx}`} className="logo-item" style={{ cursor: 'pointer', pointerEvents: 'auto', position: 'relative', zIndex: 100 }}>
+            <div key={`row1-${idx}`} className="logo-item">
               <img 
                 src={company.logo} 
                 alt={company.name}
@@ -84,11 +81,10 @@ export default function TechStackCarousel() {
         </div>
       </div>
 
-      {/* Row 2 - Scrolls Right */}
       <div className="marquee-wrapper">
         <div className="marquee-content marquee-right">
           {[...row2Companies, ...row2Companies, ...row2Companies].map((company, idx) => (
-            <div key={`row2-${idx}`} className="logo-item" style={{ cursor: 'pointer', pointerEvents: 'auto', position: 'relative', zIndex: 100 }}>
+            <div key={`row2-${idx}`} className="logo-item">
               <img 
                 src={company.logo} 
                 alt={company.name}
@@ -146,7 +142,7 @@ export default function TechStackCarousel() {
           object-fit: contain;
           filter: brightness(0) invert(1);
           opacity: 0.7;
-          transition: all 0.3s ease-in-out;
+          transition: all 0.3s ease;
           cursor: pointer;
           pointer-events: auto;
         }
@@ -156,7 +152,7 @@ export default function TechStackCarousel() {
           color: rgba(255, 255, 255, 0.5);
           text-align: center;
           white-space: nowrap;
-          transition: all 0.3s ease-in-out;
+          transition: all 0.3s ease;
           font-weight: 500;
           cursor: pointer;
           pointer-events: auto;

@@ -53,15 +53,36 @@ export default function InteractiveNebula() {
       particles.push(new Particle());
     }
 
+    const handleMouseMove = (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    };
+
+    const handleTouchMove = (e) => {
+      if (e.touches.length > 0) {
+        mouseX = e.touches[0].clientX;
+        mouseY = e.touches[0].clientY;
+      }
+    };
+
     const handleResize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     };
 
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    window.addEventListener("touchmove", handleTouchMove, { passive: true });
     window.addEventListener("resize", handleResize);
 
     function animate() {
       ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      const gradient = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, 250);
+      gradient.addColorStop(0, "rgba(65, 105, 225, 0.2)");
+      gradient.addColorStop(0.5, "rgba(30, 64, 175, 0.1)");
+      gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
+      ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       particles.forEach((particle) => {
@@ -92,6 +113,8 @@ export default function InteractiveNebula() {
     animate();
 
     return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("touchmove", handleTouchMove);
       window.removeEventListener("resize", handleResize);
     };
   }, []);
@@ -105,10 +128,9 @@ export default function InteractiveNebula() {
         left: 0,
         width: '100%',
         height: '100%',
-        zIndex: -1,
+        zIndex: 1,
         background: "radial-gradient(ellipse at center, rgba(10, 10, 30, 1) 0%, rgba(0, 0, 0, 1) 100%)",
-        pointerEvents: 'none',
-        userSelect: 'none'
+        pointerEvents: 'none'
       }}
     />
   );
