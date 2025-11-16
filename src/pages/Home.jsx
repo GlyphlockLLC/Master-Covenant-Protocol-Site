@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { ArrowUp } from "lucide-react";
 import TechStackCarousel from "@/components/TechStackCarousel";
 import ComparisonSection from "@/components/ComparisonSection";
@@ -9,42 +9,16 @@ import CTASection from "@/components/home/CTASection";
 
 export default function Home() {
   const [showBackToTop, setShowBackToTop] = useState(false);
-  const contentRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => {
       setShowBackToTop(window.scrollY > 400);
-      
-      if (!contentRef.current) return;
-      
-      const sections = contentRef.current.querySelectorAll('section');
-      const viewportCenter = window.innerHeight / 2;
-      
-      sections.forEach(section => {
-        const rect = section.getBoundingClientRect();
-        const elementCenter = rect.top + (rect.height / 2);
-        const distanceFromCenter = Math.abs(elementCenter - viewportCenter);
-        const maxDistance = window.innerHeight * 0.8;
-        const normalizedDistance = Math.min(distanceFromCenter / maxDistance, 1);
-        
-        const scale = 1 - (normalizedDistance * 0.08);
-        const translateZ = -normalizedDistance * 250;
-        
-        section.style.transform = `perspective(1500px) translateZ(${translateZ}px) scale(${scale})`;
-        section.style.transition = 'transform 0.15s ease-out';
-        section.style.willChange = 'transform';
-        section.style.backfaceVisibility = 'hidden';
-        section.style.WebkitFontSmoothing = 'antialiased';
-      });
     };
 
-    handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('resize', handleScroll);
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleScroll);
     };
   }, []);
 
@@ -53,10 +27,7 @@ export default function Home() {
   };
 
   return (
-    <div className="text-white relative" style={{ 
-      perspective: '1500px',
-      perspectiveOrigin: '50% 50%'
-    }}>
+    <div className="text-white relative">
       {showBackToTop && (
         <button
           onClick={scrollToTop}
@@ -67,7 +38,7 @@ export default function Home() {
         </button>
       )}
 
-      <div ref={contentRef} style={{ transformStyle: 'preserve-3d', position: 'relative', zIndex: 50 }}>
+      <div className="relative z-50">
         <HeroSection />
         <FeaturesSection />
         <ServicesGrid />
