@@ -319,33 +319,13 @@ export default function Partners() {
         <section className="mb-16">
           <div className="grid lg:grid-cols-2 gap-6">
             <div className="rounded-3xl border border-violet-500/30 glass-card-dark p-6">
-              <h2 className="text-xl font-semibold text-violet-300 mb-4">Target Markets</h2>
-              <ul className="space-y-2 text-sm text-white/70">
-                <li className="flex items-start gap-2">
-                  <span className="text-violet-400 mt-0.5">•</span>
-                  Enterprise organizations requiring advanced cybersecurity
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-violet-400 mt-0.5">•</span>
-                  Financial services and banking institutions
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-violet-400 mt-0.5">•</span>
-                  Healthcare and pharmaceutical companies
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-violet-400 mt-0.5">•</span>
-                  Government agencies and defense contractors
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-violet-400 mt-0.5">•</span>
-                  E-commerce and payment processing platforms
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-violet-400 mt-0.5">•</span>
-                  Manufacturing and supply chain operations
-                </li>
-              </ul>
+              <h2 className="text-xl font-semibold text-violet-300 mb-4">Target Partners</h2>
+              <p className="text-sm text-white/80 leading-relaxed">
+                GlyphLock partners with <strong className="text-violet-400">high-risk, high-volume industries</strong> that 
+                require tamper-proof identity verification, including nightlife venues, POS platforms, hardware OEMs, state 
+                agencies, defense contractors, security integrators, and regulated enterprise sectors needing 
+                <strong className="text-violet-400"> military-grade authentication</strong> without the mess of equity entanglements.
+              </p>
             </div>
 
             <div className="rounded-3xl border border-cyan-500/30 glass-card-dark p-6">
