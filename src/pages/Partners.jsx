@@ -219,21 +219,49 @@ export default function Partners() {
 
           <div className="rounded-3xl border border-emerald-500/30 glass-card-dark p-6">
             <h2 className="text-xl font-semibold text-emerald-300 mb-4">Financial Highlights - First 90 Days</h2>
-            <div className="grid md:grid-cols-3 gap-4">
+            <div className="grid md:grid-cols-4 gap-4">
               <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/5 p-4">
                 <p className="text-xs uppercase text-white/60 mb-1">Revenue Generated</p>
-                <p className="text-2xl font-bold text-emerald-400">$340,000</p>
+                <p className="text-2xl font-bold text-emerald-400">$340K</p>
                 <p className="text-xs text-white/60 mt-1">First 90 days of operation</p>
               </div>
               <div className="rounded-xl border border-blue-500/30 bg-blue-500/5 p-4">
-                <p className="text-xs uppercase text-white/60 mb-1">Insurance Escrows Secured</p>
+                <p className="text-xs uppercase text-white/60 mb-1">Insurance Escrows</p>
                 <p className="text-2xl font-bold text-blue-400">$14M</p>
-                <p className="text-xs text-white/60 mt-1">Before full rollout</p>
+                <p className="text-xs text-white/60 mt-1">Secured before full rollout</p>
               </div>
               <div className="rounded-xl border border-violet-500/30 bg-violet-500/5 p-4">
                 <p className="text-xs uppercase text-white/60 mb-1">Enterprise Contracts</p>
                 <p className="text-2xl font-bold text-violet-400">$225K+</p>
                 <p className="text-xs text-white/60 mt-1">Per contract value</p>
+              </div>
+              <div className="rounded-xl border border-cyan-500/30 bg-cyan-500/5 p-4">
+                <p className="text-xs uppercase text-white/60 mb-1">Annualized Run Rate</p>
+                <p className="text-2xl font-bold text-cyan-400">$1.36M</p>
+                <p className="text-xs text-white/60 mt-1">Based on 90-day trajectory</p>
+              </div>
+            </div>
+            <div className="mt-4 rounded-lg border border-emerald-500/30 bg-emerald-500/5 p-4">
+              <p className="text-sm text-white/80">
+                <strong className="text-emerald-400">Growth Trajectory:</strong> Early performance demonstrates strong market demand and successful enterprise client acquisition, experiencing aggressive growth typical of high-potential SaaS and cybersecurity platforms.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Leadership */}
+        <section className="mb-16">
+          <div className="rounded-3xl border border-blue-500/30 glass-card-dark p-6">
+            <h2 className="text-2xl font-semibold text-blue-300 mb-4">Leadership</h2>
+            <div className="space-y-4">
+              <div className="rounded-lg border border-blue-500/20 glass-card-dark p-4">
+                <h3 className="text-lg font-semibold text-blue-400 mb-2">Carlo Earl - Founder & Chief Operations Officer</h3>
+                <p className="text-sm text-white/70 leading-relaxed">
+                  Carlo Earl leads GlyphLock's vision to revolutionize cybersecurity through innovative AI-powered solutions. 
+                  With expertise in technology development, business strategy, and enterprise security, Carlo has positioned 
+                  GlyphLock to address critical security challenges facing modern enterprises while maintaining a strict 
+                  focus on strategic partnerships and licensing over traditional equity models.
+                </p>
               </div>
             </div>
           </div>
@@ -352,19 +380,18 @@ export default function Partners() {
           </div>
         </section>
 
-        {/* Growth Strategy */}
+        {/* Growth Strategy & Roadmap */}
         <section className="mb-16">
           <div className="rounded-3xl border border-emerald-500/30 glass-card-dark p-6">
-            <h2 className="text-2xl font-semibold text-emerald-300 mb-4">Growth Strategy</h2>
-            <div className="grid md:grid-cols-2 gap-4">
+            <h2 className="text-2xl font-semibold text-emerald-300 mb-4">Growth Strategy & Roadmap</h2>
+            <div className="grid md:grid-cols-2 gap-4 mb-6">
               {[
                 "Expand enterprise client base across multiple verticals",
                 "Scale N.U.P.S. three-tier POS platform deployments",
                 "Develop strategic partnerships with cybersecurity firms",
                 "Pursue government and defense sector contracts",
                 "Enhance AI capabilities and quantum-resistant features",
-                "Geographic expansion beyond Arizona market",
-                "Potential Series A funding to accelerate growth"
+                "Geographic expansion beyond Arizona market"
               ].map((strategy, idx) => (
                 <div key={idx} className="rounded-lg border border-emerald-500/20 glass-card-dark p-3">
                   <p className="text-xs text-white/80 flex items-start gap-2">
@@ -374,14 +401,48 @@ export default function Partners() {
                 </div>
               ))}
             </div>
+
+            <div className="space-y-4 mt-6 pt-6 border-t border-emerald-500/30">
+              <h3 className="text-lg font-semibold text-emerald-300 mb-3">Product Roadmap</h3>
+              
+              <div className="rounded-lg border border-green-500/30 bg-green-500/5 p-4">
+                <h4 className="text-sm font-semibold text-green-400 mb-2">✓ Current Stage (Q4 2025)</h4>
+                <ul className="space-y-1 text-xs text-white/70 ml-4">
+                  <li>• Core platform development complete</li>
+                  <li>• Initial enterprise client deployments</li>
+                  <li>• Revenue generation underway</li>
+                  <li>• Security certifications in progress</li>
+                </ul>
+              </div>
+              
+              <div className="rounded-lg border border-blue-500/30 bg-blue-500/5 p-4">
+                <h4 className="text-sm font-semibold text-blue-400 mb-2">→ Near-Term (2026)</h4>
+                <ul className="space-y-1 text-xs text-white/70 ml-4">
+                  <li>• Expanded enterprise client acquisition</li>
+                  <li>• Enhanced AI capabilities and threat detection</li>
+                  <li>• Strategic partnership development</li>
+                  <li>• Additional security certifications and compliance</li>
+                </ul>
+              </div>
+              
+              <div className="rounded-lg border border-violet-500/30 bg-violet-500/5 p-4">
+                <h4 className="text-sm font-semibold text-violet-400 mb-2">⭐ Long-Term Vision (2027-2030)</h4>
+                <ul className="space-y-1 text-xs text-white/70 ml-4">
+                  <li>• Market leadership in AI-powered cybersecurity</li>
+                  <li>• International expansion and global partnerships</li>
+                  <li>• Advanced licensing models for enterprise networks</li>
+                  <li>• $1B+ valuation through proven execution</li>
+                </ul>
+              </div>
+            </div>
           </div>
         </section>
 
-        {/* Industry Validation */}
+        {/* Industry Validation & Market Dynamics */}
         <section className="mb-16">
           <div className="rounded-3xl border border-blue-500/30 glass-card-dark p-6">
-            <h2 className="text-2xl font-semibold text-blue-300 mb-4">Industry Validation</h2>
-            <div className="space-y-3">
+            <h2 className="text-2xl font-semibold text-blue-300 mb-4">Industry Validation & Market Dynamics</h2>
+            <div className="space-y-3 mb-6">
               {[
                 "QR code market growing to $3.78B by 2025 (60% higher engagement with AI)",
                 "Businesses using smart QR solutions see 60% higher engagement rates",
@@ -396,6 +457,17 @@ export default function Partners() {
                   </p>
                 </div>
               ))}
+            </div>
+
+            <div className="rounded-lg border border-cyan-500/30 bg-cyan-500/5 p-4 mt-4">
+              <h3 className="text-sm font-semibold text-cyan-400 mb-2">Cybersecurity Market Dynamics</h3>
+              <p className="text-xs text-white/70 leading-relaxed">
+                The cybersecurity industry continues to experience robust growth driven by increasing cyber threats, 
+                regulatory compliance requirements, digital transformation, remote work proliferation, and IoT expansion. 
+                The sector's resilience and critical importance to enterprise operations make it highly attractive for 
+                strategic partnerships and licensing opportunities, with proven companies commanding premium valuations 
+                based on recurring revenue and market position.
+              </p>
             </div>
           </div>
         </section>
@@ -531,19 +603,45 @@ export default function Partners() {
         <section className="mb-16 rounded-3xl border border-blue-500/50 glass-card-dark p-6 shadow-[0_0_35px_rgba(59,130,246,0.4)]">
           <h2 className="text-xl font-semibold text-blue-300 mb-3">Partnership &amp; Licensing Only</h2>
           <p className="text-white/80 text-sm mb-4 max-w-3xl">
-            GlyphLock is deliberately bootstrapped. We are not raising a traditional funding round and we are not
-            selling equity. Instead, we selectively form <span className="text-blue-400 font-semibold">strategic
+            GlyphLock is deliberately bootstrapped. <strong className="text-white">We are not raising a traditional funding round 
+            and we are not selling equity.</strong> Instead, we selectively form <span className="text-blue-400 font-semibold">strategic
             partnerships and licensing agreements</span> with operators, manufacturers, and institutions that can
             deploy our patented HZI stack at scale.
           </p>
-          <ul className="space-y-2 text-white/70 text-sm list-disc pl-6">
-            <li>Exclusive or non-exclusive licensing of steganographic QR / HZI technology</li>
-            <li>White-label integrations for clubs, POS providers, and hardware OEMs</li>
-            <li>Tiered revenue-share models for high-volume venues and networks</li>
-            <li>SDK / API access under tightly scoped, enforceable license terms</li>
-            <li>Government, defense, and enterprise programs via controlled partnerships</li>
-          </ul>
-          <p className="text-white/60 text-xs mt-4 italic">No outside equity. No dilution. Only aligned partners and licensors.</p>
+          
+          <div className="grid md:grid-cols-2 gap-4 my-6">
+            <div className="rounded-lg border border-blue-500/30 bg-blue-500/5 p-4">
+              <h3 className="text-sm font-semibold text-blue-400 mb-2">Why We Partner (Not Invest)</h3>
+              <ul className="space-y-1.5 text-xs text-white/70">
+                <li>• Maintain full operational control and IP ownership</li>
+                <li>• Align with partners who deploy at scale</li>
+                <li>• Focus on sustainable, profitable growth</li>
+                <li>• Avoid dilution and investor pressure</li>
+              </ul>
+            </div>
+            <div className="rounded-lg border border-emerald-500/30 bg-emerald-500/5 p-4">
+              <h3 className="text-sm font-semibold text-emerald-400 mb-2">Partnership Opportunities</h3>
+              <ul className="space-y-1.5 text-xs text-white/70">
+                <li>• Exclusive or non-exclusive licensing agreements</li>
+                <li>• White-label integrations for enterprise systems</li>
+                <li>• Revenue-share models for high-volume deployments</li>
+                <li>• SDK/API access under controlled license terms</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="rounded-lg border border-violet-500/30 bg-violet-500/5 p-4">
+            <p className="text-xs text-white/70 leading-relaxed">
+              <strong className="text-violet-400">Target Partners:</strong> Clubs, POS providers, hardware OEMs, 
+              government agencies, defense contractors, and enterprise security integrators seeking proven, 
+              scalable cybersecurity technology they can deploy under license without equity complications.
+            </p>
+          </div>
+
+          <p className="text-white/60 text-xs mt-4 italic border-t border-blue-500/30 pt-4">
+            <strong>No outside equity. No dilution. No investor pressure.</strong> Only aligned partners and licensors 
+            committed to scaling GlyphLock's technology through strategic deployment.
+          </p>
         </section>
 
         {/* CTA section */}
