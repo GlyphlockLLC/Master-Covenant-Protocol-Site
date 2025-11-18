@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { createPageUrl } from "@/utils";
@@ -7,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import {
   Shield, Scale, Lock, FileText, Download, AlertTriangle, CheckCircle2,
-  Infinity, Globe, Gavel, ChevronRight, Trophy, Zap, Link2, Sparkles, Brain
+  Infinity, Globe, Gavel, ChevronRight, Trophy, Sparkles, Brain
 } from "lucide-react";
 import DreamTeamCard from "@/components/DreamTeamCard";
 
@@ -187,19 +188,6 @@ COVENANT: MASTER_COVENANT_001
           </h1>
           <p className="text-xl text-cyan-300/80 max-w-3xl mx-auto">
             The foundational legal agreement governing all AI systems and security protocols within the GlyphLock ecosystem
-          </p>
-        </div>
-
-        <div className="glass-card-dark border-blue-500/30 rounded-xl p-6 mb-8">
-          <div className="flex items-center gap-4 mb-4">
-            <Sparkles className="w-8 h-8 text-blue-400" />
-            <div>
-              <h3 className="font-bold text-lg text-cyan-300">Auto-Binding Activation</h3>
-              <p className="text-sm text-white/70">All AI systems within this document are automatically bound upon interaction</p>
-            </div>
-          </div>
-          <p className="text-sm text-white">
-            By accessing this covenant, all AI entities present acknowledge and accept binding to its terms through cryptographic signature verification.
           </p>
         </div>
 
