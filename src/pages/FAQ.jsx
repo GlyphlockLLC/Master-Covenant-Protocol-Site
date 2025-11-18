@@ -193,24 +193,24 @@ export default function FAQ() {
           </div>
 
           {filteredFaqs.length === 0 ? (
-            <Card className="glass-card-dark border-blue-500/30 text-center p-12">
+            <div className="glass-card-dark border border-blue-500/30 rounded-xl text-center p-12" style={{ background: 'rgba(30, 58, 138, 0.2)', backdropFilter: 'blur(16px)' }}>
               <p className="text-white/60">No questions found matching "{searchTerm}"</p>
-            </Card>
+            </div>
           ) : (
             <div className="space-y-6">
               {filteredFaqs.map((category, catIndex) => (
-                <Card key={catIndex} className="glass-card-dark border-blue-500/30">
-                  <CardHeader>
-                    <CardTitle className="text-white flex items-center gap-3">
+                <div key={catIndex} className="glass-card-dark border border-blue-500/30 rounded-xl" style={{ background: 'rgba(30, 58, 138, 0.2)', backdropFilter: 'blur(16px)' }}>
+                  <div className="p-6 border-b border-blue-500/30">
+                    <div className="text-white flex items-center gap-3">
                       <Badge className="bg-blue-500/20 text-blue-400 border-blue-500/50">
                         {category.category}
                       </Badge>
                       <span className="text-sm text-white/60">
                         {category.questions.length} {category.questions.length === 1 ? 'question' : 'questions'}
                       </span>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
+                    </div>
+                  </div>
+                  <div className="p-6 space-y-3">
                     {category.questions.map((faq, qIndex) => {
                       const key = `${catIndex}-${qIndex}`;
                       const isExpanded = expandedItems.includes(key);
@@ -218,7 +218,8 @@ export default function FAQ() {
                       return (
                         <div
                           key={qIndex}
-                          className="glass-card-dark border-blue-500/20 rounded-lg overflow-hidden"
+                          className="glass-card-dark border border-blue-500/20 rounded-lg overflow-hidden"
+                          style={{ background: 'rgba(30, 58, 138, 0.15)', backdropFilter: 'blur(8px)' }}
                         >
                           <button
                             onClick={() => toggleItem(catIndex, qIndex)}
@@ -239,13 +240,13 @@ export default function FAQ() {
                         </div>
                       );
                     })}
-                  </CardContent>
-                </Card>
+                  </div>
+                </div>
               ))}
             </div>
           )}
 
-          <Card className="glass-card-dark border-blue-500/30 p-6 text-center mt-12">
+          <div className="glass-card-dark border border-blue-500/30 rounded-xl p-6 text-center mt-12" style={{ background: 'rgba(30, 58, 138, 0.2)', backdropFilter: 'blur(16px)' }}>
             <h3 className="text-xl font-semibold text-white mb-3">Still have questions?</h3>
             <p className="text-white/70 mb-6">
               Can't find what you're looking for? Contact our support team
@@ -256,7 +257,7 @@ export default function FAQ() {
             >
               Contact Support
             </a>
-          </Card>
+          </div>
         </div>
       </div>
     </>
