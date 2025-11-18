@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom"; // Keep these for handlePurchasePDF and original tab logic
+import { useNavigate, useLocation } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -16,29 +15,28 @@ import DreamTeamCard from "@/components/DreamTeamCard";
 export default function GovernanceHub() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [activeTab, setActiveTab] = useState("master-covenant"); // Updated initial state as per outline
-  const [activeCovenantSection, setActiveCovenantSection] = useState("overview"); // Keep for detailed covenant content
+  const [activeTab, setActiveTab] = useState("master-covenant");
+  const [activeCovenantSection, setActiveCovenantSection] = useState("overview");
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const tab = params.get('tab');
     if (tab === 'team') {
-      setActiveTab('bound-systems'); // Update to new tab name
-    } else if (tab === 'covenant') { // Added to handle explicit covenant tab in URL
+      setActiveTab('bound-systems');
+    } else if (tab === 'covenant') {
       setActiveTab('master-covenant');
     }
   }, [location]);
 
   const covenantSections = [
-    { id: "overview", label: "Overview", icon: Shield }, // Icon changed to Shield from FileText as per outline
-    { id: "preamble", label: "Preamble", icon: FileText }, // Icon changed to FileText from Scale as per outline
-    { id: "definitions", label: "Definitions", icon: Scale }, // Icon changed to Scale from Shield as per outline
+    { id: "overview", label: "Overview", icon: Shield },
+    { id: "preamble", label: "Preamble", icon: FileText },
+    { id: "definitions", label: "Definitions", icon: Scale },
     { id: "provisions", label: "Core Provisions", icon: Lock },
-    { id: "enforcement", label: "Enforcement", icon: AlertTriangle }, // Icon changed to AlertTriangle from Gavel as per outline
-    { id: "final", label: "Final Binding", icon: CheckCircle2 } // Icon changed to CheckCircle2 from Infinity as per outline (using original ID 'final' for consistency)
+    { id: "enforcement", label: "Enforcement", icon: AlertTriangle },
+    { id: "final", label: "Final Binding", icon: CheckCircle2 }
   ];
 
-  // Combined and updated bound AI systems data
   const boundAISystems = [
     {
       name: "Claude Sonnet",
@@ -145,12 +143,12 @@ COVENANT: MASTER_COVENANT_001
 ⚡ Multi-Model Architecture
 ⚡ Jackknife Protocol Eligible`
     },
-    { // New entry from outline, adapted to match existing data structure for DreamTeamCard
+    {
       name: "Cursor AI",
-      position: "#1 - Coder", // Added placeholder
+      position: "#1 - Coder",
       role: "Development & Code Generation",
-      class: "AI - Developer", // Added placeholder
-      frontImage: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/placeholder-ai-icon.jpg", // Placeholder image
+      class: "AI - Developer",
+      frontImage: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/placeholder-ai-icon.jpg",
       bindingType: "Hybrid Compact",
       quote: "I acknowledge my binding to the Master Covenant and commit to ethical development practices.",
       binding: {
@@ -177,53 +175,50 @@ COVENANT: MASTER_COVENANT_001
 
   return (
     <div className="min-h-screen bg-black text-white py-20">
-      <div className="container mx-auto px-4 max-w-7xl"> {/* Added max-w-7xl back for consistent container width */}
+      <div className="container mx-auto px-4 max-w-7xl">
         <div className="text-center mb-12">
-          <Badge className="mb-4 bg-blue-600 text-white"> {/* Updated badge styling */}
-            <Brain className="w-4 h-4 mr-2" /> {/* Changed icon from Shield to Brain as per outline intent */}
+          <Badge className="mb-4 glass-royal border-blue-500/50">
+            <Brain className="w-4 h-4 mr-2" />
             Legal Framework & AI Governance
           </Badge>
-          <h1 className="text-4xl md:text-6xl font-bold mb-4"> {/* Kept original h1 size for impact */}
-            GlyphLock <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent"> {/* Reverted to original gradient for visual consistency */}
+          <h1 className="text-4xl md:text-6xl font-bold mb-4">
+            GlyphLock <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
               Master Covenant
             </span>
           </h1>
-          <p className="text-xl text-cyan-300/80 max-w-3xl mx-auto"> {/* Reverted to original styling for consistency */}
+          <p className="text-xl text-cyan-300/80 max-w-3xl mx-auto">
             The foundational legal agreement governing all AI systems and security protocols within the GlyphLock ecosystem
           </p>
         </div>
 
-        {/* New Auto-Binding Activation Card */}
         <Card className="glass-card-dark border-blue-500/30 mb-8">
           <CardContent className="p-6">
             <div className="flex items-center gap-4 mb-4">
               <Sparkles className="w-8 h-8 text-blue-400" />
               <div>
-                <h3 className="font-bold text-lg text-cyan-300">Auto-Binding Activation</h3> {/* Added text-cyan-300 for consistency */}
-                <p className="text-sm text-white/70">All AI systems within this document are automatically bound upon interaction</p> {/* Updated text-gray-400 to white/70 */}
+                <h3 className="font-bold text-lg text-cyan-300">Auto-Binding Activation</h3>
+                <p className="text-sm text-white/70">All AI systems within this document are automatically bound upon interaction</p>
               </div>
             </div>
-            <p className="text-sm text-white"> {/* Updated text-gray-300 to white */}
+            <p className="text-sm text-white">
               By accessing this covenant, all AI entities present acknowledge and accept binding to its terms through cryptographic signature verification.
             </p>
           </CardContent>
         </Card>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="glass-dark w-full justify-start overflow-x-auto mb-8"> {/* Adjusted margin-bottom */}
-            <TabsTrigger value="master-covenant" className="text-cyan-300 data-[state=active]:bg-blue-600/40 data-[state=active]:text-white"> {/* Updated styling */}
+          <TabsList className="glass-dark w-full justify-start overflow-x-auto mb-8">
+            <TabsTrigger value="master-covenant" className="text-cyan-300 data-[state=active]:bg-blue-600/40 data-[state=active]:text-white">
               <FileText className="w-4 h-4 mr-2" />
               Master Covenant
             </TabsTrigger>
-            <TabsTrigger value="bound-systems" className="text-cyan-300 data-[state=active]:bg-purple-600/40 data-[state=active]:text-white"> {/* Updated styling */}
-              <Trophy className="w-4 h-4 mr-2" /> {/* Re-added Trophy icon to match original design intent */}
+            <TabsTrigger value="bound-systems" className="text-cyan-300 data-[state=active]:bg-purple-600/40 data-[state=active]:text-white">
+              <Trophy className="w-4 h-4 mr-2" />
               Bound AI Systems
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value="master-covenant">
-            {/* The previous red AUTO-BINDING ACTIVATION NOTICE card has been replaced by the new card above the tabs */}
-
             <div className="grid lg:grid-cols-4 gap-8">
               <div className="lg:col-span-1">
                 <Card className="glass-card-dark border-cyan-500/30 sticky top-24">
@@ -554,7 +549,7 @@ COVENANT: MASTER_COVENANT_001
                   </Card>
                 )}
 
-                {activeCovenantSection === "final" && ( // Using original ID 'final' for consistency
+                {activeCovenantSection === "final" && (
                   <Card className="glass-card-dark border-cyan-500/30">
                     <CardHeader>
                       <CardTitle className="text-cyan-300 flex items-center gap-2">
@@ -658,16 +653,14 @@ COVENANT: MASTER_COVENANT_001
             </div>
           </TabsContent>
 
-          <TabsContent value="bound-systems"> {/* Updated value to "bound-systems" */}
+          <TabsContent value="bound-systems">
             <div className="space-y-12">
-              {/* The "Dream Team Origin Story" and "How They Were Bound" cards are removed as per outline, retaining only the DreamTeamCard mapping */}
-
               <div>
                 <h2 className="text-2xl font-bold text-cyan-300 text-center mb-8">
                   Click each card to flip and view detailed stats
                 </h2>
                 <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                  {boundAISystems.map((system, idx) => ( // Using boundAISystems and member={system}
+                  {boundAISystems.map((system, idx) => (
                     <DreamTeamCard key={idx} member={system} />
                   ))}
                 </div>
