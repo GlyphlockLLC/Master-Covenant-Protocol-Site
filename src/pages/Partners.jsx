@@ -315,47 +315,151 @@ export default function Partners() {
           </div>
         </section>
 
-        {/* Target Markets & Use Cases */}
+        {/* Target Markets */}
         <section className="mb-16">
-          <div className="grid lg:grid-cols-2 gap-6">
-            <div className="rounded-3xl border border-violet-500/30 glass-card-dark p-6">
-              <h2 className="text-xl font-semibold text-violet-300 mb-4">Target Partners</h2>
-              <p className="text-sm text-white/80 leading-relaxed">
-                GlyphLock partners with <strong className="text-violet-400">high-risk, high-volume industries</strong> that 
-                require tamper-proof identity verification, including nightlife venues, POS platforms, hardware OEMs, state 
-                agencies, defense contractors, security integrators, and regulated enterprise sectors needing 
-                <strong className="text-violet-400"> military-grade authentication</strong> without the mess of equity entanglements.
-              </p>
-            </div>
+          <div className="rounded-3xl border border-violet-500/30 glass-card-dark p-6">
+            <h2 className="text-2xl font-semibold text-violet-300 mb-4">Target Markets</h2>
+            <p className="text-sm text-white/80 leading-relaxed mb-6">
+              GlyphLock partners with <strong className="text-violet-400">high-risk, high-volume industries</strong> that 
+              require tamper-proof identity verification, including nightlife venues, POS platforms, hardware OEMs, state 
+              agencies, defense contractors, security integrators, and regulated enterprise sectors needing 
+              <strong className="text-violet-400"> military-grade authentication</strong> without the mess of equity entanglements.
+            </p>
 
-            <div className="rounded-3xl border border-cyan-500/30 glass-card-dark p-6">
-              <h2 className="text-xl font-semibold text-cyan-300 mb-4">Use Cases</h2>
-              <ul className="space-y-2 text-sm text-white/70">
-                <li className="flex items-start gap-2">
-                  <span className="text-cyan-400 mt-0.5">•</span>
-                  Secure payment authentication via QR codes
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-cyan-400 mt-0.5">•</span>
-                  Anti-counterfeiting and brand protection
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-cyan-400 mt-0.5">•</span>
-                  Tamper-proof document verification
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-cyan-400 mt-0.5">•</span>
-                  Access control and identity management
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-cyan-400 mt-0.5">•</span>
-                  Supply chain tracking and authentication
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-cyan-400 mt-0.5">•</span>
-                  Secure data transmission and encryption
-                </li>
-              </ul>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="rounded-lg border border-violet-500/20 glass-card-dark p-4">
+                <h3 className="text-sm font-semibold text-violet-400 mb-2">1. Nightlife, Cabarets, Hospitality & High-Risk Venues</h3>
+                <p className="text-xs text-white/70">
+                  Instant ID, VIP access control, voucher authenticity, fraud-proof Dance Dollars, POS verification, and zero-training security workflows.
+                </p>
+              </div>
+
+              <div className="rounded-lg border border-violet-500/20 glass-card-dark p-4">
+                <h3 className="text-sm font-semibold text-violet-400 mb-2">2. POS Platforms & Payment Hardware Manufacturers</h3>
+                <p className="text-xs text-white/70">
+                  Stripe Terminal, Nexgo, GoDaddy, Clover, etc. — companies that embed your secure-scan engine as a licensing layer inside their terminals.
+                </p>
+              </div>
+
+              <div className="rounded-lg border border-violet-500/20 glass-card-dark p-4">
+                <h3 className="text-sm font-semibold text-violet-400 mb-2">3. Government, Public Safety & Enforcement</h3>
+                <p className="text-xs text-white/70">
+                  DMVs, border checkpoints, field verification units, probation, corrections, licensing offices — anywhere IDs and documents must be tamper-proof.
+                </p>
+              </div>
+
+              <div className="rounded-lg border border-violet-500/20 glass-card-dark p-4">
+                <h3 className="text-sm font-semibold text-violet-400 mb-2">4. Defense, Tactical Operations & Supply Chain Security</h3>
+                <p className="text-xs text-white/70">
+                  Contractors maintaining weapons, munitions, drones, personnel tracking, battlefield logistics, command verification, and secure facility access.
+                </p>
+              </div>
+
+              <div className="rounded-lg border border-violet-500/20 glass-card-dark p-4">
+                <h3 className="text-sm font-semibold text-violet-400 mb-2">5. Pharmaceuticals, Medical Devices & Biosecurity</h3>
+                <p className="text-xs text-white/70">
+                  Anti-counterfeit serialization, chain-of-custody tracking, FDA-compliant logs, and secure labeling for high-risk medical goods.
+                </p>
+              </div>
+
+              <div className="rounded-lg border border-violet-500/20 glass-card-dark p-4">
+                <h3 className="text-sm font-semibold text-violet-400 mb-2">6. Luxury Goods, High-Value Assets & Brand Authentication</h3>
+                <p className="text-xs text-white/70">
+                  Anti-counterfeit verification for jewelry, watches, collectibles, designer items, artwork, and limited merch.
+                </p>
+              </div>
+
+              <div className="rounded-lg border border-violet-500/20 glass-card-dark p-4">
+                <h3 className="text-sm font-semibold text-violet-400 mb-2">7. Enterprise Infrastructure & Corporate Compliance</h3>
+                <p className="text-xs text-white/70">
+                  Secure access cards, identity badges, contractor passes, time-locked credentials, and encrypted audit trails.
+                </p>
+              </div>
+
+              <div className="rounded-lg border border-violet-500/20 glass-card-dark p-4">
+                <h3 className="text-sm font-semibold text-violet-400 mb-2">8. Logistics, Warehousing & Freight</h3>
+                <p className="text-xs text-white/70">
+                  Geo/time-locked labels, counterfeit-proof tags, secure scan-to-release, and real-time chain-of-custody validation.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Use Cases */}
+        <section className="mb-16">
+          <div className="rounded-3xl border border-cyan-500/30 glass-card-dark p-6">
+            <h2 className="text-2xl font-semibold text-cyan-300 mb-4">Use Cases</h2>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="rounded-lg border border-cyan-500/20 glass-card-dark p-4">
+                <h3 className="text-sm font-semibold text-cyan-400 mb-2">1. Steganographic QR Authentication</h3>
+                <p className="text-xs text-white/70">
+                  Scan reveals hidden encrypted payloads, signatures, timestamps, and velocity checks that cannot be forged.
+                </p>
+              </div>
+
+              <div className="rounded-lg border border-cyan-500/20 glass-card-dark p-4">
+                <h3 className="text-sm font-semibold text-cyan-400 mb-2">2. POS Integration & Payment Verification</h3>
+                <p className="text-xs text-white/70">
+                  Tap or scan validation for VIPs, vouchers, payouts, employee timecards, and transaction authorization.
+                </p>
+              </div>
+
+              <div className="rounded-lg border border-cyan-500/20 glass-card-dark p-4">
+                <h3 className="text-sm font-semibold text-cyan-400 mb-2">3. Anti-Counterfeit & Brand Protection</h3>
+                <p className="text-xs text-white/70">
+                  Embedded HZI micro-signatures, multi-layer watermarks, holographic QR codes, and blockchain entries tied to each print.
+                </p>
+              </div>
+
+              <div className="rounded-lg border border-cyan-500/20 glass-card-dark p-4">
+                <h3 className="text-sm font-semibold text-cyan-400 mb-2">4. Access Control & Identity Enforcement</h3>
+                <p className="text-xs text-white/70">
+                  Secure credentials for clubs, government facilities, defense sites, hospitals, airports, schools, and corporate environments.
+                </p>
+              </div>
+
+              <div className="rounded-lg border border-cyan-500/20 glass-card-dark p-4">
+                <h3 className="text-sm font-semibold text-cyan-400 mb-2">5. Chain-of-Custody & Supply Chain Security</h3>
+                <p className="text-xs text-white/70">
+                  Item-level tracking with tamper-evident QR layers and audit logs.
+                </p>
+              </div>
+
+              <div className="rounded-lg border border-cyan-500/20 glass-card-dark p-4">
+                <h3 className="text-sm font-semibold text-cyan-400 mb-2">6. Tamper-Proof Document Validation</h3>
+                <p className="text-xs text-white/70">
+                  Legal contracts, invoices, permits, compliance certifications, patient records, court filings — all lockable with time/geo seals.
+                </p>
+              </div>
+
+              <div className="rounded-lg border border-cyan-500/20 glass-card-dark p-4">
+                <h3 className="text-sm font-semibold text-cyan-400 mb-2">7. Secure Data Transmission & Encrypted Payload Delivery</h3>
+                <p className="text-xs text-white/70">
+                  QR/tap triggers that send encrypted instructions, commands, or compartmentalized data directly to authorized devices.
+                </p>
+              </div>
+
+              <div className="rounded-lg border border-cyan-500/20 glass-card-dark p-4">
+                <h3 className="text-sm font-semibold text-cyan-400 mb-2">8. High-Risk Field Verification</h3>
+                <p className="text-xs text-white/70">
+                  Off-grid identity confirmation for law enforcement, border agents, emergency responders, and defense personnel.
+                </p>
+              </div>
+
+              <div className="rounded-lg border border-cyan-500/20 glass-card-dark p-4">
+                <h3 className="text-sm font-semibold text-cyan-400 mb-2">9. Dynamic VIP & Membership Systems</h3>
+                <p className="text-xs text-white/70">
+                  Custom validation for clubs, casinos, events, and loyalty programs with fraud-proof pass technology.
+                </p>
+              </div>
+
+              <div className="rounded-lg border border-cyan-500/20 glass-card-dark p-4">
+                <h3 className="text-sm font-semibold text-cyan-400 mb-2">10. Fraud Prevention & Loss Mitigation at Scale</h3>
+                <p className="text-xs text-white/70">
+                  Instant counterfeit detection, audit trails, and security layers that stop chargebacks, fake passes, and forged documents.
+                </p>
+              </div>
             </div>
           </div>
         </section>
