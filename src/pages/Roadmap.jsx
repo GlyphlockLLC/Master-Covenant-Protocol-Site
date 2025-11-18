@@ -18,20 +18,25 @@ export default function Roadmap() {
     },
     {
       quarter: "Q3 2025",
-      status: "in-progress",
+      status: "completed",
       items: [
         { title: "Security Operations Center", status: "completed" },
-        { title: "GlyphBot AI Enhancement", status: "in-progress" },
-        { title: "Blockchain Security Suite", status: "in-progress" },
-        { title: "Enterprise Dashboard", status: "in-progress" }
+        { title: "GlyphBot AI Enhancement", status: "completed" },
+        { title: "Blockchain Security Suite", status: "completed" },
+        { title: "Enterprise Dashboard", status: "completed" },
+        { title: "Stripe Payment Integration", status: "completed" },
+        { title: "Governance Hub Launch", status: "completed" },
+        { title: "Partners Portal", status: "completed" }
       ]
     },
     {
       quarter: "Q4 2025",
-      status: "planned",
+      status: "in-progress",
       items: [
-        { title: "Mobile App Launch", status: "planned" },
-        { title: "Smart Contract Generator", status: "planned" },
+        { title: "SEO Optimization & Sitemap", status: "completed" },
+        { title: "AI Crawler Integration", status: "completed" },
+        { title: "Mobile App Launch", status: "in-progress" },
+        { title: "Smart Contract Generator", status: "in-progress" },
         { title: "Advanced Threat Detection", status: "planned" },
         { title: "SOC 2 Certification", status: "planned" }
       ]
@@ -44,6 +49,48 @@ export default function Roadmap() {
         { title: "Global CDN Deployment", status: "planned" },
         { title: "Enterprise API Platform", status: "planned" },
         { title: "ISO 27001 Certification", status: "planned" }
+      ]
+    },
+    {
+      quarter: "Q2 2026",
+      status: "planned",
+      items: [
+        { title: "Multi-Language Support", status: "planned" },
+        { title: "Hardware Security Key Integration", status: "planned" },
+        { title: "Advanced Biometric Authentication", status: "planned" },
+        { title: "Government Contract Expansion", status: "planned" }
+      ]
+    },
+    {
+      quarter: "Q3 2026",
+      status: "planned",
+      items: [
+        { title: "International Data Center Deployment", status: "planned" },
+        { title: "AI-Powered Threat Prediction", status: "planned" },
+        { title: "White Label Platform Release", status: "planned" },
+        { title: "Enterprise SDK Launch", status: "planned" }
+      ]
+    },
+    {
+      quarter: "Q4 2026",
+      status: "planned",
+      items: [
+        { title: "Post-Quantum Cryptography Standard", status: "planned" },
+        { title: "Decentralized Identity Verification", status: "planned" },
+        { title: "GDPR & CCPA Full Compliance", status: "planned" },
+        { title: "Partner Network Expansion (50+ Partners)", status: "planned" }
+      ]
+    },
+    {
+      quarter: "2027-2030",
+      status: "planned",
+      items: [
+        { title: "Market Leadership in AI Cybersecurity", status: "planned" },
+        { title: "Global Enterprise Network (500+ Clients)", status: "planned" },
+        { title: "$1B+ Valuation Milestone", status: "planned" },
+        { title: "Quantum Security Standard Certification", status: "planned" },
+        { title: "International Patent Portfolio Expansion", status: "planned" },
+        { title: "Strategic Acquisitions & Partnerships", status: "planned" }
       ]
     }
   ];
