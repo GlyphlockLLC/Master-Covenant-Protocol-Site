@@ -65,7 +65,14 @@ export default function Roadmap() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white py-20">
+    <>
+      <SEOHead 
+        title="Product Roadmap - GlyphLock Development Timeline & Future Features"
+        description="Explore GlyphLock's product roadmap from Q4 2025 through 2030: AI enhancements, quantum encryption, enterprise expansion, government contracts, international deployment, and $1B+ valuation milestones."
+        keywords="cybersecurity roadmap, product development timeline, AI security features, quantum encryption roadmap, enterprise expansion plan, GlyphLock future, technology milestones, security platform development, innovation timeline"
+        url="/roadmap"
+      />
+      <div className="min-h-screen bg-black text-white py-20">
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
@@ -106,5 +113,6 @@ export default function Roadmap() {
         </div>
       </div>
     </div>
+    </>
   );
 }

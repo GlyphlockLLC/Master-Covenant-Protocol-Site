@@ -37,7 +37,14 @@ export default function About() {
   ];
 
   return (
-    <div className="min-h-screen bg-black text-white py-20">
+    <>
+      <SEOHead 
+        title="About GlyphLock - AI-Powered Cybersecurity & Quantum-Resistant Technology"
+        description="Founded in 2025 in El Mirage, Arizona, GlyphLock revolutionizes cybersecurity through AI-powered QR code technology, steganographic verification, and quantum-resistant encryption protecting against the $283B IP theft crisis."
+        keywords="GlyphLock about, cybersecurity company, AI security startup, quantum-resistant encryption, steganographic verification, Carlo Earl founder, El Mirage Arizona tech, IP protection technology, QR code security, blockchain verification, enterprise cybersecurity"
+        url="/about"
+      />
+      <div className="min-h-screen bg-black text-white py-20">
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
@@ -153,7 +160,7 @@ export default function About() {
           </div>
         </div>
       </div>
-    </div>
+      </div>
     </>
   );
 }
