@@ -116,13 +116,22 @@ nav {
   color: white !important;
 }
 
+/* FORCE ALL CARDS AND CONTAINERS TO BE DARK */
 [data-card],
 [class*="Card"],
 [class*="card"],
 [role="dialog"],
-[data-dialog] {
-  background: rgba(15, 15, 25, 0.95) !important;
+[data-dialog],
+.bg-white,
+[class*="bg-white"],
+[style*="background: white"],
+[style*="background: #fff"],
+[style*="background-color: white"],
+[style*="background-color: #fff"],
+[style*="background-color: rgb(255, 255, 255)"] {
+  background: rgba(10, 10, 20, 0.85) !important;
   backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
   border-color: rgba(65, 105, 225, 0.4) !important;
   color: white !important;
 }
@@ -215,17 +224,25 @@ textarea::placeholder {
   border-radius: 6px;
 }
 
-/* Force all white backgrounds to dark */
-.bg-white,
-[class*="bg-white"] {
-  background: rgba(15, 15, 25, 0.9) !important;
-  backdrop-filter: blur(20px) !important;
+/* NUCLEAR OPTION - FORCE EVERYTHING */
+* {
+  border-color: rgba(65, 105, 225, 0.3) !important;
 }
 
-/* Force card components */
-.card,
-[class*="Card"] {
-  background: rgba(15, 15, 25, 0.9) !important;
+*:not(svg):not(path):not(circle):not(rect):not(line):not(polyline):not(polygon) {
+  background-color: transparent !important;
+}
+
+/* Only specific elements should have backgrounds */
+body, html, #root, main {
+  background: #000000 !important;
+}
+
+[class*="glass-"],
+.glass-card,
+.glass-card-dark,
+.glass-royal,
+.glass-dark {
+  background: rgba(10, 10, 20, 0.85) !important;
   backdrop-filter: blur(20px) !important;
-  border: 1px solid rgba(65, 105, 225, 0.3) !important;
 }
