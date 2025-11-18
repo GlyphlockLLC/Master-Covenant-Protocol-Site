@@ -9,6 +9,7 @@ export const navigationConfig = {
         { label: "About Us", page: "About" },
         { label: "Roadmap", page: "Roadmap" },
         { label: "Governance Hub", page: "GovernanceHub" },
+        { label: "Partners & Valuation", page: "Partners" },
       ]
     },
     {
@@ -32,6 +33,7 @@ export const navigationConfig = {
       { label: "About Us", page: "About" },
       { label: "Roadmap", page: "Roadmap" },
       { label: "Governance Hub", page: "GovernanceHub" },
+      { label: "Partners & Valuation", page: "Partners" },
       { label: "Contact", page: "Contact" },
     ],
     services: [
