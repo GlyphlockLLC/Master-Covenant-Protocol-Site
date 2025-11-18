@@ -180,34 +180,30 @@ export default function Services() {
           {/* Services Grid */}
           <div className="space-y-12 mb-16">
             {services.map((service, idx) => (
-              <Card key={service.id} className="glass-card-dark border-blue-500/30">
-                <CardHeader>
-                  <div className="flex items-start gap-4">
-                    <div className="p-3 rounded-xl bg-blue-500/20 border border-blue-500/50">
-                      <service.icon className="w-8 h-8 text-blue-400" />
-                    </div>
-                    <div className="flex-1">
-                      <CardTitle className="text-2xl text-white mb-2">{service.title}</CardTitle>
-                      <p className="text-white/70">{service.description}</p>
-                    </div>
+              <div key={service.id} className="glass-card-dark border border-blue-500/30 rounded-xl p-8" style={{ background: 'rgba(30, 58, 138, 0.2)', backdropFilter: 'blur(16px)' }}>
+                <div className="flex items-start gap-4 mb-6">
+                  <div className="p-3 rounded-xl bg-blue-500/20 border border-blue-500/50">
+                    <service.icon className="w-8 h-8 text-blue-400" />
                   </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid md:grid-cols-2 gap-3 mb-6">
-                    {service.features.map((feature, fIdx) => (
-                      <div key={fIdx} className="flex items-start gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-blue-400 mt-1 flex-shrink-0" />
-                        <span className="text-sm text-white/80">{feature}</span>
-                      </div>
-                    ))}
+                  <div className="flex-1">
+                    <h3 className="text-2xl font-bold text-white mb-2">{service.title}</h3>
+                    <p className="text-white/70">{service.description}</p>
                   </div>
-                  <Link to={createPageUrl(service.page)}>
-                    <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-                      Learn More & Try Demo
-                    </Button>
-                  </Link>
-                </CardContent>
-              </Card>
+                </div>
+                <div className="grid md:grid-cols-2 gap-3 mb-6">
+                  {service.features.map((feature, fIdx) => (
+                    <div key={fIdx} className="flex items-start gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-blue-400 mt-1 flex-shrink-0" />
+                      <span className="text-sm text-white/80">{feature}</span>
+                    </div>
+                  ))}
+                </div>
+                <Link to={createPageUrl(service.page)}>
+                  <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+                    Learn More & Try Demo
+                  </Button>
+                </Link>
+              </div>
             ))}
           </div>
 
@@ -219,18 +215,16 @@ export default function Services() {
             </h2>
             <div className="grid md:grid-cols-3 gap-6">
               {industries.map((industry, idx) => (
-                <Card key={idx} className="glass-card-dark border-blue-500/30">
-                  <CardContent className="p-6">
-                    <h3 className="text-lg font-semibold text-white mb-2">{industry.name}</h3>
-                    <p className="text-sm text-white/70">{industry.description}</p>
-                  </CardContent>
-                </Card>
+                <div key={idx} className="glass-card-dark border border-blue-500/30 rounded-xl p-6" style={{ background: 'rgba(30, 58, 138, 0.2)', backdropFilter: 'blur(16px)' }}>
+                  <h3 className="text-lg font-semibold text-white mb-2">{industry.name}</h3>
+                  <p className="text-sm text-white/70">{industry.description}</p>
+                </div>
               ))}
             </div>
           </div>
 
           {/* Technology Stack */}
-          <Card className="glass-card-dark border-blue-500/30 p-8 text-center">
+          <div className="glass-card-dark border border-blue-500/30 rounded-xl p-8 text-center" style={{ background: 'rgba(30, 58, 138, 0.2)', backdropFilter: 'blur(16px)' }}>
             <h2 className="text-3xl font-bold text-white mb-4">
               Enterprise-Grade Technology
             </h2>
@@ -261,7 +255,7 @@ export default function Services() {
                 <span>Global Infrastructure</span>
               </div>
             </div>
-          </Card>
+          </div>
 
           {/* CTA */}
           <div className="mt-16 text-center">

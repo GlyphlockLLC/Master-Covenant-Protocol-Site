@@ -144,39 +144,37 @@ export default function Solutions() {
 
           <div className="grid lg:grid-cols-2 gap-8 mb-16">
             {solutions.map((solution, idx) => (
-              <Card key={idx} className="glass-card-dark border-blue-500/30 hover:border-blue-500/50 transition-all">
-                <CardContent className="p-8">
-                  <div className="flex items-start gap-4 mb-6">
-                    <div className="p-3 rounded-xl bg-blue-500/20 border border-blue-500/50">
-                      <solution.icon className="w-8 h-8 text-blue-400" />
-                    </div>
-                    <div className="flex-1">
-                      <h2 className="text-2xl font-bold text-white mb-2">{solution.industry}</h2>
-                      <p className="text-white/70">{solution.description}</p>
-                    </div>
+              <div key={idx} className="glass-card-dark border border-blue-500/30 hover:border-blue-500/50 transition-all rounded-xl p-8" style={{ background: 'rgba(30, 58, 138, 0.2)', backdropFilter: 'blur(16px)' }}>
+                <div className="flex items-start gap-4 mb-6">
+                  <div className="p-3 rounded-xl bg-blue-500/20 border border-blue-500/50">
+                    <solution.icon className="w-8 h-8 text-blue-400" />
                   </div>
-
-                  <div className="space-y-2 mb-6">
-                    {solution.features.map((feature, fIdx) => (
-                      <div key={fIdx} className="flex items-start gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0" />
-                        <span className="text-sm text-white/80">{feature}</span>
-                      </div>
-                    ))}
+                  <div className="flex-1">
+                    <h2 className="text-2xl font-bold text-white mb-2">{solution.industry}</h2>
+                    <p className="text-white/70">{solution.description}</p>
                   </div>
+                </div>
 
-                  <Link to={createPageUrl(solution.page)}>
-                    <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
-                      {solution.cta}
-                      <ArrowRight className="w-4 h-4 ml-2" />
-                    </Button>
-                  </Link>
-                </CardContent>
-              </Card>
+                <div className="space-y-2 mb-6">
+                  {solution.features.map((feature, fIdx) => (
+                    <div key={fIdx} className="flex items-start gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0" />
+                      <span className="text-sm text-white/80">{feature}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <Link to={createPageUrl(solution.page)}>
+                  <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                    {solution.cta}
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Button>
+                </Link>
+              </div>
             ))}
           </div>
 
-          <Card className="glass-card-dark border-blue-500/30 p-8 mb-16">
+          <div className="glass-card-dark border border-blue-500/30 rounded-xl p-8 mb-16" style={{ background: 'rgba(30, 58, 138, 0.2)', backdropFilter: 'blur(16px)' }}>
             <h2 className="text-3xl font-bold text-white mb-6 text-center">
               Why Choose GlyphLock?
             </h2>
@@ -188,7 +186,7 @@ export default function Solutions() {
                 </div>
               ))}
             </div>
-          </Card>
+          </div>
 
           <div className="text-center">
             <h2 className="text-3xl font-bold text-white mb-4">
