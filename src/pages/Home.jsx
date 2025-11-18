@@ -1,13 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
-import TechStackCarousel from '@/components/TechStackCarousel';
+import TechnologyMarquee from '@/components/TechnologyMarquee';
 import ComparisonSection from '@/components/ComparisonSection';
 import HeroSection from '@/components/home/HeroSection';
 import HeroContent from '@/components/home/HeroContent';
 import FeaturesSection from '@/components/home/FeaturesSection';
 import ServicesGrid from '@/components/home/ServicesGrid';
 import BoundAICards from '@/components/home/BoundAICards';
+import BoundAISystemsSection from '@/components/home/BoundAISystemsSection';
 import CTASection from '@/components/home/CTASection';
 
 const useScrollEffect = (sectionRef) => {
@@ -102,6 +103,10 @@ export default function Home() {
       </ScrollSection>
 
       <ScrollSection>
+        <BoundAISystemsSection />
+      </ScrollSection>
+
+      <ScrollSection>
         <BoundAICards />
       </ScrollSection>
 
@@ -114,7 +119,7 @@ export default function Home() {
       </ScrollSection>
       
       <ScrollSection>
-        <TechStackCarousel />
+        <TechnologyMarquee />
       </ScrollSection>
 
       <ScrollSection>
