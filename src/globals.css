@@ -74,14 +74,21 @@ nav:not([class*="gradient"]) {
   color: white !important;
 }
 
-/* Kill all white backgrounds - apply blue theme */
+/* Kill all white backgrounds - apply blue theme - NUCLEAR */
 [data-card],
 [class*="Card"],
 [class*="card"]:not([class*="gradient"]),
 [role="dialog"],
 [data-dialog],
 .bg-white,
-[class*="bg-white"] {
+[class*="bg-white"],
+[class*="Menu"],
+[class*="Dropdown"],
+[class*="Select"],
+[class*="Popover"],
+[class*="Dialog"],
+[class*="Content"],
+[data-radix-portal] {
   background: rgba(30, 58, 138, 0.2) !important;
   background-color: rgba(30, 58, 138, 0.2) !important;
   backdrop-filter: blur(16px) !important;
@@ -90,27 +97,47 @@ nav:not([class*="gradient"]) {
   color: white !important;
 }
 
+/* FORCE ALL PORTALED/FLOATING ELEMENTS */
+body > div:not(#root):not(#__next),
+[style*="position: fixed"],
+[style*="position: absolute"] {
+  background: rgba(30, 58, 138, 0.3) !important;
+  background-color: rgba(30, 58, 138, 0.3) !important;
+}
+
 /* Text elements */
 h1, h2, h3, h4, h5, h6, p, span:not([class*="gradient"]), a, li, td, th, label, legend {
   color: white !important;
 }
 
-/* Radix UI components - Blue Theme */
+/* Radix UI components - Blue Theme - ULTRA AGGRESSIVE */
 [data-radix-popper-content-wrapper],
 [data-radix-select-content],
 [data-radix-dropdown-menu-content],
 [data-radix-popover-content],
 [data-radix-dialog-content],
 [data-radix-tabs-content],
+[data-radix-popper-content],
+[data-radix-menu-content],
 [role="menu"],
 [role="listbox"],
 [role="dialog"],
+[role="combobox"],
 .dropdown-content,
 .popover-content,
-.select-content {
+.select-content,
+[class*="DropdownMenu"],
+[class*="Select"],
+[class*="Popover"],
+[class*="Dialog"],
+[class*="Menu"],
+[data-state],
+div[data-radix-portal] > *,
+div[data-radix-popper-content-wrapper] > * {
   background: rgba(30, 58, 138, 0.3) !important;
   background-color: rgba(30, 58, 138, 0.3) !important;
   backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
   border: 1px solid rgba(59, 130, 246, 0.5) !important;
   color: white !important;
   z-index: 99999 !important;
