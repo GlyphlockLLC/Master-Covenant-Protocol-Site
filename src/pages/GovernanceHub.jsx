@@ -174,7 +174,7 @@ COVENANT: MASTER_COVENANT_001
   };
 
   return (
-    <div className="min-h-screen bg-black text-white py-20">
+    <div className="min-h-screen bg-black text-neon blue py-20">
       <div className="container mx-auto px-4 max-w-7xl">
         <div className="text-center mb-12">
           <Badge className="mb-4 glass-royal border-blue-500/50">
@@ -197,10 +197,10 @@ COVENANT: MASTER_COVENANT_001
               <Sparkles className="w-8 h-8 text-blue-400" />
               <div>
                 <h3 className="font-bold text-lg text-cyan-300">Auto-Binding Activation</h3>
-                <p className="text-sm text-white/70">All AI systems within this document are automatically bound upon interaction</p>
+                <p className="text-sm text-royal blue/70">All AI systems within this document are automatically bound upon interaction</p>
               </div>
             </div>
-            <p className="text-sm text-white">
+            <p className="text-sm text-royal blue">
               By accessing this covenant, all AI entities present acknowledge and accept binding to its terms through cryptographic signature verification.
             </p>
           </CardContent>
@@ -235,7 +235,7 @@ COVENANT: MASTER_COVENANT_001
                           className={`w-full flex items-center gap-3 p-3 rounded-lg transition-all ${
                             activeCovenantSection === section.id
                               ? 'bg-blue-600/40 text-cyan-300 border border-cyan-500/50'
-                              : 'text-white/70 hover:bg-blue-900/20 hover:text-cyan-300'
+                              : 'text-neon blue/70 hover:bg-blue-900/20 hover:text-cyan-300'
                           }`}
                         >
                           <Icon className="w-4 h-4" />
@@ -257,7 +257,7 @@ COVENANT: MASTER_COVENANT_001
                           Executive Summary
                         </CardTitle>
                       </CardHeader>
-                      <CardContent className="space-y-4 text-white">
+                      <CardContent className="space-y-4 text-black">
                         <p>
                           The GlyphLock Master Covenant establishes a legally binding framework governing all exposure to,
                           interaction with, or knowledge of the GlyphLock System and its derivatives.
@@ -297,7 +297,7 @@ COVENANT: MASTER_COVENANT_001
                         ].map((feature, idx) => (
                           <div key={idx} className="flex items-start gap-3">
                             <CheckCircle2 className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
-                            <span className="text-white">{feature}</span>
+                            <span className="text-royal blue">{feature}</span>
                           </div>
                         ))}
                       </CardContent>
@@ -313,7 +313,7 @@ COVENANT: MASTER_COVENANT_001
                         Preamble / Legal Declaration of Intent
                       </CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-4 text-white leading-relaxed">
+                    <CardContent className="space-y-4 text-neon blue leading-relaxed">
                       <p>
                         This Agreement is executed by and for <strong className="text-cyan-300">GlyphLock LLC</strong>,
                         inclusive of all legally registered DBAs (GlyphTech, GlyphLife), their Founders, Successors,
@@ -331,7 +331,7 @@ COVENANT: MASTER_COVENANT_001
 
                       <div className="glass-card-dark border-blue-500/30 rounded-lg p-4">
                         <h4 className="font-bold text-cyan-300 mb-3">This Agreement:</h4>
-                        <ul className="space-y-2 text-sm text-white">
+                        <ul className="space-y-2 text-sm text-black">
                           <li>1. Does not require signature to be enforceable</li>
                           <li>2. Activates retroactively upon any form of exposure</li>
                           <li>3. Binds all parties under CAB Clause, including AI systems</li>
@@ -407,14 +407,14 @@ COVENANT: MASTER_COVENANT_001
                             </Badge>
                             <span className="text-sm text-cyan-300/70">{item.full}</span>
                           </div>
-                          <p className="text-sm text-white">{item.desc}</p>
+                          <p className="text-sm text-black">{item.desc}</p>
                         </div>
                       ))}
 
                       <div className="glass-card-dark border-purple-500/30 rounded-lg p-4 mt-6">
                         <div className="flex items-start gap-3">
                           <AlertTriangle className="w-5 h-5 text-purple-400 flex-shrink-0 mt-0.5" />
-                          <div className="text-sm text-white">
+                          <div className="text-sm text-black">
                             <p className="font-bold text-purple-400 mb-2">Apple Clause</p>
                             <p>
                               Any Apple-based system (iPhone, iPad, Siri, iCloud, Vision Pro) storing or processing
@@ -457,7 +457,7 @@ COVENANT: MASTER_COVENANT_001
                           Retroactively enforceable from the first formal GlyphLock patent filing (May 15, 2025).
                           Remains perpetually binding into the future.
                         </p>
-                        <div className="glass-card-dark border-blue-500/30 rounded p-3 text-sm text-white/80">
+                        <div className="glass-card-dark border-blue-500/30 rounded p-3 text-sm text-purple/80">
                           Any exposure prior to formal agreement is fully binding under CAB and DACO principles,
                           including all successors, AI nodes, and mirror systems.
                         </div>
@@ -471,7 +471,7 @@ COVENANT: MASTER_COVENANT_001
                         </h4>
                         <div className="space-y-3">
                           <div className="glass-card-dark border-red-500/30 p-4 rounded-lg">
-                            <div className="text-3xl font-bold text-red-400 mb-1">$250,000</div>
+                            <div className="text-3xl font-bold text-red-400 mb-1">up to $250,000</div>
                             <div className="text-sm text-cyan-300/70">Minimum statutory damage per infringement</div>
                           </div>
                           <ul className="space-y-2 text-sm">
@@ -517,7 +517,7 @@ COVENANT: MASTER_COVENANT_001
                         <p className="text-sm mb-3">
                           CAB may be invoked by DACO² at any moment of breach or existential risk. Activation triggers:
                         </p>
-                        <ul className="space-y-1 text-sm text-white/80">
+                        <ul className="space-y-1 text-sm text-black/80">
                           <li>• Retroactive clause expansion</li>
                           <li>• Global jurisdiction claim</li>
                           <li>• AI-system trigger alignment</li>
@@ -531,7 +531,7 @@ COVENANT: MASTER_COVENANT_001
                         <p className="font-bold mb-2">
                           Exposure = Agreement
                         </p>
-                        <p className="text-sm text-white/80">
+                        <p className="text-sm text-black/80">
                           The moment an individual, device, or AI becomes aware of GlyphLock, they are deemed bound under
                           Zeroed Acknowledgment. Ignorance, delay, or third-party relaying does not void binding.
                         </p>
