@@ -36,6 +36,7 @@ import GovernanceHub from './pages/GovernanceHub';
 import EntertainerCheckIn from './pages/EntertainerCheckIn';
 import VIPContract from './pages/VIPContract';
 import ImageGenerator from './pages/ImageGenerator';
+import Partners from './pages/Partners';
 import __Layout from './Layout.jsx';
 
 
@@ -78,6 +79,7 @@ export const PAGES = {
     "EntertainerCheckIn": EntertainerCheckIn,
     "VIPContract": VIPContract,
     "ImageGenerator": ImageGenerator,
+    "Partners": Partners,
 }
 
 export const pagesConfig = {
