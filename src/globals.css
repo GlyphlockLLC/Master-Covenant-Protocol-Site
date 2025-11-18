@@ -1,3 +1,4 @@
+css
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -6,9 +7,9 @@
   :root {
     --background: 0 0% 0%;
     --foreground: 0 0% 100%;
-    --card: 0 0% 8%;
+    --card: 217 91% 15%;
     --card-foreground: 0 0% 100%;
-    --popover: 0 0% 8%;
+    --popover: 217 91% 15%;
     --popover-foreground: 0 0% 100%;
     --primary: 217 91% 60%;
     --primary-foreground: 0 0% 100%;
@@ -30,7 +31,6 @@
 @layer base {
   * {
     @apply border-border;
-    cursor: pointer !important;
   }
   body {
     @apply bg-black text-white;
@@ -39,43 +39,16 @@
 }
 
 @layer components {
-  .glass-royal {
-    background: rgba(10, 10, 20, 0.85) !important;
-    backdrop-filter: blur(20px) !important;
-    -webkit-backdrop-filter: blur(20px) !important;
-    border: 1px solid rgba(65, 105, 225, 0.4) !important;
-    box-shadow: 
-      0 8px 32px rgba(65, 105, 225, 0.2),
-      inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
-    color: white !important;
-  }
-
-  .glass-dark {
-    background: rgba(10, 10, 20, 0.9) !important;
-    backdrop-filter: blur(20px) !important;
-    -webkit-backdrop-filter: blur(20px) !important;
-    border: 1px solid rgba(65, 105, 225, 0.3) !important;
-    box-shadow: 
-      0 8px 32px rgba(0, 0, 0, 0.5),
-      inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
-    color: white !important;
-  }
-
-  .glass-card {
-    background: rgba(10, 10, 20, 0.85) !important;
-    backdrop-filter: blur(20px) !important;
-    -webkit-backdrop-filter: blur(20px) !important;
-    border: 1px solid rgba(65, 105, 225, 0.3) !important;
-    box-shadow: 0 8px 32px rgba(65, 105, 225, 0.2) !important;
-    color: white !important;
-  }
-
+  /* GlyphBot Blue Theme - Primary Glass Style */
+  .glass-royal,
+  .glass-dark,
+  .glass-card,
   .glass-card-dark {
-    background: rgba(10, 10, 20, 0.85) !important;
-    backdrop-filter: blur(20px) !important;
-    -webkit-backdrop-filter: blur(20px) !important;
-    border: 1px solid rgba(65, 105, 225, 0.4) !important;
-    box-shadow: 0 8px 32px rgba(65, 105, 225, 0.3) !important;
+    background: rgba(30, 58, 138, 0.2) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    border: 1px solid rgba(59, 130, 246, 0.3) !important;
+    box-shadow: 0 8px 32px rgba(59, 130, 246, 0.2) !important;
     color: white !important;
   }
 }
@@ -90,66 +63,39 @@ main {
   color: white !important;
 }
 
-/* ULTRA AGGRESSIVE WHITE KILLER */
-div:not([class*="gradient"]):not([class*="Gradient"]),
+/* FORCE ALL ELEMENTS TO BLUE THEME */
+div:not([class*="gradient"]):not([class*="Gradient"]):not(svg):not(path):not(circle):not(rect):not(line):not(polyline):not(polygon),
 section:not([class*="gradient"]),
 article:not([class*="gradient"]),
 aside:not([class*="gradient"]),
 header:not([class*="gradient"]),
 footer:not([class*="gradient"]),
 nav:not([class*="gradient"]) {
-  background-color: transparent !important;
   color: white !important;
 }
 
-/* Kill all white and light backgrounds */
-[style*="background-color: white"],
-[style*="background-color: #fff"],
-[style*="background-color: #FFF"],
-[style*="background-color: #ffffff"],
-[style*="background-color: #FFFFFF"],
-[style*="background-color:white"],
-[style*="background-color:#fff"],
-[style*="background-color:#FFF"],
-[style*="background-color:#ffffff"],
-[style*="background-color:#FFFFFF"],
-[style*="background: white"],
-[style*="background: #fff"],
-[style*="background:#fff"],
-[style*="background:white"],
-[style*="background-color: rgb(255, 255, 255)"],
-[style*="background-color:rgb(255, 255, 255)"],
-[style*="background-color: rgb(255,255,255)"],
-[style*="background: rgb(255, 255, 255)"],
-.bg-white,
-[class*="bg-white"] {
-  background: rgba(10, 10, 20, 0.85) !important;
-  background-color: rgba(10, 10, 20, 0.85) !important;
-  backdrop-filter: blur(20px) !important;
-  -webkit-backdrop-filter: blur(20px) !important;
-  color: white !important;
-}
-
-/* Shadcn components override */
+/* Kill all white backgrounds - apply blue theme */
 [data-card],
 [class*="Card"],
 [class*="card"]:not([class*="gradient"]),
 [role="dialog"],
-[data-dialog] {
-  background: rgba(10, 10, 20, 0.85) !important;
-  background-color: rgba(10, 10, 20, 0.85) !important;
-  backdrop-filter: blur(20px) !important;
-  -webkit-backdrop-filter: blur(20px) !important;
-  border-color: rgba(65, 105, 225, 0.4) !important;
+[data-dialog],
+.bg-white,
+[class*="bg-white"] {
+  background: rgba(30, 58, 138, 0.2) !important;
+  background-color: rgba(30, 58, 138, 0.2) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(59, 130, 246, 0.3) !important;
   color: white !important;
 }
 
 /* Text elements */
-h1, h2, h3, h4, h5, h6, p, span:not([class*="gradient"]), a, li, td, th, label, legend, div {
+h1, h2, h3, h4, h5, h6, p, span:not([class*="gradient"]), a, li, td, th, label, legend {
   color: white !important;
 }
 
-/* Radix UI components */
+/* Radix UI components - Blue Theme */
 [data-radix-popper-content-wrapper],
 [data-radix-select-content],
 [data-radix-dropdown-menu-content],
@@ -162,10 +108,10 @@ h1, h2, h3, h4, h5, h6, p, span:not([class*="gradient"]), a, li, td, th, label, 
 .dropdown-content,
 .popover-content,
 .select-content {
-  background: rgba(10, 10, 20, 0.98) !important;
-  background-color: rgba(10, 10, 20, 0.98) !important;
+  background: rgba(30, 58, 138, 0.3) !important;
+  background-color: rgba(30, 58, 138, 0.3) !important;
   backdrop-filter: blur(20px) !important;
-  border: 1px solid rgba(65, 105, 225, 0.5) !important;
+  border: 1px solid rgba(59, 130, 246, 0.5) !important;
   color: white !important;
   z-index: 99999 !important;
 }
@@ -183,33 +129,53 @@ h1, h2, h3, h4, h5, h6, p, span:not([class*="gradient"]), a, li, td, th, label, 
 [data-radix-dropdown-menu-item]:hover,
 [data-radix-select-item][data-highlighted],
 [data-radix-dropdown-menu-item][data-highlighted] {
-  background: rgba(65, 105, 225, 0.3) !important;
-  background-color: rgba(65, 105, 225, 0.3) !important;
+  background: rgba(59, 130, 246, 0.3) !important;
+  background-color: rgba(59, 130, 246, 0.3) !important;
   color: white !important;
 }
 
-/* Buttons */
+/* Tabs - Blue Theme */
+[role="tablist"],
+[data-radix-tabs-list] {
+  background: rgba(30, 58, 138, 0.3) !important;
+  backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(59, 130, 246, 0.3) !important;
+}
+
+[role="tab"],
+[data-radix-tabs-trigger] {
+  color: white !important;
+}
+
+[role="tab"][data-state="active"],
+[data-radix-tabs-trigger][data-state="active"] {
+  background: rgba(59, 130, 246, 0.3) !important;
+  color: white !important;
+}
+
+/* Buttons - Blue Theme */
 button:not([class*="gradient"]) {
   color: white !important;
   cursor: pointer !important;
-  background: rgba(20, 20, 30, 0.8) !important;
-  background-color: rgba(20, 20, 30, 0.8) !important;
-  border: 1px solid rgba(65, 105, 225, 0.4) !important;
+  background: rgba(59, 130, 246, 0.3) !important;
+  background-color: rgba(59, 130, 246, 0.3) !important;
+  border: 1px solid rgba(59, 130, 246, 0.5) !important;
 }
 
 button:hover:not([class*="gradient"]) {
-  background: rgba(30, 30, 45, 0.9) !important;
-  background-color: rgba(30, 30, 45, 0.9) !important;
-  border-color: rgba(65, 105, 225, 0.6) !important;
+  background: rgba(59, 130, 246, 0.5) !important;
+  background-color: rgba(59, 130, 246, 0.5) !important;
+  border-color: rgba(59, 130, 246, 0.7) !important;
 }
 
-/* Inputs */
+/* Inputs - Blue Theme */
 input:not([type="checkbox"]):not([type="radio"]),
 textarea,
 select {
-  background: rgba(20, 20, 30, 0.9) !important;
-  background-color: rgba(20, 20, 30, 0.9) !important;
-  border: 1px solid rgba(65, 105, 225, 0.5) !important;
+  background: rgba(30, 58, 138, 0.3) !important;
+  background-color: rgba(30, 58, 138, 0.3) !important;
+  backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(59, 130, 246, 0.3) !important;
   color: white !important;
 }
 
@@ -234,19 +200,24 @@ textarea::placeholder {
   -webkit-text-fill-color: transparent !important;
 }
 
-/* Scrollbar */
+/* Scrollbar - Blue Theme */
 ::-webkit-scrollbar {
   width: 12px;
   background: #000000 !important;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, rgba(65, 105, 225, 0.6) 0%, rgba(30, 64, 175, 0.6) 100%) !important;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.6) 0%, rgba(37, 99, 235, 0.6) 100%) !important;
   border-radius: 6px;
 }
 
-/* Kill any remaining backgrounds on all elements except SVG */
-*:not(svg):not(path):not(circle):not(rect):not(line):not(polyline):not(polygon):not([class*="gradient"]):not([class*="Gradient"]):not(body):not(html):not(main):not(#root) {
+/* Force all borders to blue */
+* {
+  border-color: rgba(59, 130, 246, 0.3) !important;
+}
+
+/* Transparent backgrounds except specific elements */
+*:not(svg):not(path):not(circle):not(rect):not(line):not(polyline):not(polygon):not([class*="gradient"]):not([class*="Gradient"]):not(body):not(html):not(main):not(#root):not([class*="glass-"]) {
   background-color: transparent !important;
 }
 
@@ -254,30 +225,35 @@ textarea::placeholder {
 body, 
 html, 
 #root, 
-main,
-.glass-card,
-.glass-card-dark,
-.glass-royal,
-.glass-dark,
-[class*="glass-"] {
-  /* Keep their backgrounds */
-}
-
-body, html, #root, main {
+main {
   background: #000000 !important;
   background-color: #000000 !important;
 }
 
-[class*="glass-"] {
-  background: rgba(10, 10, 20, 0.85) !important;
-  background-color: rgba(10, 10, 20, 0.85) !important;
-  backdrop-filter: blur(20px) !important;
-  -webkit-backdrop-filter: blur(20px) !important;
+[class*="glass-"],
+.glass-card,
+.glass-card-dark,
+.glass-royal,
+.glass-dark {
+  background: rgba(30, 58, 138, 0.2) !important;
+  background-color: rgba(30, 58, 138, 0.2) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
 }
 
-/* Force borders to be blue */
-* {
-  border-color: rgba(65, 105, 225, 0.3) !important;
+/* Badge variants - Blue Theme */
+[class*="badge"],
+[data-badge] {
+  background: rgba(59, 130, 246, 0.2) !important;
+  border: 1px solid rgba(59, 130, 246, 0.5) !important;
+  color: white !important;
+}
+
+/* Separator - Blue Theme */
+[data-orientation="horizontal"],
+[data-orientation="vertical"],
+hr {
+  background: rgba(59, 130, 246, 0.3) !important;
 }
 
 /* Clickable elements */
@@ -289,5 +265,4 @@ select,
 textarea, 
 label {
   cursor: pointer !important;
-  pointer-events: auto !important;
 }
