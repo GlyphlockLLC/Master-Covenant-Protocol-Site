@@ -1,28 +1,25 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Check, Shield, Zap, Crown, AlertCircle, Settings } from "lucide-react";
+import { Check, Shield, Zap, Crown, AlertCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 export default function Pricing() {
-  const navigate = useNavigate();
   const [billingCycle, setBillingCycle] = useState("monthly");
   const [loading, setLoading] = useState(null);
   const [error, setError] = useState(null);
 
-  // ⚠️ REPLACE THESE WITH YOUR ACTUAL STRIPE PRICE IDs
   const plans = [
     {
       name: "Professional",
       icon: Shield,
-      price: { monthly: 299, annual: 2990 },
+      price: { monthly: 200 },
       priceId: {
-        monthly: "price_REPLACE_WITH_PROFESSIONAL_MONTHLY",
-        annual: "price_REPLACE_WITH_PROFESSIONAL_ANNUAL"
+        monthly: "price_1SUlImAOe9xXPv0na5BmMKKY"
       },
       description: "For individuals and small teams",
       features: [
@@ -38,10 +35,9 @@ export default function Pricing() {
     {
       name: "Enterprise",
       icon: Crown,
-      price: { monthly: 999, annual: 9990 },
+      price: { monthly: 2000 },
       priceId: {
-        monthly: "price_REPLACE_WITH_ENTERPRISE_MONTHLY",
-        annual: "price_REPLACE_WITH_ENTERPRISE_ANNUAL"
+        monthly: "price_1SUlRKAOe9xXPv0nW0uH1IQl"
       },
       description: "For organizations requiring advanced security",
       features: [
@@ -59,7 +55,7 @@ export default function Pricing() {
     {
       name: "Custom",
       icon: Zap,
-      price: { monthly: "Contact", annual: "Contact" },
+      price: { monthly: "Contact" },
       description: "Tailored solutions for your needs",
       features: [
         "Everything in Enterprise",
@@ -74,16 +70,11 @@ export default function Pricing() {
     }
   ];
 
-  const needsConfiguration = plans.some(plan => 
-    plan.priceId?.monthly?.includes("REPLACE") || 
-    plan.priceId?.annual?.includes("REPLACE")
-  );
-
   const handleSubscribe = async (plan) => {
-    const priceId = plan.priceId?.[billingCycle];
+    const priceId = plan.priceId?.monthly;
     
-    if (!priceId || priceId.includes("REPLACE")) {
-      navigate(createPageUrl("StripeSubscriptionSetup"));
+    if (!priceId) {
+      setError("Price configuration error");
       return;
     }
 
@@ -130,40 +121,7 @@ export default function Pricing() {
             <p className="text-xl text-gray-300 max-w-2xl mx-auto mb-8">
               Professional-grade cybersecurity tools. No free tier. All sales final.
             </p>
-
-            <div className="flex items-center justify-center gap-4 mb-8">
-              <Button
-                onClick={() => setBillingCycle("monthly")}
-                variant={billingCycle === "monthly" ? "default" : "outline"}
-                className={billingCycle === "monthly" ? "bg-blue-600" : ""}
-              >
-                Monthly
-              </Button>
-              <Button
-                onClick={() => setBillingCycle("annual")}
-                variant={billingCycle === "annual" ? "default" : "outline"}
-                className={billingCycle === "annual" ? "bg-blue-600" : ""}
-              >
-                Annual
-                <Badge className="ml-2 bg-green-500">Save 17%</Badge>
-              </Button>
-            </div>
           </div>
-
-          {needsConfiguration && (
-            <Alert className="mb-8 bg-yellow-500/10 border-yellow-500/30 max-w-3xl mx-auto">
-              <Settings className="h-4 w-4 text-yellow-400" />
-              <AlertDescription className="text-white">
-                <strong>Setup Required:</strong> Stripe subscriptions not configured yet.{" "}
-                <button 
-                  onClick={() => navigate(createPageUrl("StripeSubscriptionSetup"))}
-                  className="text-blue-400 hover:underline font-semibold"
-                >
-                  Click here for setup instructions
-                </button>
-              </AlertDescription>
-            </Alert>
-          )}
 
           {error && (
             <Alert className="mb-8 bg-red-500/10 border-red-500/30 max-w-3xl mx-auto">
@@ -208,15 +166,13 @@ export default function Pricing() {
                 <CardContent className="space-y-6">
                   <div>
                     <div className="text-4xl font-bold text-white">
-                      {typeof plan.price[billingCycle] === "number" ? (
+                      {typeof plan.price.monthly === "number" ? (
                         <>
-                          ${plan.price[billingCycle]}
-                          <span className="text-lg text-gray-400 font-normal">
-                            /{billingCycle === "monthly" ? "mo" : "yr"}
-                          </span>
+                          ${plan.price.monthly}
+                          <span className="text-lg text-gray-400 font-normal">/mo</span>
                         </>
                       ) : (
-                        <span className="text-3xl">{plan.price[billingCycle]}</span>
+                        <span className="text-3xl">{plan.price.monthly}</span>
                       )}
                     </div>
                   </div>
@@ -246,7 +202,7 @@ export default function Pricing() {
                           : "bg-gray-800 hover:bg-gray-700"
                       } text-white`}
                     >
-                      {loading === plan.name ? "Processing..." : needsConfiguration ? "Setup Required" : "Get Started"}
+                      {loading === plan.name ? "Processing..." : "Get Started"}
                     </Button>
                   )}
                 </CardContent>
