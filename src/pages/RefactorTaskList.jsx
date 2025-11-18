@@ -1,177 +1,189 @@
-import React, { useState } from "react";
+import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle2, Circle, AlertCircle } from "lucide-react";
+import { CheckCircle2, Circle, AlertCircle, Zap, Shield, DollarSign } from "lucide-react";
 
 export default function RefactorTaskList() {
   const tasks = {
-    "Priority 1: Critical Bugs & Console Errors": [
-      { task: "Fix any duplicate component registrations", status: "pending" },
-      { task: "Resolve any broken imports or missing dependencies", status: "completed" },
-      { task: "Fix any React key warnings", status: "pending" },
-      { task: "Resolve any API/integration errors", status: "pending" },
-      { task: "Fix any routing issues", status: "completed" },
-      { task: "Fix white-on-white text contrast issues", status: "completed" },
-      { task: "Nuclear CSS override for all white backgrounds", status: "completed" }
+    critical: [
+      { id: 1, title: "Stripe Integration - Fix API Key Configuration", status: "in-progress", priority: "critical" },
+      { id: 2, title: "OAuth Implementation - User Authentication Flow", status: "pending", priority: "critical" },
+      { id: 3, title: "Paywall System - Consultation & Service Access", status: "pending", priority: "critical" },
+      { id: 4, title: "Mobile Responsiveness - All Pages", status: "in-progress", priority: "critical" },
+      { id: 5, title: "Footer Scroll Issue - Fix Navigation", status: "completed", priority: "critical" },
     ],
-    "Priority 2: Security Tools Merge": [
-      { task: "Create unified VisualCryptography page", status: "completed" },
-      { task: "Merge QR Generator and Steganography", status: "completed" },
-      { task: "Consolidate shared file upload logic", status: "completed" },
-      { task: "Update navigation/routing", status: "completed" },
-      { task: "Create redirect pages", status: "completed" }
+    high: [
+      { id: 6, title: "White Background Fixes - Master Covenant Page", status: "completed", priority: "high" },
+      { id: 7, title: "White Background Fixes - Image Generator", status: "pending", priority: "high" },
+      { id: 8, title: "HSSS Redesign - Real Hotspot Mapping", status: "completed", priority: "high" },
+      { id: 9, title: "Payment Success Flow - Confirmation Pages", status: "pending", priority: "high" },
+      { id: 10, title: "Email Notifications - Consultation Booking", status: "pending", priority: "high" },
     ],
-    "Priority 3: Security Operations Center": [
-      { task: "Create unified SecurityOperationsCenter page", status: "completed" },
-      { task: "Merge HotzoneMapper and HSSS", status: "completed" },
-      { task: "Combine map visualization with threat monitoring", status: "completed" },
-      { task: "Update navigation/routing", status: "completed" },
-      { task: "Create redirect pages", status: "completed" }
+    medium: [
+      { id: 11, title: "Dashboard Analytics - User Metrics", status: "pending", priority: "medium" },
+      { id: 12, title: "Security Scanner - Real-time Monitoring", status: "pending", priority: "medium" },
+      { id: 13, title: "GlyphBot AI - Enhance Responses", status: "in-progress", priority: "medium" },
+      { id: 14, title: "NUPS POS - Inventory Sync", status: "pending", priority: "medium" },
+      { id: 15, title: "Documentation - API Reference", status: "pending", priority: "medium" },
     ],
-    "Priority 4: Governance Hub": [
-      { task: "Create unified GovernanceHub page", status: "completed" },
-      { task: "Integrate Master Covenant content", status: "completed" },
-      { task: "Add Dream Team as 'Our Team' tab", status: "completed" },
-      { task: "Update navigation/routing", status: "completed" },
-      { task: "Create redirect pages", status: "completed" }
-    ],
-    "Priority 5: Code Quality & Performance": [
-      { task: "Break down Home page into components", status: "completed" },
-      { task: "Create shared error handling components", status: "completed" },
-      { task: "Create shared loading components", status: "completed" },
-      { task: "Remove duplicate code across components", status: "in-progress" },
-      { task: "Optimize re-renders with memoization", status: "pending" },
-      { task: "Lazy load heavy components", status: "pending" },
-      { task: "Remove unused entities", status: "completed" }
-    ],
-    "Priority 6: UI/UX Consistency": [
-      { task: "Standardize card designs", status: "completed" },
-      { task: "Unify button styles", status: "completed" },
-      { task: "Fix dropdown/menu contrast", status: "completed" },
-      { task: "Consistent spacing and layouts", status: "completed" },
-      { task: "Standardize error handling UI", status: "completed" },
-      { task: "Consistent loading states", status: "completed" }
-    ],
-    "Priority 7: Navigation & Structure": [
-      { task: "Update Layout with consolidated pages", status: "completed" },
-      { task: "Remove links to deprecated pages", status: "completed" },
-      { task: "Create logical grouping in navigation", status: "completed" },
-      { task: "Update footer links", status: "completed" },
-      { task: "Update mobile menu", status: "completed" },
-      { task: "Implement proper 404 handling", status: "completed" },
-      { task: "Add breadcrumbs for complex sections", status: "pending" }
-    ],
-    "Completed Major Tasks": [
-      { task: "Video hero optimization", status: "completed" },
-      { task: "Logo positioning on hero", status: "completed" },
-      { task: "TechStackCarousel improvements", status: "completed" },
-      { task: "NavigationConfig centralization", status: "completed" },
-      { task: "3 major page consolidations", status: "completed" },
-      { task: "Glassmorphism theme fixes", status: "completed" },
-      { task: "Nuclear CSS dark mode enforcement", status: "completed" },
-      { task: "Removed unused entities", status: "completed" },
-      { task: "Split Home into 4 components", status: "completed" },
-      { task: "Created ErrorBoundary component", status: "completed" },
-      { task: "Created PageLoader component", status: "completed" },
-      { task: "Created DataLoadError component", status: "completed" },
-      { task: "Fixed GlyphBotJr dark mode", status: "completed" }
+    improvements: [
+      { title: "Home Page Scroll - 3D Effects", completed: true },
+      { title: "Navigation - Glassmorphism Design", completed: true },
+      { title: "Interactive Nebula Background", completed: true },
+      { title: "Tech Stack Carousel", completed: true },
+      { title: "Consultation Booking Form", completed: true },
     ]
   };
 
-  const getTotalTasks = () => Object.values(tasks).flat().length;
-  const getCompletedTasks = () => Object.values(tasks).flat().filter(t => t.status === "completed").length;
-  const getProgress = () => Math.round((getCompletedTasks() / getTotalTasks()) * 100);
+  const stats = {
+    total: Object.values(tasks).flat().filter(t => t.id).length,
+    completed: Object.values(tasks).flat().filter(t => t.status === "completed").length,
+    inProgress: Object.values(tasks).flat().filter(t => t.status === "in-progress").length,
+    pending: Object.values(tasks).flat().filter(t => t.status === "pending").length,
+  };
+
+  const getStatusIcon = (status) => {
+    switch (status) {
+      case "completed": return <CheckCircle2 className="w-5 h-5 text-green-400" />;
+      case "in-progress": return <Zap className="w-5 h-5 text-yellow-400 animate-pulse" />;
+      case "pending": return <Circle className="w-5 h-5 text-gray-400" />;
+      default: return <AlertCircle className="w-5 h-5 text-red-400" />;
+    }
+  };
+
+  const getPriorityColor = (priority) => {
+    switch (priority) {
+      case "critical": return "bg-red-500/20 text-red-400 border-red-500/30";
+      case "high": return "bg-orange-500/20 text-orange-400 border-orange-500/30";
+      case "medium": return "bg-blue-500/20 text-blue-400 border-blue-500/30";
+      default: return "bg-gray-500/20 text-gray-400 border-gray-500/30";
+    }
+  };
 
   return (
     <div className="min-h-screen bg-black text-white py-20">
       <div className="container mx-auto px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="mb-8">
-            <h1 className="text-4xl font-bold mb-4">
-              Refactoring <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">Task List</span>
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+              Launch <span className="text-blue-400">Preparation</span>
             </h1>
-            <p className="text-gray-400 mb-6">
-              Comprehensive consolidation, bug fixes, and optimization roadmap
+            <p className="text-xl text-gray-400">
+              Critical tasks before going live
             </p>
+          </div>
 
-            <div className="grid grid-cols-3 gap-4 mb-6">
-              <Card className="glass-card-dark">
-                <CardContent className="p-4 text-center">
-                  <div className="text-3xl font-bold text-blue-400">{getTotalTasks()}</div>
-                  <div className="text-sm text-gray-400">Total Tasks</div>
-                </CardContent>
-              </Card>
-              <Card className="glass-card-dark">
-                <CardContent className="p-4 text-center">
-                  <div className="text-3xl font-bold text-green-400">{getCompletedTasks()}</div>
-                  <div className="text-sm text-gray-400">Completed</div>
-                </CardContent>
-              </Card>
-              <Card className="glass-card-dark">
-                <CardContent className="p-4 text-center">
-                  <div className="text-3xl font-bold text-yellow-400">{getProgress()}%</div>
-                  <div className="text-sm text-gray-400">Progress</div>
-                </CardContent>
-              </Card>
-            </div>
-
-            <div className="w-full bg-gray-800 rounded-full h-3 mb-6">
-              <div
-                className="bg-gradient-to-r from-blue-600 to-blue-400 h-3 rounded-full transition-all"
-                style={{ width: `${getProgress()}%` }}
-              />
-            </div>
+          <div className="grid md:grid-cols-4 gap-4 mb-8">
+            <Card className="glass-card-dark">
+              <CardContent className="p-6">
+                <div className="text-3xl font-bold text-white mb-2">{stats.total}</div>
+                <div className="text-sm text-gray-400">Total Tasks</div>
+              </CardContent>
+            </Card>
+            <Card className="glass-card-dark border-green-500/30">
+              <CardContent className="p-6">
+                <div className="text-3xl font-bold text-green-400 mb-2">{stats.completed}</div>
+                <div className="text-sm text-gray-400">Completed</div>
+              </CardContent>
+            </Card>
+            <Card className="glass-card-dark border-yellow-500/30">
+              <CardContent className="p-6">
+                <div className="text-3xl font-bold text-yellow-400 mb-2">{stats.inProgress}</div>
+                <div className="text-sm text-gray-400">In Progress</div>
+              </CardContent>
+            </Card>
+            <Card className="glass-card-dark border-gray-500/30">
+              <CardContent className="p-6">
+                <div className="text-3xl font-bold text-gray-400 mb-2">{stats.pending}</div>
+                <div className="text-sm text-gray-400">Pending</div>
+              </CardContent>
+            </Card>
           </div>
 
           <div className="space-y-6">
-            {Object.entries(tasks).map(([category, taskList]) => (
-              <Card key={category} className="glass-card-dark">
-                <CardHeader>
-                  <CardTitle className="text-white flex items-center justify-between">
-                    {category}
-                    <Badge variant="outline" className="text-gray-400">
-                      {taskList.filter(t => t.status === "completed").length}/{taskList.length}
+            <Card className="glass-card-dark border-red-500/50">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-red-400">
+                  <AlertCircle className="w-5 h-5" />
+                  Critical Priority
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {tasks.critical.map((task) => (
+                  <div key={task.id} className="flex items-center justify-between p-3 rounded-lg glass-dark">
+                    <div className="flex items-center gap-3">
+                      {getStatusIcon(task.status)}
+                      <span className="font-medium">{task.title}</span>
+                    </div>
+                    <Badge className={getPriorityColor(task.priority)}>
+                      {task.status}
                     </Badge>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2">
-                    {taskList.map((item, idx) => (
-                      <div
-                        key={idx}
-                        className="flex items-start gap-3 p-3 rounded-lg glass-card hover:border-blue-500/50 transition-colors"
-                      >
-                        {item.status === "completed" ? (
-                          <CheckCircle2 className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
-                        ) : item.status === "in-progress" ? (
-                          <AlertCircle className="w-5 h-5 text-yellow-400 flex-shrink-0 mt-0.5" />
-                        ) : (
-                          <Circle className="w-5 h-5 text-gray-600 flex-shrink-0 mt-0.5" />
-                        )}
-                        <span className={item.status === "completed" ? "line-through text-gray-500" : "text-gray-300"}>
-                          {item.task}
-                        </span>
-                      </div>
-                    ))}
                   </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                ))}
+              </CardContent>
+            </Card>
 
-          <Card className="mt-6 glass-card-dark border-green-500/30">
-            <CardContent className="p-6">
-              <h3 className="font-bold text-lg mb-2 text-white">Latest Improvements</h3>
-              <ul className="text-sm text-green-300 space-y-2 list-disc list-inside">
-                <li>✅ Created reusable error handling components (ErrorBoundary, DataLoadError)</li>
-                <li>✅ Standardized loading states with PageLoader component</li>
-                <li>✅ Fixed GlyphBotJr dark mode consistency</li>
-                <li>✅ Enhanced global CSS with stronger dark mode enforcement</li>
-                <li>✅ Improved dropdown/menu contrast and visibility</li>
-                <li>✅ Removed darkMode prop dependency - global dark theme</li>
-              </ul>
-            </CardContent>
-          </Card>
+            <Card className="glass-card-dark border-orange-500/50">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-orange-400">
+                  <Shield className="w-5 h-5" />
+                  High Priority
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {tasks.high.map((task) => (
+                  <div key={task.id} className="flex items-center justify-between p-3 rounded-lg glass-dark">
+                    <div className="flex items-center gap-3">
+                      {getStatusIcon(task.status)}
+                      <span className="font-medium">{task.title}</span>
+                    </div>
+                    <Badge className={getPriorityColor(task.priority)}>
+                      {task.status}
+                    </Badge>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+
+            <Card className="glass-card-dark border-blue-500/50">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-blue-400">
+                  <DollarSign className="w-5 h-5" />
+                  Medium Priority
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {tasks.medium.map((task) => (
+                  <div key={task.id} className="flex items-center justify-between p-3 rounded-lg glass-dark">
+                    <div className="flex items-center gap-3">
+                      {getStatusIcon(task.status)}
+                      <span className="font-medium">{task.title}</span>
+                    </div>
+                    <Badge className={getPriorityColor(task.priority)}>
+                      {task.status}
+                    </Badge>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+
+            <Card className="glass-card-dark border-green-500/50">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-green-400">
+                  <CheckCircle2 className="w-5 h-5" />
+                  Recent Improvements
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {tasks.improvements.map((item, idx) => (
+                  <div key={idx} className="flex items-center gap-3 p-3 rounded-lg glass-dark">
+                    <CheckCircle2 className="w-5 h-5 text-green-400" />
+                    <span className="font-medium">{item.title}</span>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
     </div>

@@ -36,7 +36,7 @@ import GovernanceHub from './pages/GovernanceHub';
 import EntertainerCheckIn from './pages/EntertainerCheckIn';
 import VIPContract from './pages/VIPContract';
 import ImageGenerator from './pages/ImageGenerator';
-import Layout from './Layout.jsx';
+import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
@@ -83,5 +83,5 @@ export const PAGES = {
 export const pagesConfig = {
     mainPage: "Home",
     Pages: PAGES,
-    Layout: Layout,
+    Layout: __Layout,
 };

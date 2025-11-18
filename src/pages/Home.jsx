@@ -11,7 +11,7 @@ import BoundAICards from '@/components/home/BoundAICards';
 import CTASection from '@/components/home/CTASection';
 
 const useScrollEffect = (sectionRef) => {
-  const [style, setStyle] = useState({ transform: 'perspective(1000px)', opacity: 0 });
+  const [style, setStyle] = useState({ transform: 'perspective(1000px)', opacity: 1 });
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,22 +23,22 @@ const useScrollEffect = (sectionRef) => {
         const screenCenter = screenHeight / 2;
         const distance = screenCenter - elementCenter;
         
-        const factor = distance / (screenCenter * 1.1);
+        const factor = distance / (screenCenter * 1.5);
 
         let rotation = 0;
         let scale = 1;
         let opacity = 1;
 
         if (factor < 0) {
-          const progress = Math.min(1, (1 + factor) * 1.2);
-          rotation = (1 - progress) * 25;
-          scale = 0.85 + (progress * 0.15);
-          opacity = Math.max(0, progress);
+          const progress = Math.max(0, Math.min(1, (1 + factor) * 1.5));
+          rotation = (1 - progress) * 15;
+          scale = 0.9 + (progress * 0.1);
+          opacity = Math.max(0.3, progress);
         } else if (factor > 0) {
-          const progress = Math.min(1, factor * 1.2);
-          rotation = -progress * 25;
-          scale = 1 - (progress * 0.15);
-          opacity = Math.max(0, 1 - progress);
+          const progress = Math.min(1, factor * 1.5);
+          rotation = -progress * 15;
+          scale = 1 - (progress * 0.1);
+          opacity = Math.max(0.3, 1 - progress);
         }
 
         requestAnimationFrame(() => {
@@ -65,11 +65,11 @@ const ScrollSection = ({ children }) => {
   const sectionRef = useRef(null);
   const style = useScrollEffect(sectionRef);
   return (
-    <section ref={sectionRef} className="w-full min-h-screen flex items-center justify-center snap-start relative py-12">
+    <section ref={sectionRef} className="w-full min-h-screen flex items-center justify-center relative py-8 md:py-16">
       <div className="absolute inset-0 -z-10">
-        <div className="glass-card w-[95%] h-[90%] mx-auto my-auto absolute inset-0 rounded-3xl" />
+        <div className="glass-card w-full h-full mx-auto rounded-none md:w-[95%] md:h-[90%] md:rounded-3xl" />
       </div>
-      <div style={style} className="w-full transition-all duration-150 ease-out">
+      <div style={style} className="w-full transition-all duration-200 ease-out">
         {children}
       </div>
     </section>
@@ -78,21 +78,11 @@ const ScrollSection = ({ children }) => {
 
 export default function Home() {
   const navigate = useNavigate();
-  const [email, setEmail] = React.useState('');
-
-  const handleEmailSubmit = (e) => {
-    e.preventDefault();
-    if (email) {
-      navigate(createPageUrl("Consultation") + `?email=${encodeURIComponent(email)}`);
-    }
-  };
 
   useEffect(() => {
-    document.documentElement.style.scrollSnapType = 'y mandatory';
     document.documentElement.style.scrollBehavior = 'smooth';
     
     return () => {
-      document.documentElement.style.scrollSnapType = '';
       document.documentElement.style.scrollBehavior = '';
     };
   }, []);
