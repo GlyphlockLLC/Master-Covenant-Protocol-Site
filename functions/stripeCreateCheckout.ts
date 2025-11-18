@@ -14,7 +14,8 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { priceId, mode = 'payment', successUrl, cancelUrl } = await req.json();
+    const body = await req.json();
+    const { priceId, mode = 'payment', successUrl, cancelUrl } = body;
 
     if (!priceId) {
       return Response.json({ error: 'priceId is required' }, { status: 400 });
@@ -35,6 +36,9 @@ Deno.serve(async (req) => {
     return Response.json({ sessionId: session.id, url: session.url });
   } catch (error) {
     console.error('Stripe checkout error:', error);
-    return Response.json({ error: error.message }, { status: 500 });
+    return Response.json({ 
+      error: error.message,
+      details: error.stack 
+    }, { status: 500 });
   }
 });

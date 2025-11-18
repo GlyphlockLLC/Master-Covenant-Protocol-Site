@@ -11,6 +11,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 export default function Pricing() {
   const [billingCycle, setBillingCycle] = useState("monthly");
   const [loading, setLoading] = useState(null);
+  const [error, setError] = useState(null);
 
   const plans = [
     {
@@ -68,14 +69,20 @@ export default function Pricing() {
   const handleSubscribe = async (plan) => {
     try {
       setLoading(plan.name);
-      const isAuth = await base44.auth.isAuthenticated();
+      setError(null);
       
+      const isAuth = await base44.auth.isAuthenticated();
       if (!isAuth) {
         base44.auth.redirectToLogin(window.location.pathname);
         return;
       }
 
       const origin = window.location.origin;
+      
+      console.log('Creating checkout session...', {
+        priceId: plan.priceId,
+        mode: 'payment'
+      });
       
       const response = await base44.functions.invoke('stripeCreateCheckout', {
         priceId: plan.priceId,
@@ -84,14 +91,17 @@ export default function Pricing() {
         cancelUrl: `${origin}${createPageUrl('Pricing')}`
       });
 
+      console.log('Checkout response:', response);
+
       if (response.data?.url) {
         window.location.href = response.data.url;
       } else {
-        throw new Error('No checkout URL returned');
+        throw new Error(response.data?.error || 'No checkout URL returned');
       }
-    } catch (error) {
-      console.error('Subscription error:', error);
-      alert(`Error: ${error.message || 'Failed to create checkout session'}`);
+    } catch (err) {
+      console.error('Subscription error:', err);
+      const errorMessage = err.response?.data?.error || err.message || 'Failed to create checkout session';
+      setError(errorMessage);
     } finally {
       setLoading(null);
     }
@@ -127,6 +137,15 @@ export default function Pricing() {
               </Button>
             </div>
           </div>
+
+          {error && (
+            <Alert className="mb-8 bg-red-500/10 border-red-500/30 max-w-3xl mx-auto">
+              <AlertCircle className="h-4 w-4 text-red-400" />
+              <AlertDescription className="text-white">
+                <strong>Error:</strong> {error}
+              </AlertDescription>
+            </Alert>
+          )}
 
           <Alert className="mb-8 bg-blue-500/10 border-blue-500/30 max-w-3xl mx-auto">
             <AlertCircle className="h-4 w-4 text-blue-400" />
