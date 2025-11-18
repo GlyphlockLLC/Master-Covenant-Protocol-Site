@@ -1,5 +1,4 @@
-import React from 'react';
-import { Helmet } from 'react-helmet';
+import React, { useEffect } from 'react';
 
 export default function SEOHead({ 
   title = "GlyphLock - Quantum-Resistant Cybersecurity & AI Security Platform",
@@ -12,65 +11,84 @@ export default function SEOHead({
   const siteUrl = "https://glyphlock.io";
   const fullUrl = url ? `${siteUrl}${url}` : siteUrl;
 
-  return (
-    <Helmet>
-      {/* Primary Meta Tags */}
-      <title>{title}</title>
-      <meta name="title" content={title} />
-      <meta name="description" content={description} />
-      <meta name="keywords" content={keywords} />
-      
-      {/* Robots */}
-      <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
-      <meta name="googlebot" content="index, follow" />
-      <meta name="bingbot" content="index, follow" />
-      
-      {/* Open Graph / Facebook */}
-      <meta property="og:type" content={type} />
-      <meta property="og:url" content={fullUrl} />
-      <meta property="og:title" content={title} />
-      <meta property="og:description" content={description} />
-      <meta property="og:image" content={image} />
-      <meta property="og:site_name" content="GlyphLock" />
-      
-      {/* Twitter */}
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:url" content={fullUrl} />
-      <meta name="twitter:title" content={title} />
-      <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={image} />
-      
-      {/* Additional SEO */}
-      <meta name="author" content="GlyphLock Security LLC" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
-      <meta name="language" content="English" />
-      <link rel="canonical" href={fullUrl} />
-      
-      {/* Structured Data */}
-      <script type="application/ld+json">
-        {JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "Organization",
-          "name": "GlyphLock Security LLC",
-          "url": siteUrl,
-          "logo": image,
-          "description": description,
-          "address": {
-            "@type": "PostalAddress",
-            "addressLocality": "El Mirage",
-            "addressRegion": "AZ",
-            "addressCountry": "US"
-          },
-          "contactPoint": {
-            "@type": "ContactPoint",
-            "telephone": "+1-424-246-6499",
-            "contactType": "customer service",
-            "email": "glyphlock@gmail.com"
-          },
-          "sameAs": []
-        })}
-      </script>
-    </Helmet>
-  );
+  useEffect(() => {
+    // Update title
+    document.title = title;
+
+    // Update or create meta tags
+    const updateMetaTag = (name, content, property = false) => {
+      const attribute = property ? 'property' : 'name';
+      let element = document.querySelector(`meta[${attribute}="${name}"]`);
+      if (!element) {
+        element = document.createElement('meta');
+        element.setAttribute(attribute, name);
+        document.head.appendChild(element);
+      }
+      element.setAttribute('content', content);
+    };
+
+    // Primary Meta Tags
+    updateMetaTag('title', title);
+    updateMetaTag('description', description);
+    updateMetaTag('keywords', keywords);
+    updateMetaTag('robots', 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1');
+    updateMetaTag('googlebot', 'index, follow');
+    updateMetaTag('bingbot', 'index, follow');
+    updateMetaTag('author', 'GlyphLock Security LLC');
+
+    // Open Graph
+    updateMetaTag('og:type', type, true);
+    updateMetaTag('og:url', fullUrl, true);
+    updateMetaTag('og:title', title, true);
+    updateMetaTag('og:description', description, true);
+    updateMetaTag('og:image', image, true);
+    updateMetaTag('og:site_name', 'GlyphLock', true);
+
+    // Twitter
+    updateMetaTag('twitter:card', 'summary_large_image');
+    updateMetaTag('twitter:url', fullUrl);
+    updateMetaTag('twitter:title', title);
+    updateMetaTag('twitter:description', description);
+    updateMetaTag('twitter:image', image);
+
+    // Canonical link
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement('link');
+      canonical.setAttribute('rel', 'canonical');
+      document.head.appendChild(canonical);
+    }
+    canonical.setAttribute('href', fullUrl);
+
+    // Structured Data
+    let script = document.querySelector('script[type="application/ld+json"]');
+    if (!script) {
+      script = document.createElement('script');
+      script.setAttribute('type', 'application/ld+json');
+      document.head.appendChild(script);
+    }
+    script.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "GlyphLock Security LLC",
+      "url": siteUrl,
+      "logo": image,
+      "description": description,
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "El Mirage",
+        "addressRegion": "AZ",
+        "addressCountry": "US"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+1-424-246-6499",
+        "contactType": "customer service",
+        "email": "glyphlock@gmail.com"
+      },
+      "sameAs": []
+    });
+  }, [title, description, keywords, image, fullUrl, type]);
+
+  return null;
 }
