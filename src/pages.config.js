@@ -37,6 +37,7 @@ import EntertainerCheckIn from './pages/EntertainerCheckIn';
 import VIPContract from './pages/VIPContract';
 import ImageGenerator from './pages/ImageGenerator';
 import Partners from './pages/Partners';
+import StripeSubscriptionSetup from './pages/StripeSubscriptionSetup';
 import __Layout from './Layout.jsx';
 
 
@@ -80,6 +81,7 @@ export const PAGES = {
     "VIPContract": VIPContract,
     "ImageGenerator": ImageGenerator,
     "Partners": Partners,
+    "StripeSubscriptionSetup": StripeSubscriptionSetup,
 }
 
 export const pagesConfig = {

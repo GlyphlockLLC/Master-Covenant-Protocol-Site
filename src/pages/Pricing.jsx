@@ -1,26 +1,28 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { base44 } from "@/api/base44Client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Check, Shield, Zap, Crown, AlertCircle } from "lucide-react";
+import { Check, Shield, Zap, Crown, AlertCircle, Settings } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 export default function Pricing() {
+  const navigate = useNavigate();
   const [billingCycle, setBillingCycle] = useState("monthly");
   const [loading, setLoading] = useState(null);
   const [error, setError] = useState(null);
 
+  // ⚠️ REPLACE THESE WITH YOUR ACTUAL STRIPE PRICE IDs
   const plans = [
     {
       name: "Professional",
       icon: Shield,
       price: { monthly: 299, annual: 2990 },
       priceId: {
-        monthly: "NEED_TO_CREATE_IN_STRIPE",
-        annual: "NEED_TO_CREATE_IN_STRIPE"
+        monthly: "price_REPLACE_WITH_PROFESSIONAL_MONTHLY",
+        annual: "price_REPLACE_WITH_PROFESSIONAL_ANNUAL"
       },
       description: "For individuals and small teams",
       features: [
@@ -38,8 +40,8 @@ export default function Pricing() {
       icon: Crown,
       price: { monthly: 999, annual: 9990 },
       priceId: {
-        monthly: "NEED_TO_CREATE_IN_STRIPE",
-        annual: "NEED_TO_CREATE_IN_STRIPE"
+        monthly: "price_REPLACE_WITH_ENTERPRISE_MONTHLY",
+        annual: "price_REPLACE_WITH_ENTERPRISE_ANNUAL"
       },
       description: "For organizations requiring advanced security",
       features: [
@@ -72,11 +74,16 @@ export default function Pricing() {
     }
   ];
 
+  const needsConfiguration = plans.some(plan => 
+    plan.priceId?.monthly?.includes("REPLACE") || 
+    plan.priceId?.annual?.includes("REPLACE")
+  );
+
   const handleSubscribe = async (plan) => {
     const priceId = plan.priceId?.[billingCycle];
     
-    if (!priceId || priceId.includes("NEED_TO_CREATE")) {
-      setError("⚠️ Stripe products not configured yet! Go to stripe.com dashboard and create:\n\n1. Product: 'GlyphLock Professional'\n   - Monthly price: $299\n   - Annual price: $2990\n\n2. Product: 'GlyphLock Enterprise'\n   - Monthly price: $999\n   - Annual price: $9990\n\nThen update the priceId fields in this file.");
+    if (!priceId || priceId.includes("REPLACE")) {
+      navigate(createPageUrl("StripeSubscriptionSetup"));
       return;
     }
 
@@ -143,11 +150,26 @@ export default function Pricing() {
             </div>
           </div>
 
+          {needsConfiguration && (
+            <Alert className="mb-8 bg-yellow-500/10 border-yellow-500/30 max-w-3xl mx-auto">
+              <Settings className="h-4 w-4 text-yellow-400" />
+              <AlertDescription className="text-white">
+                <strong>Setup Required:</strong> Stripe subscriptions not configured yet.{" "}
+                <button 
+                  onClick={() => navigate(createPageUrl("StripeSubscriptionSetup"))}
+                  className="text-blue-400 hover:underline font-semibold"
+                >
+                  Click here for setup instructions
+                </button>
+              </AlertDescription>
+            </Alert>
+          )}
+
           {error && (
             <Alert className="mb-8 bg-red-500/10 border-red-500/30 max-w-3xl mx-auto">
               <AlertCircle className="h-4 w-4 text-red-400" />
-              <AlertDescription className="text-white whitespace-pre-wrap">
-                {error}
+              <AlertDescription className="text-white">
+                <strong>Error:</strong> {error}
               </AlertDescription>
             </Alert>
           )}
@@ -224,7 +246,7 @@ export default function Pricing() {
                           : "bg-gray-800 hover:bg-gray-700"
                       } text-white`}
                     >
-                      {loading === plan.name ? "Processing..." : "Get Started"}
+                      {loading === plan.name ? "Processing..." : needsConfiguration ? "Setup Required" : "Get Started"}
                     </Button>
                   )}
                 </CardContent>
