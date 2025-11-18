@@ -1,30 +1,77 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle2, Circle, AlertCircle, Zap, Shield, DollarSign } from "lucide-react";
+import { CheckCircle2, Circle, AlertCircle, Zap, Shield, DollarSign, Lock, Database, Globe, Cpu } from "lucide-react";
 
 export default function RefactorTaskList() {
   const tasks = {
     critical: [
-      { id: 1, title: "Stripe Integration - Fix API Key Configuration", status: "in-progress", priority: "critical" },
-      { id: 2, title: "OAuth Implementation - User Authentication Flow", status: "pending", priority: "critical" },
-      { id: 3, title: "Paywall System - Consultation & Service Access", status: "pending", priority: "critical" },
-      { id: 4, title: "Mobile Responsiveness - All Pages", status: "in-progress", priority: "critical" },
-      { id: 5, title: "Footer Scroll Issue - Fix Navigation", status: "completed", priority: "critical" },
+      { id: 1, title: "Stripe Voucher Integration - Build Purchase Flow", status: "pending", priority: "critical" },
+      { id: 2, title: "Stripe Webhook Handler - Payment Verification", status: "pending", priority: "critical" },
+      { id: 3, title: "OAuth Implementation - User Authentication Flow", status: "pending", priority: "critical" },
+      { id: 4, title: "Paywall System - Service Access Control", status: "pending", priority: "critical" },
+      { id: 5, title: "Mobile Responsiveness - All Pages", status: "in-progress", priority: "critical" },
+      { id: 6, title: "Voucher Redemption System - QR Verification", status: "pending", priority: "critical" },
+      { id: 7, title: "Payment Success Flow - User Dashboard", status: "pending", priority: "critical" },
+      { id: 8, title: "Security Headers - CSP & CORS", status: "pending", priority: "critical" },
+      { id: 9, title: "Rate Limiting - API Protection", status: "pending", priority: "critical" },
+      { id: 10, title: "Error Handling - Global Error Boundaries", status: "pending", priority: "critical" },
     ],
     high: [
-      { id: 6, title: "White Background Fixes - Master Covenant Page", status: "completed", priority: "high" },
-      { id: 7, title: "White Background Fixes - Image Generator", status: "pending", priority: "high" },
-      { id: 8, title: "HSSS Redesign - Real Hotspot Mapping", status: "completed", priority: "high" },
-      { id: 9, title: "Payment Success Flow - Confirmation Pages", status: "pending", priority: "high" },
-      { id: 10, title: "Email Notifications - Consultation Booking", status: "pending", priority: "high" },
+      { id: 11, title: "Voucher Management Dashboard - Admin Panel", status: "pending", priority: "high" },
+      { id: 12, title: "Stripe Product Catalog Display - Pricing Page", status: "pending", priority: "high" },
+      { id: 13, title: "Email Notifications - Purchase Confirmations", status: "pending", priority: "high" },
+      { id: 14, title: "Voucher Balance Tracking - User Wallet", status: "pending", priority: "high" },
+      { id: 15, title: "Payment History - Transaction Records", status: "pending", priority: "high" },
+      { id: 16, title: "Refund System - Customer Service", status: "pending", priority: "high" },
+      { id: 17, title: "Bulk Voucher Purchase - Enterprise Features", status: "pending", priority: "high" },
+      { id: 18, title: "Partner Management - Venue Integration", status: "pending", priority: "high" },
+      { id: 19, title: "White Background Fixes - Image Generator", status: "pending", priority: "high" },
+      { id: 20, title: "Master Covenant - Legal Document Access", status: "pending", priority: "high" },
+      { id: 21, title: "QR Code Security - Anti-Fraud Measures", status: "pending", priority: "high" },
+      { id: 22, title: "User Profile Management - Settings Page", status: "pending", priority: "high" },
+      { id: 23, title: "Search Functionality - Global Search", status: "pending", priority: "high" },
+      { id: 24, title: "Analytics Dashboard - Business Metrics", status: "pending", priority: "high" },
+      { id: 25, title: "API Documentation - Developer Portal", status: "pending", priority: "high" },
     ],
     medium: [
-      { id: 11, title: "Dashboard Analytics - User Metrics", status: "pending", priority: "medium" },
-      { id: 12, title: "Security Scanner - Real-time Monitoring", status: "pending", priority: "medium" },
-      { id: 13, title: "GlyphBot AI - Enhance Responses", status: "in-progress", priority: "medium" },
-      { id: 14, title: "NUPS POS - Inventory Sync", status: "pending", priority: "medium" },
-      { id: 15, title: "Documentation - API Reference", status: "pending", priority: "medium" },
+      { id: 26, title: "Voucher Transfer System - P2P Transfers", status: "pending", priority: "medium" },
+      { id: 27, title: "Subscription Management - Recurring Vouchers", status: "pending", priority: "medium" },
+      { id: 28, title: "Gift Card Feature - Send to Friends", status: "pending", priority: "medium" },
+      { id: 29, title: "Loyalty Program - Rewards System", status: "pending", priority: "medium" },
+      { id: 30, title: "Promo Codes - Discount System", status: "pending", priority: "medium" },
+      { id: 31, title: "Multi-Currency Support - International", status: "pending", priority: "medium" },
+      { id: 32, title: "Tax Calculation - Automatic Tax", status: "pending", priority: "medium" },
+      { id: 33, title: "Invoice Generation - PDF Receipts", status: "pending", priority: "medium" },
+      { id: 34, title: "Voucher Expiration - Auto-Alerts", status: "pending", priority: "medium" },
+      { id: 35, title: "Usage Analytics - Redemption Tracking", status: "pending", priority: "medium" },
+      { id: 36, title: "NUPS POS Integration - Voucher Acceptance", status: "pending", priority: "medium" },
+      { id: 37, title: "GlyphBot AI - Payment Assistance", status: "pending", priority: "medium" },
+      { id: 38, title: "Security Scanner - Vulnerability Detection", status: "pending", priority: "medium" },
+      { id: 39, title: "Blockchain Integration - Immutable Records", status: "pending", priority: "medium" },
+      { id: 40, title: "Hotzone Mapper - Venue Security", status: "pending", priority: "medium" },
+      { id: 41, title: "Steganography Tools - Hidden Messages", status: "pending", priority: "medium" },
+      { id: 42, title: "2FA Authentication - Enhanced Security", status: "pending", priority: "medium" },
+      { id: 43, title: "Session Management - Auto Logout", status: "pending", priority: "medium" },
+      { id: 44, title: "Audit Logs - Activity Tracking", status: "pending", priority: "medium" },
+      { id: 45, title: "Backup System - Data Recovery", status: "pending", priority: "medium" },
+    ],
+    low: [
+      { id: 46, title: "Dark Mode Toggle - Theme Switcher", status: "pending", priority: "low" },
+      { id: 47, title: "Social Media Integration - Share Features", status: "pending", priority: "low" },
+      { id: 48, title: "Blog System - Content Management", status: "pending", priority: "low" },
+      { id: 49, title: "Newsletter Signup - Email Marketing", status: "pending", priority: "low" },
+      { id: 50, title: "FAQ System - Help Center", status: "pending", priority: "low" },
+      { id: 51, title: "Live Chat Support - Customer Service", status: "pending", priority: "low" },
+      { id: 52, title: "Testimonials Page - Customer Reviews", status: "pending", priority: "low" },
+      { id: 53, title: "Press Kit - Media Resources", status: "pending", priority: "low" },
+      { id: 54, title: "Career Page - Job Listings", status: "pending", priority: "low" },
+      { id: 55, title: "Partner Logos - Brand Showcase", status: "pending", priority: "low" },
+      { id: 56, title: "Video Tutorials - User Guides", status: "pending", priority: "low" },
+      { id: 57, title: "Webinar Registration - Events", status: "pending", priority: "low" },
+      { id: 58, title: "Case Studies - Success Stories", status: "pending", priority: "low" },
+      { id: 59, title: "Comparison Charts - vs Competitors", status: "pending", priority: "low" },
+      { id: 60, title: "ROI Calculator - Business Tool", status: "pending", priority: "low" },
     ],
     improvements: [
       { title: "Home Page Scroll - 3D Effects", completed: true },
@@ -32,6 +79,9 @@ export default function RefactorTaskList() {
       { title: "Interactive Nebula Background", completed: true },
       { title: "Tech Stack Carousel", completed: true },
       { title: "Consultation Booking Form", completed: true },
+      { title: "Footer Scroll Issue - Fix Navigation", completed: true },
+      { title: "White Background Fixes - Master Covenant Page", completed: true },
+      { title: "HSSS Redesign - Real Hotspot Mapping", completed: true },
     ]
   };
 
@@ -56,6 +106,7 @@ export default function RefactorTaskList() {
       case "critical": return "bg-red-500/20 text-red-400 border-red-500/30";
       case "high": return "bg-orange-500/20 text-orange-400 border-orange-500/30";
       case "medium": return "bg-blue-500/20 text-blue-400 border-blue-500/30";
+      case "low": return "bg-gray-500/20 text-gray-400 border-gray-500/30";
       default: return "bg-gray-500/20 text-gray-400 border-gray-500/30";
     }
   };
@@ -66,10 +117,10 @@ export default function RefactorTaskList() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Launch <span className="text-blue-400">Preparation</span>
+              Development <span className="text-blue-400">Roadmap</span>
             </h1>
             <p className="text-xl text-gray-400">
-              Critical tasks before going live
+              60 tasks to production launch
             </p>
           </div>
 
@@ -105,7 +156,7 @@ export default function RefactorTaskList() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-red-400">
                   <AlertCircle className="w-5 h-5" />
-                  Critical Priority
+                  Critical Priority (10 tasks)
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
@@ -127,7 +178,7 @@ export default function RefactorTaskList() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-orange-400">
                   <Shield className="w-5 h-5" />
-                  High Priority
+                  High Priority (15 tasks)
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
@@ -148,8 +199,8 @@ export default function RefactorTaskList() {
             <Card className="glass-card-dark border-blue-500/50">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-blue-400">
-                  <DollarSign className="w-5 h-5" />
-                  Medium Priority
+                  <Database className="w-5 h-5" />
+                  Medium Priority (20 tasks)
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
@@ -167,11 +218,33 @@ export default function RefactorTaskList() {
               </CardContent>
             </Card>
 
+            <Card className="glass-card-dark border-gray-500/50">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-gray-400">
+                  <Globe className="w-5 h-5" />
+                  Low Priority (15 tasks)
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {tasks.low.map((task) => (
+                  <div key={task.id} className="flex items-center justify-between p-3 rounded-lg glass-dark">
+                    <div className="flex items-center gap-3">
+                      {getStatusIcon(task.status)}
+                      <span className="font-medium">{task.title}</span>
+                    </div>
+                    <Badge className={getPriorityColor(task.priority)}>
+                      {task.status}
+                    </Badge>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+
             <Card className="glass-card-dark border-green-500/50">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-green-400">
                   <CheckCircle2 className="w-5 h-5" />
-                  Recent Improvements
+                  Completed Improvements (8 tasks)
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
