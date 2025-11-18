@@ -6,72 +6,72 @@ import { CheckCircle2, Circle, AlertCircle, Zap, Shield, DollarSign, Lock, Datab
 export default function RefactorTaskList() {
   const tasks = {
     critical: [
-      { id: 1, title: "Stripe Voucher Integration - Build Purchase Flow", status: "pending", priority: "critical" },
-      { id: 2, title: "Stripe Webhook Handler - Payment Verification", status: "pending", priority: "critical" },
-      { id: 3, title: "OAuth Implementation - User Authentication Flow", status: "pending", priority: "critical" },
-      { id: 4, title: "Paywall System - Service Access Control", status: "pending", priority: "critical" },
-      { id: 5, title: "Mobile Responsiveness - All Pages", status: "in-progress", priority: "critical" },
-      { id: 6, title: "Voucher Redemption System - QR Verification", status: "pending", priority: "critical" },
-      { id: 7, title: "Payment Success Flow - User Dashboard", status: "pending", priority: "critical" },
-      { id: 8, title: "Security Headers - CSP & CORS", status: "pending", priority: "critical" },
-      { id: 9, title: "Rate Limiting - API Protection", status: "pending", priority: "critical" },
-      { id: 10, title: "Error Handling - Global Error Boundaries", status: "pending", priority: "critical" },
+      { id: 1, title: "URGENT: Fix Color Scheme - All Pages Dark Theme", status: "in-progress", priority: "critical" },
+      { id: 2, title: "Master Covenant Page - Dark Glassmorphism", status: "in-progress", priority: "critical" },
+      { id: 3, title: "Stripe Voucher Integration - Build Purchase Flow", status: "pending", priority: "critical" },
+      { id: 4, title: "Stripe Webhook Handler - Payment Verification", status: "pending", priority: "critical" },
+      { id: 5, title: "OAuth Implementation - User Authentication Flow", status: "completed", priority: "critical" },
+      { id: 6, title: "Paywall System - Service Access Control", status: "pending", priority: "critical" },
+      { id: 7, title: "Mobile Responsiveness - All Pages", status: "in-progress", priority: "critical" },
+      { id: 8, title: "Voucher Redemption System - QR Verification", status: "pending", priority: "critical" },
+      { id: 9, title: "Payment Success Flow - User Dashboard", status: "pending", priority: "critical" },
+      { id: 10, title: "Security Headers - CSP & CORS", status: "pending", priority: "critical" },
     ],
     high: [
-      { id: 11, title: "Voucher Management Dashboard - Admin Panel", status: "pending", priority: "high" },
-      { id: 12, title: "Stripe Product Catalog Display - Pricing Page", status: "pending", priority: "high" },
-      { id: 13, title: "Email Notifications - Purchase Confirmations", status: "pending", priority: "high" },
-      { id: 14, title: "Voucher Balance Tracking - User Wallet", status: "pending", priority: "high" },
-      { id: 15, title: "Payment History - Transaction Records", status: "pending", priority: "high" },
-      { id: 16, title: "Refund System - Customer Service", status: "pending", priority: "high" },
-      { id: 17, title: "Bulk Voucher Purchase - Enterprise Features", status: "pending", priority: "high" },
-      { id: 18, title: "Partner Management - Venue Integration", status: "pending", priority: "high" },
-      { id: 19, title: "White Background Fixes - Image Generator", status: "pending", priority: "high" },
-      { id: 20, title: "Master Covenant - Legal Document Access", status: "pending", priority: "high" },
-      { id: 21, title: "QR Code Security - Anti-Fraud Measures", status: "pending", priority: "high" },
-      { id: 22, title: "User Profile Management - Settings Page", status: "pending", priority: "high" },
-      { id: 23, title: "Search Functionality - Global Search", status: "pending", priority: "high" },
-      { id: 24, title: "Analytics Dashboard - Business Metrics", status: "pending", priority: "high" },
-      { id: 25, title: "API Documentation - Developer Portal", status: "pending", priority: "high" },
+      { id: 11, title: "Rate Limiting - API Protection", status: "pending", priority: "high" },
+      { id: 12, title: "Error Handling - Global Error Boundaries", status: "pending", priority: "high" },
+      { id: 13, title: "Voucher Management Dashboard - Admin Panel", status: "pending", priority: "high" },
+      { id: 14, title: "Stripe Product Catalog Display - Pricing Page", status: "pending", priority: "high" },
+      { id: 15, title: "Email Notifications - Purchase Confirmations", status: "pending", priority: "high" },
+      { id: 16, title: "Voucher Balance Tracking - User Wallet", status: "pending", priority: "high" },
+      { id: 17, title: "Payment History - Transaction Records", status: "pending", priority: "high" },
+      { id: 18, title: "Refund System - Customer Service", status: "pending", priority: "high" },
+      { id: 19, title: "Bulk Voucher Purchase - Enterprise Features", status: "pending", priority: "high" },
+      { id: 20, title: "Partner Management - Venue Integration", status: "pending", priority: "high" },
+      { id: 21, title: "White Background Fixes - Image Generator", status: "pending", priority: "high" },
+      { id: 22, title: "White Background Fixes - All Pages Audit", status: "pending", priority: "high" },
+      { id: 23, title: "QR Code Security - Anti-Fraud Measures", status: "pending", priority: "high" },
+      { id: 24, title: "User Profile Management - Settings Page", status: "pending", priority: "high" },
+      { id: 25, title: "Search Functionality - Global Search", status: "pending", priority: "high" },
     ],
     medium: [
-      { id: 26, title: "Voucher Transfer System - P2P Transfers", status: "pending", priority: "medium" },
-      { id: 27, title: "Subscription Management - Recurring Vouchers", status: "pending", priority: "medium" },
-      { id: 28, title: "Gift Card Feature - Send to Friends", status: "pending", priority: "medium" },
-      { id: 29, title: "Loyalty Program - Rewards System", status: "pending", priority: "medium" },
-      { id: 30, title: "Promo Codes - Discount System", status: "pending", priority: "medium" },
-      { id: 31, title: "Multi-Currency Support - International", status: "pending", priority: "medium" },
-      { id: 32, title: "Tax Calculation - Automatic Tax", status: "pending", priority: "medium" },
-      { id: 33, title: "Invoice Generation - PDF Receipts", status: "pending", priority: "medium" },
-      { id: 34, title: "Voucher Expiration - Auto-Alerts", status: "pending", priority: "medium" },
-      { id: 35, title: "Usage Analytics - Redemption Tracking", status: "pending", priority: "medium" },
-      { id: 36, title: "NUPS POS Integration - Voucher Acceptance", status: "pending", priority: "medium" },
-      { id: 37, title: "GlyphBot AI - Payment Assistance", status: "pending", priority: "medium" },
-      { id: 38, title: "Security Scanner - Vulnerability Detection", status: "pending", priority: "medium" },
-      { id: 39, title: "Blockchain Integration - Immutable Records", status: "pending", priority: "medium" },
-      { id: 40, title: "Hotzone Mapper - Venue Security", status: "pending", priority: "medium" },
-      { id: 41, title: "Steganography Tools - Hidden Messages", status: "pending", priority: "medium" },
-      { id: 42, title: "2FA Authentication - Enhanced Security", status: "pending", priority: "medium" },
-      { id: 43, title: "Session Management - Auto Logout", status: "pending", priority: "medium" },
-      { id: 44, title: "Audit Logs - Activity Tracking", status: "pending", priority: "medium" },
-      { id: 45, title: "Backup System - Data Recovery", status: "pending", priority: "medium" },
+      { id: 26, title: "Analytics Dashboard - Business Metrics", status: "pending", priority: "medium" },
+      { id: 27, title: "API Documentation - Developer Portal", status: "pending", priority: "medium" },
+      { id: 28, title: "Voucher Transfer System - P2P Transfers", status: "pending", priority: "medium" },
+      { id: 29, title: "Subscription Management - Recurring Vouchers", status: "pending", priority: "medium" },
+      { id: 30, title: "Gift Card Feature - Send to Friends", status: "pending", priority: "medium" },
+      { id: 31, title: "Loyalty Program - Rewards System", status: "pending", priority: "medium" },
+      { id: 32, title: "Promo Codes - Discount System", status: "pending", priority: "medium" },
+      { id: 33, title: "Multi-Currency Support - International", status: "pending", priority: "medium" },
+      { id: 34, title: "Tax Calculation - Automatic Tax", status: "pending", priority: "medium" },
+      { id: 35, title: "Invoice Generation - PDF Receipts", status: "pending", priority: "medium" },
+      { id: 36, title: "Voucher Expiration - Auto-Alerts", status: "pending", priority: "medium" },
+      { id: 37, title: "Usage Analytics - Redemption Tracking", status: "pending", priority: "medium" },
+      { id: 38, title: "NUPS POS Integration - Voucher Acceptance", status: "pending", priority: "medium" },
+      { id: 39, title: "GlyphBot AI - Payment Assistance", status: "pending", priority: "medium" },
+      { id: 40, title: "Security Scanner - Vulnerability Detection", status: "pending", priority: "medium" },
+      { id: 41, title: "Blockchain Integration - Immutable Records", status: "pending", priority: "medium" },
+      { id: 42, title: "Hotzone Mapper - Venue Security", status: "pending", priority: "medium" },
+      { id: 43, title: "Steganography Tools - Hidden Messages", status: "pending", priority: "medium" },
+      { id: 44, title: "2FA Authentication - Enhanced Security", status: "pending", priority: "medium" },
+      { id: 45, title: "Session Management - Auto Logout", status: "pending", priority: "medium" },
     ],
     low: [
-      { id: 46, title: "Dark Mode Toggle - Theme Switcher", status: "pending", priority: "low" },
-      { id: 47, title: "Social Media Integration - Share Features", status: "pending", priority: "low" },
-      { id: 48, title: "Blog System - Content Management", status: "pending", priority: "low" },
-      { id: 49, title: "Newsletter Signup - Email Marketing", status: "pending", priority: "low" },
-      { id: 50, title: "FAQ System - Help Center", status: "pending", priority: "low" },
-      { id: 51, title: "Live Chat Support - Customer Service", status: "pending", priority: "low" },
-      { id: 52, title: "Testimonials Page - Customer Reviews", status: "pending", priority: "low" },
-      { id: 53, title: "Press Kit - Media Resources", status: "pending", priority: "low" },
-      { id: 54, title: "Career Page - Job Listings", status: "pending", priority: "low" },
-      { id: 55, title: "Partner Logos - Brand Showcase", status: "pending", priority: "low" },
-      { id: 56, title: "Video Tutorials - User Guides", status: "pending", priority: "low" },
-      { id: 57, title: "Webinar Registration - Events", status: "pending", priority: "low" },
-      { id: 58, title: "Case Studies - Success Stories", status: "pending", priority: "low" },
-      { id: 59, title: "Comparison Charts - vs Competitors", status: "pending", priority: "low" },
-      { id: 60, title: "ROI Calculator - Business Tool", status: "pending", priority: "low" },
+      { id: 46, title: "Audit Logs - Activity Tracking", status: "pending", priority: "low" },
+      { id: 47, title: "Backup System - Data Recovery", status: "pending", priority: "low" },
+      { id: 48, title: "Dark Mode Toggle - Theme Switcher", status: "pending", priority: "low" },
+      { id: 49, title: "Social Media Integration - Share Features", status: "pending", priority: "low" },
+      { id: 50, title: "Blog System - Content Management", status: "pending", priority: "low" },
+      { id: 51, title: "Newsletter Signup - Email Marketing", status: "pending", priority: "low" },
+      { id: 52, title: "FAQ System - Help Center", status: "pending", priority: "low" },
+      { id: 53, title: "Live Chat Support - Customer Service", status: "pending", priority: "low" },
+      { id: 54, title: "Testimonials Page - Customer Reviews", status: "pending", priority: "low" },
+      { id: 55, title: "Press Kit - Media Resources", status: "pending", priority: "low" },
+      { id: 56, title: "Career Page - Job Listings", status: "pending", priority: "low" },
+      { id: 57, title: "Partner Logos - Brand Showcase", status: "pending", priority: "low" },
+      { id: 58, title: "Video Tutorials - User Guides", status: "pending", priority: "low" },
+      { id: 59, title: "Webinar Registration - Events", status: "pending", priority: "low" },
+      { id: 60, title: "Case Studies - Success Stories", status: "pending", priority: "low" },
     ],
     improvements: [
       { title: "Home Page Scroll - 3D Effects", completed: true },
@@ -80,8 +80,9 @@ export default function RefactorTaskList() {
       { title: "Tech Stack Carousel", completed: true },
       { title: "Consultation Booking Form", completed: true },
       { title: "Footer Scroll Issue - Fix Navigation", completed: true },
-      { title: "White Background Fixes - Master Covenant Page", completed: true },
+      { title: "White Background Fixes - Master Covenant Page", completed: false },
       { title: "HSSS Redesign - Real Hotspot Mapping", completed: true },
+      { title: "OAuth Login - Google/Microsoft/Apple", completed: true },
     ]
   };
 
@@ -244,13 +245,17 @@ export default function RefactorTaskList() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-green-400">
                   <CheckCircle2 className="w-5 h-5" />
-                  Completed Improvements (8 tasks)
+                  Completed Improvements (9 tasks)
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 {tasks.improvements.map((item, idx) => (
                   <div key={idx} className="flex items-center gap-3 p-3 rounded-lg glass-dark">
-                    <CheckCircle2 className="w-5 h-5 text-green-400" />
+                    {item.completed ? (
+                      <CheckCircle2 className="w-5 h-5 text-green-400" />
+                    ) : (
+                      <Circle className="w-5 h-5 text-gray-400" />
+                    )}
                     <span className="font-medium">{item.title}</span>
                   </div>
                 ))}
