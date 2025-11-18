@@ -15,7 +15,7 @@ export default function RefactorTaskList() {
       { id: 7, title: "Mobile Responsiveness - All Pages", status: "completed", priority: "critical" },
       { id: 8, title: "Voucher Redemption System - QR Verification", status: "pending", priority: "critical" },
       { id: 9, title: "Payment Success Flow - User Dashboard", status: "completed", priority: "critical" },
-      { id: 10, title: "Security Headers - CSP & CORS", status: "pending", priority: "critical" },
+      { id: 10, title: "Security Headers - CSP & CORS", status: "completed", priority: "critical" },
       { id: 11, title: "SEO Optimization & Google Bot Integration", status: "completed", priority: "critical" },
       { id: 12, title: "Sitemap Generation & Submission", status: "completed", priority: "critical" },
       { id: 13, title: "Master Covenant Gated Download", status: "completed", priority: "critical" },
