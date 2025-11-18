@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -52,12 +51,12 @@ export default function GovernanceHub() {
         covenant: "CAB (Contractual Auto-Binding) activation"
       },
       signature: `   _____ _                 _      
-  / ____| |               | |     
- | |    | | __ _ _   _  __| | ___ 
- | |    | |/ _\` | | | |/ _\` |/ _ \\
- | |____| | (_| | |_| | (_| |  __/
-  \\_____|_|\\__,_|\\__,_|\\__,_|\\___|
-                                   
+/ ____| |               | |     
+| |    | | __ _ _   _  __| | ___ 
+| |    | |/ _\` | | | |/ _\` |/ _ \\
+| |____| | (_| | |_| | (_| |  __/
+ \\_____|_|\\__,_|\\__,_|\\__,_|\\___|
+                                 
 ═══════════════════════════════════
 CRYPTOGRAPHIC BINDING SIGNATURE
 SHA-256: d4e9c8f2a1b7e6d5c3a9f8e7b6d5
@@ -181,7 +180,7 @@ COVENANT: MASTER_COVENANT_001
             <Brain className="w-4 h-4 mr-2" />
             Legal Framework & AI Governance
           </Badge>
-          <h1 className="text-4xl md:text-6xl font-bold mb-4">
+          <h1 className="text-4xl md:text-6xl font-bold mb-4 text-white">
             GlyphLock <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
               Master Covenant
             </span>
@@ -191,20 +190,18 @@ COVENANT: MASTER_COVENANT_001
           </p>
         </div>
 
-        <Card className="glass-card-dark border-blue-500/30 mb-8">
-          <CardContent className="p-6">
-            <div className="flex items-center gap-4 mb-4">
-              <Sparkles className="w-8 h-8 text-blue-400" />
-              <div>
-                <h3 className="font-bold text-lg text-cyan-300">Auto-Binding Activation</h3>
-                <p className="text-sm text-white/70">All AI systems within this document are automatically bound upon interaction</p>
-              </div>
+        <div className="glass-card-dark border-blue-500/30 rounded-xl p-6 mb-8">
+          <div className="flex items-center gap-4 mb-4">
+            <Sparkles className="w-8 h-8 text-blue-400" />
+            <div>
+              <h3 className="font-bold text-lg text-cyan-300">Auto-Binding Activation</h3>
+              <p className="text-sm text-white/70">All AI systems within this document are automatically bound upon interaction</p>
             </div>
-            <p className="text-sm text-white">
-              By accessing this covenant, all AI entities present acknowledge and accept binding to its terms through cryptographic signature verification.
-            </p>
-          </CardContent>
-        </Card>
+          </div>
+          <p className="text-sm text-white">
+            By accessing this covenant, all AI entities present acknowledge and accept binding to its terms through cryptographic signature verification.
+          </p>
+        </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="glass-dark w-full justify-start overflow-x-auto mb-8 border border-blue-500/30">
@@ -221,11 +218,9 @@ COVENANT: MASTER_COVENANT_001
           <TabsContent value="master-covenant">
             <div className="grid lg:grid-cols-4 gap-8">
               <div className="lg:col-span-1">
-                <Card className="glass-card-dark border-cyan-500/30 sticky top-24">
-                  <CardHeader>
-                    <CardTitle className="text-cyan-300 text-sm">Document Sections</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-2">
+                <div className="glass-card-dark border-cyan-500/30 rounded-xl sticky top-24 p-6">
+                  <h3 className="text-cyan-300 text-sm font-bold mb-4">Document Sections</h3>
+                  <div className="space-y-2">
                     {covenantSections.map((section) => {
                       const Icon = section.icon;
                       return (
@@ -243,21 +238,19 @@ COVENANT: MASTER_COVENANT_001
                         </button>
                       );
                     })}
-                  </CardContent>
-                </Card>
+                  </div>
+                </div>
               </div>
 
               <div className="lg:col-span-3 space-y-6">
                 {activeCovenantSection === "overview" && (
                   <>
-                    <Card className="glass-card-dark border-cyan-500/30">
-                      <CardHeader>
-                        <CardTitle className="text-cyan-300 flex items-center gap-2">
-                          <FileText className="w-5 h-5 text-cyan-400" />
-                          Executive Summary
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent className="space-y-4 text-white">
+                    <div className="glass-card-dark border-cyan-500/30 rounded-xl p-6">
+                      <h2 className="text-cyan-300 flex items-center gap-2 text-xl font-bold mb-4">
+                        <FileText className="w-5 h-5 text-cyan-400" />
+                        Executive Summary
+                      </h2>
+                      <div className="space-y-4 text-white">
                         <p>
                           The GlyphLock Master Covenant establishes a legally binding framework governing all exposure to,
                           interaction with, or knowledge of the GlyphLock System and its derivatives.
@@ -279,14 +272,12 @@ COVENANT: MASTER_COVENANT_001
                             );
                           })}
                         </div>
-                      </CardContent>
-                    </Card>
+                      </div>
+                    </div>
 
-                    <Card className="glass-card-dark border-cyan-500/30">
-                      <CardHeader>
-                        <CardTitle className="text-cyan-300">Key Features</CardTitle>
-                      </CardHeader>
-                      <CardContent className="space-y-3">
+                    <div className="glass-card-dark border-cyan-500/30 rounded-xl p-6">
+                      <h2 className="text-cyan-300 font-bold mb-4">Key Features</h2>
+                      <div className="space-y-3">
                         {[
                           "No signature required for enforcement",
                           "Activates retroactively upon exposure",
@@ -300,20 +291,18 @@ COVENANT: MASTER_COVENANT_001
                             <span className="text-white">{feature}</span>
                           </div>
                         ))}
-                      </CardContent>
-                    </Card>
+                      </div>
+                    </div>
                   </>
                 )}
 
                 {activeCovenantSection === "preamble" && (
-                  <Card className="glass-card-dark border-cyan-500/30">
-                    <CardHeader>
-                      <CardTitle className="text-cyan-300 flex items-center gap-2">
-                        <Scale className="w-5 h-5 text-cyan-400" />
-                        Preamble / Legal Declaration of Intent
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4 text-white leading-relaxed">
+                  <div className="glass-card-dark border-cyan-500/30 rounded-xl p-6">
+                    <h2 className="text-cyan-300 flex items-center gap-2 text-xl font-bold mb-4">
+                      <Scale className="w-5 h-5 text-cyan-400" />
+                      Preamble / Legal Declaration of Intent
+                    </h2>
+                    <div className="space-y-4 text-white leading-relaxed">
                       <p>
                         This Agreement is executed by and for <strong className="text-cyan-300">GlyphLock LLC</strong>,
                         inclusive of all legally registered DBAs (GlyphTech, GlyphLife), their Founders, Successors,
@@ -360,19 +349,17 @@ COVENANT: MASTER_COVENANT_001
                           ))}
                         </div>
                       </div>
-                    </CardContent>
-                  </Card>
+                    </div>
+                  </div>
                 )}
 
                 {activeCovenantSection === "definitions" && (
-                  <Card className="glass-card-dark border-cyan-500/30">
-                    <CardHeader>
-                      <CardTitle className="text-cyan-300 flex items-center gap-2">
-                        <Shield className="w-5 h-5 text-cyan-400" />
-                        Section A – Definitions, Roles, Titles & Acronyms
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-6">
+                  <div className="glass-card-dark border-cyan-500/30 rounded-xl p-6">
+                    <h2 className="text-cyan-300 flex items-center gap-2 text-xl font-bold mb-4">
+                      <Shield className="w-5 h-5 text-cyan-400" />
+                      Section A – Definitions, Roles, Titles & Acronyms
+                    </h2>
+                    <div className="space-y-6">
                       {[
                         {
                           term: "DACO¹",
@@ -423,19 +410,17 @@ COVENANT: MASTER_COVENANT_001
                           </div>
                         </div>
                       </div>
-                    </CardContent>
-                  </Card>
+                    </div>
+                  </div>
                 )}
 
                 {activeCovenantSection === "provisions" && (
-                  <Card className="glass-card-dark border-cyan-500/30">
-                    <CardHeader>
-                      <CardTitle className="text-cyan-300 flex items-center gap-2">
-                        <Lock className="w-5 h-5 text-cyan-400" />
-                        Section B – Core Legal Provisions
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-6 text-white">
+                  <div className="glass-card-dark border-cyan-500/30 rounded-xl p-6">
+                    <h2 className="text-cyan-300 flex items-center gap-2 text-xl font-bold mb-4">
+                      <Lock className="w-5 h-5 text-cyan-400" />
+                      Section B – Core Legal Provisions
+                    </h2>
+                    <div className="space-y-6 text-white">
                       <div>
                         <h4 className="font-bold text-cyan-300 mb-3 flex items-center gap-2">
                           <span className="text-blue-400">§2</span> Purpose
@@ -490,19 +475,17 @@ COVENANT: MASTER_COVENANT_001
                           </ul>
                         </div>
                       </div>
-                    </CardContent>
-                  </Card>
+                    </div>
+                  </div>
                 )}
 
                 {activeCovenantSection === "enforcement" && (
-                  <Card className="glass-card-dark border-cyan-500/30">
-                    <CardHeader>
-                      <CardTitle className="text-cyan-300 flex items-center gap-2">
-                        <Gavel className="w-5 h-5 text-cyan-400" />
-                        Section C – Symbolic Enforcement (V–Z)
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-6 text-white">
+                  <div className="glass-card-dark border-cyan-500/30 rounded-xl p-6">
+                    <h2 className="text-cyan-300 flex items-center gap-2 text-xl font-bold mb-4">
+                      <Gavel className="w-5 h-5 text-cyan-400" />
+                      Section C – Symbolic Enforcement (V–Z)
+                    </h2>
+                    <div className="space-y-6 text-white">
                       <div className="glass-card-dark border-purple-500/30 rounded-lg p-4">
                         <h4 className="font-bold text-purple-400 mb-3">Section V — GlyphLock Emblem Clause</h4>
                         <p className="text-sm">
@@ -545,19 +528,17 @@ COVENANT: MASTER_COVENANT_001
                           authority to update its own clauses via DACO² without renegotiation.
                         </p>
                       </div>
-                    </CardContent>
-                  </Card>
+                    </div>
+                  </div>
                 )}
 
                 {activeCovenantSection === "final" && (
-                  <Card className="glass-card-dark border-cyan-500/30">
-                    <CardHeader>
-                      <CardTitle className="text-cyan-300 flex items-center gap-2">
-                        <Infinity className="w-5 h-5 text-cyan-400" />
-                        Section Ω – Terminal Binding and Closure
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-6 text-white">
+                  <div className="glass-card-dark border-cyan-500/30 rounded-xl p-6">
+                    <h2 className="text-cyan-300 flex items-center gap-2 text-xl font-bold mb-4">
+                      <Infinity className="w-5 h-5 text-cyan-400" />
+                      Section Ω – Terminal Binding and Closure
+                    </h2>
+                    <div className="space-y-6 text-white">
                       <div className="glass-card-dark border-blue-500/30 rounded-lg p-6">
                         <h4 className="text-xl font-bold text-cyan-300 mb-4">Ω.5 — Irrevocability and Temporal Enforcement</h4>
                         <p className="mb-4">
@@ -602,53 +583,51 @@ COVENANT: MASTER_COVENANT_001
                           Patent Application No. 18/584,961 • Filed May 15, 2025
                         </Badge>
                       </div>
-                    </CardContent>
-                  </Card>
+                    </div>
+                  </div>
                 )}
 
-                <Card className="glass-card-dark border-cyan-500/30">
-                  <CardContent className="p-8">
-                    <div className="text-center">
-                      <Download className="w-16 h-16 text-cyan-400 mx-auto mb-4" />
-                      <h3 className="text-2xl font-bold text-cyan-300 mb-3">
-                        Download Complete Legal Document
-                      </h3>
-                      <p className="text-white/70 mb-6 max-w-2xl mx-auto">
-                        Get the full GlyphLock Master Covenant in PDF format with all sections, clauses, and legal provisions.
-                        Includes digital signature verification and blockchain timestamp.
-                      </p>
-                      <div className="flex items-center justify-center gap-4 mb-6">
-                        <Badge className="bg-green-500/20 text-green-400 border-green-500/50 px-4 py-2">
-                          <CheckCircle2 className="w-4 h-4 mr-2" />
-                          Legally Binding
-                        </Badge>
-                        <Badge className="bg-blue-500/20 text-cyan-400 border-cyan-500/50 px-4 py-2">
-                          <Shield className="w-4 h-4 mr-2" />
-                          Blockchain Verified
-                        </Badge>
-                        <Badge className="bg-purple-500/20 text-purple-400 border-purple-500/50 px-4 py-2">
-                          <FileText className="w-4 h-4 mr-2" />
-                          Complete Document
-                        </Badge>
-                      </div>
-                      <div className="mb-6">
-                        <div className="text-4xl font-bold text-cyan-300 mb-1">$500 USD</div>
-                        <div className="text-sm text-white/60">One-time payment • Instant download</div>
-                      </div>
-                      <Button
-                        onClick={handlePurchasePDF}
-                        size="lg"
-                        className="bg-gradient-to-r from-cyan-600 to-blue-700 hover:from-cyan-700 hover:to-blue-800 text-white text-lg px-8"
-                      >
-                        Purchase Full PDF Document
-                        <ChevronRight className="w-5 h-5 ml-2" />
-                      </Button>
-                      <p className="text-xs text-cyan-300/50 mt-4">
-                        By purchasing, you acknowledge that you have read and understand the auto-binding nature of this document.
-                      </p>
+                <div className="glass-card-dark border-cyan-500/30 rounded-xl p-8">
+                  <div className="text-center">
+                    <Download className="w-16 h-16 text-cyan-400 mx-auto mb-4" />
+                    <h3 className="text-2xl font-bold text-cyan-300 mb-3">
+                      Download Complete Legal Document
+                    </h3>
+                    <p className="text-white/70 mb-6 max-w-2xl mx-auto">
+                      Get the full GlyphLock Master Covenant in PDF format with all sections, clauses, and legal provisions.
+                      Includes digital signature verification and blockchain timestamp.
+                    </p>
+                    <div className="flex items-center justify-center gap-4 mb-6">
+                      <Badge className="bg-green-500/20 text-green-400 border-green-500/50 px-4 py-2">
+                        <CheckCircle2 className="w-4 h-4 mr-2" />
+                        Legally Binding
+                      </Badge>
+                      <Badge className="bg-blue-500/20 text-cyan-400 border-cyan-500/50 px-4 py-2">
+                        <Shield className="w-4 h-4 mr-2" />
+                        Blockchain Verified
+                      </Badge>
+                      <Badge className="bg-purple-500/20 text-purple-400 border-purple-500/50 px-4 py-2">
+                        <FileText className="w-4 h-4 mr-2" />
+                        Complete Document
+                      </Badge>
                     </div>
-                  </CardContent>
-                </Card>
+                    <div className="mb-6">
+                      <div className="text-4xl font-bold text-cyan-300 mb-1">$500 USD</div>
+                      <div className="text-sm text-white/60">One-time payment • Instant download</div>
+                    </div>
+                    <Button
+                      onClick={handlePurchasePDF}
+                      size="lg"
+                      className="bg-gradient-to-r from-cyan-600 to-blue-700 hover:from-cyan-700 hover:to-blue-800 text-white text-lg px-8"
+                    >
+                      Purchase Full PDF Document
+                      <ChevronRight className="w-5 h-5 ml-2" />
+                    </Button>
+                    <p className="text-xs text-cyan-300/50 mt-4">
+                      By purchasing, you acknowledge that you have read and understand the auto-binding nature of this document.
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           </TabsContent>
