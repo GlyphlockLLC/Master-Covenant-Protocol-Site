@@ -33,7 +33,11 @@ Deno.serve(async (req) => {
       },
     });
 
-    return Response.json({ sessionId: session.id, url: session.url });
+    return Response.json({ 
+      sessionId: session.id, 
+      url: session.url,
+      publishableKey: Deno.env.get("STRIPE_PUBLISHABLE_KEY")
+    });
   } catch (error) {
     console.error('Stripe checkout error:', error);
     return Response.json({ 
