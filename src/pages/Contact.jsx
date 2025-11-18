@@ -39,7 +39,14 @@ export default function Contact() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white py-20">
+    <>
+      <SEOHead 
+        title="Contact GlyphLock - Security Consultation & Partnership Inquiries"
+        description="Contact GlyphLock Security for cybersecurity solutions, partnership opportunities, licensing inquiries, and enterprise security consultations. El Mirage, AZ | (424) 246-6499 | glyphlock@gmail.com"
+        keywords="contact GlyphLock, cybersecurity consultation, partnership inquiry, licensing request, enterprise security contact, GlyphLock email, security consultation, El Mirage Arizona, technology partnership"
+        url="/contact"
+      />
+      <div className="min-h-screen bg-black text-white py-20">
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
@@ -164,5 +171,6 @@ export default function Contact() {
         </div>
       </div>
     </div>
+    </>
   );
 }
