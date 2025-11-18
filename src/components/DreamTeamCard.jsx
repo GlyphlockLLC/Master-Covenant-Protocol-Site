@@ -20,7 +20,7 @@ export default function DreamTeamCard({ card, member }) {
           <img 
             src={data.frontImage} 
             alt={data.name}
-            className="w-full h-full object-contain"
+            className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-br from-blue-500/30 via-purple-500/20 to-cyan-500/30 animate-pulse-slow pointer-events-none" />
         </div>
