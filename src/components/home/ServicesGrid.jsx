@@ -63,7 +63,7 @@ export default function ServicesGrid() {
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {services.map((service, idx) => (
           <Link key={idx} to={createPageUrl(service.link)}>
-            <div className="glass-card rounded-xl overflow-hidden group cursor-pointer hover:scale-105 transition-all duration-300 h-full">
+            <div className="glass-card-dark border-blue-500/30 rounded-xl overflow-hidden group cursor-pointer hover:scale-105 transition-all duration-300 h-full">
               <div className="relative h-48 overflow-hidden">
                 <img 
                   src={service.image} 

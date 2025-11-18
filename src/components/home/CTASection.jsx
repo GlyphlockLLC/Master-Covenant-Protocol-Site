@@ -3,68 +3,62 @@ import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ChevronRight, CheckCircle2 } from "lucide-react";
+import { CheckCircle2, ArrowRight } from "lucide-react";
 
 export default function CTASection() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
 
-  const handleEmailSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if (email) {
-      navigate(createPageUrl("Consultation") + `?email=${encodeURIComponent(email)}`);
-    }
+    navigate(createPageUrl("Consultation") + `?email=${encodeURIComponent(email)}`);
   };
 
+  const benefits = [
+    "Free security assessment",
+    "Custom implementation plan",
+    "Enterprise-grade protection",
+    "24/7 support included"
+  ];
+
   return (
-    <section className="py-24 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent" />
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
-            Ready to Secure Your <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">Enterprise?</span>
-          </h2>
-          <p className="text-xl text-white/70 mb-10 leading-relaxed">
-            Join Fortune 500 companies protecting their digital assets with quantum-resistant encryption
-          </p>
+    <div className="w-full max-w-5xl mx-auto px-4 py-16">
+      <div className="glass-card-dark border-blue-500/30 rounded-2xl p-8 md:p-12 text-center">
+        <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
+          Ready to Secure Your Digital Assets?
+        </h2>
+        <p className="text-xl text-white/70 mb-8 max-w-2xl mx-auto">
+          Join hundreds of enterprises protecting their infrastructure with GlyphLock
+        </p>
 
-          <form onSubmit={handleEmailSubmit} className="max-w-2xl mx-auto mb-8">
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Input
-                type="email"
-                placeholder="Enter your work email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="glass-input text-white h-14 text-lg flex-1"
-                required
-              />
-              <Button
-                type="submit"
-                size="lg"
-                className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white h-14 px-8 text-lg glow-royal"
-              >
-                Get Started Free
-                <ChevronRight className="w-5 h-5 ml-2" />
-              </Button>
-            </div>
-          </form>
+        <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto mb-8">
+          <Input
+            type="email"
+            required
+            placeholder="Enter your email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="glass-card-dark border-blue-500/30 text-white placeholder:text-white/50"
+          />
+          <Button 
+            type="submit"
+            size="lg"
+            className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white"
+          >
+            Get Started
+            <ArrowRight className="w-4 h-4 ml-2" />
+          </Button>
+        </form>
 
-          <div className="flex flex-wrap items-center justify-center gap-8 text-sm text-white/70">
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-5 h-5 text-green-400" />
-              <span>Free 14-day trial</span>
+        <div className="grid md:grid-cols-2 gap-4 max-w-2xl mx-auto">
+          {benefits.map((benefit, idx) => (
+            <div key={idx} className="flex items-center gap-2 text-white">
+              <CheckCircle2 className="w-5 h-5 text-green-400 flex-shrink-0" />
+              <span>{benefit}</span>
             </div>
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-5 h-5 text-green-400" />
-              <span>No credit card required</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-5 h-5 text-green-400" />
-              <span>Cancel anytime</span>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
-    </section>
+    </div>
   );
 }

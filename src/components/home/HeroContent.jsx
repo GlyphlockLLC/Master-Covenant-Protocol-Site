@@ -2,71 +2,66 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { Button } from "@/components/ui/button";
+import { Shield, Lock, ArrowRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { ChevronRight, Shield, CheckCircle2 } from "lucide-react";
 
 export default function HeroContent() {
-  const stats = [
-    { value: "99.97%", label: "Threat Detection" },
-    { value: "24/7", label: "AI Monitoring" },
-    { value: "AES-256", label: "Encryption" },
-    { value: "<1ms", label: "Response Time" }
-  ];
-
   return (
-    <div className="w-full max-w-7xl mx-auto px-4">
-      <div className="text-center">
-        <Badge className="mb-6 glass-royal text-blue-400 border-blue-500/50 px-6 py-2 text-sm">
+    <div className="w-full max-w-7xl mx-auto px-4 py-16">
+      <div className="text-center mb-16">
+        <Badge className="mb-6 bg-blue-500/20 border-blue-500/50 text-blue-400 px-6 py-2">
           <Shield className="w-4 h-4 mr-2" />
-          Post-Quantum Ready (Hybrid)
+          Post-Quantum Ready
         </Badge>
-        
-        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-          <span className="text-white drop-shadow-2xl">Secure Your</span>
-          <br />
-          <span className="bg-gradient-to-r from-blue-400 via-blue-600 to-blue-800 bg-clip-text text-transparent drop-shadow-2xl">
-            Digital Future
-          </span>
-        </h1>
-
-        <p className="text-lg md:text-xl text-white/80 mb-4 max-w-2xl mx-auto leading-relaxed">
-          Enterprise-grade cybersecurity with AI integration, quantum-resistant encryption, and zero-trust architecture
+        <h2 className="text-4xl md:text-6xl font-bold mb-6 text-white">
+          Enterprise-Grade <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">Cybersecurity</span>
+        </h2>
+        <p className="text-xl text-white/70 max-w-3xl mx-auto mb-8">
+          Military-grade encryption, AI-powered threat detection, and quantum-resistant security protocols designed for the next generation of digital warfare.
         </p>
         
-        <div className="flex items-center justify-center gap-3 mb-8 text-sm text-blue-300">
-          <div className="flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4" />
-            <span className="font-semibold">AES-256</span>
+        <div className="flex items-center justify-center gap-6 mb-12">
+          <div className="glass-card-dark border-blue-500/30 px-6 py-3 rounded-xl">
+            <Lock className="w-6 h-6 text-blue-400 mx-auto mb-2" />
+            <div className="text-sm text-white">AES-256</div>
           </div>
-          <span className="text-gray-500">•</span>
-          <div className="flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4" />
-            <span className="font-semibold">PQC Key Exchange</span>
+          <div className="glass-card-dark border-blue-500/30 px-6 py-3 rounded-xl">
+            <Shield className="w-6 h-6 text-blue-400 mx-auto mb-2" />
+            <div className="text-sm text-white">PQC Key Exchange</div>
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link to={createPageUrl("Consultation")}>
-            <Button size="lg" className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-6 shadow-2xl glow-royal">
+            <Button size="lg" className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white text-lg px-8">
               Book Free Consultation
-              <ChevronRight className="w-5 h-5 ml-2" />
+              <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
           </Link>
           <Link to={createPageUrl("SecurityTools")}>
-            <Button size="lg" variant="outline" className="border-2 border-blue-500/50 glass-dark text-white px-8 py-6">
+            <Button size="lg" variant="outline" className="border-blue-500/50 text-white hover:bg-blue-500/20 text-lg px-8">
               Explore Security Ecosystem
             </Button>
           </Link>
         </div>
+      </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
-          {stats.map((stat, idx) => (
-            <div key={idx} className="glass-royal p-4 rounded-xl">
-              <div className="text-2xl md:text-3xl font-bold text-blue-400 mb-1">{stat.value}</div>
-              <div className="text-xs text-white/80">{stat.label}</div>
+      <div className="grid md:grid-cols-4 gap-6">
+        {[
+          { label: "Threats Detected", value: "500K+", icon: Shield },
+          { label: "AI Monitoring", value: "24/7", icon: Lock },
+          { label: "Encryption", value: "AES-256", icon: Lock },
+          { label: "Response Time", value: "<1ms", icon: Shield }
+        ].map((stat, idx) => {
+          const Icon = stat.icon;
+          return (
+            <div key={idx} className="glass-card-dark border-blue-500/30 p-6 rounded-xl text-center">
+              <Icon className="w-8 h-8 text-blue-400 mx-auto mb-3" />
+              <div className="text-3xl font-bold text-white mb-2">{stat.value}</div>
+              <div className="text-sm text-white/70">{stat.label}</div>
             </div>
-          ))}
-        </div>
+          );
+        })}
       </div>
     </div>
   );
