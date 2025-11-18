@@ -8,6 +8,7 @@ import HeroContent from '@/components/home/HeroContent';
 import FeaturesSection from '@/components/home/FeaturesSection';
 import ServicesGrid from '@/components/home/ServicesGrid';
 import BoundAICards from '@/components/home/BoundAICards';
+import BoundAISystemsSection from '@/components/home/BoundAISystemsSection';
 import CTASection from '@/components/home/CTASection';
 
 const useScrollEffect = (sectionRef) => {
@@ -103,6 +104,10 @@ export default function Home() {
 
       <ScrollSection>
         <BoundAICards />
+      </ScrollSection>
+
+      <ScrollSection>
+        <BoundAISystemsSection />
       </ScrollSection>
 
       <ScrollSection>
