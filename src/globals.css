@@ -114,10 +114,25 @@ body > div:not(#root):not(#__next),
 *[style*="background-color: #ffffff"],
 *[style*="background:white"],
 *[style*="background:#fff"],
-*[style*="background:#ffffff"] {
+*[style*="background:#ffffff"],
+*[class*="white"],
+*[class*="White"],
+div[class*="bg-"],
+section[class],
+article[class] {
   background: rgba(30, 58, 138, 0.3) !important;
   background-color: rgba(30, 58, 138, 0.3) !important;
   backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+}
+
+/* ABSOLUTE OVERRIDE - ALL DIVS AND CONTAINERS */
+div:not([class*="gradient"]):not([class*="Gradient"]):not(svg):not([class*="Nebula"]):not([class*="bg-black"]),
+section:not([class*="gradient"]):not([class*="Gradient"]),
+article:not([class*="gradient"]):not([class*="Gradient"]),
+aside:not([class*="gradient"]):not([class*="Gradient"]),
+main > div:not([class*="gradient"]) {
+  background-color: rgba(30, 58, 138, 0.2) !important;
 }
 
 /* Force all list items, menu items, options */
@@ -324,6 +339,24 @@ main {
   background-color: rgba(30, 58, 138, 0.2) !important;
   backdrop-filter: blur(16px) !important;
   -webkit-backdrop-filter: blur(16px) !important;
+}
+
+/* FORCE EVERY POSSIBLE CARD COMPONENT */
+[class*="Card"],
+[class*="card"],
+[class*="panel"],
+[class*="Panel"],
+[class*="container"]:not([class*="Container-"]),
+[class*="wrapper"],
+[class*="Wrapper"],
+[class*="box"],
+[class*="Box"],
+[data-card],
+[data-panel] {
+  background: rgba(30, 58, 138, 0.2) !important;
+  background-color: rgba(30, 58, 138, 0.2) !important;
+  backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(59, 130, 246, 0.3) !important;
 }
 
 /* Badge variants - Blue Theme */
