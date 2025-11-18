@@ -6,33 +6,38 @@ import { CheckCircle2, Circle, AlertCircle, Zap, Shield, DollarSign, Lock, Datab
 export default function RefactorTaskList() {
   const tasks = {
     critical: [
-      { id: 1, title: "URGENT: Fix Color Scheme - All Pages Dark Theme", status: "in-progress", priority: "critical" },
-      { id: 2, title: "Master Covenant Page - Dark Glassmorphism", status: "in-progress", priority: "critical" },
-      { id: 3, title: "Stripe Voucher Integration - Build Purchase Flow", status: "pending", priority: "critical" },
-      { id: 4, title: "Stripe Webhook Handler - Payment Verification", status: "pending", priority: "critical" },
+      { id: 1, title: "URGENT: Fix Color Scheme - All Pages Dark Theme", status: "completed", priority: "critical" },
+      { id: 2, title: "Master Covenant Page - Dark Glassmorphism", status: "completed", priority: "critical" },
+      { id: 3, title: "Stripe Voucher Integration - Build Purchase Flow", status: "completed", priority: "critical" },
+      { id: 4, title: "Stripe Webhook Handler - Payment Verification", status: "completed", priority: "critical" },
       { id: 5, title: "OAuth Implementation - User Authentication Flow", status: "completed", priority: "critical" },
-      { id: 6, title: "Paywall System - Service Access Control", status: "pending", priority: "critical" },
-      { id: 7, title: "Mobile Responsiveness - All Pages", status: "in-progress", priority: "critical" },
+      { id: 6, title: "Paywall System - Service Access Control", status: "completed", priority: "critical" },
+      { id: 7, title: "Mobile Responsiveness - All Pages", status: "completed", priority: "critical" },
       { id: 8, title: "Voucher Redemption System - QR Verification", status: "pending", priority: "critical" },
-      { id: 9, title: "Payment Success Flow - User Dashboard", status: "pending", priority: "critical" },
-      { id: 10, title: "Security Headers - CSP & CORS", status: "pending", priority: "critical" },
+      { id: 9, title: "Payment Success Flow - User Dashboard", status: "completed", priority: "critical" },
+      { id: 10, title: "Security Headers - CSP & CORS", status: "in-progress", priority: "critical" },
+      { id: 11, title: "SEO Optimization & Google Bot Integration", status: "completed", priority: "critical" },
+      { id: 12, title: "Sitemap Generation & Submission", status: "completed", priority: "critical" },
+      { id: 13, title: "Master Covenant Gated Download", status: "completed", priority: "critical" },
     ],
     high: [
-      { id: 11, title: "Rate Limiting - API Protection", status: "pending", priority: "high" },
-      { id: 12, title: "Error Handling - Global Error Boundaries", status: "pending", priority: "high" },
-      { id: 13, title: "Voucher Management Dashboard - Admin Panel", status: "pending", priority: "high" },
-      { id: 14, title: "Stripe Product Catalog Display - Pricing Page", status: "pending", priority: "high" },
-      { id: 15, title: "Email Notifications - Purchase Confirmations", status: "pending", priority: "high" },
-      { id: 16, title: "Voucher Balance Tracking - User Wallet", status: "pending", priority: "high" },
-      { id: 17, title: "Payment History - Transaction Records", status: "pending", priority: "high" },
-      { id: 18, title: "Refund System - Customer Service", status: "pending", priority: "high" },
-      { id: 19, title: "Bulk Voucher Purchase - Enterprise Features", status: "pending", priority: "high" },
-      { id: 20, title: "Partner Management - Venue Integration", status: "pending", priority: "high" },
-      { id: 21, title: "White Background Fixes - Image Generator", status: "pending", priority: "high" },
-      { id: 22, title: "White Background Fixes - All Pages Audit", status: "pending", priority: "high" },
-      { id: 23, title: "QR Code Security - Anti-Fraud Measures", status: "pending", priority: "high" },
-      { id: 24, title: "User Profile Management - Settings Page", status: "pending", priority: "high" },
-      { id: 25, title: "Search Functionality - Global Search", status: "pending", priority: "high" },
+      { id: 14, title: "Rate Limiting - API Protection", status: "pending", priority: "high" },
+      { id: 15, title: "Error Handling - Global Error Boundaries", status: "pending", priority: "high" },
+      { id: 16, title: "Voucher Management Dashboard - Admin Panel", status: "pending", priority: "high" },
+      { id: 17, title: "Stripe Product Catalog Display - Pricing Page", status: "completed", priority: "high" },
+      { id: 18, title: "Email Notifications - Purchase Confirmations", status: "pending", priority: "high" },
+      { id: 19, title: "Voucher Balance Tracking - User Wallet", status: "pending", priority: "high" },
+      { id: 20, title: "Payment History - Transaction Records", status: "completed", priority: "high" },
+      { id: 21, title: "Refund System - Customer Service", status: "pending", priority: "high" },
+      { id: 22, title: "Bulk Voucher Purchase - Enterprise Features", status: "pending", priority: "high" },
+      { id: 23, title: "Partner Management - Venue Integration", status: "pending", priority: "high" },
+      { id: 24, title: "White Background Fixes - Image Generator", status: "pending", priority: "high" },
+      { id: 25, title: "White Background Fixes - All Pages Audit", status: "completed", priority: "high" },
+      { id: 26, title: "QR Code Security - Anti-Fraud Measures", status: "pending", priority: "high" },
+      { id: 27, title: "User Profile Management - Settings Page", status: "pending", priority: "high" },
+      { id: 28, title: "Search Functionality - Global Search", status: "in-progress", priority: "high" },
+      { id: 29, title: "Subscription Management - Cancel/Update", status: "completed", priority: "high" },
+      { id: 30, title: "Keywords & Meta Tags - All Pages", status: "completed", priority: "high" },
     ],
     medium: [
       { id: 26, title: "Analytics Dashboard - Business Metrics", status: "pending", priority: "medium" },
@@ -80,9 +85,16 @@ export default function RefactorTaskList() {
       { title: "Tech Stack Carousel", completed: true },
       { title: "Consultation Booking Form", completed: true },
       { title: "Footer Scroll Issue - Fix Navigation", completed: true },
-      { title: "White Background Fixes - Master Covenant Page", completed: false },
+      { title: "White Background Fixes - Master Covenant Page", completed: true },
       { title: "HSSS Redesign - Real Hotspot Mapping", completed: true },
       { title: "OAuth Login - Google/Microsoft/Apple", completed: true },
+      { title: "Governance Hub - Master Covenant Portal", completed: true },
+      { title: "Partners Page - Valuation Calculator", completed: true },
+      { title: "SEO Head Component - Meta Tags", completed: true },
+      { title: "Robots.txt - AI Crawler Access", completed: true },
+      { title: "Sitemap Generation - Search Engine Indexing", completed: true },
+      { title: "Search Preview - Blurred Content Teaser", completed: true },
+      { title: "Structured Data - Schema.org Integration", completed: true },
     ]
   };
 
@@ -118,10 +130,10 @@ export default function RefactorTaskList() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Development <span className="text-blue-400">Roadmap</span>
+              Development <span className="text-blue-400">Task List</span>
             </h1>
             <p className="text-xl text-gray-400">
-              60 tasks to production launch
+              {stats.completed} of {stats.total} tasks completed • {Math.round((stats.completed/stats.total)*100)}% to production launch
             </p>
           </div>
 
@@ -157,7 +169,7 @@ export default function RefactorTaskList() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-red-400">
                   <AlertCircle className="w-5 h-5" />
-                  Critical Priority (10 tasks)
+                  Critical Priority ({tasks.critical.length} tasks)
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
@@ -179,7 +191,7 @@ export default function RefactorTaskList() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-orange-400">
                   <Shield className="w-5 h-5" />
-                  High Priority (15 tasks)
+                  High Priority ({tasks.high.length} tasks)
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
@@ -201,7 +213,7 @@ export default function RefactorTaskList() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-blue-400">
                   <Database className="w-5 h-5" />
-                  Medium Priority (20 tasks)
+                  Medium Priority ({tasks.medium.length} tasks)
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
@@ -223,7 +235,7 @@ export default function RefactorTaskList() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-gray-400">
                   <Globe className="w-5 h-5" />
-                  Low Priority (15 tasks)
+                  Low Priority ({tasks.low.length} tasks)
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
@@ -245,7 +257,7 @@ export default function RefactorTaskList() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-green-400">
                   <CheckCircle2 className="w-5 h-5" />
-                  Completed Improvements (9 tasks)
+                  Completed Improvements ({tasks.improvements.filter(t => t.completed).length} tasks)
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
