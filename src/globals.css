@@ -105,6 +105,41 @@ body > div:not(#root):not(#__next),
   background-color: rgba(30, 58, 138, 0.3) !important;
 }
 
+/* NUCLEAR OPTION - KILL ALL WHITE EVERYWHERE */
+*[style*="background: white"],
+*[style*="background: #fff"],
+*[style*="background: #ffffff"],
+*[style*="background-color: white"],
+*[style*="background-color: #fff"],
+*[style*="background-color: #ffffff"],
+*[style*="background:white"],
+*[style*="background:#fff"],
+*[style*="background:#ffffff"] {
+  background: rgba(30, 58, 138, 0.3) !important;
+  background-color: rgba(30, 58, 138, 0.3) !important;
+  backdrop-filter: blur(16px) !important;
+}
+
+/* Force all list items, menu items, options */
+li, 
+option,
+[role="option"],
+[role="menuitem"],
+[role="menuitemcheckbox"],
+[role="menuitemradio"] {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: white !important;
+}
+
+li:hover,
+option:hover,
+[role="option"]:hover,
+[role="menuitem"]:hover {
+  background: rgba(59, 130, 246, 0.3) !important;
+  background-color: rgba(59, 130, 246, 0.3) !important;
+}
+
 /* Text elements */
 h1, h2, h3, h4, h5, h6, p, span:not([class*="gradient"]), a, li, td, th, label, legend {
   color: white !important;
@@ -244,8 +279,31 @@ textarea::placeholder {
 }
 
 /* Transparent backgrounds except specific elements */
-*:not(svg):not(path):not(circle):not(rect):not(line):not(polyline):not(polygon):not([class*="gradient"]):not([class*="Gradient"]):not(body):not(html):not(main):not(#root):not([class*="glass-"]) {
+*:not(svg):not(path):not(circle):not(rect):not(line):not(polyline):not(polygon):not([class*="gradient"]):not([class*="Gradient"]):not(body):not(html):not(main):not(#root):not([class*="glass-"]):not(table):not(thead):not(tbody):not(tr):not(td):not(th) {
   background-color: transparent !important;
+}
+
+/* Tables - Blue Theme */
+table, thead, tbody, tr, td, th {
+  background: rgba(30, 58, 138, 0.2) !important;
+  background-color: rgba(30, 58, 138, 0.2) !important;
+  border-color: rgba(59, 130, 246, 0.3) !important;
+  color: white !important;
+}
+
+table {
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+}
+
+thead {
+  background: rgba(30, 58, 138, 0.4) !important;
+  background-color: rgba(30, 58, 138, 0.4) !important;
+}
+
+tbody tr:hover {
+  background: rgba(59, 130, 246, 0.2) !important;
+  background-color: rgba(59, 130, 246, 0.2) !important;
 }
 
 /* Only allow backgrounds on these */
