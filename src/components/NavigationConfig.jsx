@@ -1,4 +1,3 @@
-
 // Single Source of Truth for All Site Navigation
 export const navigationConfig = {
   main: [
@@ -7,6 +6,7 @@ export const navigationConfig = {
       label: "Company",
       dropdown: [
         { label: "About Us", page: "About" },
+        { label: "Services", page: "Services" },
         { label: "Roadmap", page: "Roadmap" },
         { label: "Governance Hub", page: "GovernanceHub" },
         { label: "Partners & Valuation", page: "Partners" },
@@ -31,6 +31,7 @@ export const navigationConfig = {
   footer: {
     company: [
       { label: "About Us", page: "About" },
+      { label: "Services", page: "Services" },
       { label: "Roadmap", page: "Roadmap" },
       { label: "Governance Hub", page: "GovernanceHub" },
       { label: "Partners & Valuation", page: "Partners" },
