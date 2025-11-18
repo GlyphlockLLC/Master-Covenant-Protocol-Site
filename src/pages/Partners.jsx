@@ -271,24 +271,69 @@ export default function Partners() {
         <section className="mb-16">
           <div className="rounded-3xl border border-cyan-500/30 glass-card-dark p-6">
             <h2 className="text-2xl font-semibold text-cyan-300 mb-4">Core Technology Stack</h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
-              {[
-                "AI-powered contract binding with cryptographic proof",
-                "Quantum-resistant encryption technology",
-                "Dynamic QR code generation with real-time updates",
-                "Blockchain integration for automated contract execution",
-                "Neural network-based authentication models",
-                "Interactive hotzone mapping with biometric input",
-                "Advanced steganographic overlay systems",
-                "Next.js, React, and modern JavaScript frameworks"
-              ].map((tech, idx) => (
-                <div key={idx} className="rounded-lg border border-blue-500/20 glass-card-dark p-3 hover:border-cyan-400/50 transition-colors">
-                  <p className="text-xs text-white/80 flex items-start gap-2">
-                    <span className="text-cyan-400 mt-0.5">▸</span>
-                    {tech}
-                  </p>
-                </div>
-              ))}
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="rounded-lg border border-cyan-500/20 glass-card-dark p-4">
+                <h3 className="text-sm font-semibold text-cyan-400 mb-2">Steganographic Verification Engine</h3>
+                <p className="text-xs text-white/70">
+                  Military-grade embedded signatures, HZI layers, multi-spectrum encoding, and hidden payloads inside the QR architecture.
+                </p>
+              </div>
+
+              <div className="rounded-lg border border-cyan-500/20 glass-card-dark p-4">
+                <h3 className="text-sm font-semibold text-cyan-400 mb-2">Dual-Mode Scan + Tap Security Layer</h3>
+                <p className="text-xs text-white/70">
+                  Instant authentication through NFC tap and encrypted QR scan, each with independent or combined verification logic.
+                </p>
+              </div>
+
+              <div className="rounded-lg border border-cyan-500/20 glass-card-dark p-4">
+                <h3 className="text-sm font-semibold text-cyan-400 mb-2">Velocity, Geo, and Time-Locked Access Controls</h3>
+                <p className="text-xs text-white/70">
+                  Dynamic rules that validate identity based on movement, location, timing, and behavioral signals.
+                </p>
+              </div>
+
+              <div className="rounded-lg border border-cyan-500/20 glass-card-dark p-4">
+                <h3 className="text-sm font-semibold text-cyan-400 mb-2">Blockchain-Timestamped Audit Trails</h3>
+                <p className="text-xs text-white/70">
+                  Immutable ledger entries for documents, assets, credentials, and access events — fully automated, zero human error.
+                </p>
+              </div>
+
+              <div className="rounded-lg border border-cyan-500/20 glass-card-dark p-4">
+                <h3 className="text-sm font-semibold text-cyan-400 mb-2">Adaptive Signature AI (Neural Model + Rule Engine)</h3>
+                <p className="text-xs text-white/70">
+                  AI-driven identity matching paired with hard-coded safety rules for fraud detection, pattern analysis, and tamper signals.
+                </p>
+              </div>
+
+              <div className="rounded-lg border border-cyan-500/20 glass-card-dark p-4">
+                <h3 className="text-sm font-semibold text-cyan-400 mb-2">Hotzone Interaction Mapping</h3>
+                <p className="text-xs text-white/70">
+                  Clickable, scannable, and NFC-enabled "command zones" embedded into digital and printed assets for multi-action workflows.
+                </p>
+              </div>
+
+              <div className="rounded-lg border border-cyan-500/20 glass-card-dark p-4">
+                <h3 className="text-sm font-semibold text-cyan-400 mb-2">Encrypted Payload Delivery System</h3>
+                <p className="text-xs text-white/70">
+                  Compartmentalized, short-lived data packets delivered on scan or tap with keys rotating automatically.
+                </p>
+              </div>
+
+              <div className="rounded-lg border border-cyan-500/20 glass-card-dark p-4">
+                <h3 className="text-sm font-semibold text-cyan-400 mb-2">Hardware-Embedded SecureScan SDK</h3>
+                <p className="text-xs text-white/70">
+                  Device-level integration for POS terminals, kiosks, handhelds, rugged tablets, access control systems, and scanners.
+                </p>
+              </div>
+
+              <div className="rounded-lg border border-cyan-500/20 glass-card-dark p-4">
+                <h3 className="text-sm font-semibold text-cyan-400 mb-2">Full Web Platform Buildout</h3>
+                <p className="text-xs text-white/70">
+                  Next.js, React, TypeScript, Firebase, Supabase, Vercel, Node APIs — complete with real-time logs and security modules.
+                </p>
+              </div>
             </div>
           </div>
         </section>
