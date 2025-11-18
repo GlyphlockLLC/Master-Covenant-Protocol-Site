@@ -1,0 +1,211 @@
+import React from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
+import { createPageUrl } from "@/utils";
+import { 
+  Shield, Building2, Heart, ShoppingBag, Code, 
+  Globe, Lock, CheckCircle2, ArrowRight 
+} from "lucide-react";
+import SEOHead from "@/components/SEOHead";
+
+export default function Solutions() {
+  const solutions = [
+    {
+      industry: "Hospitality & Entertainment",
+      icon: Building2,
+      description: "Secure payment processing, customer tracking, VIP management, and fraud prevention for clubs, bars, restaurants, and hotels.",
+      features: [
+        "NUPS POS System with VIP room tracking",
+        "Entertainer management and contracts",
+        "Customer loyalty programs",
+        "Secure payment processing with blockchain verification",
+        "Real-time transaction monitoring",
+        "Z-report generation and reconciliation"
+      ],
+      cta: "Explore NUPS POS",
+      page: "NUPSLogin",
+      color: "emerald"
+    },
+    {
+      industry: "Healthcare",
+      icon: Heart,
+      description: "HIPAA-compliant security solutions protecting patient data with quantum-resistant encryption and audit trails.",
+      features: [
+        "HIPAA-compliant data encryption",
+        "Patient data protection with steganography",
+        "Secure medical record storage",
+        "Audit logging and compliance reporting",
+        "Multi-factor authentication",
+        "Quantum-resistant encryption"
+      ],
+      cta: "Healthcare Security",
+      page: "SecurityOperationsCenter",
+      color: "red"
+    },
+    {
+      industry: "Financial Services",
+      icon: Lock,
+      description: "PCI DSS compliant payment security, fraud detection, and transaction verification for banks and fintech.",
+      features: [
+        "PCI DSS Level 1 compliance",
+        "Real-time fraud detection",
+        "Blockchain transaction verification",
+        "Multi-signature authentication",
+        "Regulatory compliance automation",
+        "Secure API integration"
+      ],
+      cta: "Financial Security",
+      page: "Blockchain",
+      color: "blue"
+    },
+    {
+      industry: "Retail & E-commerce",
+      icon: ShoppingBag,
+      description: "Secure checkout, inventory management, customer data protection, and fraud prevention for online and physical stores.",
+      features: [
+        "Secure payment gateway integration",
+        "Customer data encryption",
+        "Inventory tracking with blockchain",
+        "Loyalty program management",
+        "Fraud detection and prevention",
+        "Multi-location support"
+      ],
+      cta: "Retail Solutions",
+      page: "SecurityTools",
+      color: "violet"
+    },
+    {
+      industry: "Technology & Software",
+      icon: Code,
+      description: "Intellectual property protection, secure development workflows, and AI security for tech companies and startups.",
+      features: [
+        "IP protection with Master Covenant",
+        "Secure code repository integration",
+        "AI model protection",
+        "Automated security scanning",
+        "GlyphBot AI development assistant",
+        "Vulnerability detection"
+      ],
+      cta: "Tech Security",
+      page: "GlyphBot",
+      color: "cyan"
+    },
+    {
+      industry: "Enterprise & Government",
+      icon: Globe,
+      description: "Comprehensive security operations centers, compliance management, and classified data protection.",
+      features: [
+        "24/7 security operations center",
+        "Threat intelligence monitoring",
+        "Compliance automation (SOC 2, ISO 27001)",
+        "Incident response management",
+        "Custom security policies",
+        "Dedicated account management"
+      ],
+      cta: "Enterprise SOC",
+      page: "SecurityOperationsCenter",
+      color: "orange"
+    }
+  ];
+
+  const benefits = [
+    "Quantum-resistant encryption protecting against future threats",
+    "AI-powered threat detection with real-time monitoring",
+    "Blockchain verification for transaction immutability",
+    "Multi-layer security combining cryptography and legal frameworks",
+    "Compliance with SOC 2, GDPR, ISO 27001, PCI DSS, HIPAA",
+    "24/7 enterprise support with dedicated account managers"
+  ];
+
+  return (
+    <>
+      <SEOHead 
+        title="Industry Solutions - Cybersecurity for Every Sector | GlyphLock"
+        description="Tailored cybersecurity solutions for hospitality, healthcare, finance, retail, technology, and enterprise. Quantum-resistant protection with industry-specific compliance and features."
+        keywords="industry cybersecurity solutions, healthcare HIPAA security, financial PCI DSS compliance, retail fraud prevention, technology IP protection, enterprise SOC, hospitality POS security, government classified data"
+        url="/solutions"
+      />
+      
+      <div className="min-h-screen bg-black text-white py-20">
+        <div className="container mx-auto px-4 max-w-7xl">
+          <div className="text-center mb-16">
+            <h1 className="text-4xl md:text-6xl font-bold mb-6">
+              <span className="text-white">Solutions for </span>
+              <span className="bg-gradient-to-r from-blue-400 to-violet-600 bg-clip-text text-transparent">
+                Every Industry
+              </span>
+            </h1>
+            <p className="text-xl text-white/70 max-w-3xl mx-auto mb-8">
+              Tailored cybersecurity solutions designed for your industry's specific needs, 
+              compliance requirements, and security challenges.
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-8 mb-16">
+            {solutions.map((solution, idx) => (
+              <Card key={idx} className={`glass-card-dark border-${solution.color}-500/30 hover:border-${solution.color}-500/50 transition-all`}>
+                <CardContent className="p-8">
+                  <div className="flex items-start gap-4 mb-6">
+                    <div className={`p-3 rounded-xl bg-${solution.color}-500/20 border border-${solution.color}-500/50`}>
+                      <solution.icon className={`w-8 h-8 text-${solution.color}-400`} />
+                    </div>
+                    <div className="flex-1">
+                      <h2 className="text-2xl font-bold text-white mb-2">{solution.industry}</h2>
+                      <p className="text-white/70">{solution.description}</p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2 mb-6">
+                    {solution.features.map((feature, fIdx) => (
+                      <div key={fIdx} className="flex items-start gap-2">
+                        <CheckCircle2 className={`w-4 h-4 text-${solution.color}-400 mt-0.5 flex-shrink-0`} />
+                        <span className="text-sm text-white/80">{feature}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <Link to={createPageUrl(solution.page)}>
+                    <Button className={`w-full bg-${solution.color}-600 hover:bg-${solution.color}-700 text-white`}>
+                      {solution.cta}
+                      <ArrowRight className="w-4 h-4 ml-2" />
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          <Card className="glass-card-dark border-blue-500/30 p-8 mb-16">
+            <h2 className="text-3xl font-bold text-white mb-6 text-center">
+              Why Choose GlyphLock?
+            </h2>
+            <div className="grid md:grid-cols-2 gap-4">
+              {benefits.map((benefit, idx) => (
+                <div key={idx} className="flex items-start gap-3">
+                  <Shield className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />
+                  <span className="text-white/80">{benefit}</span>
+                </div>
+              ))}
+            </div>
+          </Card>
+
+          <div className="text-center">
+            <h2 className="text-3xl font-bold text-white mb-4">
+              Ready to Secure Your Industry?
+            </h2>
+            <p className="text-white/70 mb-8 max-w-2xl mx-auto">
+              Schedule a consultation to discuss your industry-specific security needs and 
+              receive a customized protection plan.
+            </p>
+            <Link to={createPageUrl("Consultation")}>
+              <Button size="lg" className="bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-700 hover:to-violet-700 text-white">
+                Schedule Your Consultation
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}

@@ -43,6 +43,7 @@ import Robots from './pages/Robots';
 import Sitemap from './pages/Sitemap';
 import FAQ from './pages/FAQ';
 import Services from './pages/Services';
+import Solutions from './pages/Solutions';
 import __Layout from './Layout.jsx';
 
 
@@ -92,6 +93,7 @@ export const PAGES = {
     "Sitemap": Sitemap,
     "FAQ": FAQ,
     "Services": Services,
+    "Solutions": Solutions,
 }
 
 export const pagesConfig = {

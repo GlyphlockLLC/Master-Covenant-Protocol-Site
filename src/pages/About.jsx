@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { Button } from "@/components/ui/button";
 import { Shield, Target, Users, Zap, Code, Brain, Sparkles } from "lucide-react";
+import SEOHead from "@/components/SEOHead";
 
 export default function About() {
   const values = [
@@ -59,13 +60,28 @@ export default function About() {
           <div className="glass-card-dark border-blue-500/30 rounded-xl p-8 mb-12">
             <h2 className="text-3xl font-bold text-white mb-6">Our Story</h2>
             <p className="text-white leading-relaxed mb-6">
-              Founded in May 2025 in El Mirage, Arizona by Carlo Earl, GlyphLock Security LLC emerged from a vision to create 
-              next-generation cybersecurity tools that combine quantum-resistant encryption with artificial intelligence.
+              Founded in May 2025 in El Mirage, Arizona by Carlo Rene Earl (DACO¹), GlyphLock Security LLC emerged from a vision to create 
+              next-generation cybersecurity tools that combine quantum-resistant encryption with artificial intelligence. 
+              We recognized that traditional security measures weren't enough to face tomorrow's threats, particularly 
+              as quantum computing advances threaten to break conventional encryption methods like RSA and ECC.
             </p>
             <p className="text-white leading-relaxed mb-6">
-              Our flagship technologies include the GlyphLock Master Covenant (Patent App. No. 18/584,961), 
+              Our flagship technologies include the GlyphLock Master Covenant (USPTO Patent Application No. 18/584,961), 
               a revolutionary legal framework that binds AI systems through Contractual Auto-Binding (CAB), 
-              and our comprehensive suite of security tools designed for enterprise-level protection.
+              and our comprehensive suite of security tools designed for enterprise-level protection. The platform 
+              combines visual cryptography, steganographic QR codes, blockchain verification, AI-powered threat detection, 
+              and our enterprise NUPS (Next-Gen Unified POS System).
+            </p>
+            <p className="text-white leading-relaxed mb-6">
+              Today, GlyphLock serves businesses across multiple sectors including hospitality, healthcare, finance, 
+              retail, technology, and government. We maintain SOC 2, GDPR, ISO 27001, PCI DSS, and HIPAA compliance 
+              certifications, ensuring our clients receive enterprise-grade security that meets the strictest regulatory standards.
+            </p>
+            <p className="text-white leading-relaxed">
+              Our mission is to protect intellectual property, prevent digital fraud, and provide quantum-resistant 
+              security solutions that will remain effective for decades to come. We're addressing the $283 billion 
+              annual IP theft crisis with innovative technology that combines legal frameworks, cryptographic protection, 
+              and artificial intelligence.
             </p>
           </div>
 
