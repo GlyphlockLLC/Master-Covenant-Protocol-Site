@@ -425,7 +425,12 @@ export default function Layout({ children, currentPageName }) {
                         alt={cert.name}
                         className="h-16 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity"
                         loading="lazy"
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                          e.target.nextElementSibling.style.display = 'block';
+                        }}
                       />
+                      <span className="text-xs font-semibold text-white/80 hidden">{cert.name}</span>
                     </div>
                   ))}
                 </div>
