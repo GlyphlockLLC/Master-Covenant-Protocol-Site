@@ -105,7 +105,6 @@ export default function MessageBubble({ message, autoRead = false }) {
     const [isSpeaking, setIsSpeaking] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [playbackSpeed, setPlaybackSpeed] = useState(1.0);
-    const [playbackPitch, setPlaybackPitch] = useState(1.0);
     const audioRef = useRef(null);
     const hasAutoPlayed = useRef(false);
     
@@ -164,31 +163,37 @@ export default function MessageBubble({ message, autoRead = false }) {
             
             const response = await base44.functions.invoke('textToSpeech', {
                 text: text,
-                voice: voiceId,
-                speed: playbackSpeed,
-                pitch: playbackPitch
+                voice: voiceId
             });
 
-            if (response.data) {
+            if (response?.data) {
                 const blob = new Blob([response.data], { type: 'audio/mpeg' });
                 const url = URL.createObjectURL(blob);
                 
                 if (audioRef.current) {
                     audioRef.current.src = url;
                     audioRef.current.playbackRate = playbackSpeed;
-                    audioRef.current.onended = () => setIsSpeaking(false);
-                    audioRef.current.onerror = () => {
+                    audioRef.current.onended = () => {
+                        setIsSpeaking(false);
+                        URL.revokeObjectURL(url);
+                    };
+                    audioRef.current.onerror = (e) => {
+                        console.error('Audio playback error:', e);
                         setIsSpeaking(false);
                         setIsLoading(false);
+                        URL.revokeObjectURL(url);
                     };
                     
                     setIsSpeaking(true);
                     await audioRef.current.play();
                 }
+            } else {
+                throw new Error('No audio data received');
             }
         } catch (error) {
             console.error('TTS Error:', error);
-            alert('Failed to generate speech. Please try again.');
+            const errorMsg = error.response?.data?.error || error.message || 'Unknown error';
+            alert(`Speech generation failed: ${errorMsg}`);
         } finally {
             setIsLoading(false);
         }
@@ -245,34 +250,25 @@ export default function MessageBubble({ message, autoRead = false }) {
                                        ) : (
                                            <>
                                                <div className="px-3 py-2 space-y-3 border-b border-blue-500/30">
-                                                   <div className="text-[10px] text-blue-400 font-semibold uppercase tracking-wide">Playback Controls</div>
-                                                   <div className="space-y-2">
-                                                       <div>
-                                                           <label className="text-[10px] text-white/70 block mb-1">Speed: {playbackSpeed}x</label>
-                                                           <input 
-                                                               type="range" 
-                                                               min="0.5" 
-                                                               max="2.0" 
-                                                               step="0.1" 
-                                                               value={playbackSpeed}
-                                                               onChange={(e) => setPlaybackSpeed(parseFloat(e.target.value))}
-                                                               className="w-full h-1 bg-blue-500/30 rounded-lg appearance-none cursor-pointer"
-                                                               onClick={(e) => e.stopPropagation()}
-                                                           />
-                                                       </div>
-                                                       <div>
-                                                           <label className="text-[10px] text-white/70 block mb-1">Pitch: {playbackPitch}x</label>
-                                                           <input 
-                                                               type="range" 
-                                                               min="0.5" 
-                                                               max="2.0" 
-                                                               step="0.1" 
-                                                               value={playbackPitch}
-                                                               onChange={(e) => setPlaybackPitch(parseFloat(e.target.value))}
-                                                               className="w-full h-1 bg-blue-500/30 rounded-lg appearance-none cursor-pointer"
-                                                               onClick={(e) => e.stopPropagation()}
-                                                           />
-                                                       </div>
+                                                   <div className="text-[10px] text-blue-400 font-semibold uppercase tracking-wide">Playback Speed</div>
+                                                   <div>
+                                                       <label className="text-[10px] text-white/70 block mb-1">Speed: {playbackSpeed}x</label>
+                                                       <input 
+                                                           type="range" 
+                                                           min="0.5" 
+                                                           max="2.0" 
+                                                           step="0.1" 
+                                                           value={playbackSpeed}
+                                                           onChange={(e) => {
+                                                               const newSpeed = parseFloat(e.target.value);
+                                                               setPlaybackSpeed(newSpeed);
+                                                               if (audioRef.current) {
+                                                                   audioRef.current.playbackRate = newSpeed;
+                                                               }
+                                                           }}
+                                                           className="w-full h-1 bg-blue-500/30 rounded-lg appearance-none cursor-pointer"
+                                                           onClick={(e) => e.stopPropagation()}
+                                                       />
                                                    </div>
                                                </div>
                                                <div className="px-2 py-1.5 text-[10px] text-blue-400 font-semibold uppercase tracking-wide">Voice Personas</div>
