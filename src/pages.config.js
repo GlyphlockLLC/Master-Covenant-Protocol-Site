@@ -46,6 +46,7 @@ import Services from './pages/Services';
 import Solutions from './pages/Solutions';
 import SiteAuditReport from './pages/SiteAuditReport';
 import TaskTracker from './pages/TaskTracker';
+import ContentGenerator from './pages/ContentGenerator';
 import __Layout from './Layout.jsx';
 
 
@@ -98,6 +99,7 @@ export const PAGES = {
     "Solutions": Solutions,
     "SiteAuditReport": SiteAuditReport,
     "TaskTracker": TaskTracker,
+    "ContentGenerator": ContentGenerator,
 }
 
 export const pagesConfig = {
