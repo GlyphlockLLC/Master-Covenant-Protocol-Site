@@ -27,33 +27,13 @@ export default function KnowledgeBaseConnector({ onKnowledgeAdded }) {
 
     try {
       setIsLoading(true);
-      
-      // Fetch and analyze the documentation
-      const result = await base44.integrations.Core.InvokeLLM({
-        prompt: `Analyze this documentation URL and extract key information: ${url}. 
-        Provide a brief summary of what this documentation covers.`,
-        add_context_from_internet: true,
-        response_json_schema: {
-          type: "object",
-          properties: {
-            title: { type: "string" },
-            summary: { type: "string" },
-            topics: { type: "array", items: { type: "string" } },
-            status: { type: "string", enum: ["accessible", "error"] }
-          }
-        }
-      });
-
-      if (result.status === 'error') {
-        throw new Error('Could not access the documentation');
-      }
 
       const newKB = {
         id: Date.now(),
         url: url.trim(),
-        title: result.title || 'Documentation',
-        summary: result.summary || 'External documentation',
-        topics: result.topics || [],
+        title: new URL(url).hostname,
+        summary: 'Documentation source',
+        topics: [],
         addedAt: new Date().toISOString()
       };
 
@@ -62,12 +42,11 @@ export default function KnowledgeBaseConnector({ onKnowledgeAdded }) {
       localStorage.setItem('glyphbot-knowledge-bases', JSON.stringify(updated));
       
       setUrl('');
-      toast.success(`Knowledge base "${newKB.title}" connected`);
+      toast.success(`Knowledge base added`);
       onKnowledgeAdded?.(newKB);
       
     } catch (error) {
-      console.error('Error adding knowledge base:', error);
-      toast.error('Failed to connect to knowledge base');
+      toast.error('Invalid URL');
     } finally {
       setIsLoading(false);
     }

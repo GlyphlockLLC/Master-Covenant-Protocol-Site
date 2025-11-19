@@ -75,7 +75,8 @@ export default function GlyphBot() {
       const convos = await base44.agents.listConversations({
         agent_name: "glyphbot"
       });
-      const filtered = convos.filter(c => !c.metadata?.deleted);
+      const deleted = JSON.parse(localStorage.getItem('glyphbot-deleted-conversations') || '[]');
+      const filtered = convos.filter(c => !deleted.includes(c.id));
       setConversations(filtered);
     } catch (error) {
       console.error("Error loading conversations:", error);
@@ -136,66 +137,60 @@ export default function GlyphBot() {
       return;
     }
 
-    setIsLoading(true);
     const messageContent = inputMessage.trim();
-
-    let finalContent = messageContent;
-    
-    // Add persona context
-    if (selectedPersona !== "default") {
-      const personaContexts = {
-        "ethical-hacker": "As an ethical hacker focused on offensive security and penetration testing, ",
-        "senior-developer": "As a senior software engineer emphasizing clean code and best practices, ",
-        "security-auditor": "As a security auditor focused on compliance and risk assessment, ",
-        "smart-contract-auditor": "As a blockchain security expert specializing in smart contracts, "
-      };
-      finalContent = personaContexts[selectedPersona] + messageContent;
-    }
-
-    // Add language context
-    if (selectedLanguage !== 'en') {
-      const languageNames = {
-        es: 'Spanish', fr: 'French', de: 'German', it: 'Italian', pt: 'Portuguese',
-        ru: 'Russian', zh: 'Chinese', ja: 'Japanese', ko: 'Korean', ar: 'Arabic',
-        hi: 'Hindi', tr: 'Turkish', pl: 'Polish', nl: 'Dutch', sv: 'Swedish',
-        no: 'Norwegian', da: 'Danish', fi: 'Finnish', el: 'Greek'
-      };
-      finalContent = `[Respond in ${languageNames[selectedLanguage]}] ${finalContent}`;
-    }
-
-    // Add knowledge base context
-    if (knowledgeBases.length > 0) {
-      const kbContext = knowledgeBases.map(kb => kb.url).join(', ');
-      finalContent = `${finalContent}\n\n[Context: Consider information from these knowledge bases: ${kbContext}]`;
-    }
-
     setInputMessage("");
+    setIsLoading(true);
 
     try {
+      let finalContent = messageContent;
+      
+      if (selectedPersona !== "default") {
+        const personaContexts = {
+          "ethical-hacker": "As an ethical hacker: ",
+          "senior-developer": "As a senior developer: ",
+          "security-auditor": "As a security auditor: ",
+          "smart-contract-auditor": "As a smart contract auditor: "
+        };
+        finalContent = personaContexts[selectedPersona] + messageContent;
+      }
+
+      if (selectedLanguage !== 'en') {
+        const langMap = {
+          es: 'Spanish', fr: 'French', de: 'German', it: 'Italian', pt: 'Portuguese',
+          ru: 'Russian', zh: 'Chinese', ja: 'Japanese', ko: 'Korean', ar: 'Arabic',
+          hi: 'Hindi', tr: 'Turkish', pl: 'Polish', nl: 'Dutch', sv: 'Swedish'
+        };
+        finalContent = `[${langMap[selectedLanguage]}] ${finalContent}`;
+      }
+
+      if (knowledgeBases.length > 0) {
+        finalContent += `\n[KB: ${knowledgeBases.map(kb => kb.url).join(', ')}]`;
+      }
+
       const fileUrls = selectedFiles.length > 0 ? await uploadFiles() : [];
       setSelectedFiles([]);
 
       await base44.agents.addMessage(currentConversation, {
         role: "user",
-        content: finalContent || "Please analyze the attached files",
+        content: finalContent || "Analyze files",
         file_urls: fileUrls.length > 0 ? fileUrls : undefined
       });
     } catch (error) {
-      console.error("Error sending message:", error);
+      console.error("Error:", error);
       setIsLoading(false);
     }
   };
 
-  const deleteConversation = async (conversationId, e) => {
+  const deleteConversation = (conversationId, e) => {
     e?.stopPropagation();
     if (!window.confirm('Delete this conversation? This cannot be undone.')) return;
     
     try {
-      await base44.agents.updateConversation(conversationId, {
-        metadata: { deleted: true, deleted_at: new Date().toISOString() }
-      });
+      const deleted = JSON.parse(localStorage.getItem('glyphbot-deleted-conversations') || '[]');
+      deleted.push(conversationId);
+      localStorage.setItem('glyphbot-deleted-conversations', JSON.stringify(deleted));
       
-      await loadConversations();
+      setConversations(prev => prev.filter(c => c.id !== conversationId));
       
       if (currentConversation?.id === conversationId) {
         setCurrentConversation(null);
@@ -203,7 +198,6 @@ export default function GlyphBot() {
       }
     } catch (error) {
       console.error("Delete error:", error);
-      alert(`Failed to delete: ${error.message}`);
     }
   };
 
