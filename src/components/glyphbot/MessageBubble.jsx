@@ -116,21 +116,26 @@ export default function MessageBubble({ message, autoRead = false }) {
     };
 
     const voicePersonalities = [
-        { id: 'Joanna', name: 'Joanna', icon: '👩', description: 'American Female - Natural', category: 'American' },
-        { id: 'Matthew', name: 'Matthew', icon: '👨', description: 'American Male - Deep', category: 'American' },
-        { id: 'Joey', name: 'Joey', icon: '👨', description: 'American Male - Friendly', category: 'American' },
-        { id: 'Salli', name: 'Salli', icon: '👩', description: 'American Female - Professional', category: 'American' },
-        { id: 'Kendra', name: 'Kendra', icon: '👩', description: 'American Female - Clear', category: 'American' },
-        { id: 'Justin', name: 'Justin', icon: '👦', description: 'American Child - Young', category: 'American' },
-        { id: 'Amy', name: 'Amy', icon: '👩', description: 'British Female - Clear', category: 'British' },
-        { id: 'Brian', name: 'Brian', icon: '👨', description: 'British Male - Professional', category: 'British' },
-        { id: 'Emma', name: 'Emma', icon: '👩', description: 'British Female - Warm', category: 'British' },
-        { id: 'Russell', name: 'Russell', icon: '👨', description: 'Australian Male - Casual', category: 'Australian' },
-        { id: 'Nicole', name: 'Nicole', name: 'Nicole', icon: '👩', description: 'Australian Female - Friendly', category: 'Australian' },
-        { id: 'Raveena', name: 'Raveena', icon: '👩', description: 'Indian Female - Elegant', category: 'International' },
-        { id: 'Aditi', name: 'Aditi', icon: '👩', description: 'Indian Female - Expressive', category: 'International' },
-        { id: 'Geraint', name: 'Geraint', icon: '👨', description: 'Welsh Male - Rich', category: 'International' },
-        { id: 'Gwyneth', name: 'Gwyneth', icon: '👩', description: 'Welsh Female - Melodic', category: 'International' }
+        { id: 'Joanna', name: 'Joanna', icon: '👩‍💼', description: 'Professional & Trustworthy', personality: 'Confident executive voice', category: 'American' },
+        { id: 'Matthew', name: 'Matthew', icon: '🎙️', description: 'Deep & Authoritative', personality: 'News anchor presence', category: 'American' },
+        { id: 'Joey', name: 'Joey', icon: '😊', description: 'Friendly & Casual', personality: 'Your helpful buddy', category: 'American' },
+        { id: 'Salli', name: 'Salli', icon: '💼', description: 'Clear & Articulate', personality: 'Corporate communicator', category: 'American' },
+        { id: 'Kendra', name: 'Kendra', icon: '✨', description: 'Warm & Engaging', personality: 'Storyteller voice', category: 'American' },
+        { id: 'Kimberly', name: 'Kimberly', icon: '🎭', description: 'Dynamic & Expressive', personality: 'Voice actor energy', category: 'American' },
+        { id: 'Ivy', name: 'Ivy', icon: '👧', description: 'Young & Cheerful', personality: 'Energetic assistant', category: 'American' },
+        { id: 'Justin', name: 'Justin', icon: '🧒', description: 'Child-like Wonder', personality: 'Curious & innocent', category: 'American' },
+        { id: 'Amy', name: 'Amy', icon: '🇬🇧', description: 'British Elegance', personality: 'Refined & sophisticated', category: 'British' },
+        { id: 'Brian', name: 'Brian', icon: '🎩', description: 'British Authority', personality: 'BBC documentary host', category: 'British' },
+        { id: 'Emma', name: 'Emma', icon: '☕', description: 'British Warmth', personality: 'Cozy & reassuring', category: 'British' },
+        { id: 'Russell', name: 'Russell', icon: '🦘', description: 'Aussie Laid-back', personality: 'Down-to-earth mate', category: 'Australian' },
+        { id: 'Nicole', name: 'Nicole', icon: '🌊', description: 'Aussie Friendly', personality: 'Bright & approachable', category: 'Australian' },
+        { id: 'Raveena', name: 'Raveena', icon: '🪷', description: 'Graceful Indian', personality: 'Elegant & cultured', category: 'International' },
+        { id: 'Aditi', name: 'Aditi', icon: '🎨', description: 'Expressive Indian', personality: 'Passionate storyteller', category: 'International' },
+        { id: 'Geraint', name: 'Geraint', icon: '🏴󐁧󐁢󐁷󐁬󐁳󐁿', description: 'Welsh Richness', personality: 'Poetic & melodic', category: 'International' },
+        { id: 'Gwyneth', name: 'Gwyneth', icon: '🎵', description: 'Welsh Melody', personality: 'Musical & flowing', category: 'International' },
+        { id: 'Celine', name: 'Céline', icon: '🇫🇷', description: 'French Charm', personality: 'Romantic & sophisticated', category: 'International' },
+        { id: 'Chantal', name: 'Chantal', icon: '🥐', description: 'French Elegance', personality: 'Parisian chic', category: 'International' },
+        { id: 'Mizuki', name: 'Mizuki', icon: '🌸', description: 'Japanese Gentle', personality: 'Calm & respectful', category: 'International' }
     ];
 
     const stopSpeaking = () => {
@@ -323,13 +328,16 @@ export default function MessageBubble({ message, autoRead = false }) {
                                                                    key={voice.id}
                                                                    onClick={() => speakText(voice.id)}
                                                                    disabled={isLoading}
-                                                                   className="text-white hover:bg-blue-500/20 focus:bg-blue-500/20 flex flex-col items-start gap-1 py-2.5 cursor-pointer"
+                                                                   className="text-white hover:bg-blue-500/20 focus:bg-blue-500/20 flex flex-col items-start gap-0.5 py-3 cursor-pointer"
                                                                >
                                                                    <div className="flex items-center gap-2 w-full">
-                                                                       <span className="text-base">{voice.icon}</span>
-                                                                       <span className="font-medium text-sm">{voice.name}</span>
+                                                                       <span className="text-lg">{voice.icon}</span>
+                                                                       <div className="flex flex-col">
+                                                                           <span className="font-semibold text-sm">{voice.name}</span>
+                                                                           <span className="text-[10px] text-blue-400">{voice.description}</span>
+                                                                       </div>
                                                                    </div>
-                                                                   <span className="text-[10px] text-white/60 ml-7 leading-tight">{voice.description}</span>
+                                                                   <span className="text-[9px] text-white/50 italic ml-8 leading-tight">{voice.personality}</span>
                                                                </DropdownMenuItem>
                                                            ))}
                                                        </div>
