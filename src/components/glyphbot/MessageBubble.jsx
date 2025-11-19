@@ -136,13 +136,7 @@ export default function MessageBubble({ message, autoRead = false }) {
     const processTextForSpeech = (text) => {
         return text
             .replace(/[#*`]/g, '')
-            .replace(/\.\.\./g, '... ')
-            .replace(/([.!?])\s*([A-Z])/g, '$1 $2')
-            .replace(/,/g, ', ')
-            .replace(/:/g, ': ')
-            .replace(/;/g, '; ')
-            .replace(/\n\n+/g, '. ')
-            .replace(/\n/g, '. ')
+            .replace(/\n/g, ' ')
             .trim();
     };
 
@@ -153,10 +147,7 @@ export default function MessageBubble({ message, autoRead = false }) {
         }
 
         const text = processTextForSpeech(message.content);
-        if (!text || text.length > 1000) {
-            alert('Text is too long (max 1000 characters)');
-            return;
-        }
+        if (!text) return;
 
         try {
             setIsLoading(true);
@@ -173,27 +164,18 @@ export default function MessageBubble({ message, autoRead = false }) {
                 if (audioRef.current) {
                     audioRef.current.src = url;
                     audioRef.current.playbackRate = playbackSpeed;
-                    audioRef.current.onended = () => {
-                        setIsSpeaking(false);
-                        URL.revokeObjectURL(url);
-                    };
-                    audioRef.current.onerror = (e) => {
-                        console.error('Audio playback error:', e);
+                    audioRef.current.onended = () => setIsSpeaking(false);
+                    audioRef.current.onerror = () => {
                         setIsSpeaking(false);
                         setIsLoading(false);
-                        URL.revokeObjectURL(url);
                     };
                     
                     setIsSpeaking(true);
                     await audioRef.current.play();
                 }
-            } else {
-                throw new Error('No audio data received');
             }
         } catch (error) {
             console.error('TTS Error:', error);
-            const errorMsg = error.response?.data?.error || error.message || 'Unknown error';
-            alert(`Speech generation failed: ${errorMsg}`);
         } finally {
             setIsLoading(false);
         }
