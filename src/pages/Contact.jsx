@@ -59,7 +59,7 @@ export default function Contact() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8 mb-12">
-            <Card className="bg-gray-900 border-gray-800 text-center">
+            <Card className="glass-card-dark border-blue-500/30 text-center" style={{background: 'rgba(30, 58, 138, 0.2)', backdropFilter: 'blur(16px)'}}>
               <CardContent className="pt-6">
                 <div className="w-14 h-14 bg-blue-500/20 rounded-lg flex items-center justify-center mx-auto mb-4">
                   <Mail className="w-7 h-7 text-blue-400" />
@@ -71,7 +71,7 @@ export default function Contact() {
               </CardContent>
             </Card>
 
-            <Card className="bg-gray-900 border-gray-800 text-center">
+            <Card className="glass-card-dark border-blue-500/30 text-center" style={{background: 'rgba(30, 58, 138, 0.2)', backdropFilter: 'blur(16px)'}}>
               <CardContent className="pt-6">
                 <div className="w-14 h-14 bg-blue-500/20 rounded-lg flex items-center justify-center mx-auto mb-4">
                   <Phone className="w-7 h-7 text-blue-400" />
@@ -83,7 +83,7 @@ export default function Contact() {
               </CardContent>
             </Card>
 
-            <Card className="bg-gray-900 border-gray-800 text-center">
+            <Card className="glass-card-dark border-blue-500/30 text-center" style={{background: 'rgba(30, 58, 138, 0.2)', backdropFilter: 'blur(16px)'}}>
               <CardContent className="pt-6">
                 <div className="w-14 h-14 bg-blue-500/20 rounded-lg flex items-center justify-center mx-auto mb-4">
                   <MapPin className="w-7 h-7 text-blue-400" />
@@ -103,11 +103,11 @@ export default function Contact() {
             </Alert>
           )}
 
-          <Card className="bg-gray-900 border-gray-800">
+          <Card className="glass-card-dark border-blue-500/30" style={{background: 'rgba(30, 58, 138, 0.2)', backdropFilter: 'blur(16px)'}}>
             <CardHeader>
               <CardTitle className="text-white">Send us a Message</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent style={{background: 'transparent'}}>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>

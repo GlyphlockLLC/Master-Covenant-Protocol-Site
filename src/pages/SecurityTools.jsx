@@ -78,7 +78,7 @@ export default function SecurityTools() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
             {tools.map((tool, index) => (
               <Link key={index} to={createPageUrl(tool.link)}>
-                <Card className="bg-gray-800 border-gray-700 hover:border-blue-500/50 transition-all duration-300 h-full group cursor-pointer">
+                <Card className="glass-card-dark border-blue-500/30 hover:border-blue-500/50 transition-all duration-300 h-full group cursor-pointer" style={{background: 'rgba(30, 58, 138, 0.2)', backdropFilter: 'blur(16px)'}}>
                   <div className="relative h-48 overflow-hidden rounded-t-lg">
                     <img 
                       src={tool.image}
