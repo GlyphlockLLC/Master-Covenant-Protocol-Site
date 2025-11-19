@@ -1,8 +1,14 @@
 import React, { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { Button } from "@/components/ui/button";
-import { Copy, Zap, CheckCircle2, AlertCircle, Loader2, ChevronRight, Clock } from 'lucide-react';
+import { Copy, Zap, CheckCircle2, AlertCircle, Loader2, ChevronRight, Clock, Volume2, Square } from 'lucide-react';
 import { cn } from "@/lib/utils";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 function FunctionDisplay({ toolCall }) {
     const [expanded, setExpanded] = useState(false);
@@ -95,9 +101,58 @@ function FunctionDisplay({ toolCall }) {
 
 export default function MessageBubble({ message }) {
     const isUser = message.role === 'user';
+    const [isSpeaking, setIsSpeaking] = useState(false);
     
     const copyToClipboard = (text) => {
         navigator.clipboard.writeText(text);
+    };
+
+    const voices = [
+        { name: 'Default Voice', value: 'default' },
+        { name: 'UK English Female', value: 'uk-female' },
+        { name: 'UK English Male', value: 'uk-male' },
+        { name: 'US English Female', value: 'us-female' },
+        { name: 'US English Male', value: 'us-male' }
+    ];
+
+    const stopSpeaking = () => {
+        window.speechSynthesis.cancel();
+        setIsSpeaking(false);
+    };
+
+    const speakText = (voiceType = 'default') => {
+        if (isSpeaking) {
+            stopSpeaking();
+            return;
+        }
+
+        const text = message.content.replace(/[#*`]/g, '').trim();
+        if (!text) return;
+
+        const utterance = new SpeechSynthesisUtterance(text);
+        
+        const availableVoices = window.speechSynthesis.getVoices();
+        
+        const voiceMap = {
+            'uk-female': availableVoices.find(v => v.lang.startsWith('en-GB') && v.name.includes('Female')),
+            'uk-male': availableVoices.find(v => v.lang.startsWith('en-GB') && v.name.includes('Male')),
+            'us-female': availableVoices.find(v => v.lang.startsWith('en-US') && v.name.includes('Female')),
+            'us-male': availableVoices.find(v => v.lang.startsWith('en-US') && v.name.includes('Male'))
+        };
+
+        if (voiceType !== 'default' && voiceMap[voiceType]) {
+            utterance.voice = voiceMap[voiceType];
+        }
+
+        utterance.rate = 1;
+        utterance.pitch = 1;
+        utterance.volume = 1;
+
+        utterance.onstart = () => setIsSpeaking(true);
+        utterance.onend = () => setIsSpeaking(false);
+        utterance.onerror = () => setIsSpeaking(false);
+
+        window.speechSynthesis.speak(utterance);
     };
     
     return (
@@ -110,9 +165,50 @@ export default function MessageBubble({ message }) {
             <div className={cn("max-w-[85%]", isUser && "flex flex-col items-end")}>
                 {message.content && (
                     <div className={cn(
-                        "rounded-2xl px-4 py-2.5",
+                        "rounded-2xl px-4 py-2.5 group/message relative",
                         isUser ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white" : "glass-royal text-white"
                     )}>
+                        {!isUser && (
+                            <div className="absolute top-2 right-2 opacity-0 group-hover/message:opacity-100 transition-opacity">
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <Button
+                                            size="icon"
+                                            variant="ghost"
+                                            className="h-6 w-6 glass-dark hover:bg-blue-500/20"
+                                            onClick={(e) => e.stopPropagation()}
+                                        >
+                                            {isSpeaking ? (
+                                                <Square className="h-3 w-3 text-white" />
+                                            ) : (
+                                                <Volume2 className="h-3 w-3 text-white" />
+                                            )}
+                                        </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent className="glass-dark border-blue-500/30">
+                                        {isSpeaking ? (
+                                            <DropdownMenuItem onClick={stopSpeaking} className="text-white hover:bg-blue-500/20">
+                                                <Square className="h-3 w-3 mr-2" />
+                                                Stop Speaking
+                                            </DropdownMenuItem>
+                                        ) : (
+                                            <>
+                                                {voices.map((voice) => (
+                                                    <DropdownMenuItem 
+                                                        key={voice.value}
+                                                        onClick={() => speakText(voice.value)}
+                                                        className="text-white hover:bg-blue-500/20"
+                                                    >
+                                                        <Volume2 className="h-3 w-3 mr-2" />
+                                                        {voice.name}
+                                                    </DropdownMenuItem>
+                                                ))}
+                                            </>
+                                        )}
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+                            </div>
+                        )}
                         {isUser ? (
                             <p className="text-sm leading-relaxed text-white">{message.content}</p>
                         ) : (
