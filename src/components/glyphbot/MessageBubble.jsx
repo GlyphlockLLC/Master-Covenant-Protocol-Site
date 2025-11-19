@@ -113,16 +113,13 @@ export default function MessageBubble({ message, autoRead = false }) {
     };
 
     const voicePersonalities = [
-        { id: 'en', name: 'English (US)', icon: '🇺🇸', description: 'Standard American English' },
-        { id: 'en-gb', name: 'English (UK)', icon: '🇬🇧', description: 'British English' },
-        { id: 'en-au', name: 'English (AU)', icon: '🇦🇺', description: 'Australian English' }
+        { id: 0, name: 'Voice 1', icon: '🗣️', description: 'Default voice' },
+        { id: 1, name: 'Voice 2', icon: '🎤', description: 'Alternative voice' },
+        { id: 2, name: 'Voice 3', icon: '🔊', description: 'Third option' }
     ];
 
     const stopSpeaking = () => {
-        if (audioRef.current) {
-            audioRef.current.pause();
-            audioRef.current.currentTime = 0;
-        }
+        window.speechSynthesis.cancel();
         setIsSpeaking(false);
     };
 
@@ -133,7 +130,7 @@ export default function MessageBubble({ message, autoRead = false }) {
             .trim();
     };
 
-    const speakText = async (voiceId) => {
+    const speakText = (voiceIndex) => {
         if (isSpeaking) {
             stopSpeaking();
             return;
@@ -143,60 +140,33 @@ export default function MessageBubble({ message, autoRead = false }) {
         if (!text) return;
 
         try {
-            setIsLoading(true);
-            console.log('Starting TTS with voice:', voiceId);
+            const utterance = new SpeechSynthesisUtterance(text);
+            const voices = window.speechSynthesis.getVoices();
             
-            const response = await base44.functions.invoke('textToSpeech', {
-                text: text,
-                voice: voiceId
-            });
-
-            console.log('TTS Response:', response);
-            
-            if (!response?.data) {
-                throw new Error('No audio data received');
+            if (voices.length > voiceIndex) {
+                utterance.voice = voices[voiceIndex];
             }
-
-            const blob = new Blob([response.data], { type: 'audio/mpeg' });
-            const url = URL.createObjectURL(blob);
-            console.log('Audio blob created, size:', blob.size);
             
-            if (audioRef.current) {
-                audioRef.current.src = url;
-                audioRef.current.playbackRate = playbackSpeed;
-                audioRef.current.onended = () => {
-                    console.log('Audio ended');
-                    setIsSpeaking(false);
-                };
-                audioRef.current.onerror = (e) => {
-                    console.error('Audio playback error:', e);
-                    alert('Audio playback failed');
-                    setIsSpeaking(false);
-                    setIsLoading(false);
-                };
-                
-                setIsSpeaking(true);
-                await audioRef.current.play();
-                console.log('Audio playing');
-            }
+            utterance.rate = playbackSpeed;
+            utterance.onstart = () => setIsSpeaking(true);
+            utterance.onend = () => setIsSpeaking(false);
+            utterance.onerror = () => setIsSpeaking(false);
+            
+            window.speechSynthesis.speak(utterance);
         } catch (error) {
             console.error('TTS Error:', error);
-            alert('Voice generation failed: ' + error.message);
-        } finally {
-            setIsLoading(false);
         }
     };
 
     React.useEffect(() => {
         if (autoRead && !isUser && message.content && !hasAutoPlayed.current) {
             hasAutoPlayed.current = true;
-            speakText('en');
+            speakText(0);
         }
     }, [autoRead, isUser, message.content]);
     
     return (
         <>
-            <audio ref={audioRef} className="hidden" />
             <div className={cn("flex gap-3", isUser ? "justify-end" : "justify-start")}>
                 {!isUser && (
                     <div className="h-7 w-7 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center mt-0.5 glow-royal">
