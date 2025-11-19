@@ -231,7 +231,7 @@ export default function Payment() {
           <div className="grid lg:grid-cols-3 gap-8">
             {/* Payment Form */}
             <div className="lg:col-span-2">
-              <Card className="bg-gray-900 border-gray-800">
+              <Card className="glass-card-dark border-blue-500/30">
                 <CardHeader>
                   <CardTitle className="text-white flex items-center gap-2">
                     <CreditCard className="w-5 h-5" />
