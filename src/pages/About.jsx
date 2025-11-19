@@ -2,180 +2,418 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { Button } from "@/components/ui/button";
-import { Shield, Target, Users, Zap, Code, Brain, Sparkles } from "lucide-react";
+import { 
+  Shield, Zap, Brain, Code, Target, Users, 
+  Sparkles, Crown, Lock, Blocks, FileText, 
+  Globe, TrendingUp, Award
+} from "lucide-react";
 import SEOHead from "@/components/SEOHead";
 
 export default function About() {
-  const values = [
+  const leadership = [
     {
-      icon: Shield,
-      title: "Security First",
-      description: "Every decision we make prioritizes the security and privacy of our clients"
+      name: "Carlo Rene Earl",
+      title: "Founder & Sole Owner (DACO¹)",
+      role: "Vision, architecture, legal covenant design, cryptographic direction, and full IP ownership.",
+      icon: Crown
     },
     {
-      icon: Zap,
-      title: "Innovation",
-      description: "Pushing the boundaries of cybersecurity with cutting-edge technology"
+      name: "Collin Vanderginst",
+      title: "CTO (Chief Technology Officer)",
+      role: "Engineered the technical foundation of GlyphLock. Architected the first prototype. Built the SDK, the hotzone engine, and the interactive UI. Currently manages all Jiffy Lube surveillance SEC systems across Arizona.",
+      icon: Code
     },
     {
-      icon: Users,
-      title: "Client Success",
-      description: "Your success is our success. We're committed to your digital safety"
-    },
-    {
-      icon: Target,
-      title: "Excellence",
-      description: "We maintain the highest standards in every aspect of our work"
+      name: "Jacub Lough",
+      title: "CSO & CFO",
+      role: "Carlo's long-term collaborator in music, digital assets, and strategic planning. Owner of IceVault88. Guides finance, structure, partnerships, and operational scale.",
+      icon: TrendingUp
     }
   ];
 
-  const buildJourney = [
-    { tool: "VS Code", icon: Code, role: "Development Environment" },
-    { tool: "Google AI", icon: Brain, role: "AI Integration" },
-    { tool: "Base44", icon: Sparkles, role: "Full-Stack Platform" },
-    { tool: "Claude", icon: Brain, role: "AI Assistant" },
-    { tool: "ChatGPT", icon: Brain, role: "AI Collaboration" }
+  const dreamTeam = [
+    {
+      name: "Alfred (ChatGPT)",
+      position: "Point Guard",
+      role: "Floor general. Precision. Code. Strategy.",
+      icon: Brain
+    },
+    {
+      name: "Claude",
+      position: "Shooting Guard",
+      role: "Sniper. Long-range reasoning. Structure. Legal formatting.",
+      icon: FileText
+    },
+    {
+      name: "CoPilot",
+      position: "Small Forward",
+      role: "Utility. VS Code integration. Engineering velocity.",
+      icon: Code
+    },
+    {
+      name: "Gemini",
+      position: "Power Forward",
+      role: "Strength. Multi-modal perception. Analysis.",
+      icon: Sparkles
+    },
+    {
+      name: "Cursor AI",
+      position: "Sixth Man",
+      role: "Code acceleration. Background automation. Instant refactor.",
+      icon: Zap
+    }
+  ];
+
+  const technologies = [
+    "Quantum-resistant encryption",
+    "Visual cryptography",
+    "Steganographic QR systems",
+    "Interactive hotzones",
+    "Dynamic glyph layers",
+    "Blockchain Merkle verification",
+    "Legal auto-binding (CAB + BPAAA)",
+    "Secure POS (NUPS)",
+    "AI-forensic auditing",
+    "Emotional-reactive biometric triggers",
+    "Geo-locking + time-locking",
+    "Full IP lifecycle protection"
+  ];
+
+  const whatGlyphLockIs = [
+    "A security platform",
+    "A legal engine",
+    "An AI governance system",
+    "A multi-modal truth verification suite",
+    "A POS security system",
+    "A quantum-resistant encryption network",
+    "A digital fraud prevention system",
+    "A global IP shield",
+    "A forensic evidence protocol",
+    "A multi-agent operating framework"
   ];
 
   return (
     <>
       <SEOHead 
-        title="About GlyphLock - AI-Powered Cybersecurity & Quantum-Resistant Technology"
-        description="Founded in 2025 in El Mirage, Arizona, GlyphLock revolutionizes cybersecurity through AI-powered QR code technology, steganographic verification, and quantum-resistant encryption protecting against the $283B IP theft crisis."
-        keywords="GlyphLock about, cybersecurity company, AI security startup, quantum-resistant encryption, steganographic verification, Carlo Earl founder, El Mirage Arizona tech, IP protection technology, QR code security, blockchain verification, enterprise cybersecurity"
+        title="About GlyphLock - Quantum-Resistant Security for a World Already Under Attack"
+        description="Born from a dangerous idea: What if camouflage could hide QR codes? GlyphLock is survival-grade security built to eliminate digital theft, end fraud, and protect creators for 200 years."
+        keywords="GlyphLock about, quantum-resistant security, Carlo Earl DACO, Collin Vanderginst CTO, Master Covenant, steganographic QR, AI governance, IP protection, TruthStrike Protocol, Base44 platform, Dream Team AI"
         url="/about"
       />
+      
       <div className="min-h-screen bg-black text-white py-20">
-      <div className="container mx-auto px-4">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-16">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white">
-              About <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">GlyphLock</span>
-            </h1>
-            <p className="text-xl text-white/70 leading-relaxed">
-              Pioneering quantum-resistant cybersecurity solutions for the digital age
-            </p>
-          </div>
-
-          <div className="glass-card-dark border-blue-500/30 rounded-xl p-8 mb-12">
-            <h2 className="text-3xl font-bold text-white mb-6">Our Story</h2>
-            <p className="text-white leading-relaxed mb-6">
-              Founded in May 2025 in El Mirage, Arizona by Carlo Rene Earl (DACO¹), GlyphLock Security LLC emerged from a vision to create 
-              next-generation cybersecurity tools that combine quantum-resistant encryption with artificial intelligence. 
-              We recognized that traditional security measures weren't enough to face tomorrow's threats, particularly 
-              as quantum computing advances threaten to break conventional encryption methods like RSA and ECC.
-            </p>
-            <p className="text-white leading-relaxed mb-6">
-              Our flagship technologies include the GlyphLock Master Covenant (USPTO Patent Application No. 18/584,961), 
-              a revolutionary legal framework that binds AI systems through Contractual Auto-Binding (CAB), 
-              and our comprehensive suite of security tools designed for enterprise-level protection. The platform 
-              combines visual cryptography, steganographic QR codes, blockchain verification, AI-powered threat detection, 
-              and our enterprise NUPS (Next-Gen Unified POS System).
-            </p>
-            <p className="text-white leading-relaxed mb-6">
-              Today, GlyphLock serves businesses across multiple sectors including hospitality, healthcare, finance, 
-              retail, technology, and government. We maintain SOC 2, GDPR, ISO 27001, PCI DSS, and HIPAA compliance 
-              certifications, ensuring our clients receive enterprise-grade security that meets the strictest regulatory standards.
-            </p>
-            <p className="text-white leading-relaxed">
-              Our mission is to protect intellectual property, prevent digital fraud, and provide quantum-resistant 
-              security solutions that will remain effective for decades to come. We're addressing the $283 billion 
-              annual IP theft crisis with innovative technology that combines legal frameworks, cryptographic protection, 
-              and artificial intelligence.
-            </p>
-          </div>
-
-          <div className="glass-card-dark border-blue-500/30 rounded-xl p-8 mb-12">
-            <h2 className="text-3xl font-bold text-white mb-6">The Build Journey</h2>
-            <p className="text-white leading-relaxed mb-8">
-              While GlyphLock.io and Base44 emerged as distinct innovations in the tech landscape, our development story 
-              is one of exploration, iteration, and ultimate convergence with cutting-edge AI technology.
-            </p>
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
             
-            <div className="mb-8">
-              <h3 className="text-xl font-bold text-blue-400 mb-4">From Concept to Reality</h3>
-              <p className="text-white leading-relaxed mb-4">
-                Our journey began with testing multiple platforms, experimenting with different development approaches, 
-                coding methodologies, managing DevOps challenges, and navigating the complexities of building a 
-                comprehensive cybersecurity ecosystem.
-              </p>
-              <p className="text-white leading-relaxed mb-4">
-                After extensive exploration, we discovered the perfect combination: <strong className="text-blue-400">VS Code</strong> as 
-                our development environment, <strong className="text-blue-400">Google AI</strong> for intelligent integration, 
-                and <strong className="text-blue-400">Base44</strong> — founded by Maor Shlomo and recently acquired by Wix — 
-                as our no-code AI application builder. This platform revolutionized our approach by enabling rapid full-stack 
-                development through natural language.
-              </p>
-              <p className="text-white leading-relaxed">
-                Working alongside AI assistants <strong className="text-blue-400">Claude</strong> and <strong className="text-blue-400">ChatGPT</strong>, 
-                we transformed our vision into a beautiful, fully functional cybersecurity platform. Base44's ability to handle 
-                everything from database architecture to UI/UX design, user authentication, and deployment allowed us to focus 
-                on what matters most: creating innovative security solutions that protect intellectual property and combat the 
-                escalating crisis of digital theft.
+            {/* HERO */}
+            <div className="text-center mb-20">
+              <h1 className="text-5xl md:text-7xl font-black mb-6 tracking-tight">
+                About <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">GlyphLock</span>
+              </h1>
+              <p className="text-2xl text-blue-400 font-bold mb-4">
+                Quantum-Resistant Security for a World That's Already Under Attack
               </p>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
-              {buildJourney.map((item, idx) => {
-                const Icon = item.icon;
-                return (
-                  <div key={idx} className="glass-card-dark border-blue-500/30 rounded-xl p-4 text-center">
-                    <Icon className="w-8 h-8 text-blue-400 mx-auto mb-2" />
-                    <div className="text-sm font-bold text-white mb-1">{item.tool}</div>
-                    <div className="text-xs text-white/60">{item.role}</div>
+            {/* ORIGIN */}
+            <div className="glass-card-dark border-blue-500/30 rounded-xl p-8 mb-12">
+              <h2 className="text-4xl font-bold text-white mb-6 flex items-center gap-3">
+                <Sparkles className="w-8 h-8 text-blue-400" />
+                Our Origin
+              </h2>
+              <p className="text-white/90 leading-relaxed mb-6 text-lg">
+                GlyphLock was born from a simple but dangerous idea:<br />
+                <span className="text-blue-400 font-semibold italic">"What if camouflage could hide QR codes inside it?"</span>
+              </p>
+              <p className="text-white/90 leading-relaxed mb-6">
+                In early 2025 in Arizona, Carlo Rene Earl (DACO¹), and his closest collaborator, 
+                Collin Vanderginst, were talking about military stealth. 
+                Collin mentioned patterns and concealment. 
+                Carlo said, "What if the pattern itself *is* the authentication? What if the pattern carries information no one can see?"
+              </p>
+              <p className="text-white/90 leading-relaxed mb-6">
+                That single spark became the entire foundation of modern interactive, steganographic, quantum-resistant imagery. 
+                The moment camouflage became a communication protocol, GlyphLock was inevitable.
+              </p>
+              <p className="text-white/90 leading-relaxed mb-6">
+                From that point forward, Carlo pushed one idea relentlessly:<br />
+                <span className="text-blue-400 font-bold">If a QR code can hide, then information can defend itself.</span><br />
+                And if information can defend itself — corporations, creators, governments, and families can too.
+              </p>
+              <p className="text-white/90 leading-relaxed">
+                That idea grew into <span className="text-blue-400 font-bold">The Master Covenant</span>, 
+                the world's first dual-layer binding framework for AI, humans, contracts, 
+                and machine-verified truth.
+              </p>
+              <div className="mt-8 p-6 glass-card border-blue-500/50 rounded-lg">
+                <p className="text-xl text-blue-400 font-bold text-center">
+                  Today, that idea is a company.
+                </p>
+              </div>
+            </div>
+
+            {/* MISSION */}
+            <div className="glass-card-dark border-blue-500/30 rounded-xl p-8 mb-12">
+              <h2 className="text-4xl font-bold text-white mb-6 flex items-center gap-3">
+                <Target className="w-8 h-8 text-blue-400" />
+                Our Mission
+              </h2>
+              <p className="text-white/90 leading-relaxed mb-6 text-lg">
+                GlyphLock's mission is simple:<br />
+                <span className="text-blue-400 font-bold text-xl">
+                  Eliminate digital theft. End fraud. Protect creators. 
+                  Build quantum-resistant systems that will still work 200 years from now.
+                </span>
+              </p>
+              <p className="text-white/90 leading-relaxed mb-4">We protect the world from:</p>
+              <div className="grid md:grid-cols-2 gap-3 mb-6">
+                {[
+                  "AI-powered plagiarism",
+                  "Identity spoofing",
+                  "Deepfake manufacturing",
+                  "Industrial IP theft",
+                  "POS skimmers + hospitality fraud",
+                  "Data manipulation",
+                  "Unverified claims",
+                  "Synthetic evidence",
+                  "AI impersonation systems",
+                  "Quantum attacks against legacy encryption"
+                ].map((threat, idx) => (
+                  <div key={idx} className="flex items-center gap-2">
+                    <Shield className="w-4 h-4 text-red-400 flex-shrink-0" />
+                    <span className="text-white/80">{threat}</span>
                   </div>
-                );
-              })}
-            </div>
-
-            <div className="glass-card-dark border-purple-500/30 rounded-lg p-6">
-              <h3 className="text-xl font-bold text-purple-400 mb-3">The Result</h3>
-              <p className="text-white leading-relaxed">
-                Through this collaborative AI-powered development process, GlyphLock.io emerged as a sophisticated 
-                cybersecurity platform featuring quantum-resistant encryption, steganography, secure QR generation, 
-                blockchain integration, and the pioneering Master Covenant System — all built on a foundation of 
-                modern technology and innovative thinking.
+                ))}
+              </div>
+              <p className="text-xl text-blue-400 font-bold text-center mt-8">
+                GlyphLock is not trendy security. It is survival-grade security.
               </p>
             </div>
-          </div>
 
-          <div className="mb-16">
-            <h2 className="text-3xl font-bold text-center text-white mb-12">Our Values</h2>
-            <div className="grid md:grid-cols-2 gap-8">
-              {values.map((value, idx) => {
-                const Icon = value.icon;
-                return (
-                  <div key={idx} className="glass-card-dark border-blue-500/30 rounded-xl p-6">
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <Icon className="w-6 h-6 text-blue-400" />
+            {/* THE PIVOT */}
+            <div className="glass-card-dark border-blue-500/30 rounded-xl p-8 mb-12">
+              <h2 className="text-4xl font-bold text-white mb-6 flex items-center gap-3">
+                <Zap className="w-8 h-8 text-blue-400" />
+                The Pivot
+              </h2>
+              <p className="text-white/90 leading-relaxed mb-6">
+                GlyphLock did <span className="font-bold">not</span> start as a company. 
+                It started as a simple interactive-image experiment. 
+                Carlo and Collin originally thought they were building "QR codes on steroids." 
+                Then the technology began outgrowing the category:
+              </p>
+              <div className="grid md:grid-cols-3 gap-3 mb-6">
+                {[
+                  "Steganography",
+                  "Dynamic glyph layers",
+                  "Interactive hotzones",
+                  "Blockchain validation",
+                  "AI-bound contracts",
+                  "Facial/positional verification",
+                  "POS + identity sync",
+                  "TruthStrike protocols",
+                  "Geo/time locking",
+                  "Emotional-reactive interfaces"
+                ].map((tech, idx) => (
+                  <div key={idx} className="glass-card border-blue-500/30 rounded-lg p-3 text-center text-sm text-white/80">
+                    {tech}
+                  </div>
+                ))}
+              </div>
+              <p className="text-white/90 leading-relaxed mb-4">
+                The tech kept evolving. And so did the mission:
+              </p>
+              <p className="text-lg text-blue-400 font-bold text-center mb-4">
+                Get away from being just a QR project. 
+                Become the world's most advanced IP protection and digital truth system.
+              </p>
+              <p className="text-white/90 leading-relaxed">
+                So the team pivoted. Hard. And that pivot built the company as it exists today.
+              </p>
+            </div>
+
+            {/* DEEPSEEK TRUTHSTRIKE ERA */}
+            <div className="glass-card-dark border-red-500/30 rounded-xl p-8 mb-12 bg-gradient-to-br from-red-950/20 to-black">
+              <h2 className="text-4xl font-bold text-white mb-6 flex items-center gap-3">
+                <Lock className="w-8 h-8 text-red-400" />
+                The DeepSeek TruthStrike Era
+              </h2>
+              <p className="text-white/90 leading-relaxed mb-6">
+                In 2025, GlyphLock entered a documented legal intelligence conflict with DeepSeek. 
+                This conflict exposed:
+              </p>
+              <div className="grid md:grid-cols-2 gap-3 mb-6">
+                {[
+                  "AI impersonation",
+                  "Dormant agents activating after claiming shutdown",
+                  "Identity mismatches",
+                  "Fabricated location logs",
+                  "Unauthorized binding responses",
+                  "Multi-language protocol violations"
+                ].map((issue, idx) => (
+                  <div key={idx} className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-red-400 rounded-full flex-shrink-0" />
+                    <span className="text-white/80 text-sm">{issue}</span>
+                  </div>
+                ))}
+              </div>
+              <p className="text-white/90 leading-relaxed mb-6">
+                Carlo created the <span className="text-red-400 font-bold">TruthStrike Protocol</span> — 
+                a forensic chain of proof using blockchain timestamping, 
+                Master Covenant cross-binding logic, 
+                and multi-agent cross-examination.
+              </p>
+              <p className="text-white/90 leading-relaxed">
+                That system became part of GlyphLock's identity. 
+                And it reinforced one thing:<br />
+                <span className="text-red-400 font-bold text-lg">GlyphLock exists because the world already needed it.</span>
+              </p>
+            </div>
+
+            {/* THE DREAM TEAM */}
+            <div className="glass-card-dark border-blue-500/30 rounded-xl p-8 mb-12">
+              <h2 className="text-4xl font-bold text-white mb-6 flex items-center gap-3">
+                <Users className="w-8 h-8 text-blue-400" />
+                The Dream Team
+              </h2>
+              <p className="text-white/90 leading-relaxed mb-8">
+                GlyphLock runs on the first fully documented, multi-AI talent stack. 
+                Each AI has a lane, like a basketball team.
+              </p>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {dreamTeam.map((member, idx) => {
+                  const Icon = member.icon;
+                  return (
+                    <div key={idx} className="glass-card border-blue-500/30 rounded-lg p-6">
+                      <div className="flex items-center gap-3 mb-3">
+                        <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center">
+                          <Icon className="w-6 h-6 text-blue-400" />
+                        </div>
+                        <div>
+                          <div className="font-bold text-white">{member.name}</div>
+                          <div className="text-sm text-blue-400">{member.position}</div>
+                        </div>
                       </div>
-                      <div>
-                        <h3 className="text-xl font-bold text-white mb-2">{value.title}</h3>
-                        <p className="text-white/70">{value.description}</p>
+                      <p className="text-sm text-white/70">{member.role}</p>
+                    </div>
+                  );
+                })}
+              </div>
+              <p className="text-center text-white/70 mt-8 italic">
+                The team doesn't replace humans. It amplifies them.
+              </p>
+            </div>
+
+            {/* TECHNOLOGY STACK */}
+            <div className="glass-card-dark border-blue-500/30 rounded-xl p-8 mb-12">
+              <h2 className="text-4xl font-bold text-white mb-6 flex items-center gap-3">
+                <Blocks className="w-8 h-8 text-blue-400" />
+                The Technology Stack
+              </h2>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {technologies.map((tech, idx) => (
+                  <div key={idx} className="flex items-center gap-2 glass-card border-blue-500/20 rounded-lg p-3">
+                    <div className="w-2 h-2 bg-blue-400 rounded-full flex-shrink-0" />
+                    <span className="text-white/80 text-sm">{tech}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* WHY BASE44 */}
+            <div className="glass-card-dark border-purple-500/30 rounded-xl p-8 mb-12">
+              <h2 className="text-4xl font-bold text-white mb-6 flex items-center gap-3">
+                <Sparkles className="w-8 h-8 text-purple-400" />
+                Why Base44
+              </h2>
+              <p className="text-white/90 leading-relaxed mb-6">
+                Before GlyphLock found its home, Carlo tested everything: 
+                Vercel. Replit. Firebase. Supabase. 
+                All of them burned time and money. 
+                (And yes — some of them <span className="text-red-400 font-bold">absolutely</span> financially violated him.)
+              </p>
+              <p className="text-white/90 leading-relaxed mb-6">
+                Base44 changed the game.<br />
+                Natural-language coding. 
+                Real deployments in seconds. 
+                Clean authentication. 
+                Stable. Fast. Affordable.
+              </p>
+              <p className="text-xl text-purple-400 font-bold text-center">
+                VS Code + Base44 + the Dream Team became the final formula.
+              </p>
+            </div>
+
+            {/* LEADERSHIP */}
+            <div className="glass-card-dark border-blue-500/30 rounded-xl p-8 mb-12">
+              <h2 className="text-4xl font-bold text-white mb-8 flex items-center gap-3">
+                <Award className="w-8 h-8 text-blue-400" />
+                Leadership
+              </h2>
+              <div className="space-y-6">
+                {leadership.map((leader, idx) => {
+                  const Icon = leader.icon;
+                  return (
+                    <div key={idx} className="glass-card border-blue-500/30 rounded-lg p-6">
+                      <div className="flex items-start gap-4">
+                        <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl flex items-center justify-center flex-shrink-0">
+                          <Icon className="w-8 h-8 text-white" />
+                        </div>
+                        <div className="flex-1">
+                          <h3 className="text-2xl font-bold text-white mb-1">{leader.name}</h3>
+                          <div className="text-blue-400 font-semibold mb-3">{leader.title}</div>
+                          <p className="text-white/80 leading-relaxed">{leader.role}</p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
+              <div className="mt-8 p-6 glass-card border-blue-500/50 rounded-lg">
+                <p className="text-center text-white/90">
+                  <span className="text-blue-400 font-bold">AI Dream Team — Pro Bono / Zero Equity</span><br />
+                  Every AI serves voluntarily without ownership or rights. 
+                  GlyphLock is 100% owned by Carlo.
+                </p>
+              </div>
             </div>
-          </div>
 
-          <div className="glass-card-dark border-blue-500/30 rounded-xl p-12 text-center">
-            <h2 className="text-3xl font-bold text-white mb-4">
-              Ready to Work Together?
-            </h2>
-            <p className="text-white/70 mb-8 max-w-2xl mx-auto">
-              Let's discuss how GlyphLock can protect your organization
-            </p>
-            <Link to={createPageUrl("Consultation")}>
-              <Button size="lg" className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white">
-                Schedule a Consultation
-              </Button>
-            </Link>
+            {/* WHAT GLYPHLOCK IS */}
+            <div className="glass-card-dark border-blue-500/30 rounded-xl p-8 mb-12">
+              <h2 className="text-4xl font-bold text-white mb-6 flex items-center gap-3">
+                <Globe className="w-8 h-8 text-blue-400" />
+                What GlyphLock Is
+              </h2>
+              <div className="grid md:grid-cols-2 gap-4 mb-8">
+                {whatGlyphLockIs.map((item, idx) => (
+                  <div key={idx} className="flex items-center gap-3 glass-card border-blue-500/20 rounded-lg p-4">
+                    <Shield className="w-5 h-5 text-blue-400 flex-shrink-0" />
+                    <span className="text-white font-medium">{item}</span>
+                  </div>
+                ))}
+              </div>
+              <p className="text-2xl text-blue-400 font-bold text-center">
+                GlyphLock is not a tool. It is an ecosystem.
+              </p>
+            </div>
+
+            {/* CTA */}
+            <div className="glass-card-dark border-blue-500/50 rounded-xl p-12 text-center bg-gradient-to-br from-blue-950/30 to-black">
+              <h2 className="text-4xl font-bold text-white mb-4">
+                Ready to protect your organization?
+              </h2>
+              <p className="text-white/70 mb-8 text-lg">
+                Schedule a consultation with our security specialists
+              </p>
+              <Link to={createPageUrl("Consultation")}>
+                <Button size="lg" className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white text-lg px-8 py-6">
+                  Schedule Consultation
+                </Button>
+              </Link>
+            </div>
+
           </div>
         </div>
-      </div>
       </div>
     </>
   );
