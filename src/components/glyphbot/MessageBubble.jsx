@@ -100,11 +100,14 @@ function FunctionDisplay({ toolCall }) {
     );
 }
 
-export default function MessageBubble({ message }) {
+export default function MessageBubble({ message, autoRead = false }) {
     const isUser = message.role === 'user';
     const [isSpeaking, setIsSpeaking] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [playbackSpeed, setPlaybackSpeed] = useState(1.0);
+    const [playbackPitch, setPlaybackPitch] = useState(1.0);
     const audioRef = useRef(null);
+    const hasAutoPlayed = useRef(false);
     
     const copyToClipboard = (text) => {
         navigator.clipboard.writeText(text);
@@ -161,7 +164,9 @@ export default function MessageBubble({ message }) {
             
             const response = await base44.functions.invoke('textToSpeech', {
                 text: text,
-                voice: voiceId
+                voice: voiceId,
+                speed: playbackSpeed,
+                pitch: playbackPitch
             });
 
             if (response.data) {
@@ -170,6 +175,7 @@ export default function MessageBubble({ message }) {
                 
                 if (audioRef.current) {
                     audioRef.current.src = url;
+                    audioRef.current.playbackRate = playbackSpeed;
                     audioRef.current.onended = () => setIsSpeaking(false);
                     audioRef.current.onerror = () => {
                         setIsSpeaking(false);
@@ -187,6 +193,13 @@ export default function MessageBubble({ message }) {
             setIsLoading(false);
         }
     };
+
+    React.useEffect(() => {
+        if (autoRead && !isUser && message.content && !hasAutoPlayed.current) {
+            hasAutoPlayed.current = true;
+            speakText('professional');
+        }
+    }, [autoRead, isUser, message.content]);
     
     return (
         <>
@@ -223,31 +236,62 @@ export default function MessageBubble({ message }) {
                                             )}
                                         </Button>
                                     </DropdownMenuTrigger>
-                                    <DropdownMenuContent className="glass-dark border-blue-500/30 min-w-[220px] max-h-[400px] overflow-y-auto">
-                                        {isSpeaking ? (
-                                            <DropdownMenuItem onClick={stopSpeaking} className="text-white hover:bg-blue-500/20">
-                                                <Square className="h-3 w-3 mr-2" />
-                                                Stop Speaking
-                                            </DropdownMenuItem>
-                                        ) : (
-                                            <>
-                                                <div className="px-2 py-1.5 text-[10px] text-blue-400 font-semibold uppercase tracking-wide">Voice Personas</div>
-                                                {voicePersonalities.map((voice) => (
-                                                    <DropdownMenuItem 
-                                                        key={voice.id}
-                                                        onClick={() => speakText(voice.id)}
-                                                        disabled={isLoading}
-                                                        className="text-white hover:bg-blue-500/20 focus:bg-blue-500/20 flex flex-col items-start gap-1 py-2.5 cursor-pointer"
-                                                    >
-                                                        <div className="flex items-center gap-2 w-full">
-                                                            <span className="text-base">{voice.icon}</span>
-                                                            <span className="font-medium text-sm">{voice.name}</span>
-                                                        </div>
-                                                        <span className="text-[10px] text-white/60 ml-7 leading-tight">{voice.description}</span>
-                                                    </DropdownMenuItem>
-                                                ))}
-                                            </>
-                                        )}
+                                    <DropdownMenuContent className="glass-dark border-blue-500/30 min-w-[250px] max-h-[500px] overflow-y-auto">
+                                       {isSpeaking ? (
+                                           <DropdownMenuItem onClick={stopSpeaking} className="text-white hover:bg-blue-500/20">
+                                               <Square className="h-3 w-3 mr-2" />
+                                               Stop Speaking
+                                           </DropdownMenuItem>
+                                       ) : (
+                                           <>
+                                               <div className="px-3 py-2 space-y-3 border-b border-blue-500/30">
+                                                   <div className="text-[10px] text-blue-400 font-semibold uppercase tracking-wide">Playback Controls</div>
+                                                   <div className="space-y-2">
+                                                       <div>
+                                                           <label className="text-[10px] text-white/70 block mb-1">Speed: {playbackSpeed}x</label>
+                                                           <input 
+                                                               type="range" 
+                                                               min="0.5" 
+                                                               max="2.0" 
+                                                               step="0.1" 
+                                                               value={playbackSpeed}
+                                                               onChange={(e) => setPlaybackSpeed(parseFloat(e.target.value))}
+                                                               className="w-full h-1 bg-blue-500/30 rounded-lg appearance-none cursor-pointer"
+                                                               onClick={(e) => e.stopPropagation()}
+                                                           />
+                                                       </div>
+                                                       <div>
+                                                           <label className="text-[10px] text-white/70 block mb-1">Pitch: {playbackPitch}x</label>
+                                                           <input 
+                                                               type="range" 
+                                                               min="0.5" 
+                                                               max="2.0" 
+                                                               step="0.1" 
+                                                               value={playbackPitch}
+                                                               onChange={(e) => setPlaybackPitch(parseFloat(e.target.value))}
+                                                               className="w-full h-1 bg-blue-500/30 rounded-lg appearance-none cursor-pointer"
+                                                               onClick={(e) => e.stopPropagation()}
+                                                           />
+                                                       </div>
+                                                   </div>
+                                               </div>
+                                               <div className="px-2 py-1.5 text-[10px] text-blue-400 font-semibold uppercase tracking-wide">Voice Personas</div>
+                                               {voicePersonalities.map((voice) => (
+                                                   <DropdownMenuItem 
+                                                       key={voice.id}
+                                                       onClick={() => speakText(voice.id)}
+                                                       disabled={isLoading}
+                                                       className="text-white hover:bg-blue-500/20 focus:bg-blue-500/20 flex flex-col items-start gap-1 py-2.5 cursor-pointer"
+                                                   >
+                                                       <div className="flex items-center gap-2 w-full">
+                                                           <span className="text-base">{voice.icon}</span>
+                                                           <span className="font-medium text-sm">{voice.name}</span>
+                                                       </div>
+                                                       <span className="text-[10px] text-white/60 ml-7 leading-tight">{voice.description}</span>
+                                                   </DropdownMenuItem>
+                                               ))}
+                                           </>
+                                       )}
                                     </DropdownMenuContent>
                                 </DropdownMenu>
                             </div>
