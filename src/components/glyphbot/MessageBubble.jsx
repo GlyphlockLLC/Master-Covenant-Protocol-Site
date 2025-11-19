@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { Button } from "@/components/ui/button";
 import { Copy, Zap, CheckCircle2, AlertCircle, Loader2, ChevronRight, Clock, Volume2, Square } from 'lucide-react';
 import { cn } from "@/lib/utils";
+import { base44 } from "@/api/base44Client";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -102,57 +103,31 @@ function FunctionDisplay({ toolCall }) {
 export default function MessageBubble({ message }) {
     const isUser = message.role === 'user';
     const [isSpeaking, setIsSpeaking] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const audioRef = useRef(null);
     
     const copyToClipboard = (text) => {
         navigator.clipboard.writeText(text);
     };
 
     const voicePersonalities = [
-        { name: 'Professional', rate: 0.92, pitch: 1.0, description: 'Clear & confident' },
-        { name: 'Friendly', rate: 1.05, pitch: 1.1, description: 'Warm & approachable' },
-        { name: 'Calm', rate: 0.85, pitch: 0.95, description: 'Relaxed & soothing' },
-        { name: 'Energetic', rate: 1.15, pitch: 1.15, description: 'Upbeat & dynamic' },
-        { name: 'Thoughtful', rate: 0.88, pitch: 0.98, description: 'Deliberate & wise' }
+        { id: 'professional', name: 'Professional', icon: '👔', description: 'Clear & confident business voice' },
+        { id: 'friendly', name: 'Friendly', icon: '😊', description: 'Warm & approachable companion' },
+        { id: 'calm', name: 'Calm', icon: '🧘', description: 'Relaxed & soothing meditation voice' },
+        { id: 'energetic', name: 'Energetic', icon: '⚡', description: 'Upbeat & dynamic motivator' },
+        { id: 'thoughtful', name: 'Thoughtful', icon: '🤔', description: 'Deliberate & wise mentor' },
+        { id: 'authoritative', name: 'Authoritative', icon: '🎯', description: 'Commanding & decisive leader' },
+        { id: 'warm', name: 'Warm', icon: '☀️', description: 'Caring & empathetic listener' },
+        { id: 'confident', name: 'Confident', icon: '💪', description: 'Bold & self-assured expert' },
+        { id: 'soothing', name: 'Soothing', icon: '🌙', description: 'Gentle & calming storyteller' },
+        { id: 'dynamic', name: 'Dynamic', icon: '🚀', description: 'Fast-paced & exciting announcer' }
     ];
 
-    const getHighQualityVoices = () => {
-        const availableVoices = window.speechSynthesis.getVoices();
-        
-        // Prioritize natural-sounding voices
-        const premiumVoices = availableVoices.filter(v => 
-            v.lang.startsWith('en') && 
-            (v.name.includes('Google') || 
-             v.name.includes('Natural') ||
-             v.name.includes('Premium') ||
-             v.name.includes('Enhanced') ||
-             v.name.toLowerCase().includes('samantha') ||
-             v.name.toLowerCase().includes('daniel') ||
-             v.name.toLowerCase().includes('karen') ||
-             v.name.toLowerCase().includes('alex'))
-        ).slice(0, 3);
-        
-        return premiumVoices.map(v => ({
-            name: v.name.replace('Google ', '').replace('Microsoft ', '').replace('Enhanced', '').trim().slice(0, 25),
-            voice: v
-        }));
-    };
-
-    const [availableVoices, setAvailableVoices] = useState([]);
-
-    React.useEffect(() => {
-        const loadVoices = () => {
-            const voices = getHighQualityVoices();
-            if (voices.length > 0) {
-                setAvailableVoices(voices);
-            }
-        };
-        
-        loadVoices();
-        window.speechSynthesis.onvoiceschanged = loadVoices;
-    }, []);
-
     const stopSpeaking = () => {
-        window.speechSynthesis.cancel();
+        if (audioRef.current) {
+            audioRef.current.pause();
+            audioRef.current.currentTime = 0;
+        }
         setIsSpeaking(false);
     };
 
@@ -169,36 +144,48 @@ export default function MessageBubble({ message }) {
             .trim();
     };
 
-    const speakText = (selectedVoice = null, personality = null) => {
+    const speakText = async (voiceId) => {
         if (isSpeaking) {
             stopSpeaking();
             return;
         }
 
         const text = processTextForSpeech(message.content);
-        if (!text) return;
-
-        const utterance = new SpeechSynthesisUtterance(text);
-        
-        if (selectedVoice) {
-            utterance.voice = selectedVoice;
+        if (!text || text.length > 1000) {
+            alert('Text is too long (max 1000 characters)');
+            return;
         }
 
-        if (personality) {
-            utterance.rate = personality.rate;
-            utterance.pitch = personality.pitch;
-        } else {
-            utterance.rate = 0.95;
-            utterance.pitch = 1.0;
+        try {
+            setIsLoading(true);
+            
+            const response = await base44.functions.invoke('textToSpeech', {
+                text: text,
+                voice: voiceId
+            });
+
+            if (response.data) {
+                const blob = new Blob([response.data], { type: 'audio/mpeg' });
+                const url = URL.createObjectURL(blob);
+                
+                if (audioRef.current) {
+                    audioRef.current.src = url;
+                    audioRef.current.onended = () => setIsSpeaking(false);
+                    audioRef.current.onerror = () => {
+                        setIsSpeaking(false);
+                        setIsLoading(false);
+                    };
+                    
+                    setIsSpeaking(true);
+                    await audioRef.current.play();
+                }
+            }
+        } catch (error) {
+            console.error('TTS Error:', error);
+            alert('Failed to generate speech. Please try again.');
+        } finally {
+            setIsLoading(false);
         }
-        
-        utterance.volume = 1;
-
-        utterance.onstart = () => setIsSpeaking(true);
-        utterance.onend = () => setIsSpeaking(false);
-        utterance.onerror = () => setIsSpeaking(false);
-
-        window.speechSynthesis.speak(utterance);
     };
     
     return (
@@ -221,17 +208,20 @@ export default function MessageBubble({ message }) {
                                         <Button
                                             size="icon"
                                             variant="ghost"
-                                            className="h-6 w-6 glass-dark hover:bg-blue-500/20"
+                                            className="h-7 w-7 glass-dark hover:bg-blue-500/20"
                                             onClick={(e) => e.stopPropagation()}
+                                            disabled={isLoading}
                                         >
-                                            {isSpeaking ? (
+                                            {isLoading ? (
+                                                <Loader2 className="h-3 w-3 text-white animate-spin" />
+                                            ) : isSpeaking ? (
                                                 <Square className="h-3 w-3 text-white" />
                                             ) : (
                                                 <Volume2 className="h-3 w-3 text-white" />
                                             )}
                                         </Button>
                                     </DropdownMenuTrigger>
-                                    <DropdownMenuContent className="glass-dark border-blue-500/30 min-w-[180px]">
+                                    <DropdownMenuContent className="glass-dark border-blue-500/30 min-w-[220px] max-h-[400px] overflow-y-auto">
                                         {isSpeaking ? (
                                             <DropdownMenuItem onClick={stopSpeaking} className="text-white hover:bg-blue-500/20">
                                                 <Square className="h-3 w-3 mr-2" />
@@ -239,18 +229,19 @@ export default function MessageBubble({ message }) {
                                             </DropdownMenuItem>
                                         ) : (
                                             <>
-                                                <div className="px-2 py-1.5 text-[10px] text-blue-400 font-semibold">Personalities</div>
-                                                {voicePersonalities.map((personality, idx) => (
+                                                <div className="px-2 py-1.5 text-[10px] text-blue-400 font-semibold uppercase tracking-wide">Voice Personas</div>
+                                                {voicePersonalities.map((voice) => (
                                                     <DropdownMenuItem 
-                                                        key={idx}
-                                                        onClick={() => speakText(availableVoices[0]?.voice, personality)}
-                                                        className="text-white hover:bg-blue-500/20 flex flex-col items-start gap-0.5 py-2"
+                                                        key={voice.id}
+                                                        onClick={() => speakText(voice.id)}
+                                                        disabled={isLoading}
+                                                        className="text-white hover:bg-blue-500/20 focus:bg-blue-500/20 flex flex-col items-start gap-1 py-2.5 cursor-pointer"
                                                     >
-                                                        <div className="flex items-center gap-2">
-                                                            <Volume2 className="h-3 w-3" />
-                                                            <span className="font-medium">{personality.name}</span>
+                                                        <div className="flex items-center gap-2 w-full">
+                                                            <span className="text-base">{voice.icon}</span>
+                                                            <span className="font-medium text-sm">{voice.name}</span>
                                                         </div>
-                                                        <span className="text-[10px] text-white/60 ml-5">{personality.description}</span>
+                                                        <span className="text-[10px] text-white/60 ml-7 leading-tight">{voice.description}</span>
                                                     </DropdownMenuItem>
                                                 ))}
                                             </>
@@ -339,5 +330,6 @@ export default function MessageBubble({ message }) {
                 )}
             </div>
         </div>
+        </>
     );
 }
