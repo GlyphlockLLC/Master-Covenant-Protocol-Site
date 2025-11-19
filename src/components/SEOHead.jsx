@@ -5,6 +5,7 @@ export default function SEOHead({
   description = "Next-generation cybersecurity platform with quantum-resistant encryption, AI-powered threat detection, visual cryptography, blockchain security, and enterprise POS systems. Protect your digital assets with GlyphLock.",
   keywords = "cybersecurity, quantum-resistant encryption, AI security, blockchain security, visual cryptography, QR code security, steganography, threat detection, security operations center, enterprise security, POS system, NUPS, GlyphBot AI, secure payment processing, fraud prevention, identity protection, data encryption",
   image = "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/d92107808_glyphlock-3d-logo.png",
+  ogImage = "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/d92107808_glyphlock-3d-logo.png",
   url,
   type = "website"
 }) {
