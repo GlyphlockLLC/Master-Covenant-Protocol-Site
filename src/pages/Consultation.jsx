@@ -66,11 +66,11 @@ export default function Consultation() {
 
           <div className="grid lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2">
-              <Card className="glass-card-dark border-blue-500/30">
+              <Card className="glass-card-dark border-blue-500/30" style={{background: 'rgba(30, 58, 138, 0.2)', backdropFilter: 'blur(16px)'}}>
                 <CardHeader>
                   <CardTitle className="text-white">Consultation Request Form</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent style={{background: 'transparent'}}>
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="grid md:grid-cols-2 gap-6">
                       <div>
@@ -176,11 +176,11 @@ export default function Consultation() {
             </div>
 
             <div className="space-y-6">
-              <Card className="bg-gradient-to-br from-blue-500/10 to-blue-700/10 border-blue-500/30">
+              <Card className="glass-card-dark border-blue-500/30" style={{background: 'rgba(30, 58, 138, 0.2)', backdropFilter: 'blur(16px)'}}>
                 <CardHeader>
                   <CardTitle className="text-white">What to Expect</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-4" style={{background: 'transparent'}}>
                   {benefits.map((benefit, index) => (
                     <div key={index} className="flex items-start gap-3">
                       <benefit.icon className="w-5 h-5 text-blue-400 mt-1" />
@@ -190,11 +190,11 @@ export default function Consultation() {
                 </CardContent>
               </Card>
 
-              <Card className="glass-card-dark border-blue-500/30">
+              <Card className="glass-card-dark border-blue-500/30" style={{background: 'rgba(30, 58, 138, 0.2)', backdropFilter: 'blur(16px)'}}>
                 <CardHeader>
                   <CardTitle className="text-white">Consultation Details</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-3 text-sm">
+                <CardContent className="space-y-3 text-sm" style={{background: 'transparent'}}>
                   <div className="flex justify-between">
                     <span className="text-white/70">Consultation Fee:</span>
                     <span className="font-semibold text-white">$299</span>
@@ -219,8 +219,8 @@ export default function Consultation() {
                 </CardContent>
               </Card>
 
-              <Card className="bg-gradient-to-br from-green-500/10 to-emerald-700/10 border-green-500/30">
-                <CardContent className="p-6 text-center">
+              <Card className="glass-card-dark border-green-500/30" style={{background: 'rgba(30, 58, 138, 0.2)', backdropFilter: 'blur(16px)'}}>
+                <CardContent className="p-6 text-center" style={{background: 'transparent'}}>
                   <Shield className="w-12 h-12 text-green-400 mx-auto mb-3" />
                   <h3 className="font-bold text-white mb-2">100% Satisfaction Guarantee</h3>
                   <p className="text-sm text-white">
