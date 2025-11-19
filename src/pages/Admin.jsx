@@ -130,7 +130,7 @@ export default function Admin() {
 
           {/* Stats Grid */}
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <Card className="bg-blue-900/20 backdrop-blur-md border-blue-500/30">
+            <Card className="glass-card-dark border-blue-500/30">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between mb-2">
                   <Calendar className="w-8 h-8 text-white" />
