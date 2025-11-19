@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Copy, Zap, CheckCircle2, AlertCircle, Loader2, ChevronRight, Clock, Volume2, Square, Save, Trash2, History, Star } from 'lucide-react';
 import { cn } from "@/lib/utils";
 import { base44 } from "@/api/base44Client";
+import { toast } from "sonner";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -148,17 +149,30 @@ export default function MessageBubble({ message, autoRead = false }) {
     ];
 
     const stopSpeaking = () => {
-        if (audioRef.current) {
-            audioRef.current.pause();
-            audioRef.current.currentTime = 0;
-            audioRef.current.src = '';
-        }
-        if (sourceNodeRef.current) {
-            try {
+        try {
+            if (sourceNodeRef.current) {
                 sourceNodeRef.current.stop();
-            } catch (e) {}
+                sourceNodeRef.current.disconnect();
+                sourceNodeRef.current = null;
+            }
+            if (gainNodeRef.current) {
+                gainNodeRef.current.disconnect();
+                gainNodeRef.current = null;
+            }
+            if (audioContextRef.current && audioContextRef.current.state !== 'closed') {
+                audioContextRef.current.close();
+                audioContextRef.current = null;
+            }
+            if (audioRef.current) {
+                audioRef.current.pause?.();
+                audioRef.current = null;
+            }
+        } catch (e) {
+            console.error('Cleanup error:', e);
+        } finally {
+            setIsSpeaking(false);
+            setIsLoading(false);
         }
-        setIsSpeaking(false);
     };
 
     const processTextForSpeech = (text) => {
@@ -196,8 +210,13 @@ export default function MessageBubble({ message, autoRead = false }) {
             return;
         }
 
+        if (isLoading) return;
+
         const text = processTextForSpeech(message.content);
-        if (!text || text.length === 0) return;
+        if (!text || text.length === 0) {
+            toast.error('No text to speak');
+            return;
+        }
 
         currentVoiceRef.current = voiceId;
         addToHistory(voiceId, voiceName);
@@ -212,62 +231,85 @@ export default function MessageBubble({ message, autoRead = false }) {
 
             const audioBuffers = [];
 
-            for (const chunk of chunks) {
+            for (let i = 0; i < chunks.length; i++) {
+                const chunk = chunks[i];
                 const apiUrl = `https://api.streamelements.com/kappa/v2/speech?voice=${voiceId}&text=${encodeURIComponent(chunk)}`;
+
                 const response = await fetch(apiUrl);
+
+                if (!response.ok) {
+                    throw new Error(`TTS API error: ${response.status}`);
+                }
+
                 const audioBuffer = await response.arrayBuffer();
                 const decodedData = await audioContext.decodeAudioData(audioBuffer);
                 audioBuffers.push(decodedData);
             }
 
+            if (audioBuffers.length === 0) {
+                throw new Error('No audio data received');
+            }
+
             let currentIndex = 0;
+            let isPlaying = true;
 
             const playNextChunk = () => {
-                if (currentIndex >= audioBuffers.length) {
+                if (!isPlaying || currentIndex >= audioBuffers.length) {
                     setIsSpeaking(false);
                     if (audioContext.state !== 'closed') {
-                        audioContext.close();
+                        audioContext.close().catch(e => console.error('Close error:', e));
                     }
                     return;
                 }
 
-                const source = audioContext.createBufferSource();
-                source.buffer = audioBuffers[currentIndex];
-                source.playbackRate.value = playbackSpeed * pitch;
+                try {
+                    const source = audioContext.createBufferSource();
+                    source.buffer = audioBuffers[currentIndex];
+                    source.playbackRate.value = playbackSpeed * pitch;
 
-                const gainNode = audioContext.createGain();
-                gainNode.gain.value = volume;
-                gainNodeRef.current = gainNode;
+                    const gainNode = audioContext.createGain();
+                    gainNode.gain.value = volume;
+                    gainNodeRef.current = gainNode;
 
-                const bassFilter = audioContext.createBiquadFilter();
-                bassFilter.type = 'lowshelf';
-                bassFilter.frequency.value = 200;
-                bassFilter.gain.value = bass;
+                    const bassFilter = audioContext.createBiquadFilter();
+                    bassFilter.type = 'lowshelf';
+                    bassFilter.frequency.value = 200;
+                    bassFilter.gain.value = bass;
 
-                const trebleFilter = audioContext.createBiquadFilter();
-                trebleFilter.type = 'highshelf';
-                trebleFilter.frequency.value = 3000;
-                trebleFilter.gain.value = treble;
+                    const trebleFilter = audioContext.createBiquadFilter();
+                    trebleFilter.type = 'highshelf';
+                    trebleFilter.frequency.value = 3000;
+                    trebleFilter.gain.value = treble;
 
-                source.connect(bassFilter);
-                bassFilter.connect(trebleFilter);
-                trebleFilter.connect(gainNode);
-                gainNode.connect(audioContext.destination);
+                    source.connect(bassFilter);
+                    bassFilter.connect(trebleFilter);
+                    trebleFilter.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
 
-                source.onended = () => {
-                    currentIndex++;
-                    playNextChunk();
-                };
+                    source.onended = () => {
+                        if (isPlaying) {
+                            currentIndex++;
+                            playNextChunk();
+                        }
+                    };
 
-                sourceNodeRef.current = source;
-                audioRef.current = { 
-                    pause: () => {
-                        source.stop();
-                        setIsSpeaking(false);
-                    }
-                };
+                    sourceNodeRef.current = source;
+                    audioRef.current = { 
+                        pause: () => {
+                            isPlaying = false;
+                            try {
+                                source.stop();
+                            } catch (e) {}
+                            setIsSpeaking(false);
+                        }
+                    };
 
-                source.start(0);
+                    source.start(0);
+                } catch (error) {
+                    console.error('Playback error:', error);
+                    isPlaying = false;
+                    setIsSpeaking(false);
+                }
             };
 
             setIsSpeaking(true);
@@ -276,16 +318,30 @@ export default function MessageBubble({ message, autoRead = false }) {
 
         } catch (error) {
             console.error('TTS Error:', error);
+            toast.error(error.message || 'Failed to generate speech');
             setIsLoading(false);
             setIsSpeaking(false);
+
+            if (audioContextRef.current) {
+                audioContextRef.current.close().catch(e => console.error('Cleanup error:', e));
+                audioContextRef.current = null;
+            }
         }
     };
 
     React.useEffect(() => {
-        const savedPresets = localStorage.getItem('glyphbot-voice-presets');
-        const savedHistory = localStorage.getItem('glyphbot-voice-history');
-        if (savedPresets) setPresets(JSON.parse(savedPresets));
-        if (savedHistory) setVoiceHistory(JSON.parse(savedHistory));
+        try {
+            const savedPresets = localStorage.getItem('glyphbot-voice-presets');
+            const savedHistory = localStorage.getItem('glyphbot-voice-history');
+            if (savedPresets) setPresets(JSON.parse(savedPresets));
+            if (savedHistory) setVoiceHistory(JSON.parse(savedHistory));
+        } catch (error) {
+            console.error('Failed to load saved voice settings:', error);
+        }
+
+        return () => {
+            stopSpeaking();
+        };
     }, []);
 
     React.useEffect(() => {
@@ -296,22 +352,31 @@ export default function MessageBubble({ message, autoRead = false }) {
     }, [autoRead, isUser, message.content]);
 
     const savePreset = () => {
-        if (!presetName.trim()) return;
-        const newPreset = {
-            id: Date.now(),
-            name: presetName,
-            voice: currentVoiceRef.current,
-            speed: playbackSpeed,
-            pitch,
-            volume,
-            bass,
-            treble
-        };
-        const updated = [...presets, newPreset];
-        setPresets(updated);
-        localStorage.setItem('glyphbot-voice-presets', JSON.stringify(updated));
-        setPresetName('');
-        setShowPresetInput(false);
+        if (!presetName.trim()) {
+            toast.error('Please enter a preset name');
+            return;
+        }
+        try {
+            const newPreset = {
+                id: Date.now(),
+                name: presetName.trim(),
+                voice: currentVoiceRef.current,
+                speed: playbackSpeed,
+                pitch,
+                volume,
+                bass,
+                treble
+            };
+            const updated = [...presets, newPreset];
+            setPresets(updated);
+            localStorage.setItem('glyphbot-voice-presets', JSON.stringify(updated));
+            setPresetName('');
+            setShowPresetInput(false);
+            toast.success(`Preset "${newPreset.name}" saved`);
+        } catch (error) {
+            console.error('Failed to save preset:', error);
+            toast.error('Failed to save preset');
+        }
     };
 
     const loadPreset = (preset) => {
@@ -324,9 +389,18 @@ export default function MessageBubble({ message, autoRead = false }) {
     };
 
     const deletePreset = (presetId) => {
-        const updated = presets.filter(p => p.id !== presetId);
-        setPresets(updated);
-        localStorage.setItem('glyphbot-voice-presets', JSON.stringify(updated));
+        try {
+            const preset = presets.find(p => p.id === presetId);
+            const updated = presets.filter(p => p.id !== presetId);
+            setPresets(updated);
+            localStorage.setItem('glyphbot-voice-presets', JSON.stringify(updated));
+            if (preset) {
+                toast.success(`Preset "${preset.name}" deleted`);
+            }
+        } catch (error) {
+            console.error('Failed to delete preset:', error);
+            toast.error('Failed to delete preset');
+        }
     };
 
     const addToHistory = (voiceId, voiceName) => {
@@ -368,9 +442,13 @@ export default function MessageBubble({ message, autoRead = false }) {
                                         <Button
                                             size="icon"
                                             variant="ghost"
-                                            className="h-7 w-7 glass-dark hover:bg-blue-500/20"
+                                            className={cn(
+                                                "h-7 w-7 glass-dark hover:bg-blue-500/20 transition-all",
+                                                (isLoading || isSpeaking) && "bg-blue-500/30"
+                                            )}
                                             onClick={(e) => e.stopPropagation()}
                                             disabled={isLoading}
+                                            title={isLoading ? "Loading..." : isSpeaking ? "Stop" : "Play"}
                                         >
                                             {isLoading ? (
                                                 <Loader2 className="h-3 w-3 text-white animate-spin" />
