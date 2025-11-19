@@ -163,16 +163,21 @@ export default function GlyphBot() {
   };
 
   const deleteConversation = async (conversationId, e) => {
-    e.stopPropagation();
+    e?.stopPropagation();
+    if (!window.confirm('Delete this conversation?')) return;
+    
     try {
       await base44.agents.deleteConversation(conversationId);
+      
+      setConversations(prev => prev.filter(c => c.id !== conversationId));
+      
       if (currentConversation?.id === conversationId) {
         setCurrentConversation(null);
         setMessages([]);
       }
-      await loadConversations();
     } catch (error) {
       console.error("Error deleting conversation:", error);
+      alert('Failed to delete conversation');
     }
   };
 
