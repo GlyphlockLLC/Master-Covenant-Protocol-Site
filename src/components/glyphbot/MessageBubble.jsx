@@ -107,20 +107,48 @@ export default function MessageBubble({ message }) {
         navigator.clipboard.writeText(text);
     };
 
-    const voices = [
-        { name: 'Default Voice', value: 'default' },
-        { name: 'UK English Female', value: 'uk-female' },
-        { name: 'UK English Male', value: 'uk-male' },
-        { name: 'US English Female', value: 'us-female' },
-        { name: 'US English Male', value: 'us-male' }
-    ];
+    const getHighQualityVoices = () => {
+        const availableVoices = window.speechSynthesis.getVoices();
+        
+        // Prioritize Google voices (highest quality), then other premium voices
+        const googleVoices = availableVoices.filter(v => 
+            v.name.includes('Google') && v.lang.startsWith('en')
+        );
+        
+        const otherPremiumVoices = availableVoices.filter(v => 
+            !v.name.includes('Google') && 
+            v.lang.startsWith('en') &&
+            (v.name.includes('Enhanced') || v.name.includes('Premium') || v.name.includes('Natural'))
+        );
+        
+        const allVoices = [...googleVoices, ...otherPremiumVoices].slice(0, 5);
+        
+        return allVoices.map(v => ({
+            name: v.name.replace('Google ', '').replace('Microsoft ', '').slice(0, 30),
+            voice: v
+        }));
+    };
+
+    const [availableVoices, setAvailableVoices] = useState([]);
+
+    React.useEffect(() => {
+        const loadVoices = () => {
+            const voices = getHighQualityVoices();
+            if (voices.length > 0) {
+                setAvailableVoices(voices);
+            }
+        };
+        
+        loadVoices();
+        window.speechSynthesis.onvoiceschanged = loadVoices;
+    }, []);
 
     const stopSpeaking = () => {
         window.speechSynthesis.cancel();
         setIsSpeaking(false);
     };
 
-    const speakText = (voiceType = 'default') => {
+    const speakText = (selectedVoice = null) => {
         if (isSpeaking) {
             stopSpeaking();
             return;
@@ -131,21 +159,13 @@ export default function MessageBubble({ message }) {
 
         const utterance = new SpeechSynthesisUtterance(text);
         
-        const availableVoices = window.speechSynthesis.getVoices();
-        
-        const voiceMap = {
-            'uk-female': availableVoices.find(v => v.lang.startsWith('en-GB') && v.name.includes('Female')),
-            'uk-male': availableVoices.find(v => v.lang.startsWith('en-GB') && v.name.includes('Male')),
-            'us-female': availableVoices.find(v => v.lang.startsWith('en-US') && v.name.includes('Female')),
-            'us-male': availableVoices.find(v => v.lang.startsWith('en-US') && v.name.includes('Male'))
-        };
-
-        if (voiceType !== 'default' && voiceMap[voiceType]) {
-            utterance.voice = voiceMap[voiceType];
+        if (selectedVoice) {
+            utterance.voice = selectedVoice;
         }
 
-        utterance.rate = 1;
-        utterance.pitch = 1;
+        // Natural speech settings
+        utterance.rate = 0.95; // Slightly slower for clarity
+        utterance.pitch = 1.0;
         utterance.volume = 1;
 
         utterance.onstart = () => setIsSpeaking(true);
@@ -191,12 +211,19 @@ export default function MessageBubble({ message }) {
                                                 <Square className="h-3 w-3 mr-2" />
                                                 Stop Speaking
                                             </DropdownMenuItem>
-                                        ) : (
+                                        ) : availableVoices.length > 0 ? (
                                             <>
-                                                {voices.map((voice) => (
+                                                <DropdownMenuItem 
+                                                    onClick={() => speakText(null)}
+                                                    className="text-white hover:bg-blue-500/20"
+                                                >
+                                                    <Volume2 className="h-3 w-3 mr-2" />
+                                                    Default Voice
+                                                </DropdownMenuItem>
+                                                {availableVoices.map((voice, idx) => (
                                                     <DropdownMenuItem 
-                                                        key={voice.value}
-                                                        onClick={() => speakText(voice.value)}
+                                                        key={idx}
+                                                        onClick={() => speakText(voice.voice)}
                                                         className="text-white hover:bg-blue-500/20"
                                                     >
                                                         <Volume2 className="h-3 w-3 mr-2" />
@@ -204,6 +231,14 @@ export default function MessageBubble({ message }) {
                                                     </DropdownMenuItem>
                                                 ))}
                                             </>
+                                        ) : (
+                                            <DropdownMenuItem 
+                                                onClick={() => speakText(null)}
+                                                className="text-white hover:bg-blue-500/20"
+                                            >
+                                                <Volume2 className="h-3 w-3 mr-2" />
+                                                Read Aloud
+                                            </DropdownMenuItem>
                                         )}
                                     </DropdownMenuContent>
                                 </DropdownMenu>
