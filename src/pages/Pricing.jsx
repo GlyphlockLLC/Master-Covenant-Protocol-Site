@@ -72,29 +72,10 @@ export default function Pricing() {
     try {
       setLoading(plan.name);
       setError(null);
-
-      const isAuth = await base44.auth.isAuthenticated();
-      if (!isAuth) {
-        base44.auth.redirectToLogin(window.location.pathname);
-        return;
-      }
-
-      const origin = window.location.origin;
-
-      const response = await base44.functions.invoke("stripeCreateCheckout", {
-        priceId: plan.priceId,
-        mode: "subscription",
-        successUrl: `${origin}${createPageUrl(
-          "PaymentSuccess"
-        )}?session_id={CHECKOUT_SESSION_ID}`,
-        cancelUrl: `${origin}${createPageUrl("Pricing")}`
-      });
-
-      if (response.data?.url) {
-        window.location.href = response.data.url;
-      } else {
-        throw new Error(response.data?.error || "Checkout error");
-      }
+      // TEMPORARY WORKAROUND — bypass Base44 and go direct to Stripe
+      // Replace old code completely.
+      window.location.href = `https://checkout.stripe.com/c/pay/${plan.priceId}`;
+      return;
     } catch (err) {
       setError(err.message || "Failed to process subscription.");
     } finally {
