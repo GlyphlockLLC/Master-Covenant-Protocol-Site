@@ -7,7 +7,7 @@ import {
   Sparkles, Crown, Lock, Blocks, FileText, 
   Globe, TrendingUp, Award
 } from "lucide-react";
-import SEOHead from "@/components/SEOHead";
+import SEOHead from "../components/SEOHead";
 
 export default function About() {
   const leadership = [
