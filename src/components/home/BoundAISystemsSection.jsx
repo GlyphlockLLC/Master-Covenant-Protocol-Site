@@ -160,11 +160,42 @@ COVENANT: MASTER_COVENANT_001
         </p>
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-5 gap-6 mb-12">
+      {/* Mobile: Single Card Carousel */}
+      <div className="block md:hidden mb-12">
+        <div className="relative max-w-md mx-auto">
+          <div className="overflow-x-auto snap-x snap-mandatory scrollbar-hide">
+            <div className="flex gap-4 px-4">
+              {boundAISystems.map((system, idx) => (
+                <div key={idx} className="snap-center flex-shrink-0 w-[85vw] max-w-sm">
+                  <DreamTeamCard member={system} />
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="flex justify-center gap-2 mt-6">
+            {boundAISystems.map((_, idx) => (
+              <div key={idx} className="w-2 h-2 rounded-full bg-blue-500/30" />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Desktop: Grid Layout */}
+      <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-5 gap-6 mb-12">
         {boundAISystems.map((system, idx) => (
           <DreamTeamCard key={idx} member={system} />
         ))}
       </div>
+
+      <style jsx>{`
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
 
       <div className="glass-card-dark border-blue-500/30 rounded-xl p-8">
         <div className="grid md:grid-cols-3 gap-6 mb-8">
