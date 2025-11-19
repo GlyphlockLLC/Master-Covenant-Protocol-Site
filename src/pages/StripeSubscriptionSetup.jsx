@@ -19,11 +19,11 @@ export default function StripeSubscriptionSetup() {
           </AlertDescription>
         </Alert>
 
-        <Card className="glass-card-dark border-blue-500/30 mb-6">
+        <Card className="glass-card-dark border-blue-500/30 mb-6" style={{background: 'rgba(30, 58, 138, 0.2)', backdropFilter: 'blur(16px)'}}>
           <CardHeader>
             <CardTitle className="text-white">Step 1: Create Professional Subscription</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4 text-white">
+          <CardContent className="space-y-4 text-white" style={{background: 'transparent'}}>
             <ol className="list-decimal list-inside space-y-3">
               <li>Go to <a href="https://dashboard.stripe.com/products" target="_blank" className="text-blue-400 hover:underline inline-flex items-center gap-1">Stripe Dashboard → Products <ExternalLink className="w-3 h-3" /></a></li>
               <li>Click "Add product"</li>
@@ -45,11 +45,11 @@ export default function StripeSubscriptionSetup() {
           </CardContent>
         </Card>
 
-        <Card className="glass-card-dark border-blue-500/30 mb-6">
+        <Card className="glass-card-dark border-blue-500/30 mb-6" style={{background: 'rgba(30, 58, 138, 0.2)', backdropFilter: 'blur(16px)'}}>
           <CardHeader>
             <CardTitle className="text-white">Step 2: Create Enterprise Subscription</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4 text-white">
+          <CardContent className="space-y-4 text-white" style={{background: 'transparent'}}>
             <ol className="list-decimal list-inside space-y-3">
               <li>In Stripe Dashboard, click "Add product" again</li>
               <li>
@@ -70,13 +70,13 @@ export default function StripeSubscriptionSetup() {
           </CardContent>
         </Card>
 
-        <Card className="glass-card-dark border-blue-500/30 mb-6">
+        <Card className="glass-card-dark border-blue-500/30 mb-6" style={{background: 'rgba(30, 58, 138, 0.2)', backdropFilter: 'blur(16px)'}}>
           <CardHeader>
             <CardTitle className="text-white">Step 3: Update Pricing Page</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4 text-white">
-            <p>Update the <code className="bg-gray-800 px-2 py-1 rounded">pages/Pricing</code> file with your new Price IDs:</p>
-            <pre className="bg-gray-900 p-4 rounded-lg overflow-x-auto text-sm">
+          <CardContent className="space-y-4 text-white" style={{background: 'transparent'}}>
+            <p>Update the <code className="glass-card-dark border-blue-500/20 px-2 py-1 rounded" style={{background: 'rgba(30, 58, 138, 0.3)'}}>pages/Pricing</code> file with your new Price IDs:</p>
+            <pre className="glass-card-dark border-blue-500/20 p-4 rounded-lg overflow-x-auto text-sm" style={{background: 'rgba(30, 58, 138, 0.15)', backdropFilter: 'blur(12px)'}}>
 {`const plans = [
   {
     name: "Professional",
@@ -99,15 +99,15 @@ export default function StripeSubscriptionSetup() {
           </CardContent>
         </Card>
 
-        <Card className="glass-card-dark border-green-500/30">
+        <Card className="glass-card-dark border-green-500/30" style={{background: 'rgba(30, 58, 138, 0.2)', backdropFilter: 'blur(16px)'}}>
           <CardHeader>
             <CardTitle className="text-white flex items-center gap-2">
               <CheckCircle2 className="w-5 h-5 text-green-400" />
               What You Currently Have
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-2 text-white">
-            <div className="bg-gray-900 p-4 rounded-lg">
+          <CardContent className="space-y-2 text-white" style={{background: 'transparent'}}>
+            <div className="glass-card-dark border-blue-500/20 p-4 rounded-lg" style={{background: 'rgba(30, 58, 138, 0.15)', backdropFilter: 'blur(12px)'}}>
               <p className="text-sm text-gray-400 mb-2">Existing Products:</p>
               <ul className="space-y-1 text-sm">
                 <li>✅ Vouchers ($1 one-time)</li>
