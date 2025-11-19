@@ -113,13 +113,16 @@ export default function MessageBubble({ message, autoRead = false }) {
     };
 
     const voicePersonalities = [
-        { id: 0, name: 'Voice 1', icon: '🗣️', description: 'Default voice' },
-        { id: 1, name: 'Voice 2', icon: '🎤', description: 'Alternative voice' },
-        { id: 2, name: 'Voice 3', icon: '🔊', description: 'Third option' }
+        { id: 'en', name: 'English', icon: '🇺🇸', description: 'American English' },
+        { id: 'en-gb', name: 'British', icon: '🇬🇧', description: 'British English' },
+        { id: 'en-au', name: 'Australian', icon: '🇦🇺', description: 'Australian English' }
     ];
 
     const stopSpeaking = () => {
-        window.speechSynthesis.cancel();
+        if (audioRef.current) {
+            audioRef.current.pause();
+            audioRef.current.currentTime = 0;
+        }
         setIsSpeaking(false);
     };
 
@@ -130,7 +133,7 @@ export default function MessageBubble({ message, autoRead = false }) {
             .trim();
     };
 
-    const speakText = (voiceIndex) => {
+    const speakText = async (voiceId) => {
         if (isSpeaking) {
             stopSpeaking();
             return;
@@ -140,33 +143,39 @@ export default function MessageBubble({ message, autoRead = false }) {
         if (!text) return;
 
         try {
-            const utterance = new SpeechSynthesisUtterance(text);
-            const voices = window.speechSynthesis.getVoices();
+            setIsLoading(true);
             
-            if (voices.length > voiceIndex) {
-                utterance.voice = voices[voiceIndex];
-            }
+            const lang = voiceId === 'en-gb' ? 'en-gb' : voiceId === 'en-au' ? 'en-au' : 'en';
+            const ttsUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=${lang}&client=tw-ob&q=${encodeURIComponent(text)}`;
             
-            utterance.rate = playbackSpeed;
-            utterance.onstart = () => setIsSpeaking(true);
-            utterance.onend = () => setIsSpeaking(false);
-            utterance.onerror = () => setIsSpeaking(false);
+            const audio = new Audio(ttsUrl);
+            audio.playbackRate = playbackSpeed;
+            audio.onplay = () => setIsSpeaking(true);
+            audio.onended = () => setIsSpeaking(false);
+            audio.onerror = () => {
+                setIsSpeaking(false);
+                setIsLoading(false);
+            };
             
-            window.speechSynthesis.speak(utterance);
+            audioRef.current = audio;
+            await audio.play();
         } catch (error) {
             console.error('TTS Error:', error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
     React.useEffect(() => {
         if (autoRead && !isUser && message.content && !hasAutoPlayed.current) {
             hasAutoPlayed.current = true;
-            speakText(0);
+            speakText('en');
         }
     }, [autoRead, isUser, message.content]);
     
     return (
         <>
+            <audio ref={audioRef} className="hidden" />
             <div className={cn("flex gap-3", isUser ? "justify-end" : "justify-start")}>
                 {!isUser && (
                     <div className="h-7 w-7 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center mt-0.5 glow-royal">
