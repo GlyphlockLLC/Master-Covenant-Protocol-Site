@@ -19,6 +19,7 @@ import SecurityScanner from "../components/glyphbot/SecurityScanner";
 import AuditGenerator from "../components/glyphbot/AuditGenerator";
 import LanguageSelector from "../components/glyphbot/LanguageSelector";
 import KnowledgeBaseConnector from "../components/glyphbot/KnowledgeBaseConnector";
+import FileAnalysisView from "../components/glyphbot/FileAnalysisView";
 import FreeTrialGuard from "@/components/FreeTrialGuard";
 
 export default function GlyphBot() {
@@ -168,11 +169,16 @@ export default function GlyphBot() {
       }
 
       const fileUrls = selectedFiles.length > 0 ? await uploadFiles() : [];
+      
+      if (fileUrls.length > 1) {
+        finalContent = `[Analyzing ${fileUrls.length} files - compare and synthesize findings]\n${finalContent}`;
+      }
+      
       setSelectedFiles([]);
 
       await base44.agents.addMessage(currentConversation, {
         role: "user",
-        content: finalContent || "Analyze files",
+        content: finalContent || `Analyze ${fileUrls.length > 1 ? 'these files' : 'this file'}`,
         file_urls: fileUrls.length > 0 ? fileUrls : undefined
       });
     } catch (error) {
@@ -308,6 +314,7 @@ export default function GlyphBot() {
         <Tabs defaultValue="chat" className="space-y-6">
           <TabsList className="bg-blue-900/30 backdrop-blur-md border border-blue-500/30">
             <TabsTrigger value="chat" className="text-white data-[state=active]:bg-blue-500/30">AI Chat</TabsTrigger>
+            <TabsTrigger value="files" className="text-white data-[state=active]:bg-blue-500/30">File Analysis</TabsTrigger>
             <TabsTrigger value="executor" className="text-white data-[state=active]:bg-blue-500/30">Code Executor</TabsTrigger>
             <TabsTrigger value="scanner" className="text-white data-[state=active]:bg-blue-500/30">Security Scanner</TabsTrigger>
             <TabsTrigger value="audit" className="text-white data-[state=active]:bg-blue-500/30">Audit Generator</TabsTrigger>
@@ -463,22 +470,38 @@ export default function GlyphBot() {
                       </div>
 
                       {selectedFiles.length > 0 && (
-                        <div className="flex flex-wrap gap-2">
-                          {selectedFiles.map((file, index) => (
-                            <div
-                              key={index}
-                              className="bg-blue-900/30 backdrop-blur-md border border-blue-500/30 rounded-lg px-3 py-2 flex items-center gap-2 text-sm"
+                        <div className="glass-dark rounded-lg p-3 space-y-2">
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm font-medium text-blue-400">
+                              {selectedFiles.length} file(s) attached
+                            </span>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => setSelectedFiles([])}
+                              className="h-6 text-xs text-red-400 hover:text-red-300"
                             >
-                              <FileText className="w-4 h-4 text-white" />
-                              <span className="max-w-[200px] truncate text-white">{file.name}</span>
-                              <button
-                                onClick={() => setSelectedFiles(selectedFiles.filter((_, i) => i !== index))}
-                                className="text-white hover:text-red-400"
+                              Clear All
+                            </Button>
+                          </div>
+                          <div className="flex flex-wrap gap-2">
+                            {selectedFiles.map((file, index) => (
+                              <div
+                                key={index}
+                                className="glass-dark border border-blue-500/30 rounded px-2 py-1 flex items-center gap-2 text-xs"
                               >
-                                <Trash2 className="w-3 h-3" />
-                              </button>
-                            </div>
-                          ))}
+                                <FileText className="w-3 h-3 text-blue-400" />
+                                <span className="max-w-[150px] truncate text-white">{file.name}</span>
+                                <span className="text-white/50">({(file.size / 1024).toFixed(1)}KB)</span>
+                                <button
+                                  onClick={() => setSelectedFiles(selectedFiles.filter((_, i) => i !== index))}
+                                  className="text-white/70 hover:text-red-400"
+                                >
+                                  <Trash2 className="w-3 h-3" />
+                                </button>
+                              </div>
+                            ))}
+                          </div>
                         </div>
                       )}
 
@@ -528,6 +551,10 @@ export default function GlyphBot() {
                 </Card>
               </div>
             </div>
+          </TabsContent>
+
+          <TabsContent value="files">
+            <FileAnalysisView />
           </TabsContent>
 
           <TabsContent value="executor">
