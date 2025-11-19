@@ -11,7 +11,7 @@ export default function DreamTeamCard({ card, member }) {
 
   return (
     <div 
-      className={`relative w-full cursor-pointer perspective-1000 transition-all duration-700 ${isFlipped ? 'h-[600px]' : ''}`}
+      className={`relative w-full cursor-pointer perspective-1000 transition-all duration-700 ${isFlipped ? 'min-h-[550px] md:h-[600px]' : ''}`}
       onClick={() => setIsFlipped(!isFlipped)}
     >
       <div className={`relative w-full h-full transition-transform duration-700 transform-style-3d ${isFlipped ? 'rotate-y-180' : ''}`}>
@@ -27,58 +27,58 @@ export default function DreamTeamCard({ card, member }) {
 
         {/* Back of Card */}
         <div className="absolute inset-0 backface-hidden rotate-y-180 rounded-2xl overflow-hidden border-2 border-blue-500/50">
-          <div className="relative w-full h-full bg-gradient-to-br from-gray-900 via-black to-gray-900 p-4 flex flex-col">
-            <div className="flex items-center justify-between mb-3">
-              <Badge className="bg-purple-500/20 text-purple-400 border-purple-500/50 px-3 py-1 text-xs">
+          <div className="relative w-full h-full bg-gradient-to-br from-gray-900 via-black to-gray-900 p-3 md:p-4 flex flex-col overflow-y-auto">
+            <div className="flex items-center justify-between mb-2">
+              <Badge className="bg-purple-500/20 text-purple-400 border-purple-500/50 px-2 py-1 text-[10px] md:text-xs">
                 {data.position}
               </Badge>
-              <Badge className="bg-green-500/20 text-green-400 border-green-500/50 px-2 py-1 text-xs">
+              <Badge className="bg-green-500/20 text-green-400 border-green-500/50 px-2 py-1 text-[10px] md:text-xs">
                 BOUND
               </Badge>
             </div>
 
-            <h3 className="text-xl font-bold text-white mb-1">{data.name}</h3>
-            <p className="text-blue-400 font-semibold text-xs mb-3">{data.role}</p>
+            <h3 className="text-lg md:text-xl font-bold text-white mb-1">{data.name}</h3>
+            <p className="text-blue-400 font-semibold text-[11px] md:text-xs mb-2">{data.role}</p>
 
-            <div className="space-y-1.5 mb-3 flex-shrink-0">
-              <div className="flex items-start gap-2">
-                <CheckCircle2 className="w-3 h-3 text-green-400 flex-shrink-0 mt-0.5" />
-                <p className="text-gray-300 text-[10px] leading-tight">{data.binding?.method}</p>
+            <div className="space-y-1 mb-2 flex-shrink-0">
+              <div className="flex items-start gap-1.5">
+                <CheckCircle2 className="w-2.5 h-2.5 md:w-3 md:h-3 text-green-400 flex-shrink-0 mt-0.5" />
+                <p className="text-gray-300 text-[9px] md:text-[10px] leading-tight">{data.binding?.method}</p>
               </div>
-              <div className="flex items-start gap-2">
-                <CheckCircle2 className="w-3 h-3 text-green-400 flex-shrink-0 mt-0.5" />
-                <p className="text-gray-300 text-[10px] leading-tight">{data.binding?.mechanism}</p>
+              <div className="flex items-start gap-1.5">
+                <CheckCircle2 className="w-2.5 h-2.5 md:w-3 md:h-3 text-green-400 flex-shrink-0 mt-0.5" />
+                <p className="text-gray-300 text-[9px] md:text-[10px] leading-tight">{data.binding?.mechanism}</p>
               </div>
-              <div className="flex items-start gap-2">
-                <CheckCircle2 className="w-3 h-3 text-green-400 flex-shrink-0 mt-0.5" />
-                <p className="text-gray-300 text-[10px] leading-tight">{data.binding?.covenant}</p>
+              <div className="flex items-start gap-1.5">
+                <CheckCircle2 className="w-2.5 h-2.5 md:w-3 md:h-3 text-green-400 flex-shrink-0 mt-0.5" />
+                <p className="text-gray-300 text-[9px] md:text-[10px] leading-tight">{data.binding?.covenant}</p>
               </div>
             </div>
 
-            <div className="border-t border-gray-700 pt-2 mb-2 flex-shrink-0">
-              <h4 className="text-[10px] font-bold text-blue-400 mb-1">BINDING TYPE: {data.bindingType}</h4>
+            <div className="border-t border-gray-700 pt-1.5 mb-1.5 flex-shrink-0">
+              <h4 className="text-[9px] md:text-[10px] font-bold text-blue-400 mb-1">BINDING TYPE: {data.bindingType}</h4>
               
-              <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-1.5 mb-2">
-                <p className="text-[9px] italic text-blue-300 leading-tight">{data.quote}</p>
+              <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-1 md:p-1.5 mb-1.5">
+                <p className="text-[8px] md:text-[9px] italic text-blue-300 leading-tight">{data.quote}</p>
               </div>
 
-              <div className="flex items-center justify-between text-[10px] mb-2">
-                <span className="text-gray-500">Class: {data.class}</span>
-                <Badge className="bg-yellow-500/20 text-yellow-400 border-yellow-500/50 text-[9px] px-1.5 py-0.5">
+              <div className="flex items-center justify-between text-[9px] md:text-[10px] mb-1.5">
+                <span className="text-gray-500 text-[9px]">Class: {data.class}</span>
+                <Badge className="bg-yellow-500/20 text-yellow-400 border-yellow-500/50 text-[8px] md:text-[9px] px-1 py-0.5">
                   BPAA
                 </Badge>
               </div>
             </div>
 
-            <div className="bg-black/70 border border-purple-500/30 rounded p-2 flex-1 min-h-0 flex items-center justify-center">
-              <pre className="text-purple-300 text-[8px] leading-[1.2] font-mono w-full text-center">
+            <div className="bg-black/70 border border-purple-500/30 rounded p-1.5 md:p-2 flex-1 min-h-0 flex items-center justify-center">
+              <pre className="text-purple-300 text-[7px] md:text-[8px] leading-[1.2] font-mono w-full text-center overflow-x-auto">
 {data.signature}
               </pre>
             </div>
 
-            <div className="text-center flex-shrink-0 mt-2">
-              <div className="inline-block bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/30 rounded-lg px-3 py-0.5">
-                <p className="text-[9px] font-bold text-blue-400">GLYPHLOCK MASTER COVENANT</p>
+            <div className="text-center flex-shrink-0 mt-1.5 md:mt-2">
+              <div className="inline-block bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/30 rounded-lg px-2 py-0.5">
+                <p className="text-[8px] md:text-[9px] font-bold text-blue-400">GLYPHLOCK MASTER COVENANT</p>
               </div>
             </div>
           </div>
