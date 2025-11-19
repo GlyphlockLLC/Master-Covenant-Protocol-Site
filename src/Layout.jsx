@@ -110,7 +110,7 @@ export default function Layout({ children, currentPageName }) {
     location.pathname === createPageUrl("Consultation");
 
   /** -------------------------------
-   * SECURITY & COMPLIANCE SVG SET (unchanged)
+   * SECURITY & COMPLIANCE SVG SET
    * ------------------------------- */
   const certifications = [
     {
