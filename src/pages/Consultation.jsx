@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Calendar, CheckCircle2, Clock, Shield, Award } from "lucide-react";
+import GlyphLoader from "@/components/GlyphLoader";
 
 export default function Consultation() {
   const navigate = useNavigate();
@@ -50,18 +51,22 @@ export default function Consultation() {
     { icon: CheckCircle2, text: "Detailed proposal document" }
   ];
 
+  if (createConsultation.isPending) {
+    return <GlyphLoader text="Securing Appointment..." />;
+  }
+
   return (
     <div className="min-h-screen bg-black text-white py-20">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Book Your <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">Consultation</span>
+            Book Your <span className="bg-gradient-to-r from-royal-blue to-cyan bg-clip-text text-transparent">Consultation</span>
             </h1>
             <p className="text-xl text-white/70">
               Schedule a consultation with our cybersecurity experts
             </p>
-            <p className="text-blue-400 mt-2">$299 consultation fee • Applied to final project cost</p>
+            <p className="text-cyan-400 mt-2">$299 consultation fee • Applied to final project cost</p>
           </div>
 
           <div className="grid lg:grid-cols-3 gap-8">
@@ -125,10 +130,10 @@ export default function Consultation() {
                           value={formData.service_interest}
                           onValueChange={(value) => setFormData({...formData, service_interest: value})}
                         >
-                          <SelectTrigger className="glass-card-dark border-blue-500/30 text-white">
+                          <SelectTrigger className="glass-card-dark border-royal-blue/30 text-white">
                             <SelectValue placeholder="Select a service" />
                           </SelectTrigger>
-                          <SelectContent className="glass-card-dark border-blue-500/30">
+                          <SelectContent className="glass-card-dark border-royal-blue/30">
                             <SelectItem value="Master Covenant">Master Covenant</SelectItem>
                             <SelectItem value="Security Tools">Security Tools</SelectItem>
                             <SelectItem value="NUPS POS">NUPS POS</SelectItem>
@@ -166,7 +171,7 @@ export default function Consultation() {
                       type="submit"
                       size="lg"
                       disabled={createConsultation.isPending}
-                      className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white"
+                      className="w-full bg-gradient-to-r from-royal-blue to-cyan hover:opacity-90 text-white"
                     >
                       {createConsultation.isPending ? "Processing..." : "Continue to Payment"}
                     </Button>
@@ -183,7 +188,7 @@ export default function Consultation() {
                 <CardContent className="space-y-4" style={{background: 'transparent'}}>
                   {benefits.map((benefit, index) => (
                     <div key={index} className="flex items-start gap-3">
-                      <benefit.icon className="w-5 h-5 text-blue-400 mt-1" />
+                      <benefit.icon className="w-5 h-5 text-cyan-400 mt-1" />
                       <span className="text-white">{benefit.text}</span>
                     </div>
                   ))}
@@ -211,7 +216,7 @@ export default function Consultation() {
                     <span className="text-white/70">Format:</span>
                     <span className="font-semibold text-white">Video Call</span>
                   </div>
-                  <div className="pt-3 border-t border-blue-500/30">
+                  <div className="pt-3 border-t border-royal-blue/30">
                     <p className="text-white/70 text-xs">
                       * Consultation fee is fully credited toward your final project cost if you proceed with our services.
                     </p>
