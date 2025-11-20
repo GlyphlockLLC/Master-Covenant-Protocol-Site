@@ -140,11 +140,11 @@ Generate the content now:`;
 
             <div className="grid lg:grid-cols-3 gap-6">
               <div className="lg:col-span-1 space-y-4">
-                <Card className="glass-royal border-cyan-500/30">
-                  <CardHeader>
+                <Card className="glass-royal border-cyan-500/30" style={{background: 'rgba(30, 58, 138, 0.2)', backdropFilter: 'blur(16px)'}}>
+                  <CardHeader style={{background: 'transparent'}}>
                     <CardTitle className="text-white">Content Settings</CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-4">
+                  <CardContent className="space-y-4" style={{background: 'transparent'}}>
                     <div>
                       <Label className="text-white">Content Type</Label>
                       <ContentTypeSelector selected={contentType} onSelect={setContentType} />
@@ -182,11 +182,11 @@ Generate the content now:`;
                 </Card>
 
                 {contentHistory.length > 0 && (
-                  <Card className="glass-royal border-cyan-500/30">
-                    <CardHeader>
+                  <Card className="glass-royal border-cyan-500/30" style={{background: 'rgba(30, 58, 138, 0.2)', backdropFilter: 'blur(16px)'}}>
+                    <CardHeader style={{background: 'transparent'}}>
                       <CardTitle className="text-white text-sm">Recent Content</CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-2 max-h-[300px] overflow-y-auto">
+                    <CardContent className="space-y-2 max-h-[300px] overflow-y-auto" style={{background: 'transparent'}}>
                       {contentHistory.map((item) => (
                         <div
                           key={item.id}
@@ -208,11 +208,11 @@ Generate the content now:`;
               </div>
 
               <div className="lg:col-span-2 space-y-4">
-                <Card className="glass-royal border-cyan-500/30">
-                  <CardHeader>
+                <Card className="glass-royal border-cyan-500/30" style={{background: 'rgba(30, 58, 138, 0.2)', backdropFilter: 'blur(16px)'}}>
+                  <CardHeader style={{background: 'transparent'}}>
                     <CardTitle className="text-white">Content Details</CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-4">
+                  <CardContent className="space-y-4" style={{background: 'transparent'}}>
                     <div>
                       <Label className="text-white">Topic / Description *</Label>
                       <Textarea

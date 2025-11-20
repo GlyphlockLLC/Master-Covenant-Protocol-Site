@@ -53,6 +53,7 @@ export default function UploadZone({ onUpload, loading }) {
   return (
     <Card 
       className="glass-royal border-cyan-500/30 p-12"
+      style={{background: 'rgba(30, 58, 138, 0.2)', backdropFilter: 'blur(16px)'}}
       onDragEnter={handleDrag}
       onDragLeave={handleDrag}
       onDragOver={handleDrag}
