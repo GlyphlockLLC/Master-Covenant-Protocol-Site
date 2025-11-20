@@ -25,34 +25,28 @@ const NAV = [
   {
     label: "Services",
     items: [
-      { label: "Security Tools", page: "SecurityTools" },
+      { label: "QR Code Generator", page: "QRGenerator" },
       { label: "Blockchain Verification", page: "Blockchain" },
       { label: "Interactive Image Studio", page: "InteractiveImageStudio" },
-      { label: "QR Generator", page: "QRGenerator" },
       { label: "Steganography", page: "Steganography" },
-      { label: "Hotzone Mapper", page: "HotzoneMapper" },
+      { label: "Hotzone Security Mapper", page: "HotzoneMapper" },
+      { label: "NUPS POS System", page: "NUPSLogin" },
     ],
   },
   {
-    label: "AI",
+    label: "AI Tools",
     items: [
-      { label: "GlyphBot AI", page: "GlyphBot" },
+      { label: "GlyphBot Assistant", page: "GlyphBot" },
       { label: "Content Generator", page: "ContentGenerator" },
-      { label: "NUPS POS", page: "NUPSLogin" },
+      { label: "Image Generator", page: "ImageGenerator" },
     ],
   },
   {
-    label: "Developer",
+    label: "Resources",
     items: [
-      { label: "Security Docs", page: "SecurityDocs" },
+      { label: "Documentation", page: "SecurityDocs" },
       { label: "Roadmap", page: "Roadmap" },
-    ],
-  },
-  {
-    label: "Legal",
-    items: [
-      { label: "Terms", page: "Terms" },
-      { label: "Privacy", page: "Privacy" },
+      { label: "FAQ", page: "FAQ" },
     ],
   },
 ];
