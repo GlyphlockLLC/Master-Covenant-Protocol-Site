@@ -27,8 +27,8 @@ export default function GeneratedContent({ content, onCopy, onDownload, onRegene
   };
 
   return (
-    <Card className="glass-royal border-blue-500/30">
-      <CardHeader>
+    <Card className="glass-royal border-cyan-500/30" style={{background: 'rgba(30, 58, 138, 0.2)', backdropFilter: 'blur(16px)'}}>
+      <CardHeader style={{background: 'transparent'}}>
         <div className="flex items-center justify-between">
           <div>
             <CardTitle className="text-white">Generated Content</CardTitle>
@@ -39,7 +39,7 @@ export default function GeneratedContent({ content, onCopy, onDownload, onRegene
               size="sm"
               variant="outline"
               onClick={handleEdit}
-              className="border-blue-500/50 text-white hover:bg-blue-500/20"
+              className="border-cyan-500/50 text-white hover:bg-cyan-500/20"
             >
               {isEditing ? <Check className="w-4 h-4 mr-1" /> : <Edit className="w-4 h-4 mr-1" />}
               {isEditing ? 'Done' : 'Edit'}
@@ -48,7 +48,7 @@ export default function GeneratedContent({ content, onCopy, onDownload, onRegene
               size="sm"
               variant="outline"
               onClick={onCopy}
-              className="border-blue-500/50 text-white hover:bg-blue-500/20"
+              className="border-cyan-500/50 text-white hover:bg-cyan-500/20"
             >
               <Copy className="w-4 h-4 mr-1" />
               Copy
@@ -57,7 +57,7 @@ export default function GeneratedContent({ content, onCopy, onDownload, onRegene
               size="sm"
               variant="outline"
               onClick={onDownload}
-              className="border-blue-500/50 text-white hover:bg-blue-500/20"
+              className="border-cyan-500/50 text-white hover:bg-cyan-500/20"
             >
               <Download className="w-4 h-4 mr-1" />
               Download
@@ -67,7 +67,7 @@ export default function GeneratedContent({ content, onCopy, onDownload, onRegene
               variant="outline"
               onClick={onRegenerate}
               disabled={isGenerating}
-              className="border-blue-500/50 text-white hover:bg-blue-500/20"
+              className="border-cyan-500/50 text-white hover:bg-cyan-500/20"
             >
               <RefreshCw className={cn("w-4 h-4 mr-1", isGenerating && "animate-spin")} />
               Regenerate
@@ -75,12 +75,12 @@ export default function GeneratedContent({ content, onCopy, onDownload, onRegene
           </div>
         </div>
       </CardHeader>
-      <CardContent>
+      <CardContent style={{background: 'transparent'}}>
         {isEditing ? (
           <Textarea
             value={editedContent}
             onChange={handleContentChange}
-            className="glass-dark border-blue-500/30 text-white min-h-[400px] font-mono"
+            className="glass-dark border-cyan-500/30 text-white min-h-[400px] font-mono"
           />
         ) : (
           <div className="glass-dark p-6 rounded-lg">
