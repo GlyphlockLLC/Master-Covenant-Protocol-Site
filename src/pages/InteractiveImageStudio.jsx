@@ -62,7 +62,7 @@ function InteractiveImageStudioContent() {
           <p className="text-white/60 text-lg">Create secure, interactive, cryptographically verified images</p>
         </div>
 
-        <Tabs value={state.tab} onValueChange={(tab) => dispatch({ type: "SET_TAB", tab: tab as "editor" | "verify" })} className="space-y-6">
+        <Tabs value={state.tab} onValueChange={(tab) => dispatch({ type: "SET_TAB", tab })} className="space-y-6">
           <TabsList className="glass-royal border-cyan-500/30 mx-auto flex w-fit">
             <TabsTrigger 
               value="editor" 
