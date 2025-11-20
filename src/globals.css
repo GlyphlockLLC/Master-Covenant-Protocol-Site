@@ -1,23 +1,4 @@
 css
-/* === GLYPHLOCK SIGNATURE PALETTE FREEZE (DO NOT MOVE) === */
-
-:root {
-  --ultraviolet: #8a2be2;
-  --uv-dark: #541b8b;
-  --cyan: #00eaff;
-}
-
-/* Erase all white backgrounds forever */
-html, body {
-  background-color: #000 !important;
-  color: #fff !important;
-}
-
-/* Make sure no component uses default backgrounds */
-* {
-  background: transparent !important;
-}
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -339,6 +320,25 @@ textarea::placeholder {
 ::-webkit-scrollbar-thumb {
   background: linear-gradient(135deg, rgba(59, 130, 246, 0.6) 0%, rgba(37, 99, 235, 0.6) 100%) !important;
   border-radius: 6px;
+}
+
+/* === GLYPHLOCK SIGNATURE PALETTE FREEZE (DO NOT MOVE) === */
+
+:root {
+--ultraviolet: #8a2be2;
+--uv-dark: #541b8b;
+--cyan: #00eaff;
+}
+
+/* Erase all white backgrounds forever */
+html, body {
+background-color: #000 !important;
+color: #fff !important;
+}
+
+/* Make sure no component uses default backgrounds */
+* {
+background: transparent !important;
 }
 
 /* Force all borders to blue */
