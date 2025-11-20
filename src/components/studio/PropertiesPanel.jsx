@@ -111,8 +111,11 @@ export default function PropertiesPanel({
                   </SelectTrigger>
                   <SelectContent className="glass-card-dark border-purple-500/30">
                     <SelectItem value="none">None</SelectItem>
-                    <SelectItem value="link">Link</SelectItem>
+                    <SelectItem value="link">Link (New Tab)</SelectItem>
+                    <SelectItem value="redirect">Redirect (Same Window)</SelectItem>
+                    <SelectItem value="show_tooltip">Show Tooltip</SelectItem>
                     <SelectItem value="text">Text Panel</SelectItem>
+                    <SelectItem value="trigger_event">Trigger Event</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -120,15 +123,35 @@ export default function PropertiesPanel({
               {formData.actionType !== 'none' && (
                 <div>
                   <Label className="text-white/80 text-sm">
-                    {formData.actionType === 'link' ? 'URL' : 'Text Content'}
+                    {formData.actionType === 'link' && 'URL (opens in new tab)'}
+                    {formData.actionType === 'redirect' && 'URL (redirects current window)'}
+                    {formData.actionType === 'show_tooltip' && 'Tooltip Text'}
+                    {formData.actionType === 'text' && 'Text Content'}
+                    {formData.actionType === 'trigger_event' && 'Event Name'}
                   </Label>
                   <Input
                     value={formData.actionValue}
                     onChange={(e) => setFormData({ ...formData, actionValue: e.target.value })}
                     onBlur={handleUpdate}
-                    placeholder={formData.actionType === 'link' ? 'https://...' : 'Enter text...'}
+                    placeholder={
+                      formData.actionType === 'link' || formData.actionType === 'redirect' 
+                        ? 'https://...' 
+                        : formData.actionType === 'trigger_event'
+                        ? 'event_name'
+                        : 'Enter text...'
+                    }
                     className="glass-card-dark border-purple-500/30 text-white mt-1"
                   />
+                  {formData.actionType === 'trigger_event' && (
+                    <p className="text-xs text-cyan-400/70 mt-1">
+                      Custom event will be dispatched with hotspot data
+                    </p>
+                  )}
+                  {formData.actionType === 'show_tooltip' && (
+                    <p className="text-xs text-cyan-400/70 mt-1">
+                      Tooltip appears on hotspot hover
+                    </p>
+                  )}
                 </div>
               )}
 

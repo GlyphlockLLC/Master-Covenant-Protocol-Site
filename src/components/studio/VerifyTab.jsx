@@ -171,20 +171,27 @@ export default function VerifyTab({ initialLogId }) {
                       {hotspot.description && (
                         <p className="text-sm text-white/70 mt-1">{hotspot.description}</p>
                       )}
-                      <div className="flex items-center gap-2 mt-2">
+                      <div className="flex flex-wrap items-center gap-2 mt-2">
                         <span className="text-xs px-2 py-1 rounded bg-purple-500/20 text-purple-400">
                           {hotspot.actionType}
                         </span>
-                        {hotspot.actionType === 'link' && hotspot.actionValue && (
+                        {(hotspot.actionType === 'link' || hotspot.actionType === 'redirect') && hotspot.actionValue && (
                           <a
                             href={hotspot.actionValue}
-                            target="_blank"
-                            rel="noopener noreferrer"
+                            target={hotspot.actionType === 'link' ? '_blank' : '_self'}
+                            rel={hotspot.actionType === 'link' ? 'noopener noreferrer' : undefined}
                             className="text-xs text-cyan-400 hover:text-cyan-300 flex items-center gap-1"
                           >
                             <ExternalLink className="w-3 h-3" />
-                            Open Link
+                            {hotspot.actionType === 'link' ? 'Open Link' : 'Navigate'}
                           </a>
+                        )}
+                        {hotspot.actionValue && hotspot.actionType !== 'none' && (
+                          <code className="text-xs text-white/60 bg-black/40 px-2 py-1 rounded">
+                            {hotspot.actionValue.length > 50 
+                              ? hotspot.actionValue.substring(0, 50) + '...' 
+                              : hotspot.actionValue}
+                          </code>
                         )}
                       </div>
                     </div>
