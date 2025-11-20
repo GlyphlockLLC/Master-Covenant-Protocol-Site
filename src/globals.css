@@ -25,6 +25,8 @@ css
     --input: 217 91% 60% / 0.3;
     --ring: 217 91% 60%;
     --radius: 0.75rem;
+    --ultraviolet: #7f00ff;
+    --cyan: #00eaff;
   }
 }
 
@@ -32,10 +34,26 @@ css
   * {
     @apply border-border;
   }
-  body {
+  html, body {
     @apply bg-black text-white;
+    background-color: #000 !important;
+    color: #eaeaea !important;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   }
+}
+
+.bg-ultraviolet { background-color: var(--ultraviolet); }
+.text-ultraviolet { color: var(--ultraviolet); }
+.border-ultraviolet { border-color: var(--ultraviolet); }
+.shadow-ultraviolet { box-shadow: 0 0 15px rgba(127, 0, 255, 0.4); }
+
+.footer-links a {
+  display: block;
+  color: #ccc;
+  transition: 0.2s;
+}
+.footer-links a:hover {
+  color: #00eaff;
 }
 
 @layer components {

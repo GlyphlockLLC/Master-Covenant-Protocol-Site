@@ -1,48 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { createPageUrl } from "@/utils";
+import { useLocation } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import {
-  Menu,
-  X,
-  User,
-  LogOut,
-  ArrowLeft,
-  HelpCircle,
-  CreditCard,
-  Shield,
-} from "lucide-react";
-
-import { Button } from "@/components/ui/button";
 import SecurityMonitor from "@/components/SecurityMonitor";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import GlyphBotJr from "@/components/GlyphBotJr";
-import { navigationConfig } from "@/components/NavigationConfig";
 import InteractiveNebula from "@/components/InteractiveNebula";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 export default function Layout({ children, currentPageName }) {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [user, setUser] = useState(null);
-  const [canGoBack, setCanGoBack] = useState(false);
-
   const location = useLocation();
-  const navigate = useNavigate();
 
-  /** -------------------------------
-   * CHECK USER AUTH
-   * ------------------------------- */
   useEffect(() => {
     (async () => {
       try {
@@ -57,39 +25,14 @@ export default function Layout({ children, currentPageName }) {
     })();
   }, []);
 
-  /** -------------------------------
-   * CLOSE MENUS + HANDLE NAV BACK BUTTON
-   * ------------------------------- */
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-    setMobileMenuOpen(false);
-
-    // FIX SSR hydration by running only in browser
-    setCanGoBack(
-      typeof window !== "undefined" &&
-        window.history.length > 1 &&
-        location.pathname !== createPageUrl("Home")
-    );
   }, [location.pathname]);
 
-  /** -------------------------------
-   * DISABLE SCROLL WHEN MOBILE MENU OPEN
-   * ------------------------------- */
-  useEffect(() => {
-    document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [mobileMenuOpen]);
-
-  /** -------------------------------
-   * LOGIN / LOGOUT
-   * ------------------------------- */
   const handleLogout = async () => {
     try {
       await base44.auth.logout();
       setUser(null);
-      setMobileMenuOpen(false);
     } catch (err) {
       console.error("Logout failed:", err);
     }
@@ -97,42 +40,18 @@ export default function Layout({ children, currentPageName }) {
 
   const handleLogin = async () => {
     try {
-      setMobileMenuOpen(false);
       await base44.auth.redirectToLogin();
     } catch (err) {
       console.error("Login redirect failed:", err);
     }
   };
 
-  const isActive = (pageName) =>
-    location.pathname === createPageUrl(pageName);
-
-  const isConsultationPage =
-    location.pathname === createPageUrl("Consultation");
-
-  /** -------------------------------
-   * SECURITY & COMPLIANCE SVG SET
-   * ------------------------------- */
-  const certifications = [
-    { name: "SOC 2", subtitle: "TYPE II" },
-    { name: "GDPR", subtitle: "COMPLIANT" },
-    { name: "ISO 27001", subtitle: "CERTIFIED" },
-    { name: "PCI DSS", subtitle: "COMPLIANT" },
-    { name: "HIPAA", subtitle: "COMPLIANT" }
-  ];
-
   return (
-    <div className="min-h-screen bg-black text-white relative overflow-x-hidden">
+    <div className="min-h-screen bg-black text-white relative overflow-x-hidden flex flex-col">
       <SecurityMonitor />
       <InteractiveNebula />
 
-      <TooltipProvider>
-        {/* ----------------------------------
-            NAVIGATION BAR
-        ---------------------------------- */}
-        <nav className="fixed top-0 left-0 right-0 z-[9999] glass-royal border-b border-blue-500/50 shadow-xl">
-          <div className="container mx-auto px-4">
-            <div className="flex items-center justify-between h-20">
+      <Navbar user={user} onLogin={handleLogin} onLogout={handleLogout} />
 
               {/* LEFT SIDE */}
               <div className="flex items-center gap-4">
