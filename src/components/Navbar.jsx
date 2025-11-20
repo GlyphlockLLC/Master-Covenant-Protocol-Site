@@ -70,10 +70,13 @@ export default function Navbar({ user, onLogin, onLogout }) {
 
         <div className="hidden md:flex items-center gap-10">
           {NAV.map((section) => (
-            <div key={section.label} className="relative group">
+            <div 
+              key={section.label} 
+              className="relative"
+              onMouseEnter={() => setOpen(section.label)}
+              onMouseLeave={() => setOpen(null)}
+            >
               <button
-                onMouseEnter={() => setOpen(section.label)}
-                onMouseLeave={() => setOpen(null)}
                 className="flex items-center gap-1 hover:text-cyan-300 transition"
               >
                 {section.label}
@@ -82,8 +85,6 @@ export default function Navbar({ user, onLogin, onLogout }) {
 
               {open === section.label && (
                 <div
-                  onMouseEnter={() => setOpen(section.label)}
-                  onMouseLeave={() => setOpen(null)}
                   className="absolute left-0 top-full mt-2 bg-black border border-ultraviolet/40 rounded-lg shadow-xl p-3 w-56 z-50"
                 >
                   {section.items.map((item) => (
