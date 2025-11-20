@@ -29,11 +29,11 @@ export default function Layout({ children, currentPageName }) {
     })();
   }, []);
 
-  if (loading) return <GlyphLoader text="Initializing Secure Environment..." />;
-
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [location.pathname]);
+
+  if (loading) return <GlyphLoader text="Initializing Secure Environment..." />;
 
   const handleLogout = async () => {
     try {
