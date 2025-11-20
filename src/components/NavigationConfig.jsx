@@ -18,6 +18,7 @@ export const navigationConfig = {
         { label: "Visual Cryptography", page: "VisualCryptography" },
         { label: "Blockchain Security", page: "Blockchain" },
         { label: "Security Operations", page: "SecurityOperationsCenter" },
+        { label: "Interactive Image Studio", page: "InteractiveImageStudio" },
         { label: "Complete Ecosystem", page: "SecurityTools" },
       ]
     },
@@ -49,6 +50,7 @@ export const navigationConfig = {
       { label: "Visual Cryptography", page: "VisualCryptography" },
       { label: "Blockchain", page: "Blockchain" },
       { label: "Security Operations", page: "SecurityOperationsCenter" },
+      { label: "Interactive Image Studio", page: "InteractiveImageStudio" },
       { label: "GlyphBot AI", page: "GlyphBot" },
       { label: "Content Generator", page: "ContentGenerator" },
       { label: "AI Image Generator", page: "ImageGenerator" },
