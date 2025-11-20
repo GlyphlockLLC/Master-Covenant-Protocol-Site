@@ -1,4 +1,23 @@
 css
+/* === GLYPHLOCK SIGNATURE PALETTE FREEZE (DO NOT MOVE) === */
+
+:root {
+  --ultraviolet: #8a2be2;
+  --uv-dark: #541b8b;
+  --cyan: #00eaff;
+}
+
+/* Erase all white backgrounds forever */
+html, body {
+  background-color: #000 !important;
+  color: #fff !important;
+}
+
+/* Make sure no component uses default backgrounds */
+* {
+  background: transparent !important;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
