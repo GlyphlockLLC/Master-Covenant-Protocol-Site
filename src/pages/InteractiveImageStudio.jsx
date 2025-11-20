@@ -53,11 +53,11 @@ function InteractiveImageStudioContent() {
 
       <div className="container mx-auto px-4">
         <div className="mb-8 text-center relative">
-          <div className="absolute inset-0 bg-gradient-to-b from-purple-900/20 via-transparent to-transparent blur-3xl -z-10"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-cyan-900/20 via-transparent to-transparent blur-3xl -z-10"></div>
           <h1 className="text-5xl font-bold mb-3">
             <span className="text-white">Interactive </span>
             <span className="text-white">Image </span>
-            <span className="bg-gradient-to-r from-purple-400 via-violet-400 to-cyan-400 bg-clip-text text-transparent">Studio</span>
+            <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Studio</span>
           </h1>
           <p className="text-white/60 text-lg">Create secure, interactive, cryptographically verified images</p>
         </div>
