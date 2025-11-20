@@ -47,19 +47,21 @@ export default function Layout({ children, currentPageName }) {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white relative overflow-x-hidden flex flex-col">
+    <div className="min-h-screen bg-black text-white flex flex-col relative overflow-x-hidden">
       <SecurityMonitor />
-      <InteractiveNebula />
+      <InteractiveNebula className="pointer-events-none fixed inset-0 z-0" />
 
       <Navbar user={user} onLogin={handleLogin} onLogout={handleLogout} />
 
-      <main className="flex-1 relative z-10">
+      <main className="flex-1 relative z-20">
         {children}
       </main>
 
       <GlyphBotJr />
 
-      <Footer />
+      <div className="relative z-30">
+        <Footer />
+      </div>
     </div>
   );
 }
