@@ -128,7 +128,7 @@ Generate the content now:`;
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-8">
               <div className="flex items-center justify-center gap-3 mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg flex items-center justify-center shadow-lg shadow-purple-500/50">
+                <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center shadow-lg shadow-cyan-500/50">
                   <Sparkles className="w-6 h-6 text-white" />
                 </div>
                 <h1 className="text-4xl font-bold text-white">AI Content Generator</h1>
@@ -140,7 +140,7 @@ Generate the content now:`;
 
             <div className="grid lg:grid-cols-3 gap-6">
               <div className="lg:col-span-1 space-y-4">
-                <Card className="glass-royal border-blue-500/30">
+                <Card className="glass-royal border-cyan-500/30">
                   <CardHeader>
                     <CardTitle className="text-white">Content Settings</CardTitle>
                   </CardHeader>
@@ -158,10 +158,10 @@ Generate the content now:`;
                     <div>
                       <Label className="text-white">Length</Label>
                       <Select value={wordCount} onValueChange={setWordCount}>
-                        <SelectTrigger className="glass-dark border-blue-500/30 text-white">
+                        <SelectTrigger className="glass-dark border-cyan-500/30 text-white">
                           <SelectValue />
                         </SelectTrigger>
-                        <SelectContent className="glass-dark border-blue-500/30">
+                        <SelectContent className="glass-dark border-cyan-500/30">
                           <SelectItem value="short">Short (100-200 words)</SelectItem>
                           <SelectItem value="medium">Medium (300-500 words)</SelectItem>
                           <SelectItem value="long">Long (800-1200 words)</SelectItem>
@@ -175,14 +175,14 @@ Generate the content now:`;
                         placeholder="e.g., Tech professionals, Small businesses"
                         value={targetAudience}
                         onChange={(e) => setTargetAudience(e.target.value)}
-                        className="glass-dark border-blue-500/30 text-white"
+                        className="glass-dark border-cyan-500/30 text-white"
                       />
                     </div>
                   </CardContent>
                 </Card>
 
                 {contentHistory.length > 0 && (
-                  <Card className="glass-royal border-blue-500/30">
+                  <Card className="glass-royal border-cyan-500/30">
                     <CardHeader>
                       <CardTitle className="text-white text-sm">Recent Content</CardTitle>
                     </CardHeader>
@@ -191,7 +191,7 @@ Generate the content now:`;
                         <div
                           key={item.id}
                           onClick={() => setGeneratedContent(item.content)}
-                          className="glass-dark p-3 rounded-lg cursor-pointer hover:bg-blue-500/20 transition-colors"
+                          className="glass-dark p-3 rounded-lg cursor-pointer hover:bg-cyan-500/20 transition-colors"
                         >
                           <Badge variant="outline" className="text-xs mb-1">
                             {item.type}
@@ -208,7 +208,7 @@ Generate the content now:`;
               </div>
 
               <div className="lg:col-span-2 space-y-4">
-                <Card className="glass-royal border-blue-500/30">
+                <Card className="glass-royal border-cyan-500/30">
                   <CardHeader>
                     <CardTitle className="text-white">Content Details</CardTitle>
                   </CardHeader>
@@ -229,7 +229,7 @@ Generate the content now:`;
                         placeholder="Enter your brand voice, values, or specific requirements..."
                         value={brandGuidelines}
                         onChange={(e) => setBrandGuidelines(e.target.value)}
-                        className="glass-dark border-blue-500/30 text-white"
+                        className="glass-dark border-cyan-500/30 text-white"
                       />
                     </div>
 
@@ -239,14 +239,14 @@ Generate the content now:`;
                         placeholder="Any other details, keywords, or requirements..."
                         value={additionalContext}
                         onChange={(e) => setAdditionalContext(e.target.value)}
-                        className="glass-dark border-blue-500/30 text-white"
+                        className="glass-dark border-cyan-500/30 text-white"
                       />
                     </div>
 
                     <Button
                       onClick={generateContent}
                       disabled={isGenerating || !topic.trim()}
-                      className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
+                      className="w-full bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700 text-black font-bold"
                       size="lg"
                     >
                       {isGenerating ? (
