@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
+import { base44 } from "@/api/base44Client";
 import { 
   Book, Shield, Key, Code, Webhook, FileJson, Layout, 
-  ChevronRight, ExternalLink, Lock, Server, Terminal, AlertTriangle
+  ChevronRight, ExternalLink, Lock, Server, Terminal, AlertTriangle,
+  Download, Loader2
 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -11,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import SEOHead from "@/components/SEOHead";
 import DeveloperKeys from "@/components/dashboard/DeveloperKeys";
+import { toast } from "sonner";
 
 const SECTIONS = [
   { id: "api-keys", label: "API Key Management", icon: Key },
@@ -24,12 +27,50 @@ const SECTIONS = [
 
 export default function DeveloperConsole() {
   const [activeSection, setActiveSection] = useState("api-keys");
+  const [downloadingSdk, setDownloadingSdk] = useState(null);
 
   const scrollToSection = (id) => {
     setActiveSection(id);
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
+  const handleDownloadSdk = async (lang) => {
+    try {
+      setDownloadingSdk(lang);
+      const response = await base44.functions.invoke("downloadSDK", { language: lang });
+      
+      if (response.data.error) {
+        throw new Error(response.data.error);
+      }
+
+      const { file_data, filename } = response.data;
+      
+      // Decode base64 and create download link
+      const binaryString = window.atob(file_data);
+      const bytes = new Uint8Array(binaryString.length);
+      for (let i = 0; i < binaryString.length; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      const blob = new Blob([bytes], { type: "application/zip" });
+      const url = window.URL.createObjectURL(blob);
+      
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(link);
+      toast.success(`Downloaded ${filename}`);
+    } catch (error) {
+      toast.error(`Failed to download ${lang} SDK`);
+      console.error(error);
+    } finally {
+      setDownloadingSdk(null);
     }
   };
 
@@ -254,9 +295,21 @@ print(status)`}</pre>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {['Node.js', 'Python', 'Go', 'Java', '.NET', 'Ruby', 'PHP', 'Rust'].map((lang) => (
-                    <div key={lang} className="p-4 rounded-lg bg-gray-900/30 border border-gray-800 hover:border-blue-500/50 transition-all cursor-pointer group">
-                        <h4 className="font-bold text-white group-hover:text-blue-400 transition-colors">{lang}</h4>
-                        <p className="text-xs text-gray-500 mt-1">v2.1.0 • Official</p>
+                    <div 
+                      key={lang} 
+                      onClick={() => handleDownloadSdk(lang)}
+                      className="p-4 rounded-lg bg-gray-900/30 border border-gray-800 hover:border-blue-500/50 hover:bg-blue-900/10 transition-all cursor-pointer group relative overflow-hidden"
+                    >
+                        <div className="flex justify-between items-start mb-2">
+                          <h4 className="font-bold text-white group-hover:text-blue-400 transition-colors">{lang}</h4>
+                          {downloadingSdk === lang ? (
+                            <Loader2 className="w-4 h-4 text-blue-400 animate-spin" />
+                          ) : (
+                            <Download className="w-4 h-4 text-gray-600 group-hover:text-blue-400 transition-colors" />
+                          )}
+                        </div>
+                        <p className="text-xs text-gray-500">v2.1.0 • Official</p>
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
                     </div>
                 ))}
             </div>
