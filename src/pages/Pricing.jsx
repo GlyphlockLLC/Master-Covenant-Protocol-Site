@@ -231,7 +231,7 @@ export default function Pricing() {
             </p>
             <Link to={createPageUrl("Consultation")}>
               <Button className="text-white border-royal-blue/50 hover:bg-royal-blue/20 px-8 py-6 text-lg">
-                Schedule Consultation ($299)
+                Schedule Consultation ($200)
               </Button>
             </Link>
           </div>

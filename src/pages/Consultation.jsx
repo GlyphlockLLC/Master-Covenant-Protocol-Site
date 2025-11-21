@@ -35,9 +35,9 @@ export default function Consultation() {
   const createConsultation = useMutation({
     mutationFn: (data) => base44.entities.Consultation.create(data),
     onSuccess: (result) => {
-      navigate(createPageUrl("Payment") + `?consultation_id=${result.id}`);
+      window.location.href = "https://47e53f12-cfe7-45aa-a4ff-ded5a8f02bbe.paylinks.godaddy.com/90586091-d76f-44ec-a22f-b07";
     }
-  });
+    });
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -66,7 +66,7 @@ export default function Consultation() {
             <p className="text-xl text-white/70">
               Schedule a consultation with our cybersecurity experts
             </p>
-            <p className="text-cyan-400 mt-2">$299 consultation fee • Applied to final project cost</p>
+            <p className="text-cyan-400 mt-2">$200 consultation fee • Applied to final project cost</p>
           </div>
 
           <div className="grid lg:grid-cols-3 gap-8">
@@ -202,7 +202,7 @@ export default function Consultation() {
                 <CardContent className="space-y-3 text-sm" style={{background: 'transparent'}}>
                   <div className="flex justify-between">
                     <span className="text-white/70">Consultation Fee:</span>
-                    <span className="font-semibold text-white">$299</span>
+                    <span className="font-semibold text-white">$200</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-white/70">Response Time:</span>
