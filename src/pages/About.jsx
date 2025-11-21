@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { 
   Shield, Zap, Brain, Code, Target, Users, 
   Sparkles, Crown, Lock, Blocks, FileText, 
-  Globe, TrendingUp, Award
+  Globe, TrendingUp, Award, Shield
 } from "lucide-react";
 import SEOHead from "../components/SEOHead";
 
@@ -13,21 +13,27 @@ export default function About() {
   const leadership = [
     {
       name: "Carlo Rene Earl",
-      title: "Founder & Sole Owner (DACO¹)",
-      role: "Vision, architecture, legal covenant design, cryptographic direction, and full IP ownership.",
+      title: "Founder & Chief Executive Officer (CEO)",
+      role: "Carlo Earl is the Founder and Chief Executive Officer of GlyphLock, responsible for shaping the company’s core vision, technological direction, and long-term strategic roadmap. With a multidisciplinary background that spans creative design, systems thinking, and security innovation, Carlo leads GlyphLock with a rare combination of technical insight and business acuity. Under his leadership, GlyphLock has developed a proprietary ecosystem centered on quantum-resistant authentication, steganographic glyph technologies, blockchain-anchored audit systems, and secure AI-driven contract automation. Carlo oversees the architecture of the Master Covenant framework, the company’s cryptographic compliance infrastructure, and the intellectual property portfolio that forms the backbone of GlyphLock’s market advantage. His executive focus lies in enterprise integration, cross-industry scalability, and future-proofed digital identity. Carlo’s governance blends creative innovation with operational discipline, positioning GlyphLock as a rising authority in secure identity verification, AI policy, and next-generation authentication ecosystems.",
       icon: Crown
     },
     {
+      name: "Jacub Lough",
+      title: "Chief Financial Officer (CFO) & Chief Strategy Officer (CSO)",
+      role: "As Chief Financial Officer and Chief Strategy Officer, Jacub Lough directs GlyphLock’s financial operations, capital structure, strategic planning, and long-range corporate development. He plays a central role in risk management, compliance oversight, and multi-vertical expansion planning across enterprise, government, medical, defense, and high-integrity commercial environments. Jacub brings a deep analytical framework rooted in disciplined financial modeling, operational forecasting, and scalable growth alignment. His background in asset management, organizational architecture, and creative-industry operations enables him to bridge financial precision with practical execution. At the strategic level, Jacub evaluates market positioning, prepares valuation pathways, supports IP-driven expansion, and leads scenario planning for acquisition readiness, licensing partnerships, and international deployment models. His dual role strengthens GlyphLock’s foundation for sustainable, compliant, and high-credibility growth in rapidly evolving security and AI markets.",
+      icon: TrendingUp
+    },
+    {
       name: "Collin Vanderginst",
-      title: "CTO (Chief Technology Officer)",
-      role: "Engineered the technical foundation of GlyphLock. Architected the first prototype. Built the SDK, the hotzone engine, and the interactive UI. Currently manages all Jiffy Lube surveillance SEC systems across Arizona.",
+      title: "Chief Technology Officer (CTO)",
+      role: "Collin Vanderginst, GlyphLock’s Chief Technology Officer, oversees the design, deployment, and engineering integrity of the company’s technical infrastructure. His expertise spans advanced systems engineering, security architecture, distributed surveillance networks, and high-availability backend environments. A key contributor to GlyphLock’s foundational prototypes, Collin converts conceptual innovations into functional, scalable software systems. He manages engineering operations, DevSecOps processes, platform optimization, and system-level integrations across the GlyphLock ecosystem — including authentication engines, SDK frameworks, and enterprise-grade API infrastructure. Collin brings a disciplined, methodical engineering philosophy that ensures reliability, resilience, and security at every level of the platform. His work underpins the company’s stability as GlyphLock continues expanding into mission-critical, compliance-sensitive industries.",
       icon: Code
     },
     {
-      name: "Jacub Lough",
-      title: "CSO & CFO",
-      role: "Carlo's long-term collaborator in music, digital assets, and strategic planning. Owner of IceVault88. Guides finance, structure, partnerships, and operational scale.",
-      icon: TrendingUp
+      name: "Angel Sticka",
+      title: "Director of Administration, Regulatory Affairs & Operational Compliance",
+      role: "Angel Sticka serves as GlyphLock’s Director of Administration, Regulatory Affairs, and Operational Compliance. She manages corporate documentation, legal coordination, organizational governance, and procedural execution across all departments. Angel oversees the administrative systems that support GlyphLock’s operational rhythm — including contract handling, licensing paperwork, compliance tracking, and executive scheduling. Her work ensures alignment between product development, legal processes, and organizational structure. Her administrative precision provides stability throughout GlyphLock’s rapid innovation cycles, supporting executive leadership and acting as a central point of continuity for filings, deadlines, communications, and organizational records. Angel’s role safeguards operational integrity as the company scales into more regulated markets.",
+      icon: Shield
     }
   ];
 
