@@ -3,6 +3,7 @@ import { base44 } from "@/api/base44Client";
 import DashboardSidebar from "@/components/dashboard/DashboardSidebar";
 import DataTable from "@/components/dashboard/DataTable";
 import DeveloperKeys from "@/components/dashboard/DeveloperKeys";
+import SecurityOverview from "@/components/dashboard/SecurityOverview";
 import GlyphLoader from "@/components/GlyphLoader";
 
 export default function Dashboard() {
@@ -56,6 +57,8 @@ export default function Dashboard() {
 
         {selectedModel?.id === 'api-keys' ? (
           <DeveloperKeys />
+        ) : selectedModel?.id === 'security-overview' ? (
+          <SecurityOverview />
         ) : (
           <DataTable selectedModel={selectedModel} />
         )}

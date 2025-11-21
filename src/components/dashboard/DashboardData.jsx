@@ -7,6 +7,7 @@ export const navItems = [
   {
     category: "General",
     items: [
+      { id: "security-overview", label: "Security Overview", entity: null, icon: Shield },
       { id: "consultations", label: "Consultations", entity: "Consultation", icon: Users },
       { id: "products", label: "Products", entity: "Product", icon: Package },
     ]
