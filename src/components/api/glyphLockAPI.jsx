@@ -1,22 +1,21 @@
 import { base44 } from '@/api/base44Client';
-import { FUNCTIONS_URL } from './supabaseClient';
 
 /**
  * GlyphLock Enterprise API Layer
  * All backend functions with Base44 authentication
  */
 
+const FUNCTIONS_URL = 'https://kygisdokikvzgzwonzxk.supabase.co/functions/v1';
+
 const callFunction = async (functionName, payload = {}) => {
   const user = await base44.auth.me();
-  const token = localStorage.getItem('base44_token');
   
   const response = await fetch(`${FUNCTIONS_URL}/${functionName}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`,
     },
-    body: JSON.stringify(payload),
+    body: JSON.stringify({ ...payload, userId: user.id, userEmail: user.email }),
   });
 
   if (!response.ok) {
