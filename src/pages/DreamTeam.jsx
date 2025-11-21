@@ -1,16 +1,15 @@
-// DEPRECATED: Use GovernanceHub page instead
-// This file redirects to the consolidated Governance Hub
-
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
+import GlyphLoader from "@/components/GlyphLoader";
 
 export default function DreamTeam() {
   const navigate = useNavigate();
-  
+
   useEffect(() => {
-    navigate(createPageUrl("GovernanceHub") + "?tab=team", { replace: true });
-  }, []);
-  
-  return null;
+    // Redirect to About page where Dream Team is featured
+    navigate(createPageUrl("About"), { replace: true });
+  }, [navigate]);
+
+  return <GlyphLoader text="Accessing Team Data..." />;
 }

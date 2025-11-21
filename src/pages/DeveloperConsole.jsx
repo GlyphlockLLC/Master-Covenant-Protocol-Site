@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { base44 } from "@/api/base44Client";
 import { 
-  Book, Shield, Key, Code, Webhook, FileJson, Layout, 
-  ChevronRight, ExternalLink, Lock, Server, Terminal, AlertTriangle,
-  Download, Loader2
+  Book, Shield, Key, Code, Webhook, 
+  ChevronRight, Lock, Server, Terminal, 
+  Download, Loader2, Globe, AlertCircle
 } from "lucide-react";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -48,7 +47,6 @@ export default function DeveloperConsole() {
 
       const { file_data, filename } = response.data;
       
-      // Decode base64 and create download link
       const binaryString = window.atob(file_data);
       const bytes = new Uint8Array(binaryString.length);
       for (let i = 0; i < binaryString.length; i++) {
@@ -82,15 +80,18 @@ export default function DeveloperConsole() {
       />
 
       {/* Sidebar Navigation */}
-      <aside className="w-64 border-r border-blue-900/30 bg-black/95 fixed h-full overflow-y-auto hidden md:block z-20">
-        <div className="p-6 border-b border-blue-900/30">
-          <Link to={createPageUrl("Home")} className="flex items-center gap-2">
+      <aside className="w-72 border-r border-[#00E4FF]/20 bg-[#020617]/95 fixed h-full overflow-y-auto hidden lg:block z-20 backdrop-blur-xl">
+        <div className="p-8 border-b border-[#00E4FF]/20">
+          <Link to={createPageUrl("Home")} className="flex items-center gap-3 group">
             <img
               src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/d92107808_glyphlock-3d-logo.png"
               alt="GlyphLock"
-              className="h-6 w-auto"
+              className="h-8 w-auto"
             />
-            <span className="font-bold tracking-tight">Developers</span>
+            <div className="flex flex-col">
+              <span className="font-black tracking-tight font-space text-lg text-white group-hover:text-[#00E4FF] transition-colors">GLYPHLOCK</span>
+              <span className="text-[10px] text-[#00E4FF] uppercase tracking-widest font-bold">Developer</span>
+            </div>
           </Link>
         </div>
         <nav className="p-4 space-y-1">
@@ -98,9 +99,9 @@ export default function DeveloperConsole() {
             <button
               key={item.id}
               onClick={() => scrollToSection(item.id)}
-              className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all ${
                 activeSection === item.id 
-                  ? "bg-blue-900/30 text-blue-400 font-medium" 
+                  ? "bg-[#00E4FF]/10 text-[#00E4FF] border border-[#00E4FF]/30 shadow-[0_0_15px_rgba(0,228,255,0.1)]" 
                   : "text-gray-400 hover:text-white hover:bg-white/5"
               }`}
             >
@@ -109,120 +110,139 @@ export default function DeveloperConsole() {
             </button>
           ))}
         </nav>
-        <div className="p-6 mt-auto border-t border-blue-900/30">
-          <div className="bg-blue-950/30 rounded-lg p-3 border border-blue-500/20">
-            <h4 className="text-xs font-bold text-blue-400 mb-1">API Status</h4>
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-              <span className="text-xs text-gray-300">All Systems Operational</span>
+        <div className="p-6 mt-auto border-t border-[#00E4FF]/20">
+          <div className="bg-[#00E4FF]/5 rounded-xl p-4 border border-[#00E4FF]/20">
+            <div className="flex items-center justify-between mb-2">
+              <h4 className="text-xs font-bold text-[#00E4FF] uppercase tracking-wider">System Status</h4>
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+              </span>
             </div>
+            <p className="text-xs text-gray-400">All Systems Operational</p>
+            <p className="text-[10px] text-gray-500 mt-1">Latency: 24ms</p>
           </div>
         </div>
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 md:ml-64 min-h-screen bg-gradient-to-b from-black via-blue-950/10 to-black">
-        
+      <main className="flex-1 lg:ml-72 min-h-screen bg-black relative">
+        {/* Background */}
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20 pointer-events-none"></div>
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#00E4FF]/5 rounded-full blur-[120px] pointer-events-none"></div>
+
         {/* Top Bar */}
-        <header className="h-16 border-b border-blue-900/30 bg-black/80 backdrop-blur-md sticky top-0 z-10 flex items-center justify-between px-8">
+        <header className="h-20 border-b border-[#00E4FF]/20 bg-black/80 backdrop-blur-md sticky top-0 z-10 flex items-center justify-between px-8 md:px-12">
           <div className="flex items-center gap-2 text-sm text-gray-400">
-            <span>Console</span>
+            <span className="font-space text-white">CONSOLE</span>
             <ChevronRight className="w-4 h-4" />
-            <span className="text-white">v1.4.2</span>
+            <Badge className="bg-[#00E4FF]/10 text-[#00E4FF] border-[#00E4FF]/30">v2.4.0</Badge>
           </div>
           <div className="flex items-center gap-4">
-             <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white">
-                <Book className="w-4 h-4 mr-2" />
-                Docs
-             </Button>
-             <Button variant="outline" size="sm" className="border-blue-500/30 text-blue-400 hover:bg-blue-500/10">
-                Enterprise Support
-             </Button>
+             <Link to={createPageUrl("SecurityDocs")}>
+               <Button variant="ghost" size="sm" className="text-gray-400 hover:text-[#00E4FF] hover:bg-[#00E4FF]/10">
+                  <Book className="w-4 h-4 mr-2" />
+                  Documentation
+               </Button>
+             </Link>
+             <Link to={createPageUrl("Consultation")}>
+               <Button variant="outline" size="sm" className="border-[#00E4FF]/30 text-[#00E4FF] hover:bg-[#00E4FF]/10 hover:text-white">
+                  Enterprise Support
+               </Button>
+             </Link>
           </div>
         </header>
 
-        <div className="max-w-5xl mx-auto p-8 space-y-20">
+        <div className="max-w-6xl mx-auto p-8 md:p-12 space-y-24 relative z-10">
 
-          {/* 1. API Key Management Center */}
-          <section id="api-keys" className="scroll-mt-24">
+          {/* 1. API Key Management */}
+          <section id="api-keys" className="scroll-mt-28">
             <DeveloperKeys />
           </section>
 
           {/* 2. Quickstart */}
-          <section id="quickstart" className="scroll-mt-24 space-y-6">
-            <div className="border-b border-gray-800 pb-4">
-              <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-                <Terminal className="w-6 h-6 text-blue-400" />
+          <section id="quickstart" className="scroll-mt-28 space-y-8">
+            <div className="border-b border-white/10 pb-6">
+              <h2 className="text-3xl font-bold text-white flex items-center gap-3 font-space">
+                <Terminal className="w-8 h-8 text-[#00E4FF]" />
                 Quickstart
               </h2>
-              <p className="text-gray-400 mt-1">Get up and running with GlyphLock in less than 2 minutes.</p>
+              <p className="text-gray-400 mt-2 text-lg">Initialize secure binding in under 2 minutes.</p>
             </div>
             
             <div className="grid gap-6 md:grid-cols-3">
-                <div className="p-6 rounded-xl bg-gray-900/50 border border-gray-800">
-                    <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center font-bold text-white mb-4">1</div>
-                    <h3 className="font-bold text-white mb-2">Install SDK</h3>
-                    <p className="text-sm text-gray-400">Install our lightweight, zero-dependency SDK for your platform.</p>
-                </div>
-                <div className="p-6 rounded-xl bg-gray-900/50 border border-gray-800">
-                    <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center font-bold text-white mb-4">2</div>
-                    <h3 className="font-bold text-white mb-2">Configure Keys</h3>
-                    <p className="text-sm text-gray-400">Export your Tri-Keys as environment variables in your project.</p>
-                </div>
-                <div className="p-6 rounded-xl bg-gray-900/50 border border-gray-800">
-                    <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center font-bold text-white mb-4">3</div>
-                    <h3 className="font-bold text-white mb-2">Glyph Bind</h3>
-                    <p className="text-sm text-gray-400">Bind your assets or logic to the secure GlyphLock network.</p>
-                </div>
+                {[
+                  { num: "01", title: "Install SDK", desc: "Use our zero-dependency lightweight client." },
+                  { num: "02", title: "Export Keys", desc: "Set your GLX-SEC and GLX-PUB variables." },
+                  { num: "03", title: "Bind Assets", desc: "Call .bind() to secure data instantly." }
+                ].map((step, i) => (
+                  <div key={i} className="p-6 rounded-xl bg-white/5 border border-white/10 hover:border-[#00E4FF]/30 transition-all group">
+                    <div className="text-4xl font-black text-[#00E4FF]/20 group-hover:text-[#00E4FF]/40 mb-4 font-space transition-colors">{step.num}</div>
+                    <h3 className="font-bold text-white mb-2 text-lg">{step.title}</h3>
+                    <p className="text-sm text-gray-400 leading-relaxed">{step.desc}</p>
+                  </div>
+                ))}
             </div>
 
-            <div className="bg-black rounded-xl border border-gray-800 overflow-hidden">
-                <div className="flex items-center gap-4 px-4 py-2 bg-gray-900/50 border-b border-gray-800">
-                    <div className="flex gap-1.5">
-                        <div className="w-3 h-3 rounded-full bg-red-500/20" />
-                        <div className="w-3 h-3 rounded-full bg-yellow-500/20" />
-                        <div className="w-3 h-3 rounded-full bg-green-500/20" />
+            <div className="bg-[#0A0F24] rounded-xl border border-[#00E4FF]/20 overflow-hidden shadow-2xl">
+                <div className="flex items-center justify-between px-4 py-3 bg-[#020617] border-b border-white/10">
+                    <div className="flex gap-2">
+                        <div className="w-3 h-3 rounded-full bg-red-500/50" />
+                        <div className="w-3 h-3 rounded-full bg-yellow-500/50" />
+                        <div className="w-3 h-3 rounded-full bg-green-500/50" />
                     </div>
-                    <span className="text-xs text-gray-500 font-mono">bash</span>
+                    <span className="text-xs text-gray-500 font-mono">terminal</span>
                 </div>
-                <div className="p-4 font-mono text-sm text-gray-300">
-                    <p><span className="text-blue-400">$</span> npm install @glyphlock/sdk</p>
-                    <p className="mt-2"><span className="text-blue-400">$</span> export GLX_SECRET_KEY="GLX-SEC-..."</p>
-                    <p className="mt-2"><span className="text-blue-400">$</span> node app.js</p>
-                    <p className="mt-4 text-green-400">✓ GlyphLock Secure Tunnel Established (24ms)</p>
+                <div className="p-6 font-mono text-sm text-gray-300 space-y-4">
+                    <div className="flex gap-3">
+                      <span className="text-[#00E4FF] select-none">$</span>
+                      <p>npm install @glyphlock/sdk</p>
+                    </div>
+                    <div className="flex gap-3">
+                      <span className="text-[#00E4FF] select-none">$</span>
+                      <p>export GLX_SECRET_KEY="GLX-SEC-..."</p>
+                    </div>
+                    <div className="flex gap-3">
+                      <span className="text-[#00E4FF] select-none">$</span>
+                      <p>node app.js</p>
+                    </div>
+                    <div className="pt-2 text-green-400 flex items-center gap-2">
+                      <Globe className="w-4 h-4" />
+                      ✓ GlyphLock Secure Tunnel Established (24ms)
+                    </div>
                 </div>
             </div>
           </section>
 
           {/* 3. Authentication */}
-          <section id="authentication" className="scroll-mt-24 space-y-6">
-             <div className="border-b border-gray-800 pb-4">
-              <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-                <Lock className="w-6 h-6 text-purple-400" />
+          <section id="authentication" className="scroll-mt-28 space-y-8">
+             <div className="border-b border-white/10 pb-6">
+              <h2 className="text-3xl font-bold text-white flex items-center gap-3 font-space">
+                <Lock className="w-8 h-8 text-[#8C4BFF]" />
                 Authentication
               </h2>
-              <p className="text-gray-400 mt-1">All API requests must be authenticated using Bearer tokens or Signature Headers.</p>
+              <p className="text-gray-400 mt-2 text-lg">Dual-layer cryptographic verification.</p>
             </div>
             
-            <div className="prose prose-invert max-w-none text-gray-300">
-                <p>
-                    GlyphLock uses a dual-layer authentication strategy. For client-side requests, use your 
-                    <code className="mx-1 px-1 bg-gray-800 rounded text-blue-300">GLX-PUB</code> key. 
-                    For server-side operations, use your <code className="mx-1 px-1 bg-gray-800 rounded text-purple-300">GLX-SEC</code> key.
-                </p>
-                <p className="mt-4">
-                    Requests without valid authentication will return <code className="text-red-400">401 Unauthorized</code>.
+            <div className="bg-[#8C4BFF]/5 border border-[#8C4BFF]/20 p-6 rounded-xl">
+                <p className="text-gray-300 leading-relaxed">
+                    Use <code className="mx-1 px-2 py-0.5 bg-[#8C4BFF]/20 rounded text-[#8C4BFF] border border-[#8C4BFF]/30">GLX-PUB</code> for client-side operations. 
+                    Use <code className="mx-1 px-2 py-0.5 bg-[#00E4FF]/20 rounded text-[#00E4FF] border border-[#00E4FF]/30">GLX-SEC</code> for server-side logic. 
+                    Requests without valid signatures return <code className="text-red-400">401 Unauthorized</code>.
                 </p>
             </div>
 
             <Tabs defaultValue="js" className="w-full">
-                <TabsList className="bg-gray-900 border border-gray-800">
-                    <TabsTrigger value="js">Node.js</TabsTrigger>
-                    <TabsTrigger value="curl">cURL</TabsTrigger>
-                    <TabsTrigger value="python">Python</TabsTrigger>
+                <TabsList className="bg-white/5 border border-white/10 p-1 rounded-lg">
+                    <TabsTrigger value="js" className="data-[state=active]:bg-[#00E4FF] data-[state=active]:text-black">Node.js</TabsTrigger>
+                    <TabsTrigger value="curl" className="data-[state=active]:bg-[#00E4FF] data-[state=active]:text-black">cURL</TabsTrigger>
+                    <TabsTrigger value="python" className="data-[state=active]:bg-[#00E4FF] data-[state=active]:text-black">Python</TabsTrigger>
                 </TabsList>
-                <TabsContent value="js" className="mt-4">
-                    <div className="bg-black rounded-xl border border-gray-800 p-4 font-mono text-sm text-gray-300">
+                <div className="mt-4 bg-[#0A0F24] rounded-xl border border-white/10 p-6 font-mono text-sm text-gray-300 relative overflow-hidden">
+                  <div className="absolute top-0 right-0 p-2">
+                    <Badge variant="outline" className="border-white/20 text-white/50 text-[10px]">READ-ONLY</Badge>
+                  </div>
+                  <TabsContent value="js" className="mt-0">
 <pre>{`import { GlyphClient } from '@glyphlock/sdk';
 
 const client = new GlyphClient({
@@ -231,35 +251,31 @@ const client = new GlyphClient({
 
 const status = await client.auth.verify();
 console.log(status); // { active: true, environment: 'live' }`}</pre>
-                    </div>
-                </TabsContent>
-                <TabsContent value="curl" className="mt-4">
-                    <div className="bg-black rounded-xl border border-gray-800 p-4 font-mono text-sm text-gray-300">
+                  </TabsContent>
+                  <TabsContent value="curl" className="mt-0">
 <pre>{`curl -X GET https://api.glyphlock.io/v1/auth/verify \\
   -H "Authorization: Bearer GLX-SEC-LIVE-..." \\
   -H "Content-Type: application/json"`}</pre>
-                    </div>
-                </TabsContent>
-                <TabsContent value="python" className="mt-4">
-                    <div className="bg-black rounded-xl border border-gray-800 p-4 font-mono text-sm text-gray-300">
+                  </TabsContent>
+                  <TabsContent value="python" className="mt-0">
 <pre>{`from glyphlock import GlyphClient
 
 client = GlyphClient(secret_key="GLX-SEC-...")
 status = client.auth.verify()
 print(status)`}</pre>
-                    </div>
-                </TabsContent>
+                  </TabsContent>
+                </div>
             </Tabs>
           </section>
 
           {/* 4. Endpoints */}
-          <section id="endpoints" className="scroll-mt-24 space-y-6">
-             <div className="border-b border-gray-800 pb-4">
-              <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-                <Server className="w-6 h-6 text-green-400" />
+          <section id="endpoints" className="scroll-mt-28 space-y-8">
+             <div className="border-b border-white/10 pb-6">
+              <h2 className="text-3xl font-bold text-white flex items-center gap-3 font-space">
+                <Server className="w-8 h-8 text-green-400" />
                 Core Endpoints
               </h2>
-              <p className="text-gray-400 mt-1">Direct REST API access for custom integrations.</p>
+              <p className="text-gray-400 mt-2 text-lg">Direct REST API access.</p>
             </div>
 
             <div className="space-y-4">
@@ -269,13 +285,14 @@ print(status)`}</pre>
                     { method: "POST", path: "/v1/hotzone/scan", desc: "Initiate a security scan" },
                     { method: "POST", path: "/v1/steganography/embed", desc: "Embed hidden data into media" },
                 ].map((ep, i) => (
-                    <div key={i} className="flex items-center justify-between p-4 rounded-lg bg-gray-900/30 border border-gray-800 hover:border-gray-700 transition-colors">
+                    <div key={i} className="flex items-center justify-between p-5 rounded-xl bg-white/5 border border-white/10 hover:border-[#00E4FF]/30 transition-all group">
                         <div className="flex items-center gap-4">
-                            <Badge variant="outline" className={`
-                                ${ep.method === 'GET' ? 'text-blue-400 border-blue-900' : ''}
-                                ${ep.method === 'POST' ? 'text-green-400 border-green-900' : ''}
+                            <Badge className={`
+                                ${ep.method === 'GET' ? 'bg-blue-500/20 text-blue-400 hover:bg-blue-500/30' : ''}
+                                ${ep.method === 'POST' ? 'bg-green-500/20 text-green-400 hover:bg-green-500/30' : ''}
+                                text-xs font-bold px-3 py-1
                             `}>{ep.method}</Badge>
-                            <code className="text-sm text-gray-300 font-mono">{ep.path}</code>
+                            <code className="text-sm text-white font-mono group-hover:text-[#00E4FF] transition-colors">{ep.path}</code>
                         </div>
                         <span className="text-sm text-gray-500">{ep.desc}</span>
                     </div>
@@ -284,13 +301,13 @@ print(status)`}</pre>
           </section>
 
            {/* 5. SDKs */}
-           <section id="sdks" className="scroll-mt-24 space-y-6">
-             <div className="border-b border-gray-800 pb-4">
-              <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-                <Code className="w-6 h-6 text-yellow-400" />
+           <section id="sdks" className="scroll-mt-28 space-y-8">
+             <div className="border-b border-white/10 pb-6">
+              <h2 className="text-3xl font-bold text-white flex items-center gap-3 font-space">
+                <Code className="w-8 h-8 text-yellow-400" />
                 SDKs & Libraries
               </h2>
-              <p className="text-gray-400 mt-1">Official libraries for every major platform.</p>
+              <p className="text-gray-400 mt-2 text-lg">Native support for your stack.</p>
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -307,72 +324,87 @@ print(status)`}</pre>
                     <div 
                       key={sdk.name} 
                       onClick={() => handleDownloadSdk(sdk.name)}
-                      className="p-4 rounded-lg bg-gray-900/30 border border-gray-800 hover:border-blue-500/50 hover:bg-blue-900/10 transition-all cursor-pointer group relative overflow-hidden"
+                      className="p-5 rounded-xl bg-white/5 border border-white/10 hover:border-[#00E4FF]/50 hover:bg-[#00E4FF]/5 transition-all cursor-pointer group relative overflow-hidden"
                     >
-                        <div className="flex justify-between items-start mb-2">
-                          <h4 className="font-bold text-white group-hover:text-blue-400 transition-colors">{sdk.name}</h4>
+                        <div className="flex justify-between items-start mb-3">
+                          <h4 className="font-bold text-white group-hover:text-[#00E4FF] transition-colors">{sdk.name}</h4>
                           {downloadingSdk === sdk.name ? (
-                            <Loader2 className="w-4 h-4 text-blue-400 animate-spin" />
+                            <Loader2 className="w-4 h-4 text-[#00E4FF] animate-spin" />
                           ) : (
-                            <Download className="w-4 h-4 text-gray-600 group-hover:text-blue-400 transition-colors" />
+                            <Download className="w-4 h-4 text-gray-600 group-hover:text-[#00E4FF] transition-colors" />
                           )}
                         </div>
-                        <code className="text-[10px] bg-black/50 px-2 py-1 rounded text-gray-400 font-mono mb-2 block w-fit group-hover:text-blue-300 transition-colors border border-white/5">
+                        <code className="text-[10px] bg-black/50 px-2 py-1 rounded text-gray-400 font-mono mb-3 block w-fit group-hover:text-[#00E4FF] transition-colors border border-white/5">
                           {sdk.cmd}
                         </code>
                         <div className="flex items-center gap-2">
-                          <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-                          <p className="text-xs text-gray-500">v2.1.0 • Stable</p>
+                          <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></div>
+                          <p className="text-[10px] text-gray-500 uppercase tracking-wide">Stable</p>
                         </div>
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
                     </div>
                 ))}
             </div>
           </section>
 
           {/* 6. Webhooks */}
-          <section id="webhooks" className="scroll-mt-24 space-y-6">
-             <div className="border-b border-gray-800 pb-4">
-              <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-                <Webhook className="w-6 h-6 text-pink-400" />
+          <section id="webhooks" className="scroll-mt-28 space-y-8">
+             <div className="border-b border-white/10 pb-6">
+              <h2 className="text-3xl font-bold text-white flex items-center gap-3 font-space">
+                <Webhook className="w-8 h-8 text-pink-400" />
                 Webhooks
               </h2>
-              <p className="text-gray-400 mt-1">Real-time event notifications for your application.</p>
+              <p className="text-gray-400 mt-2 text-lg">Real-time event streams.</p>
             </div>
 
-            <div className="bg-blue-950/10 border border-blue-500/20 rounded-lg p-6">
-                <h3 className="font-bold text-white mb-2">Event Types</h3>
-                <ul className="space-y-2 text-sm text-gray-300">
-                    <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 bg-blue-500 rounded-full" /> glyph.created</li>
-                    <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 bg-blue-500 rounded-full" /> hotzone.alert</li>
-                    <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 bg-blue-500 rounded-full" /> security.breach_attempt</li>
+            <div className="glass-card rounded-xl border border-[#00E4FF]/20 p-8 bg-[#00E4FF]/5">
+                <h3 className="font-bold text-white mb-4 uppercase tracking-wider text-sm">Event Types</h3>
+                <ul className="space-y-3 text-sm text-gray-300">
+                    <li className="flex items-center gap-3 p-2 bg-black/20 rounded-lg border border-white/5">
+                      <div className="w-2 h-2 bg-[#00E4FF] rounded-full" /> 
+                      <span className="font-mono text-[#00E4FF]">glyph.created</span>
+                      <span className="text-gray-500 ml-auto text-xs">New glyph generated</span>
+                    </li>
+                    <li className="flex items-center gap-3 p-2 bg-black/20 rounded-lg border border-white/5">
+                      <div className="w-2 h-2 bg-red-500 rounded-full" /> 
+                      <span className="font-mono text-red-400">security.breach</span>
+                      <span className="text-gray-500 ml-auto text-xs">Threat detected</span>
+                    </li>
+                    <li className="flex items-center gap-3 p-2 bg-black/20 rounded-lg border border-white/5">
+                      <div className="w-2 h-2 bg-yellow-500 rounded-full" /> 
+                      <span className="font-mono text-yellow-400">hotzone.alert</span>
+                      <span className="text-gray-500 ml-auto text-xs">Geo-fence trigger</span>
+                    </li>
                 </ul>
-                <div className="mt-4 pt-4 border-t border-blue-500/20">
-                    <Button variant="outline" size="sm" className="border-blue-500/30 text-blue-400">Manage Webhooks</Button>
+                <div className="mt-6 pt-6 border-t border-[#00E4FF]/20">
+                    <Button variant="outline" className="border-[#00E4FF]/30 text-[#00E4FF] hover:bg-[#00E4FF] hover:text-black">Configure Webhooks</Button>
                 </div>
             </div>
           </section>
 
           {/* 7. Security */}
-          <section id="security" className="scroll-mt-24 space-y-6 pb-20">
-             <div className="border-b border-gray-800 pb-4">
-              <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-                <Shield className="w-6 h-6 text-red-400" />
-                Security & Compliance
+          <section id="security" className="scroll-mt-28 space-y-8 pb-24">
+             <div className="border-b border-white/10 pb-6">
+              <h2 className="text-3xl font-bold text-white flex items-center gap-3 font-space">
+                <Shield className="w-8 h-8 text-red-500" />
+                Security Standards
               </h2>
-              <p className="text-gray-400 mt-1">Enterprise-grade security standards and certifications.</p>
+              <p className="text-gray-400 mt-2 text-lg">Enterprise compliance & encryption.</p>
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">
-                <div className="p-6 rounded-xl bg-gray-900/30 border border-gray-800">
-                    <Shield className="w-8 h-8 text-green-500 mb-4" />
-                    <h3 className="font-bold text-white mb-2">SOC 2 Type II</h3>
-                    <p className="text-sm text-gray-400">GlyphLock is fully compliant with SOC 2 Type II standards for security, availability, and confidentiality.</p>
+                <div className="p-8 rounded-2xl bg-white/5 border border-white/10">
+                    <Shield className="w-10 h-10 text-green-500 mb-6" />
+                    <h3 className="text-xl font-bold text-white mb-3">SOC 2 Type II</h3>
+                    <p className="text-gray-400 leading-relaxed">
+                      GlyphLock adheres to strict SOC 2 Type II standards for security, availability, and confidentiality protocols.
+                    </p>
                 </div>
-                <div className="p-6 rounded-xl bg-gray-900/30 border border-gray-800">
-                    <Lock className="w-8 h-8 text-purple-500 mb-4" />
-                    <h3 className="font-bold text-white mb-2">End-to-End Encryption</h3>
-                    <p className="text-sm text-gray-400">All data is encrypted in transit (TLS 1.3) and at rest (AES-256-GCM).</p>
+                <div className="p-8 rounded-2xl bg-white/5 border border-white/10">
+                    <Lock className="w-10 h-10 text-[#8C4BFF] mb-6" />
+                    <h3 className="text-xl font-bold text-white mb-3">AES-256-GCM</h3>
+                    <p className="text-gray-400 leading-relaxed">
+                      End-to-end encryption for all data in transit (TLS 1.3) and at rest. Your keys are never stored in plaintext.
+                    </p>
                 </div>
             </div>
           </section>

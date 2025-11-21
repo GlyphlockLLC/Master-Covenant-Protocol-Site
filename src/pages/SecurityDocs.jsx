@@ -1,91 +1,92 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Shield, Lock, Key, FileText } from "lucide-react";
+import { Shield, Lock, Key, FileText, CheckCircle2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import SEOHead from "@/components/SEOHead";
 
 export default function SecurityDocs() {
   const docs = [
     {
       icon: Shield,
       title: "Encryption Standards",
-      description: "We use AES-256 encryption for data at rest and TLS 1.3 for data in transit. All cryptographic operations follow NIST standards.",
+      description: "We use AES-256 encryption for data at rest and TLS 1.3 for data in transit. All cryptographic operations follow NIST standards and quantum-resistant algorithms.",
       badge: "AES-256"
     },
     {
       icon: Key,
       title: "Authentication",
-      description: "Multi-factor authentication, OAuth 2.0, and JWT tokens with secure key rotation every 30 days.",
+      description: "Multi-factor authentication, OAuth 2.0, and JWT tokens with secure key rotation every 30 days. Hardware key support enabled.",
       badge: "MFA Enabled"
     },
     {
       icon: Lock,
       title: "Data Protection",
-      description: "All user data is encrypted, backed up daily, and stored in SOC 2 compliant data centers with 99.99% uptime SLA.",
+      description: "All user data is encrypted, backed up daily, and stored in SOC 2 compliant data centers with 99.99% uptime SLA. Zero-knowledge architecture available.",
       badge: "SOC 2"
     },
     {
       icon: FileText,
       title: "Compliance",
-      description: "GDPR compliant, CCPA ready, and working towards ISO 27001 certification. Regular third-party security audits.",
+      description: "GDPR compliant, CCPA ready, and working towards ISO 27001 certification. Regular third-party security audits and penetration testing.",
       badge: "GDPR"
     }
   ];
 
   return (
-    <div className="min-h-screen bg-black text-white py-20">
-      <div className="container mx-auto px-4">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-6xl font-bold mb-4">
-              Security <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">Documentation</span>
+    <>
+      <SEOHead 
+        title="Security Documentation | GlyphLock"
+        description="Overview of GlyphLock's encryption standards, compliance protocols, and data protection architecture."
+        url="/security-docs"
+      />
+      <div className="min-h-screen bg-black text-white py-32 relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-96 bg-gradient-to-b from-[#001F54]/50 to-transparent pointer-events-none"></div>
+        
+        <div className="container mx-auto px-6 max-w-6xl relative z-10">
+          <div className="text-center mb-20">
+            <h1 className="text-5xl md:text-7xl font-black mb-6 font-space tracking-tighter">
+              SECURITY <span className="text-[#00E4FF]">DOCS</span>
             </h1>
-            <p className="text-xl text-gray-400">
-              Transparency in our security practices
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+              Transparency in our defense architecture.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6 mb-12">
+          <div className="grid md:grid-cols-2 gap-8 mb-16">
             {docs.map((doc, idx) => {
               const Icon = doc.icon;
               return (
-                <Card key={idx} className="bg-gray-900 border-gray-800">
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center">
-                          <Icon className="w-6 h-6 text-blue-400" />
-                        </div>
-                        <CardTitle className="text-white text-lg">{doc.title}</CardTitle>
-                      </div>
-                      <Badge className="bg-blue-500/20 text-blue-400 border-blue-500/50">
-                        {doc.badge}
-                      </Badge>
+                <div key={idx} className="glass-card rounded-2xl p-8 border border-white/10 hover:border-[#00E4FF]/30 transition-all group">
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="w-14 h-14 bg-[#00E4FF]/10 rounded-xl flex items-center justify-center border border-[#00E4FF]/20 group-hover:bg-[#00E4FF]/20 transition-all">
+                      <Icon className="w-7 h-7 text-[#00E4FF]" />
                     </div>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-300 leading-relaxed">{doc.description}</p>
-                  </CardContent>
-                </Card>
+                    <Badge className="bg-[#00E4FF]/10 text-[#00E4FF] border-[#00E4FF]/30">
+                      {doc.badge}
+                    </Badge>
+                  </div>
+                  <h3 className="text-2xl font-bold text-white mb-3 font-space">{doc.title}</h3>
+                  <p className="text-gray-400 leading-relaxed text-lg">{doc.description}</p>
+                </div>
               );
             })}
           </div>
 
-          <Card className="bg-gradient-to-br from-blue-500/10 to-blue-700/10 border-blue-500/30">
-            <CardContent className="p-8">
-              <h3 className="text-2xl font-bold text-white mb-4">Security Reporting</h3>
-              <p className="text-gray-300 mb-4">
-                Found a security vulnerability? We take security seriously and appreciate responsible disclosure.
+          <div className="glass-card rounded-2xl border border-[#8C4BFF]/30 p-10 bg-[#8C4BFF]/5 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-[#8C4BFF]/10 rounded-full blur-[80px] pointer-events-none"></div>
+            <div className="relative z-10">
+              <h3 className="text-3xl font-bold text-white mb-6 font-space">Security Reporting</h3>
+              <p className="text-gray-300 mb-8 text-lg max-w-2xl">
+                Found a security vulnerability? We take security seriously and appreciate responsible disclosure. 
+                Our bounty program rewards valid findings.
               </p>
-              <p className="text-gray-300">
-                Report security issues to:{" "}
-                <a href="mailto:security@glyphlock.com" className="text-blue-400 hover:text-blue-300 font-semibold">
-                  security@glyphlock.com
-                </a>
-              </p>
-            </CardContent>
-          </Card>
+              <a href="mailto:security@glyphlock.com" className="inline-flex items-center gap-2 text-[#00E4FF] hover:text-white font-bold uppercase tracking-wide transition-colors border-b border-[#00E4FF] pb-1">
+                Report Vulnerability <Shield className="w-4 h-4" />
+              </a>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
