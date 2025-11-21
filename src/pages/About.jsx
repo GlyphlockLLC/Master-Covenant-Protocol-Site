@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { 
   Shield, Zap, Brain, Code, Target, Users, 
   Sparkles, Crown, Lock, Blocks, FileText, 
-  Globe, TrendingUp, Award, Shield
+  Globe, TrendingUp, Award
 } from "lucide-react";
 import SEOHead from "../components/SEOHead";
 
