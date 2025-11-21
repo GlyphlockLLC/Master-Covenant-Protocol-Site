@@ -85,7 +85,7 @@ export default function Payment() {
       // Create payment intent
       const result = await base44.functions.call('stripe-create-payment-intent', {
         consultationId: consultation.id,
-        amount: 29900,
+        amount: 20000,
         email: consultation.email,
         name: consultation.full_name
       });
@@ -282,7 +282,7 @@ export default function Payment() {
                         ) : (
                           <>
                             <Lock className="w-5 h-5 mr-2" />
-                            Pay $299.00
+                            Pay $200.00
                           </>
                         )}
                       </Button>
@@ -350,7 +350,7 @@ export default function Payment() {
                   <div className="border-t border-gray-700 pt-4 mt-4">
                     <div className="flex justify-between items-center mb-2">
                       <span className="text-gray-400">Consultation Fee</span>
-                      <span className="text-white">$299.00</span>
+                      <span className="text-white">$200.00</span>
                     </div>
                     <div className="flex justify-between items-center mb-2">
                       <span className="text-gray-400">Processing Fee</span>
@@ -358,7 +358,7 @@ export default function Payment() {
                     </div>
                     <div className="flex justify-between items-center text-lg font-bold pt-2 border-t border-gray-700">
                       <span className="text-white">Total</span>
-                      <span className="text-blue-400">$299.00</span>
+                      <span className="text-blue-400">$200.00</span>
                     </div>
                   </div>
                 </CardContent>
