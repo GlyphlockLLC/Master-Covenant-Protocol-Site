@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Search, ChevronDown, ChevronUp } from "lucide-react";
+import { Search, ChevronDown, ChevronUp, HelpCircle } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
 
 export default function FAQ() {
@@ -406,73 +406,72 @@ export default function FAQ() {
         url="/faq"
       />
       
-      <div className="min-h-screen bg-black text-white py-20">
-        <div className="container mx-auto px-4 max-w-5xl">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              <span className="bg-gradient-to-r from-blue-400 to-violet-600 bg-clip-text text-transparent">
-                Frequently Asked Questions
-              </span>
+      <div className="min-h-screen bg-black text-white py-32 relative">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#001F54]/20 to-transparent pointer-events-none"></div>
+        
+        <div className="container mx-auto px-6 max-w-5xl relative z-10">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-[#00E4FF]/10 rounded-2xl mb-6 border border-[#00E4FF]/20">
+              <HelpCircle className="w-8 h-8 text-[#00E4FF]" />
+            </div>
+            <h1 className="text-5xl md:text-6xl font-black mb-6 font-space tracking-tight">
+              FREQUENTLY ASKED <span className="text-transparent bg-gradient-to-r from-[#00E4FF] to-[#8C4BFF] bg-clip-text">QUESTIONS</span>
             </h1>
-            <p className="text-xl text-white/70">
-              Find answers to common questions about GlyphLock
+            <p className="text-xl text-gray-400">
+              Everything you need to know about the GlyphLock ecosystem.
             </p>
           </div>
 
-          <div className="mb-8">
+          <div className="mb-12 max-w-2xl mx-auto">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-white/40" />
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[#00E4FF]" />
               <Input
-                placeholder="Search questions..."
+                placeholder="Search for answers (e.g. 'pricing', 'security', 'API')..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 glass-card-dark border-blue-500/30 text-white"
+                className="pl-12 glass-card rounded-xl border-[#00E4FF]/20 text-white h-14 text-lg focus:border-[#00E4FF] bg-black/50"
               />
             </div>
           </div>
 
           {filteredFaqs.length === 0 ? (
-            <div className="glass-card-dark border border-blue-500/30 rounded-xl text-center p-12" style={{ background: 'rgba(30, 58, 138, 0.2)', backdropFilter: 'blur(16px)' }}>
-              <p className="text-white/60">No questions found matching "{searchTerm}"</p>
+            <div className="glass-card rounded-xl border border-white/10 text-center p-12">
+              <p className="text-gray-400">No questions found matching "{searchTerm}"</p>
             </div>
           ) : (
-            <div className="space-y-6">
+            <div className="space-y-8">
               {filteredFaqs.map((category, catIndex) => (
-                <div key={catIndex} className="glass-card-dark border border-blue-500/30 rounded-xl" style={{ background: 'rgba(30, 58, 138, 0.2)', backdropFilter: 'blur(16px)' }}>
-                  <div className="p-6 border-b border-blue-500/30">
-                    <div className="text-white flex items-center gap-3">
-                      <Badge className="bg-blue-500/20 text-blue-400 border-blue-500/50">
+                <div key={catIndex} className="glass-card rounded-2xl border border-white/10 overflow-hidden">
+                  <div className="p-6 border-b border-white/10 bg-white/5">
+                    <div className="flex items-center gap-4">
+                      <Badge className="bg-[#00E4FF]/10 text-[#00E4FF] border-[#00E4FF]/30">
                         {category.category}
                       </Badge>
-                      <span className="text-sm text-white/60">
+                      <span className="text-sm text-gray-400">
                         {category.questions.length} {category.questions.length === 1 ? 'question' : 'questions'}
                       </span>
                     </div>
                   </div>
-                  <div className="p-6 space-y-3">
+                  <div className="divide-y divide-white/5">
                     {category.questions.map((faq, qIndex) => {
                       const key = `${catIndex}-${qIndex}`;
                       const isExpanded = expandedItems.includes(key);
                       
                       return (
-                        <div
-                          key={qIndex}
-                          className="glass-card-dark border border-blue-500/20 rounded-lg overflow-hidden"
-                          style={{ background: 'rgba(30, 58, 138, 0.15)', backdropFilter: 'blur(8px)' }}
-                        >
+                        <div key={qIndex} className="group">
                           <button
                             onClick={() => toggleItem(catIndex, qIndex)}
-                            className="w-full flex items-center justify-between p-4 text-left hover:bg-blue-500/10 transition-colors"
+                            className="w-full flex items-center justify-between p-6 text-left hover:bg-white/5 transition-colors"
                           >
-                            <span className="font-semibold text-white pr-4">{faq.q}</span>
+                            <span className="font-bold text-white text-lg pr-8 group-hover:text-[#00E4FF] transition-colors">{faq.q}</span>
                             {isExpanded ? (
-                              <ChevronUp className="w-5 h-5 text-blue-400 flex-shrink-0" />
+                              <ChevronUp className="w-5 h-5 text-[#00E4FF] flex-shrink-0" />
                             ) : (
-                              <ChevronDown className="w-5 h-5 text-blue-400 flex-shrink-0" />
+                              <ChevronDown className="w-5 h-5 text-gray-500 group-hover:text-[#00E4FF] flex-shrink-0 transition-colors" />
                             )}
                           </button>
                           {isExpanded && (
-                            <div className="px-4 pb-4 text-white/70 text-sm leading-relaxed">
+                            <div className="px-6 pb-6 text-gray-300 leading-relaxed text-base animate-in fade-in slide-in-from-top-2">
                               {faq.a}
                             </div>
                           )}
@@ -485,14 +484,14 @@ export default function FAQ() {
             </div>
           )}
 
-          <div className="glass-card-dark border border-blue-500/30 rounded-xl p-6 text-center mt-12" style={{ background: 'rgba(30, 58, 138, 0.2)', backdropFilter: 'blur(16px)' }}>
-            <h3 className="text-xl font-semibold text-white mb-3">Still have questions?</h3>
-            <p className="text-white/70 mb-6">
-              Can't find what you're looking for? Contact our support team
+          <div className="glass-card rounded-2xl border border-[#8C4BFF]/30 p-8 text-center mt-16 bg-[#8C4BFF]/5">
+            <h3 className="text-2xl font-bold text-white mb-4 font-space">Still Need Help?</h3>
+            <p className="text-gray-400 mb-8 max-w-lg mx-auto">
+              Our security specialists are available 24/7 for enterprise clients, and within 24 hours for all users.
             </p>
             <a
               href="mailto:glyphlock@gmail.com"
-              className="inline-block bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-700 hover:to-violet-700 text-white px-6 py-3 rounded-lg font-semibold transition-all"
+              className="inline-flex items-center justify-center bg-gradient-to-r from-[#00E4FF] to-[#8C4BFF] hover:scale-105 text-black font-bold uppercase tracking-wide px-8 py-4 rounded-xl shadow-lg transition-all"
             >
               Contact Support
             </a>
