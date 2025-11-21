@@ -38,11 +38,11 @@ export default function DashboardSidebar({ selectedModel, setSelectedModel }) {
                         key={item.id}
                         onClick={() => setSelectedModel(item)}
                         className={`w-full flex items-center gap-2 p-2 rounded-lg text-sm transition-colors ${
-                          selectedModel?.entity === item.entity
+                          selectedModel?.id === item.id
                             ? 'bg-blue-600 text-white' 
                             : 'text-gray-400 hover:bg-blue-500/20'
                         }`}
-                        style={{ backgroundColor: selectedModel?.entity === item.entity ? 'rgb(37 99 235)' : 'transparent' }}
+                        style={{ backgroundColor: selectedModel?.id === item.id ? 'rgb(37 99 235)' : 'transparent' }}
                       >
                         <Icon className="w-4 h-4" />
                         <span>{item.label}</span>

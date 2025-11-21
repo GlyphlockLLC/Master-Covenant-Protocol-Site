@@ -57,7 +57,7 @@ export const navItems = [
   {
     category: "Developer",
     items: [
-      { id: "api-keys", label: "API Keys & Secrets", entity: "APIKey", icon: Key }, // Using string icon name to be handled in mapping or import
+      { id: "api-keys", label: "API Keys & Secrets", entity: "APIKey", icon: Key },
     ]
   }
 ];

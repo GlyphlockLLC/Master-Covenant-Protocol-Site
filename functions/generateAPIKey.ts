@@ -10,19 +10,44 @@ export default Deno.serve(async (req) => {
     }
 
     const { name = "Default Key", environment = "live" } = await req.json();
+    const envTag = environment.toUpperCase();
 
-    // Generate keys
-    const prefix = environment === 'live' ? 'live' : 'test';
-    const randomString = () => Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-    
-    const publicKey = `pk_${prefix}_${randomString()}`;
-    const secretKey = `sk_${prefix}_${randomString()}${randomString()}`;
+    // Helper to generate random string
+    const rand = (len) => {
+      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+      let result = '';
+      for (let i = 0; i < len; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return result;
+    };
+
+    // Helper to generate pseudo-hash
+    const hash = (len) => {
+      const chars = '0123456789ABCDEF';
+      let result = '';
+      for (let i = 0; i < len; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return result;
+    };
+
+    // 1. Public Key: GLX-PUB-{ENV}-{GlyphHash4}-{Entropy6}
+    const publicKey = `GLX-PUB-${envTag}-${hash(4)}-${rand(6)}`;
+
+    // 2. Secret Key: GLX-SEC-{ENV}-{GlyphHash6}-{Entropy20}
+    const secretKey = `GLX-SEC-${envTag}-${hash(6)}-${rand(20)}`;
+
+    // 3. Env Key: GLX-ENV-{service}-{env}-{GlyphHash3}
+    // Using 'CORE' as default service name for now
+    const envKey = `GLX-ENV-CORE-${envTag}-${hash(3)}`;
 
     // Save to DB
     const apiKey = await base44.entities.APIKey.create({
       name,
       public_key: publicKey,
       secret_key: secretKey,
+      env_key: envKey,
       status: 'active',
       environment
     });
