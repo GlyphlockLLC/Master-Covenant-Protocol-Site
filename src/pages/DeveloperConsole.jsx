@@ -294,21 +294,36 @@ print(status)`}</pre>
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {['Node.js', 'Python', 'Go', 'Java', '.NET', 'Ruby', 'PHP', 'Rust'].map((lang) => (
+                {[
+                  { name: 'Node.js', cmd: 'npm i @glyphlock/sdk' },
+                  { name: 'Python', cmd: 'pip install glyphlock' },
+                  { name: 'Go', cmd: 'go get glyphlock' },
+                  { name: 'Java', cmd: 'mvn install glyphlock' },
+                  { name: '.NET', cmd: 'dotnet add package GlyphLock' },
+                  { name: 'Ruby', cmd: 'gem install glyphlock' },
+                  { name: 'PHP', cmd: 'composer require glyphlock/sdk' },
+                  { name: 'Rust', cmd: 'cargo add glyphlock' }
+                ].map((sdk) => (
                     <div 
-                      key={lang} 
-                      onClick={() => handleDownloadSdk(lang)}
+                      key={sdk.name} 
+                      onClick={() => handleDownloadSdk(sdk.name)}
                       className="p-4 rounded-lg bg-gray-900/30 border border-gray-800 hover:border-blue-500/50 hover:bg-blue-900/10 transition-all cursor-pointer group relative overflow-hidden"
                     >
                         <div className="flex justify-between items-start mb-2">
-                          <h4 className="font-bold text-white group-hover:text-blue-400 transition-colors">{lang}</h4>
-                          {downloadingSdk === lang ? (
+                          <h4 className="font-bold text-white group-hover:text-blue-400 transition-colors">{sdk.name}</h4>
+                          {downloadingSdk === sdk.name ? (
                             <Loader2 className="w-4 h-4 text-blue-400 animate-spin" />
                           ) : (
                             <Download className="w-4 h-4 text-gray-600 group-hover:text-blue-400 transition-colors" />
                           )}
                         </div>
-                        <p className="text-xs text-gray-500">v2.1.0 • Official</p>
+                        <code className="text-[10px] bg-black/50 px-2 py-1 rounded text-gray-400 font-mono mb-2 block w-fit group-hover:text-blue-300 transition-colors border border-white/5">
+                          {sdk.cmd}
+                        </code>
+                        <div className="flex items-center gap-2">
+                          <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                          <p className="text-xs text-gray-500">v2.1.0 • Stable</p>
+                        </div>
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
                     </div>
                 ))}
