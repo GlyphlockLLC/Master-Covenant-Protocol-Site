@@ -51,6 +51,7 @@ import InteractiveImageStudio from './pages/InteractiveImageStudio';
 import DeveloperConsole from './pages/DeveloperConsole';
 import BackendSetup from './pages/BackendSetup';
 import BackendTest from './pages/BackendTest';
+import EnterpriseConsole from './pages/EnterpriseConsole';
 import __Layout from './Layout.jsx';
 
 
@@ -108,6 +109,7 @@ export const PAGES = {
     "DeveloperConsole": DeveloperConsole,
     "BackendSetup": BackendSetup,
     "BackendTest": BackendTest,
+    "EnterpriseConsole": EnterpriseConsole,
 }
 
 export const pagesConfig = {

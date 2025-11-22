@@ -23,59 +23,67 @@ const callFunction = async (functionName, payload = {}) => {
 };
 
 export const glyphLockAPI = {
-  // Health Check
-  health: async () => {
-    const response = await fetch(`${FUNCTIONS_URL}/health`);
-    return await response.json();
+  // Health & Status
+  healthCheck: async () => {
+    return callFunction('healthCheck');
   },
 
-  // API Keys Management
-  keys: {
-    generate: async (name, env = 'DEV', service = 'GLYPH') => {
-      return await callFunction('keys-generate', { name, env, service });
-    },
-    
-    rotate: async (apiKeyId) => {
-      return await callFunction('keys-rotate', { apiKeyId });
-    },
+  // API Key Management
+  generateAPIKey: async (name, environment = 'live') => {
+    return callFunction('generateAPIKey', { name, environment });
   },
 
-  // Stripe Integration
-  stripe: {
-    createCheckout: async (line_items, mode = 'payment') => {
-      return await callFunction('stripe-checkout', { line_items, mode });
-    },
+  listAPIKeys: async () => {
+    return callFunction('listAPIKeys');
   },
 
-  // SDK Distribution
-  sdk: {
-    generate: async (language, version) => {
-      return await callFunction('sdk-generate', { language, version });
-    },
+  rotateAPIKey: async (keyId) => {
+    return callFunction('rotateAPIKey', { keyId });
   },
 
-  // CRM Integration
-  crm: {
-    sync: async (provider, payload) => {
-      return await callFunction('crm-sync', { provider, payload });
-    },
+  updateKeySettings: async (keyId, settings) => {
+    return callFunction('updateKeySettings', { keyId, settings });
   },
 
-  // Audit Logs
-  logs: {
-    list: async () => {
-      return await callFunction('logs-list');
-    },
+  deleteAPIKey: async (keyId) => {
+    return callFunction('deleteAPIKey', { keyId });
   },
 
-  // Admin Functions
-  admin: {
-    listUsers: async () => {
-      return await callFunction('admin-users-list');
-    },
-    
-    updateUser: async (userId, role, status, fullName) => {
-      return await callFunction('admin-users-update', { userId, role, status, fullName });
-    },
+  // User Management
+  listUsers: async () => {
+    return callFunction('listUsers');
   },
+
+  updateUserRole: async (userId, role) => {
+    return callFunction('updateUserRole', { userId, role });
+  },
+
+  // Logs & Monitoring
+  getLogs: async (filter = 'all', limit = 50) => {
+    return callFunction('getLogs', { filter, limit });
+  },
+
+  getAnalytics: async (timeRange = '7d') => {
+    return callFunction('getAnalytics', { timeRange });
+  },
+
+  // Functions Management
+  listFunctions: async () => {
+    return callFunction('listFunctions');
+  },
+
+  deployFunction: async (functionData) => {
+    return callFunction('deployFunction', functionData);
+  },
+
+  // Security
+  runSecurityAudit: async () => {
+    return callFunction('runSecurityAudit');
+  },
+
+  updateSecuritySettings: async (settings) => {
+    return callFunction('updateSecuritySettings', settings);
+  }
 };
+
+export default glyphLockAPI;
