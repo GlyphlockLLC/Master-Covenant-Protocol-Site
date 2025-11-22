@@ -437,15 +437,4 @@ class MobileScalingSystem {
   }
 }
 
-// Auto-initialize on DOM ready
-if (typeof document !== 'undefined') {
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-      new MobileScalingSystem();
-    });
-  } else {
-    new MobileScalingSystem();
-  }
-}
-
 export default MobileScalingSystem;

@@ -8,7 +8,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import GlyphLoader from "@/components/GlyphLoader";
 import "@/components/mobile/mobile.css";
-import "@/components/mobile/mobile-utils.js";
+import MobileScalingSystem from "@/components/mobile/mobile-utils";
 
 export default function Layout({ children, currentPageName }) {
   const [user, setUser] = useState(null);
@@ -29,6 +29,13 @@ export default function Layout({ children, currentPageName }) {
         setLoading(false);
       }
     })();
+  }, []);
+
+  useEffect(() => {
+    // Initialize mobile scaling system
+    if (typeof window !== 'undefined') {
+      new MobileScalingSystem();
+    }
   }, []);
 
   useEffect(() => {
