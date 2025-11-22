@@ -25,7 +25,76 @@ const callFunction = async (functionName, payload = {}) => {
 export const glyphLockAPI = {
   // Health & Status
   healthCheck: async () => {
-    return callFunction('healthCheck');
+    return callFunction('health');
+  },
+
+  // Usage & Metrics
+  usage: {
+    getSummary: async () => {
+      return callFunction('usageSummary');
+    },
+    get: async () => {
+      return callFunction('getUsageMetrics');
+    }
+  },
+
+  // Logs & Audit
+  logs: {
+    list: async (limit = 50, type = 'all') => {
+      return callFunction('logsList', { limit, type });
+    },
+    listRecent: async () => {
+      return callFunction('logsList', { limit: 10 });
+    },
+    listBillingEvents: async (filters = {}) => {
+      return callFunction('listBillingEvents', filters);
+    }
+  },
+
+  // Notifications
+  notifications: {
+    list: async () => {
+      return callFunction('notificationsList');
+    },
+    markRead: async (notificationId) => {
+      // TODO: Implement mark read endpoint
+      return { success: true };
+    }
+  },
+
+  // Security Policies
+  security: {
+    getPolicies: async () => {
+      return callFunction('securityGetPolicies');
+    },
+    setPolicy: async (policy_key, value) => {
+      return callFunction('securitySetPolicy', { policy_key, value });
+    },
+    runAudit: async () => {
+      return callFunction('runSecurityAudit');
+    },
+    updateSettings: async (settings) => {
+      return callFunction('updateSecuritySettings', settings);
+    }
+  },
+
+  // API Key Management
+  keys: {
+    list: async () => {
+      return callFunction('keysList');
+    },
+    generate: async (name, environment = 'live') => {
+      return callFunction('generateAPIKey', { name, environment });
+    },
+    rotate: async (keyId) => {
+      return callFunction('rotateAPIKey', { keyId });
+    },
+    update: async (keyId, settings) => {
+      return callFunction('updateKeySettings', { keyId, settings });
+    },
+    delete: async (keyId) => {
+      return callFunction('deleteAPIKey', { keyId });
+    }
   },
 
   // API Key Management
@@ -68,21 +137,13 @@ export const glyphLockAPI = {
   },
 
   // Functions Management
-  listFunctions: async () => {
-    return callFunction('listFunctions');
-  },
-
-  deployFunction: async (functionData) => {
-    return callFunction('deployFunction', functionData);
-  },
-
-  // Security
-  runSecurityAudit: async () => {
-    return callFunction('runSecurityAudit');
-  },
-
-  updateSecuritySettings: async (settings) => {
-    return callFunction('updateSecuritySettings', settings);
+  functions: {
+    list: async () => {
+      return callFunction('listFunctions');
+    },
+    deploy: async (functionData) => {
+      return callFunction('deployFunction', functionData);
+    }
   },
 
   // Stripe Payments
@@ -178,19 +239,7 @@ export const glyphLockAPI = {
     }
   },
 
-  // Usage Metering
-  usage: {
-    get: async () => {
-      return callFunction('getUsageMetrics');
-    }
-  },
 
-  // Logs & Events
-  logs: {
-    listBillingEvents: async (filters = {}) => {
-      return callFunction('listBillingEvents', filters);
-    }
-  },
 
   // Support Ticketing
   support: {
