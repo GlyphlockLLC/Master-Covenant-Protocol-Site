@@ -1,12 +1,27 @@
 import React, { useState, useRef, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
-import { MessageCircle, Volume2, VolumeX, Trash2, RotateCcw, Shield, FileText, AlertTriangle } from "lucide-react";
+import { MessageCircle, Volume2, VolumeX, Trash2, RotateCcw, Shield, FileText, AlertTriangle, Upload, Code, Search, FileCheck, BookOpen, Globe, Menu } from "lucide-react";
 import ReactMarkdown from "react-markdown";
+import ConversationList from "../components/glyphbot/ConversationList";
+import FileAnalysisView from "../components/glyphbot/FileAnalysisView";
+import CodeExecutor from "../components/glyphbot/CodeExecutor";
+import SecurityScanner from "../components/glyphbot/SecurityScanner";
+import AuditGenerator from "../components/glyphbot/AuditGenerator";
+import LanguageSelector from "../components/glyphbot/LanguageSelector";
+import KnowledgeBaseConnector from "../components/glyphbot/KnowledgeBaseConnector";
 
 const PERSONAS = [
   { id: "alfred", name: "Alfred Point Guard", desc: "Sharp, direct coach energy" },
   { id: "neutral", name: "Neutral Pro", desc: "Clear and business-clean" },
   { id: "playful", name: "Prankster", desc: "Jokey, lighter vibe" }
+];
+
+const TABS = [
+  { id: "chat", name: "Chat", icon: MessageCircle },
+  { id: "files", name: "File Analysis", icon: Upload },
+  { id: "code", name: "Code Executor", icon: Code },
+  { id: "scanner", name: "Security Scanner", icon: Search },
+  { id: "audit", name: "Audit Generator", icon: FileCheck }
 ];
 
 export default function GlyphBot() {
@@ -31,6 +46,12 @@ export default function GlyphBot() {
   });
   const [userScrolledUp, setUserScrolledUp] = useState(false);
   const [showTools, setShowTools] = useState(false);
+  const [activeTab, setActiveTab] = useState("chat");
+  const [conversations, setConversations] = useState([]);
+  const [currentConvId, setCurrentConvId] = useState(null);
+  const [language, setLanguage] = useState(() => localStorage.getItem("glyphbot_language") || "en");
+  const [showSidebar, setShowSidebar] = useState(false);
+  const [knowledgeSources, setKnowledgeSources] = useState([]);
   
   const messagesEndRef = useRef(null);
   const listRef = useRef(null);
@@ -57,6 +78,75 @@ export default function GlyphBot() {
   useEffect(() => {
     localStorage.setItem("glyphbot_volume", String(volume));
   }, [volume]);
+
+  useEffect(() => {
+    localStorage.setItem("glyphbot_language", language);
+  }, [language]);
+
+  // Load conversations
+  useEffect(() => {
+    loadConversations();
+  }, []);
+
+  const loadConversations = async () => {
+    try {
+      const convs = await base44.entities.Conversation.list("-last_message_at", 20);
+      setConversations(convs);
+    } catch (error) {
+      console.error("Failed to load conversations:", error);
+    }
+  };
+
+  const selectConversation = (conv) => {
+    setMessages(conv.messages || []);
+    setCurrentConvId(conv.id);
+    setShowSidebar(false);
+    setActiveTab("chat");
+  };
+
+  const createNewConversation = () => {
+    setMessages([]);
+    setCurrentConvId(null);
+    setInput("");
+    setShowSidebar(false);
+    setActiveTab("chat");
+  };
+
+  const deleteConversation = async (convId) => {
+    try {
+      await base44.entities.Conversation.delete(convId);
+      setConversations(conversations.filter(c => c.id !== convId));
+      if (currentConvId === convId) {
+        createNewConversation();
+      }
+    } catch (error) {
+      console.error("Failed to delete conversation:", error);
+    }
+  };
+
+  const saveConversation = async () => {
+    if (messages.length === 0) return;
+
+    try {
+      const title = messages.find(m => m.role === "user")?.content.slice(0, 50) || "New Conversation";
+      const convData = {
+        title,
+        messages,
+        last_message_at: new Date().toISOString()
+      };
+
+      if (currentConvId) {
+        await base44.entities.Conversation.update(currentConvId, convData);
+      } else {
+        const newConv = await base44.entities.Conversation.create(convData);
+        setCurrentConvId(newConv.id);
+      }
+      
+      await loadConversations();
+    } catch (error) {
+      console.error("Failed to save conversation:", error);
+    }
+  };
 
   // Auto-scroll logic
   useEffect(() => {
@@ -135,6 +225,9 @@ export default function GlyphBot() {
       };
 
       setMessages(prev => [...prev, assistantMessage]);
+      
+      // Auto-save conversation
+      setTimeout(() => saveConversation(), 1000);
       
       // Speak only the latest assistant message
       speakText(assistantMessage.content);
@@ -262,83 +355,23 @@ export default function GlyphBot() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  return (
-    <div className="h-screen flex flex-col bg-black text-white">
-      {/* Header */}
-      <div className="border-b border-gray-800 bg-black/50 backdrop-blur-xl">
-        <div className="max-w-5xl mx-auto px-4 py-3">
-          <div className="flex items-center justify-between gap-3 mb-3">
-            <div className="flex items-center gap-2">
-              <MessageCircle className="w-6 h-6 text-cyan-400" />
-              <h1 className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
-                GlyphBot
-              </h1>
-            </div>
-            
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => setShowTools(!showTools)}
-                className="p-2 rounded-lg bg-gray-900 border border-gray-700 hover:border-cyan-400 transition-colors"
-                title="Security Tools"
-              >
-                <Shield className="w-5 h-5" />
-              </button>
-              
-              <button
-                onClick={resetConversation}
-                className="p-2 rounded-lg bg-gray-900 border border-gray-700 hover:border-red-500 transition-colors"
-                title="Reset Conversation"
-              >
-                <RotateCcw className="w-5 h-5" />
-              </button>
-            </div>
-          </div>
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case "files":
+        return <FileAnalysisView />;
+      case "code":
+        return <CodeExecutor />;
+      case "scanner":
+        return <SecurityScanner />;
+      case "audit":
+        return <AuditGenerator />;
+      default:
+        return renderChatView();
+    }
+  };
 
-          {/* Persona Selector */}
-          <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
-            {PERSONAS.map(p => (
-              <button
-                key={p.id}
-                onClick={() => setPersona(p.id)}
-                className={`px-4 py-2 rounded-xl text-sm whitespace-nowrap border transition-all ${
-                  persona === p.id
-                    ? "border-cyan-400 bg-cyan-400/10 text-cyan-400"
-                    : "border-gray-700 bg-gray-900 text-gray-400 hover:border-gray-600"
-                }`}
-                title={p.desc}
-              >
-                {p.name}
-              </button>
-            ))}
-          </div>
-
-          {/* Tools Panel */}
-          {showTools && (
-            <div className="mt-3 p-3 rounded-xl bg-gray-900 border border-gray-700">
-              <div className="flex flex-wrap gap-2">
-                <button
-                  onClick={runAudit}
-                  disabled={loading}
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-green-900/20 border border-green-700 text-green-400 hover:bg-green-900/30 disabled:opacity-50 transition-colors"
-                >
-                  <FileText className="w-4 h-4" />
-                  Run Audit
-                </button>
-                
-                <button
-                  onClick={runOneTest}
-                  disabled={loading}
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-900/20 border border-blue-700 text-blue-400 hover:bg-blue-900/30 disabled:opacity-50 transition-colors"
-                >
-                  <AlertTriangle className="w-4 h-4" />
-                  One Test
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-
+  const renderChatView = () => (
+    <>
       {/* Messages */}
       <div
         ref={listRef}
@@ -481,6 +514,137 @@ export default function GlyphBot() {
           </div>
         </div>
       </div>
+    </>
+  );
+
+  return (
+    <div className="h-screen flex bg-black text-white">
+      {/* Sidebar */}
+      {showSidebar && (
+        <div className="w-80 flex-shrink-0 border-r border-gray-800">
+          <ConversationList
+            conversations={conversations}
+            currentConvId={currentConvId}
+            onSelect={selectConversation}
+            onNew={createNewConversation}
+            onDelete={deleteConversation}
+          />
+        </div>
+      )}
+
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col">
+        {/* Header */}
+        <div className="border-b border-gray-800 bg-black/50 backdrop-blur-xl">
+          <div className="px-4 py-3">
+            <div className="flex items-center justify-between gap-3 mb-3">
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setShowSidebar(!showSidebar)}
+                  className="p-2 rounded-lg bg-gray-900 border border-gray-700 hover:border-cyan-400 transition-colors lg:hidden"
+                >
+                  <Menu className="w-5 h-5" />
+                </button>
+                
+                <MessageCircle className="w-6 h-6 text-cyan-400" />
+                <h1 className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
+                  GlyphBot
+                </h1>
+              </div>
+              
+              <div className="flex items-center gap-2">
+                <LanguageSelector language={language} setLanguage={setLanguage} />
+                
+                <button
+                  onClick={() => setShowTools(!showTools)}
+                  className="p-2 rounded-lg bg-gray-900 border border-gray-700 hover:border-cyan-400 transition-colors"
+                  title="Security Tools"
+                >
+                  <Shield className="w-5 h-5" />
+                </button>
+                
+                <button
+                  onClick={resetConversation}
+                  className="p-2 rounded-lg bg-gray-900 border border-gray-700 hover:border-red-500 transition-colors"
+                  title="Reset Conversation"
+                >
+                  <RotateCcw className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+
+            {/* Tabs */}
+            <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide border-b border-gray-800">
+              {TABS.map(tab => {
+                const Icon = tab.icon;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm whitespace-nowrap transition-all ${
+                      activeTab === tab.id
+                        ? "bg-cyan-600 text-white"
+                        : "bg-gray-900 text-gray-400 hover:bg-gray-800"
+                    }`}
+                  >
+                    <Icon className="w-4 h-4" />
+                    {tab.name}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Persona Selector - Only show in chat */}
+            {activeTab === "chat" && (
+              <div className="flex gap-2 overflow-x-auto pt-3 pb-1 scrollbar-hide">
+                {PERSONAS.map(p => (
+                  <button
+                    key={p.id}
+                    onClick={() => setPersona(p.id)}
+                    className={`px-4 py-2 rounded-xl text-sm whitespace-nowrap border transition-all ${
+                      persona === p.id
+                        ? "border-cyan-400 bg-cyan-400/10 text-cyan-400"
+                        : "border-gray-700 bg-gray-900 text-gray-400 hover:border-gray-600"
+                    }`}
+                    title={p.desc}
+                  >
+                    {p.name}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {/* Tools Panel */}
+            {showTools && activeTab === "chat" && (
+              <div className="mt-3 space-y-3">
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    onClick={runAudit}
+                    disabled={loading}
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-green-900/20 border border-green-700 text-green-400 hover:bg-green-900/30 disabled:opacity-50 transition-colors"
+                  >
+                    <FileText className="w-4 h-4" />
+                    Run Audit
+                  </button>
+                  
+                  <button
+                    onClick={runOneTest}
+                    disabled={loading}
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-900/20 border border-blue-700 text-blue-400 hover:bg-blue-900/30 disabled:opacity-50 transition-colors"
+                  >
+                    <AlertTriangle className="w-4 h-4" />
+                    One Test
+                  </button>
+                </div>
+                
+                <KnowledgeBaseConnector onKnowledgeUpdate={setKnowledgeSources} />
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Tab Content */}
+        {renderTabContent()}
     </div>
   );
 }
