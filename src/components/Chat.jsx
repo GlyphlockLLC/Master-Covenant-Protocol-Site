@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { base44 } from "@/api/base44Client";
 import { MessageCircle, X, Send, Mic, Square, Volume2, Upload, Trash2, Menu } from "lucide-react";
 import ReactMarkdown from "react-markdown";
-import "@/styles/chat.css";
+
 
 let globalAudioLock = false;
 

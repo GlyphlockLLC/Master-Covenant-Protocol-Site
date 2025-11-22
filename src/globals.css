@@ -1,494 +1,727 @@
-css
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+/* Dino React Full Version - Mobile-First Chat UI */
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Viewport fix for iOS Safari */
+@viewport {
+  width: device-width;
+  zoom: 1.0;
+}
 
-@layer base {
-  :root {
-    --background: 0 0% 0%;
-    --foreground: 0 0% 100%;
-    
-    /* GLYPHLOCK SUPREME PALETTE */
-    --primary-black: #000000;
-    --secondary-black: #020617;
-    --tertiary-black: #0A0F24;
-    
-    --neon-cyan: #00E4FF;
-    --neon-purple: #8C4BFF;
-    --ultraviolet: #9F00FF;
-    --deep-blue: #001F54;
-    
-    --glass-border: rgba(0, 228, 255, 0.2);
-    --glass-bg: rgba(10, 15, 36, 0.7);
+/* FAB Button */
+.dino-fab {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+  width: 72px;
+  height: 72px;
+  border: none;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+  box-shadow: 0 8px 32px rgba(139, 69, 19, 0.4), 0 0 20px rgba(210, 105, 30, 0.3);
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.dino-fab:hover {
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 0 12px 40px rgba(139, 69, 19, 0.5), 0 0 30px rgba(210, 105, 30, 0.4);
+}
+
+.dino-fab:active {
+  transform: scale(0.95);
+  box-shadow: 0 4px 16px rgba(139, 69, 19, 0.3);
+}
+
+.dino-fab-inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  position: relative;
+  z-index: 2;
+}
+
+/* Dino footprint animation */
+.dino-footprint {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+  animation: footprint 2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes footprint {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 0;
   }
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
-  html, body {
-    @apply bg-black text-white font-sans antialiased;
-    font-family: 'Inter', sans-serif;
-    background-color: #000000;
-    color: #ffffff;
-    overflow-x: hidden;
-  }
-  
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'Space Grotesk', sans-serif;
-  }
+/* Chat Container */
+.dino-chat-container {
+  position: fixed;
+  bottom: 112px;
+  right: 24px;
+  z-index: 9998;
+  width: min(420px, calc(100vw - 48px));
+  height: min(600px, calc(100vh - 160px));
+  background: linear-gradient(180deg, rgba(20, 20, 30, 0.98) 0%, rgba(10, 10, 20, 0.98) 100%);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  box-shadow: 0 20px 80px rgba(0, 0, 0, 0.5), 0 0 1px rgba(139, 69, 19, 0.8);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border: 2px solid rgba(139, 69, 19, 0.3);
+  animation: slideInUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.bg-royal-blue { background-color: var(--royal-blue); } /* Note: --royal-blue is no longer defined in :root after this change. */
-.text-royal-blue { color: var(--royal-blue); } /* Note: --royal-blue is no longer defined in :root after this change. */
-.border-royal-blue { border-color: var(--royal-blue); } /* Note: --royal-blue is no longer defined in :root after this change. */
-.shadow-royal-blue { box-shadow: 0 0 15px rgba(65, 105, 225, 0.6); }
-
-.bg-ultraviolet { background-color: var(--ultraviolet); }
-.text-ultraviolet { color: var(--ultraviolet); }
-.border-ultraviolet { border-color: var(--ultraviolet); }
-.shadow-ultraviolet { box-shadow: 0 0 15px rgba(138, 43, 226, 0.4); }
-
-.footer-links a {
-  display: block;
-  color: #ccc;
-  transition: 0.2s;
-}
-.footer-links a:hover {
-  color: #00eaff;
-}
-
-@layer components {
-  /* Royal Blue Theme - Primary Glass Style (preserved existing definitions) */
-  .glass-royal,
-  .glass-dark,
-  .glass-card-legacy, /* Renamed to avoid direct conflict with new .glass-card */
-  .glass-card-dark {
-    background: rgba(65, 105, 225, 0.15) !important;
-    backdrop-filter: blur(16px) !important;
-    -webkit-backdrop-filter: blur(16px) !important;
-    border: 1px solid rgba(65, 105, 225, 0.4) !important;
-    box-shadow: 0 8px 32px rgba(65, 105, 225, 0.3) !important;
-    color: white !important;
+@keyframes slideInUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
   }
-
-  /* New components from outline */
-  .glass-panel {
-    @apply backdrop-blur-xl border border-white/10 bg-white/5;
-  }
-  
-  .glass-card { /* New definition from outline */
-    background: linear-gradient(145deg, rgba(14, 26, 58, 0.6) 0%, rgba(0, 0, 0, 0.8) 100%);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(0, 228, 255, 0.15);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
-  }
-
-  .glass-card:hover {
-    border-color: rgba(0, 228, 255, 0.4);
-    box-shadow: 0 0 15px rgba(0, 228, 255, 0.15);
-  }
-
-  .neon-border-cyan {
-    box-shadow: 0 0 5px rgba(0, 228, 255, 0.2), inset 0 0 5px rgba(0, 228, 255, 0.1);
-    border: 1px solid #00E4FF;
-  }
-
-  .neon-border-purple {
-    box-shadow: 0 0 5px rgba(140, 75, 255, 0.2), inset 0 0 5px rgba(140, 75, 255, 0.1);
-    border: 1px solid #8C4BFF;
-  }
-  
-  .text-glow {
-    text-shadow: 0 0 10px rgba(0, 228, 255, 0.5);
-  }
-
-  .btn-primary {
-    background: linear-gradient(90deg, #001F54 0%, #0A0F24 100%);
-    border: 1px solid #00E4FF;
-    color: #00E4FF;
-    transition: all 0.3s ease;
-  }
-  
-  .btn-primary:hover {
-    background: #00E4FF;
-    color: #000000;
-    box-shadow: 0 0 15px rgba(0, 228, 255, 0.4);
-  }
-  
-  .btn-secondary {
-    background: transparent;
-    border: 1px solid #8C4BFF;
-    color: #8C4BFF;
-    transition: all 0.3s ease;
-  }
-  
-  .btn-secondary:hover {
-    background: #8C4BFF;
-    color: #ffffff;
-    box-shadow: 0 0 15px rgba(140, 75, 255, 0.4);
+  to {
+    transform: translateY(0);
+    opacity: 1;
   }
 }
 
-body,
-html,
-#root,
-#__next,
-.app,
-main {
-  background: #000000 !important;
-  color: white !important;
+/* Dino fossil texture overlay */
+.dino-chat-container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(139, 69, 19, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(210, 105, 30, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
 }
 
-/* Ensure text is visible */
-div, section, article, aside, header, footer, nav, span, p, h1, h2, h3, h4, h5, h6 {
-  color: inherit;
+/* Header */
+.dino-chat-header {
+  position: relative;
+  z-index: 1;
+  padding: 20px;
+  background: linear-gradient(135deg, rgba(139, 69, 19, 0.3) 0%, rgba(210, 105, 30, 0.2) 100%);
+  border-bottom: 2px solid rgba(139, 69, 19, 0.4);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 80px;
 }
 
-/* Only apply glass theme to specific glassmorphic components */
-.glass-card,
-.glass-panel,
-.glass-card-dark,
-.glass-royal {
-  background: rgba(10, 15, 36, 0.8) !important;
-  backdrop-filter: blur(16px) !important;
-  -webkit-backdrop-filter: blur(16px) !important;
-  border: 1px solid rgba(0, 228, 255, 0.2) !important;
-  color: white !important;
+.dino-avatar {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-center;
+  font-size: 28px;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(139, 69, 19, 0.3);
+  animation: dinoBreath 3s ease-in-out infinite;
 }
 
-/* Radix UI portals only */
-[data-radix-portal] [data-radix-popper-content-wrapper],
-[data-radix-select-content],
-[data-radix-dropdown-menu-content],
-[data-radix-popover-content],
-[data-radix-dialog-content] {
-  background: rgba(10, 15, 36, 0.98) !important;
-  background-color: rgba(10, 15, 36, 0.98) !important;
-  backdrop-filter: blur(20px) !important;
-  -webkit-backdrop-filter: blur(20px) !important;
-  border: 1px solid rgba(0, 228, 255, 0.3) !important;
-  color: white !important;
+@keyframes dinoBreath {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
 }
 
-/* Remove nuclear overrides that break component styling */
-
-/* Force all list items, menu items, options */
-li, 
-option,
-[role="option"],
-[role="menuitem"],
-[role="menuitemcheckbox"],
-[role="menuitemradio"] {
-  background: transparent !important;
-  background-color: transparent !important;
-  color: white !important;
+.dino-header-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
-li:hover,
-option:hover,
-[role="option"]:hover,
-[role="menuitem"]:hover {
-  background: rgba(65, 105, 225, 0.3) !important;
-  background-color: rgba(65, 105, 225, 0.3) !important;
+.dino-header-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: white;
+  letter-spacing: -0.5px;
 }
 
-/* Text elements */
-h1, h2, h3, h4, h5, h6, p, span:not([class*="gradient"]), a, li, td, th, label, legend {
-  color: white !important;
+.dino-header-subtitle {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
 }
 
-/* Radix UI components */
-[data-radix-popper-content-wrapper],
-[data-radix-select-content],
-[data-radix-dropdown-menu-content],
-[data-radix-popover-content],
-[data-radix-dialog-content],
-[data-radix-tabs-content],
-[data-radix-popper-content],
-[data-radix-menu-content],
-[role="menu"],
-[role="listbox"],
-[role="dialog"],
-[role="combobox"],
-.dropdown-content,
-.popover-content,
-.select-content,
-[class*="DropdownMenu"],
-[class*="Select"],
-[class*="Popover"],
-[class*="Dialog"],
-[class*="Menu"],
-[data-state],
-div[data-radix-portal],
-div[data-radix-portal] > *,
-div[data-radix-portal] > * > *,
-div[data-radix-popper-content-wrapper],
-div[data-radix-popper-content-wrapper] > *,
-div[data-radix-popper-content-wrapper] > * > * {
-  background: rgba(10, 15, 36, 0.98) !important;
-  background-color: rgba(10, 15, 36, 0.98) !important;
-  backdrop-filter: blur(20px) !important;
-  -webkit-backdrop-filter: blur(20px) !important;
-  border: 1px solid rgba(0, 228, 255, 0.3) !important;
-  color: white !important;
-  z-index: 99999 !important;
+.dino-menu-btn {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  border: none;
+  background: rgba(139, 69, 19, 0.2);
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
-/* Card components - NUCLEAR OVERRIDE */
-[class*="Card"],
-[class*="card"],
-[data-card],
-div[class*="rounded"],
-section[class*="rounded"],
-article[class*="rounded"],
-div[class*="bg-white"],
-section[class*="bg-white"],
-article[class*="bg-white"] {
-  background: rgba(10, 15, 36, 0.8) !important;
-  background-color: rgba(10, 15, 36, 0.8) !important;
-  color: white !important;
+.dino-menu-btn:hover {
+  background: rgba(139, 69, 19, 0.4);
+  transform: scale(1.05);
 }
 
-/* All shadcn card variants */
-.card,
-[data-slot="card"],
-[role="article"],
-div[class*="shadow"],
-div[class*="border"][class*="rounded"] {
-  background: rgba(10, 15, 36, 0.8) !important;
-  background-color: rgba(10, 15, 36, 0.8) !important;
-  color: white !important;
+.dino-menu-btn:active {
+  transform: scale(0.95);
 }
 
-/* ULTIMATE WHITE KILLER - covers any remaining white backgrounds */
-div[class*="bg-white"]:not([class*="text"]):not([class*="border"]),
-section[class*="bg-white"]:not([class*="text"]):not([class*="border"]),
-.bg-white:not([class*="text"]):not([class*="border"]) {
-  background: rgba(10, 15, 36, 0.8) !important;
-  background-color: rgba(10, 15, 36, 0.8) !important;
+/* Messages Container */
+.dino-messages {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
 
-/* CardContent, CardHeader, CardFooter */
-[class*="CardContent"],
-[class*="CardHeader"],
-[class*="CardFooter"],
-[class*="card-content"],
-[class*="card-header"],
-[class*="card-footer"] {
-  background: transparent !important;
-  background-color: transparent !important;
-  color: white !important;
+/* Custom scrollbar */
+.dino-messages::-webkit-scrollbar {
+  width: 6px;
 }
 
-/* CardTitle and CardDescription */
-[class*="CardTitle"],
-[class*="CardDescription"],
-[class*="card-title"],
-[class*="card-description"] {
-  color: white !important;
+.dino-messages::-webkit-scrollbar-track {
+  background: rgba(139, 69, 19, 0.1);
+  border-radius: 3px;
 }
 
-/* Let components control their own backgrounds */
-
-[data-radix-select-item],
-[data-radix-dropdown-menu-item],
-[role="menuitem"],
-[role="option"] {
-  color: white !important;
-  background: transparent !important;
-  background-color: transparent !important;
+.dino-messages::-webkit-scrollbar-thumb {
+  background: rgba(139, 69, 19, 0.4);
+  border-radius: 3px;
 }
 
-[data-radix-select-item]:hover,
-[data-radix-dropdown-menu-item]:hover,
-[data-radix-select-item][data-highlighted],
-[data-radix-dropdown-menu-item][data-highlighted] {
-  background: rgba(0, 228, 255, 0.15) !important;
-  background-color: rgba(0, 228, 255, 0.15) !important;
-  color: #00E4FF !important;
+.dino-messages::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 69, 19, 0.6);
 }
 
-/* Tabs - Royal Blue Theme */
-[role="tablist"],
-[data-radix-tabs-list] {
-  background: rgba(65, 105, 225, 0.2) !important;
-  backdrop-filter: blur(16px) !important;
-  border: 1px solid rgba(65, 105, 225, 0.4) !important;
+/* Message Bubbles */
+.dino-message {
+  display: flex;
+  animation: messageIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-[role="tab"],
-[data-radix-tabs-trigger] {
-  color: white !important;
+@keyframes messageIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-[role="tab"][data-state="active"],
-[data-radix-tabs-trigger][data-state="active"] {
-  background: rgba(65, 105, 225, 0.4) !important;
-  color: white !important;
+.dino-message-user {
+  justify-content: flex-end;
 }
 
-/* Buttons - UV Theme */
-button:not([class*="gradient"]):not([class*="bg-"]):not([class*="border-"]) {
-  color: white !important;
-  cursor: pointer !important;
-  background: rgba(10, 15, 36, 0.8) !important;
-  background-color: rgba(10, 15, 36, 0.8) !important;
-  border: 1px solid rgba(0, 228, 255, 0.3) !important;
+.dino-message-bot {
+  justify-content: flex-start;
 }
 
-button:hover:not([class*="gradient"]):not([class*="bg-"]):not([class*="border-"]) {
-  background: rgba(0, 228, 255, 0.1) !important;
-  background-color: rgba(0, 228, 255, 0.1) !important;
-  border-color: rgba(0, 228, 255, 0.5) !important;
+.dino-message-content {
+  max-width: 85%;
+  padding: 14px 18px;
+  border-radius: 18px;
+  position: relative;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
-/* Inputs - UV Theme */
-input:not([type="checkbox"]):not([type="radio"]):not([class*="bg-"]),
-textarea:not([class*="bg-"]),
-select:not([class*="bg-"]) {
-  background: rgba(10, 15, 36, 0.9) !important;
-  background-color: rgba(10, 15, 36, 0.9) !important;
-  backdrop-filter: blur(16px) !important;
-  border: 1px solid rgba(0, 228, 255, 0.3) !important;
-  color: white !important;
+.dino-message-user .dino-message-content {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
 }
 
-input::placeholder,
-textarea::placeholder {
-  color: rgba(255, 255, 255, 0.5) !important;
+.dino-message-bot .dino-message-content {
+  background: rgba(139, 69, 19, 0.15);
+  border: 1px solid rgba(139, 69, 19, 0.3);
+  color: white;
+  backdrop-filter: blur(10px);
 }
 
-/* Preserve gradients */
-.bg-gradient-to-r,
-.bg-gradient-to-l,
-.bg-gradient-to-t,
-.bg-gradient-to-b,
-.bg-gradient-to-br,
-[class*="gradient"],
-[class*="Gradient"] {
-  /* Let gradients keep their background */
+.dino-message-text {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.5;
+  color: white;
 }
 
-.bg-clip-text {
-  color: transparent !important;
-  -webkit-text-fill-color: transparent !important;
+/* Markdown Styling */
+.dino-markdown {
+  font-size: 15px;
+  line-height: 1.6;
+  color: white;
 }
 
-/* === GLYPHLOCK SIGNATURE PALETTE FREEZE (DO NOT MOVE) === */
-
-:root {
---ultraviolet: #8a2be2; /* This re-asserts the original ultraviolet value, overriding the new one from the top :root block. */
---uv-dark: #541b8b;
---cyan: #00eaff;
+.dino-p {
+  margin: 0 0 8px 0;
+  color: white;
 }
 
-/* Erase all white backgrounds forever */
-html, body {
-background-color: #000 !important;
-color: #fff !important;
+.dino-p:last-child {
+  margin-bottom: 0;
 }
 
-/* Make sure no component uses default backgrounds */
-* {
-background: transparent !important;
+.dino-ul {
+  margin: 8px 0;
+  padding-left: 20px;
+  color: white;
 }
 
-/* Force all borders to royal blue */
-* {
-  border-color: rgba(65, 105, 225, 0.4) !important;
+.dino-li {
+  margin: 4px 0;
+  color: white;
 }
 
-/* Remove overly broad background clearing */
-
-/* Tables - UV Theme */
-table, thead, tbody, tr, td, th {
-  background: rgba(10, 15, 36, 0.9) !important;
-  background-color: rgba(10, 15, 36, 0.9) !important;
-  border-color: rgba(0, 228, 255, 0.2) !important;
-  color: white !important;
-}
-
-table {
-  backdrop-filter: blur(16px) !important;
-  -webkit-backdrop-filter: blur(16px) !important;
-}
-
-thead {
-  background: rgba(0, 228, 255, 0.1) !important;
-  background-color: rgba(0, 228, 255, 0.1) !important;
-}
-
-tbody tr:hover {
-  background: rgba(0, 228, 255, 0.05) !important;
-  background-color: rgba(0, 228, 255, 0.05) !important;
-}
-
-/* Only allow backgrounds on these */
-body, 
-html, 
-#root, 
-main {
-  background: #000000 !important;
-  background-color: #000000 !important;
-}
-
-[class*="glass-"],
-.glass-card-legacy, /* Used legacy class name for existing styles */
-.glass-card-dark,
-.glass-royal,
-.glass-dark {
-  background: rgba(65, 105, 225, 0.15) !important;
-  background-color: rgba(65, 105, 225, 0.15) !important;
-  backdrop-filter: blur(16px) !important;
-  -webkit-backdrop-filter: blur(16px) !important;
-}
-
-/* Remove forced card styling - let components define their own backgrounds */
-
-/* Badge variants - Royal Blue Theme */
-[class*="badge"],
-[class*="Badge"],
-[data-badge] {
-  background: rgba(65, 105, 225, 0.25) !important;
-  border: 1px solid rgba(65, 105, 225, 0.5) !important;
-  color: white !important;
-}
-
-/* Remove overly aggressive background overrides */
-
-/* Separator - Royal Blue Theme */
-[data-orientation="horizontal"],
-[data-orientation="vertical"],
-hr {
-  background: rgba(65, 105, 225, 0.4) !important;
-}
-
-/* Clickable elements */
-a, 
-button, 
-[role="button"], 
-input, 
-select, 
-textarea, 
-label {
-  cursor: pointer !important;
-}
-
-/* Custom Scrollbar (New styles from outline, replacing old scrollbar theme) */
-::-webkit-scrollbar {
-  width: 8px;
-}
-::-webkit-scrollbar-track {
-  background: #020617;
-}
-::-webkit-scrollbar-thumb {
-  background: #00E4FF;
+.dino-code-inline {
+  background: rgba(139, 69, 19, 0.2);
+  padding: 2px 6px;
   border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  color: #D2691E;
 }
-::-webkit-scrollbar-thumb:hover {
-  background: #8C4BFF;
+
+.dino-code-block {
+  background: rgba(0, 0, 0, 0.4);
+  padding: 12px;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 8px 0;
+  border: 1px solid rgba(139, 69, 19, 0.3);
+}
+
+.dino-code-block code {
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  color: #D2691E;
+}
+
+/* Speaker Button */
+.dino-speak-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+  border: none;
+  background: rgba(139, 69, 19, 0.3);
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: all 0.2s;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.dino-message-bot:hover .dino-speak-btn {
+  opacity: 1;
+}
+
+.dino-speak-btn:hover {
+  background: rgba(139, 69, 19, 0.5);
+  transform: scale(1.1);
+}
+
+.dino-speak-btn:active,
+.dino-speak-btn.active {
+  background: rgba(210, 105, 30, 0.6);
+  transform: scale(0.95);
+}
+
+/* Typing Indicator */
+.dino-typing {
+  display: flex;
+  gap: 6px;
+  padding: 4px 0;
+}
+
+.dino-typing span {
+  width: 8px;
+  height: 8px;
+  background: rgba(139, 69, 19, 0.6);
+  border-radius: 50%;
+  animation: typing 1.4s ease-in-out infinite;
+}
+
+.dino-typing span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.dino-typing span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes typing {
+  0%, 60%, 100% {
+    transform: translateY(0);
+    opacity: 0.6;
+  }
+  30% {
+    transform: translateY(-8px);
+    opacity: 1;
+  }
+}
+
+/* Files Container */
+.dino-files {
+  position: relative;
+  z-index: 1;
+  padding: 12px 20px;
+  background: rgba(139, 69, 19, 0.1);
+  border-top: 1px solid rgba(139, 69, 19, 0.3);
+  border-bottom: 1px solid rgba(139, 69, 19, 0.3);
+}
+
+.dino-files-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.dino-clear-files {
+  background: none;
+  border: none;
+  color: #ef4444;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.2s;
+  min-height: 32px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.dino-clear-files:hover {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.dino-files-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.dino-file-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(139, 69, 19, 0.2);
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  color: white;
+  border: 1px solid rgba(139, 69, 19, 0.3);
+}
+
+.dino-file-name {
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dino-file-remove {
+  background: none;
+  border: none;
+  color: #ef4444;
+  cursor: pointer;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s;
+  min-width: 24px;
+  min-height: 24px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.dino-file-remove:hover {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+/* Input Container */
+.dino-input-container {
+  position: relative;
+  z-index: 1;
+  padding: 16px 20px;
+  background: rgba(10, 10, 20, 0.8);
+  backdrop-filter: blur(10px);
+  border-top: 2px solid rgba(139, 69, 19, 0.4);
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.dino-action-btn {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  border: none;
+  background: rgba(139, 69, 19, 0.2);
+  border-radius: 12px;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.dino-action-btn:hover {
+  background: rgba(139, 69, 19, 0.4);
+  transform: scale(1.05);
+}
+
+.dino-action-btn:active {
+  transform: scale(0.95);
+}
+
+.dino-action-btn.recording {
+  background: rgba(239, 68, 68, 0.3);
+  animation: recordPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes recordPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+  }
+}
+
+.dino-input {
+  flex: 1;
+  height: 48px;
+  min-height: 48px;
+  padding: 0 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(139, 69, 19, 0.3);
+  border-radius: 12px;
+  color: white;
+  font-size: 16px;
+  outline: none;
+  transition: all 0.2s;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  touch-action: manipulation;
+  -webkit-appearance: none;
+}
+
+.dino-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.dino-input:focus {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(139, 69, 19, 0.5);
+  box-shadow: 0 0 0 3px rgba(139, 69, 19, 0.1);
+}
+
+.dino-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Send Button with Dino Eye Glow */
+.dino-send-btn {
+  position: relative;
+  width: 56px;
+  height: 48px;
+  min-width: 56px;
+  min-height: 48px;
+  border: none;
+  background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+  border-radius: 12px;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(139, 69, 19, 0.3);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.dino-send-btn:hover:not(:disabled) {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(139, 69, 19, 0.4);
+}
+
+.dino-send-btn:active:not(:disabled) {
+  transform: scale(0.95);
+  box-shadow: 0 2px 8px rgba(139, 69, 19, 0.3);
+}
+
+.dino-send-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Dino Eye Glow Effect */
+.dino-send-glow {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.6) 0%, transparent 70%);
+  animation: dinoEyeGlow 2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes dinoEyeGlow {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.2);
+  }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 480px) {
+  .dino-fab {
+    width: 64px;
+    height: 64px;
+    bottom: 20px;
+    right: 20px;
+  }
+
+  .dino-chat-container {
+    right: 12px;
+    left: 12px;
+    bottom: 96px;
+    width: calc(100vw - 24px);
+    height: calc(100vh - 130px);
+    max-height: calc(100vh - 130px);
+    border-radius: 20px;
+  }
+
+  .dino-chat-header {
+    padding: 16px;
+    min-height: 72px;
+  }
+
+  .dino-avatar {
+    width: 44px;
+    height: 44px;
+    font-size: 24px;
+  }
+
+  .dino-header-title {
+    font-size: 16px;
+  }
+
+  .dino-header-subtitle {
+    font-size: 12px;
+  }
+
+  .dino-messages {
+    padding: 16px;
+    gap: 14px;
+  }
+
+  .dino-message-content {
+    max-width: 90%;
+    padding: 12px 16px;
+  }
+
+  .dino-input-container {
+    padding: 12px 16px;
+    gap: 8px;
+  }
+
+  .dino-action-btn {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .dino-send-btn {
+    width: 52px;
+    height: 44px;
+    min-width: 52px;
+    min-height: 44px;
+  }
+
+  .dino-input {
+    height: 44px;
+    min-height: 44px;
+  }
+}
+
+/* Landscape mobile fix */
+@media (max-width: 768px) and (orientation: landscape) {
+  .dino-chat-container {
+    height: calc(100vh - 100px);
+    bottom: 80px;
+  }
+}
+
+/* Prevent zoom on iOS */
+@supports (-webkit-touch-callout: none) {
+  .dino-input,
+  input,
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+}
+
+/* Hide elements when printing */
+@media print {
+  .dino-fab,
+  .dino-chat-container {
+    display: none !important;
+  }
 }
