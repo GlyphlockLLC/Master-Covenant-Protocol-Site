@@ -3,22 +3,22 @@ import { Home, Key, Download, Users, FileText, Zap, Shield, Book, LogOut, Dollar
 import { base44 } from "@/api/base44Client";
 
 const modules = [
-  { id: "dashboard", label: "Dashboard", icon: Home },
+  { id: "dashboard", label: "Overview", icon: Home },
   { id: "api-keys", label: "API Keys", icon: Key },
-  { id: "sdk", label: "SDK Center", icon: Download },
-  { id: "users", label: "User Management", icon: Users },
-  { id: "logs", label: "System Logs", icon: FileText },
+  { id: "sdk", label: "SDK Downloads", icon: Download },
   { id: "functions", label: "Edge Functions", icon: Zap },
   { id: "security", label: "Security", icon: Shield },
-  { id: "api-reference", label: "API Reference", icon: Book },
-  { id: "billing", label: "Billing & Payments", icon: DollarSign },
+  { id: "logs", label: "System Logs", icon: FileText },
+  { id: "api-reference", label: "API Docs", icon: Book },
+  { id: "billing", label: "Billing", icon: DollarSign },
+  { id: "usage", label: "Usage", icon: TrendingUp },
 ];
 
 const adminModules = [
+  { id: "users", label: "Users", icon: Users, adminOnly: true },
   { id: "team-roles", label: "Team & Roles", icon: UsersRound, adminOnly: true },
-  { id: "audit-timeline", label: "Audit Timeline", icon: Clock, adminOnly: true },
-  { id: "support", label: "Support Center", icon: MessageSquare, adminOnly: true },
-  { id: "admin-billing", label: "Admin Billing", icon: TrendingUp, adminOnly: true },
+  { id: "audit-timeline", label: "Audit Logs", icon: Clock, adminOnly: true },
+  { id: "support", label: "Support", icon: MessageSquare, adminOnly: true },
 ];
 
 export default function ConsoleSidebar({ activeModule, setActiveModule, user }) {
@@ -36,7 +36,7 @@ export default function ConsoleSidebar({ activeModule, setActiveModule, user }) 
           </div>
           <div>
             <h1 className="text-lg font-bold text-white">GlyphLock</h1>
-            <p className="text-xs text-white/50">Enterprise Console</p>
+            <p className="text-xs text-[#00E4FF]">Command Center</p>
           </div>
         </div>
       </div>

@@ -20,7 +20,7 @@ export default function TopBar({ user, projectName = "GlyphLock Production" }) {
   };
 
   return (
-    <header className="h-16 bg-[#0A0F24] border-b border-[#8C4BFF]/20 flex items-center justify-between px-6">
+    <header className="h-16 bg-[#0A0F24]/95 border-b border-[#00E4FF]/20 flex items-center justify-between px-6 backdrop-blur-xl">
       {/* Search Bar */}
       <div className="flex-1 max-w-xl">
         <div className="relative">
@@ -29,7 +29,7 @@ export default function TopBar({ user, projectName = "GlyphLock Production" }) {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search functions, keys, logs..."
-            className="pl-10 bg-[#020617] border-[#8C4BFF]/20 text-white placeholder:text-white/50"
+            className="pl-10 bg-[#020617] border-[#00E4FF]/20 text-white placeholder:text-white/50 focus:border-[#00E4FF]/50"
           />
         </div>
       </div>
