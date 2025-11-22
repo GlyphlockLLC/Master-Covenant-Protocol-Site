@@ -13,7 +13,7 @@ export default function TechnologyMarquee() {
     { name: "Redis", logo: "https://www.vectorlogo.zone/logos/redis/redis-ar21.svg" },
     { name: "OpenAI", logo: "https://upload.wikimedia.org/wikipedia/commons/4/4d/OpenAI_Logo.svg" },
     { name: "NVIDIA", logo: "https://www.vectorlogo.zone/logos/nvidia/nvidia-ar21.svg" },
-    { name: "Hugging Face", logo: "https://www.vectorlogo.zone/logos/huggingface/huggingface-ar21.svg" },
+    { name: "Hugging Face", logo: "https://upload.wikimedia.org/wikipedia/commons/8/8c/Hugging_Face_logo.svg" },
     { name: "GitHub", logo: "https://www.vectorlogo.zone/logos/github/github-ar21.svg" },
     { name: "Cloudflare", logo: "https://www.vectorlogo.zone/logos/cloudflare/cloudflare-ar21.svg" },
     { name: "Stripe", logo: "https://www.vectorlogo.zone/logos/stripe/stripe-ar21.svg" },
@@ -77,7 +77,14 @@ export default function TechnologyMarquee() {
     { name: "Webflow", logo: "https://www.vectorlogo.zone/logos/webflow/webflow-ar21.svg" },
     { name: "WordPress", logo: "https://www.vectorlogo.zone/logos/wordpress/wordpress-ar21.svg" },
     { name: "Shopify", logo: "https://www.vectorlogo.zone/logos/shopify/shopify-ar21.svg" },
-    { name: "Magento", logo: "https://www.vectorlogo.zone/logos/magento/magento-ar21.svg" }
+    { name: "Magento", logo: "https://www.vectorlogo.zone/logos/magento/magento-ar21.svg" },
+    { name: "Base44", logo: "https://avatars.githubusercontent.com/u/145019558?s=200&v=4" },
+    { name: "Replit", logo: "https://upload.wikimedia.org/wikipedia/commons/b/b2/Repl.it_logo.svg" },
+    { name: "Greylock", logo: "https://upload.wikimedia.org/wikipedia/commons/4/40/Greylock_Partners_logo.svg" },
+    { name: "Y Combinator", logo: "https://upload.wikimedia.org/wikipedia/commons/b/b2/Y_Combinator_logo.svg" },
+    { name: "Sequoia", logo: "https://upload.wikimedia.org/wikipedia/commons/2/20/Sequoia_Capital_logo.svg" },
+    { name: "Andreessen Horowitz", logo: "https://upload.wikimedia.org/wikipedia/commons/d/d9/Andreessen_Horowitz_logo.svg" },
+    { name: "Accel", logo: "https://upload.wikimedia.org/wikipedia/commons/a/a5/Accel_logo.svg" }
   ];
 
   // Row 2: 25 logos (enterprise & security)
@@ -89,7 +96,7 @@ export default function TechnologyMarquee() {
     { name: "ServiceNow", logo: "https://upload.wikimedia.org/wikipedia/commons/5/57/ServiceNow_logo.svg" },
     { name: "Workday", logo: "https://www.vectorlogo.zone/logos/workday/workday-ar21.svg" },
     { name: "HashiCorp", logo: "https://www.vectorlogo.zone/logos/hashicorp/hashicorp-ar21.svg" },
-    { name: "VMware", logo: "https://www.vectorlogo.zone/logos/vmware/vmware-ar21.svg" },
+    { name: "VMware", logo: "https://upload.wikimedia.org/wikipedia/commons/9/9a/Vmware.svg" },
     { name: "Splunk", logo: "https://www.vectorlogo.zone/logos/splunk/splunk-ar21.svg" },
     { name: "Elastic", logo: "https://www.vectorlogo.zone/logos/elastic/elastic-ar21.svg" },
     { name: "New Relic", logo: "https://www.vectorlogo.zone/logos/newrelic/newrelic-ar21.svg" },
@@ -106,7 +113,10 @@ export default function TechnologyMarquee() {
     { name: "Amplitude", logo: "https://www.vectorlogo.zone/logos/amplitude/amplitude-ar21.svg" },
     { name: "Mixpanel", logo: "https://www.vectorlogo.zone/logos/mixpanel/mixpanel-ar21.svg" },
     { name: "LaunchDarkly", logo: "https://www.vectorlogo.zone/logos/launchdarkly/launchdarkly-ar21.svg" },
-    { name: "PagerDuty", logo: "https://www.vectorlogo.zone/logos/pagerduty/pagerduty-ar21.svg" }
+    { name: "PagerDuty", logo: "https://www.vectorlogo.zone/logos/pagerduty/pagerduty-ar21.svg" },
+    { name: "Perplexity", logo: "https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/perplexity-ai-icon.png" },
+    { name: "Anthropic", logo: "https://upload.wikimedia.org/wikipedia/commons/7/78/Anthropic_logo.svg" },
+    { name: "Cohere", logo: "https://www.vectorlogo.zone/logos/cohere/cohere-ar21.svg" }
   ];
 
   // Row 3: 25 logos (major tech & finance)
