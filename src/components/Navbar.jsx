@@ -104,7 +104,7 @@ export default function Navbar({ user, onLogin, onLogout }) {
                    transition={{ duration: 0.15, ease: "easeOut" }}
                    className="absolute left-1/2 -translate-x-1/2 top-full pt-4 w-72 z-50"
                   >
-                   <div className="relative bg-[#0A0F24]/98 border border-[#00E4FF]/40 rounded-2xl shadow-[0_0_40px_rgba(0,228,255,0.3),inset_0_1px_0_rgba(255,255,255,0.1)] backdrop-blur-2xl overflow-hidden">
+                   <div className="relative bg-[#0A0F24]/85 border border-[#00E4FF]/40 rounded-2xl shadow-[0_0_40px_rgba(0,228,255,0.3),inset_0_1px_0_rgba(255,255,255,0.1)] backdrop-blur-2xl overflow-hidden">
                      {/* Top glow bar */}
                      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#00E4FF] to-[#8C4BFF]"></div>
 
