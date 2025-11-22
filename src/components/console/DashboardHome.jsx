@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Activity, Key, Zap, Shield, TrendingUp, AlertCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { glyphLockAPI } from "@/components/api/glyphLockAPI";
+import UsagePanel from "./UsagePanel";
 
 export default function DashboardHome({ user }) {
   const [stats, setStats] = useState({
@@ -86,6 +87,9 @@ export default function DashboardHome({ user }) {
           );
         })}
       </div>
+
+      {/* Usage Metrics */}
+      <UsagePanel />
 
       {/* Recent Activity */}
       <Card className="bg-[#0A0F24] border-[#8C4BFF]/20">
