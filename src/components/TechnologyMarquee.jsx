@@ -151,12 +151,9 @@ export default function TechnologyMarquee() {
   return (
     <div className="w-full max-w-7xl mx-auto px-4 py-16">
       <div className="text-center mb-12">
-        <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
-          Integrated <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">Technology Stack</span>
-        </h2>
-        <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
+        <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
           Enterprise Engineering Excellence
-        </h3>
+        </h2>
         <p className="text-lg md:text-xl text-white/70 max-w-4xl mx-auto">
           Engineered under the Triple-E Standard — enterprise best practices amplified and aligned with the same high-integrity benchmarks that leading global platforms refuse to compromise on.
         </p>
