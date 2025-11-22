@@ -74,13 +74,13 @@ export default function Pricing() {
       setLoading(plan.name);
       setError(null);
       
-      const response = await base44.functions.invoke('stripeCreateCheckout', {
+      const response = await base44.functions.invoke('stripeCheckout', {
         priceId: plan.priceId,
         mode: 'subscription'
       });
 
-      if (response.data.url) {
-        window.location.href = response.data.url;
+      if (response.data.checkoutUrl) {
+        window.location.href = response.data.checkoutUrl;
       } else {
         throw new Error(response.data.error || "Failed to create checkout session");
       }

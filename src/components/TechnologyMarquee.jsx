@@ -248,7 +248,7 @@ export default function TechnologyMarquee() {
         </div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         .marquee-container {
           overflow: hidden;
           position: relative;
