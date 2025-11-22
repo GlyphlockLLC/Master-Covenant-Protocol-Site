@@ -17,14 +17,14 @@ const tones = [
 export default function ToneSelector({ selected, onSelect }) {
   return (
     <Select value={selected} onValueChange={onSelect}>
-      <SelectTrigger className="glass-dark border-blue-500/30 text-white mt-2">
+      <SelectTrigger className="bg-[#0A0F24]/90 border-[#00E4FF]/30 text-white mt-2 hover:border-[#00E4FF]/50">
         <SelectValue />
       </SelectTrigger>
-      <SelectContent className="glass-dark border-blue-500/30">
+      <SelectContent className="bg-[#0A0F24]/98 border-[#00E4FF]/30 backdrop-blur-xl">
         {tones.map((tone) => (
-          <SelectItem key={tone.value} value={tone.value}>
+          <SelectItem key={tone.value} value={tone.value} className="text-white hover:bg-[#00E4FF]/10 focus:bg-[#00E4FF]/10 focus:text-[#00E4FF]">
             <div className="flex flex-col">
-              <span className="text-white font-medium">{tone.label}</span>
+              <span className="font-medium">{tone.label}</span>
               <span className="text-white/60 text-xs">{tone.desc}</span>
             </div>
           </SelectItem>

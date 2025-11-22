@@ -21,12 +21,12 @@ export default function ContentTypeSelector({ selected, onSelect }) {
             key={type.id}
             onClick={() => onSelect(type.id)}
             className={cn(
-              "glass-dark p-3 rounded-lg transition-all text-left hover:bg-blue-500/20",
-              selected === type.id && "bg-blue-500/30 border-blue-500/50 border"
+              "bg-[#0A0F24]/80 p-3 rounded-lg transition-all text-left hover:bg-[#00E4FF]/10 hover:border-[#00E4FF]/30 border border-transparent",
+              selected === type.id && "bg-[#00E4FF]/20 border-[#00E4FF]/50"
             )}
           >
             <div className="flex items-center gap-2 mb-1">
-              <Icon className="w-4 h-4 text-blue-400" />
+              <Icon className="w-4 h-4 text-[#00E4FF]" />
               <span className="text-white text-sm font-medium">{type.label}</span>
             </div>
             <p className="text-white/60 text-xs">{type.desc}</p>

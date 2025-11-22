@@ -158,13 +158,13 @@ Generate the content now:`;
                     <div>
                       <Label className="text-white">Length</Label>
                       <Select value={wordCount} onValueChange={setWordCount}>
-                        <SelectTrigger className="glass-dark border-cyan-500/30 text-white">
+                        <SelectTrigger className="bg-[#0A0F24]/90 border-[#00E4FF]/30 text-white hover:border-[#00E4FF]/50">
                           <SelectValue />
                         </SelectTrigger>
-                        <SelectContent className="glass-dark border-cyan-500/30">
-                          <SelectItem value="short">Short (100-200 words)</SelectItem>
-                          <SelectItem value="medium">Medium (300-500 words)</SelectItem>
-                          <SelectItem value="long">Long (800-1200 words)</SelectItem>
+                        <SelectContent className="bg-[#0A0F24]/98 border-[#00E4FF]/30 backdrop-blur-xl">
+                          <SelectItem value="short" className="text-white hover:bg-[#00E4FF]/10 focus:bg-[#00E4FF]/10 focus:text-[#00E4FF]">Short (100-200 words)</SelectItem>
+                          <SelectItem value="medium" className="text-white hover:bg-[#00E4FF]/10 focus:bg-[#00E4FF]/10 focus:text-[#00E4FF]">Medium (300-500 words)</SelectItem>
+                          <SelectItem value="long" className="text-white hover:bg-[#00E4FF]/10 focus:bg-[#00E4FF]/10 focus:text-[#00E4FF]">Long (800-1200 words)</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -175,7 +175,7 @@ Generate the content now:`;
                         placeholder="e.g., Tech professionals, Small businesses"
                         value={targetAudience}
                         onChange={(e) => setTargetAudience(e.target.value)}
-                        className="glass-dark border-cyan-500/30 text-white"
+                        className="bg-[#0A0F24]/90 border-[#00E4FF]/30 text-white placeholder:text-white/40 hover:border-[#00E4FF]/50 focus:border-[#00E4FF]"
                       />
                     </div>
                   </CardContent>
@@ -219,7 +219,7 @@ Generate the content now:`;
                         placeholder="Describe what you want to write about..."
                         value={topic}
                         onChange={(e) => setTopic(e.target.value)}
-                        className="glass-dark border-blue-500/30 text-white min-h-[100px]"
+                        className="bg-[#0A0F24]/90 border-[#00E4FF]/30 text-white placeholder:text-white/40 min-h-[100px] hover:border-[#00E4FF]/50 focus:border-[#00E4FF]"
                       />
                     </div>
 
@@ -229,7 +229,7 @@ Generate the content now:`;
                         placeholder="Enter your brand voice, values, or specific requirements..."
                         value={brandGuidelines}
                         onChange={(e) => setBrandGuidelines(e.target.value)}
-                        className="glass-dark border-cyan-500/30 text-white"
+                        className="bg-[#0A0F24]/90 border-[#00E4FF]/30 text-white placeholder:text-white/40 hover:border-[#00E4FF]/50 focus:border-[#00E4FF]"
                       />
                     </div>
 
@@ -239,7 +239,7 @@ Generate the content now:`;
                         placeholder="Any other details, keywords, or requirements..."
                         value={additionalContext}
                         onChange={(e) => setAdditionalContext(e.target.value)}
-                        className="glass-dark border-cyan-500/30 text-white"
+                        className="bg-[#0A0F24]/90 border-[#00E4FF]/30 text-white placeholder:text-white/40 hover:border-[#00E4FF]/50 focus:border-[#00E4FF]"
                       />
                     </div>
 
