@@ -201,7 +201,7 @@ h1, h2, h3, h4, h5, h6, p, span:not([class*="gradient"]), a, li, td, th, label, 
   color: white !important;
 }
 
-/* Radix UI components - Royal Blue Theme - ULTRA AGGRESSIVE */
+/* Radix UI components */
 [data-radix-popper-content-wrapper],
 [data-radix-select-content],
 [data-radix-dropdown-menu-content],
@@ -236,6 +236,22 @@ div[data-radix-popper-content-wrapper] > * > * {
   border: 1px solid rgba(0, 228, 255, 0.3) !important;
   color: white !important;
   z-index: 99999 !important;
+}
+
+/* Card components - force dark */
+[class*="Card"],
+[data-card] {
+  background: rgba(10, 15, 36, 0.8) !important;
+  background-color: rgba(10, 15, 36, 0.8) !important;
+  color: white !important;
+}
+
+/* CardContent specifically */
+[class*="CardContent"],
+[class*="card-content"] {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: white !important;
 }
 
 /* Let components control their own backgrounds */
