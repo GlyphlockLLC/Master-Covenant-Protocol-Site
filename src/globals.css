@@ -268,11 +268,11 @@ div[data-radix-portal] > * > *,
 div[data-radix-popper-content-wrapper],
 div[data-radix-popper-content-wrapper] > *,
 div[data-radix-popper-content-wrapper] > * > * {
-  background: rgba(65, 105, 225, 0.2) !important;
-  background-color: rgba(65, 105, 225, 0.2) !important;
+  background: rgba(10, 15, 36, 0.98) !important;
+  background-color: rgba(10, 15, 36, 0.98) !important;
   backdrop-filter: blur(20px) !important;
   -webkit-backdrop-filter: blur(20px) !important;
-  border: 1px solid rgba(65, 105, 225, 0.5) !important;
+  border: 1px solid rgba(0, 228, 255, 0.3) !important;
   color: white !important;
   z-index: 99999 !important;
 }
@@ -302,9 +302,9 @@ div[class*="bg-slate"] {
 [data-radix-dropdown-menu-item]:hover,
 [data-radix-select-item][data-highlighted],
 [data-radix-dropdown-menu-item][data-highlighted] {
-  background: rgba(65, 105, 225, 0.3) !important;
-  background-color: rgba(65, 105, 225, 0.3) !important;
-  color: white !important;
+  background: rgba(0, 228, 255, 0.15) !important;
+  background-color: rgba(0, 228, 255, 0.15) !important;
+  color: #00E4FF !important;
 }
 
 /* Tabs - Royal Blue Theme */
@@ -326,29 +326,29 @@ div[class*="bg-slate"] {
   color: white !important;
 }
 
-/* Buttons - Royal Blue Theme */
-button:not([class*="gradient"]) {
+/* Buttons - UV Theme */
+button:not([class*="gradient"]):not([class*="bg-"]):not([class*="border-"]) {
   color: white !important;
   cursor: pointer !important;
-  background: rgba(65, 105, 225, 0.25) !important;
-  background-color: rgba(65, 105, 225, 0.25) !important;
-  border: 1px solid rgba(65, 105, 225, 0.5) !important;
+  background: rgba(10, 15, 36, 0.8) !important;
+  background-color: rgba(10, 15, 36, 0.8) !important;
+  border: 1px solid rgba(0, 228, 255, 0.3) !important;
 }
 
-button:hover:not([class*="gradient"]) {
-  background: rgba(65, 105, 225, 0.4) !important;
-  background-color: rgba(65, 105, 225, 0.4) !important;
-  border-color: rgba(65, 105, 225, 0.7) !important;
+button:hover:not([class*="gradient"]):not([class*="bg-"]):not([class*="border-"]) {
+  background: rgba(0, 228, 255, 0.1) !important;
+  background-color: rgba(0, 228, 255, 0.1) !important;
+  border-color: rgba(0, 228, 255, 0.5) !important;
 }
 
-/* Inputs - Royal Blue Theme */
-input:not([type="checkbox"]):not([type="radio"]),
-textarea,
-select {
-  background: rgba(65, 105, 225, 0.15) !important;
-  background-color: rgba(65, 105, 225, 0.15) !important;
+/* Inputs - UV Theme */
+input:not([type="checkbox"]):not([type="radio"]):not([class*="bg-"]),
+textarea:not([class*="bg-"]),
+select:not([class*="bg-"]) {
+  background: rgba(10, 15, 36, 0.9) !important;
+  background-color: rgba(10, 15, 36, 0.9) !important;
   backdrop-filter: blur(16px) !important;
-  border: 1px solid rgba(65, 105, 225, 0.4) !important;
+  border: 1px solid rgba(0, 228, 255, 0.3) !important;
   color: white !important;
 }
 
@@ -402,11 +402,11 @@ background: transparent !important;
   background-color: transparent !important;
 }
 
-/* Tables - Royal Blue Theme */
+/* Tables - UV Theme */
 table, thead, tbody, tr, td, th {
-  background: rgba(65, 105, 225, 0.15) !important;
-  background-color: rgba(65, 105, 225, 0.15) !important;
-  border-color: rgba(65, 105, 225, 0.4) !important;
+  background: rgba(10, 15, 36, 0.9) !important;
+  background-color: rgba(10, 15, 36, 0.9) !important;
+  border-color: rgba(0, 228, 255, 0.2) !important;
   color: white !important;
 }
 
@@ -416,13 +416,13 @@ table {
 }
 
 thead {
-  background: rgba(65, 105, 225, 0.3) !important;
-  background-color: rgba(65, 105, 225, 0.3) !important;
+  background: rgba(0, 228, 255, 0.1) !important;
+  background-color: rgba(0, 228, 255, 0.1) !important;
 }
 
 tbody tr:hover {
-  background: rgba(65, 105, 225, 0.25) !important;
-  background-color: rgba(65, 105, 225, 0.25) !important;
+  background: rgba(0, 228, 255, 0.05) !important;
+  background-color: rgba(0, 228, 255, 0.05) !important;
 }
 
 /* Only allow backgrounds on these */
