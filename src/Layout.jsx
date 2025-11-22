@@ -7,6 +7,8 @@ import InteractiveNebula from "@/components/InteractiveNebula";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import GlyphLoader from "@/components/GlyphLoader";
+import "@/components/mobile/mobile.css";
+import "@/components/mobile/mobile-utils.js";
 
 export default function Layout({ children, currentPageName }) {
   const [user, setUser] = useState(null);
