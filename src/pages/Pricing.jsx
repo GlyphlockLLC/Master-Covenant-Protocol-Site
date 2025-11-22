@@ -104,30 +104,46 @@ export default function Pricing() {
       />
 
       <div className="min-h-screen bg-black text-white pt-32 pb-32 relative overflow-hidden">
-        {/* Background Elements */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-[#00E4FF]/10 rounded-full blur-[120px] pointer-events-none"></div>
+        {/* Enhanced Background Elements */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-[#00E4FF]/10 rounded-full blur-[120px] pointer-events-none animate-pulse-slow"></div>
+        <div className="absolute bottom-0 right-0 w-[800px] h-[500px] bg-[#8C4BFF]/10 rounded-full blur-[100px] pointer-events-none animate-pulse-slow" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/hexellence.png')] opacity-5"></div>
         
         <div className="container mx-auto px-6 relative z-10 max-w-7xl">
           <div className="text-center mb-24">
-            <h1 className="text-6xl md:text-7xl font-black tracking-tighter font-space mb-6">
-              GLYPHLOCK <span className="text-transparent bg-gradient-to-r from-[#00E4FF] to-[#8C4BFF] bg-clip-text">PLANS</span>
+            <div className="inline-block mb-6">
+              <div className="px-6 py-2 rounded-full border border-[#00E4FF]/30 bg-[#00E4FF]/5 backdrop-blur-sm">
+                <span className="text-[#00E4FF] text-sm font-bold uppercase tracking-wider">Premium Security Plans</span>
+              </div>
+            </div>
+            <h1 className="text-6xl md:text-8xl font-black tracking-tighter font-space mb-8 relative">
+              <span className="relative">
+                GLYPHLOCK{" "}
+                <span className="text-transparent bg-gradient-to-r from-[#00E4FF] via-[#8C4BFF] to-[#9F00FF] bg-clip-text animate-gradient">
+                  PLANS
+                </span>
+                <div className="absolute -inset-4 bg-gradient-to-r from-[#00E4FF]/20 to-[#8C4BFF]/20 blur-3xl -z-10 animate-pulse"></div>
+              </span>
             </h1>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-300 max-w-2xl mx-auto mb-4">
               Zero free tiers. Zero compromises. <span className="text-[#00E4FF] font-bold">Zero games.</span>
+            </p>
+            <p className="text-sm text-gray-500 max-w-xl mx-auto">
+              Enterprise-grade quantum security built for professionals who refuse to settle.
             </p>
           </div>
 
           {error && (
-            <Alert className="mb-12 bg-red-500/10 border-red-500/40 max-w-3xl mx-auto neon-border-purple">
+            <Alert className="mb-12 bg-red-500/10 border-red-500/40 max-w-3xl mx-auto backdrop-blur-xl shadow-[0_0_30px_rgba(239,68,68,0.2)] animate-in slide-in-from-top-4">
               <AlertCircle className="h-5 w-5 text-red-400" />
-              <AlertDescription className="text-white">{error}</AlertDescription>
+              <AlertDescription className="text-white font-medium">{error}</AlertDescription>
             </Alert>
           )}
 
-          <Alert className="mb-16 bg-[#0A0F24] border-[#00E4FF]/30 max-w-3xl mx-auto">
-            <AlertCircle className="h-5 w-5 text-[#00E4FF]" />
-            <AlertDescription className="text-white">
-              All sales are final. Subscription refunds available only within 14 days.
+          <Alert className="mb-16 bg-[#0A0F24]/80 border-[#00E4FF]/30 max-w-3xl mx-auto backdrop-blur-xl shadow-[0_0_20px_rgba(0,228,255,0.1)]">
+            <Shield className="h-5 w-5 text-[#00E4FF]" />
+            <AlertDescription className="text-gray-300 font-medium">
+              <span className="text-[#00E4FF] font-bold">Secure Checkout:</span> All sales final. 14-day refund window for subscriptions. Enterprise-grade payment protection.
             </AlertDescription>
           </Alert>
 
@@ -143,15 +159,27 @@ export default function Pricing() {
                 )}
 
                 <div
-                  className={`relative h-full p-8 rounded-2xl transition-all duration-300 border 
+                  className={`relative h-full p-8 rounded-2xl transition-all duration-300 border group/card
                     ${plan.highlight 
-                      ? "bg-[#0A0F24]/80 border-[#00E4FF] shadow-[0_0_30px_rgba(0,228,255,0.15)]" 
-                      : "bg-black/40 border-white/10 hover:border-[#8C4BFF]/50 hover:bg-[#0A0F24]/60"
-                    } backdrop-blur-xl flex flex-col`}
+                      ? "bg-gradient-to-br from-[#0A0F24]/90 to-[#001F54]/80 border-[#00E4FF] shadow-[0_0_40px_rgba(0,228,255,0.25)] scale-105" 
+                      : "bg-gradient-to-br from-black/60 to-[#0A0F24]/40 border-white/10 hover:border-[#8C4BFF]/50 hover:bg-[#0A0F24]/70 hover:scale-[1.02]"
+                    } backdrop-blur-xl flex flex-col overflow-hidden`}
                 >
-                  <div className="mb-8">
-                    <div className={`w-14 h-14 rounded-xl flex items-center justify-center mb-6 ${plan.highlight ? 'bg-[#00E4FF]/20 text-[#00E4FF]' : 'bg-white/5 text-gray-400 group-hover:text-[#8C4BFF] group-hover:bg-[#8C4BFF]/10 transition-colors'}`}>
-                      <plan.icon className="w-7 h-7" />
+                  {/* Animated gradient overlay */}
+                  <div className={`absolute inset-0 opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 pointer-events-none ${plan.highlight ? 'opacity-20' : ''}`}>
+                    <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-[#00E4FF]/10 via-transparent to-[#8C4BFF]/10 animate-gradient"></div>
+                  </div>
+                  
+                  {/* Scan line effect */}
+                  <div className="absolute inset-0 overflow-hidden opacity-20 pointer-events-none">
+                    <div className="absolute w-full h-px bg-gradient-to-r from-transparent via-[#00E4FF] to-transparent animate-scan-line"></div>
+                  </div>
+                  <div className="mb-8 relative z-10">
+                    <div className={`w-14 h-14 rounded-xl flex items-center justify-center mb-6 relative ${plan.highlight ? 'bg-[#00E4FF]/20 text-[#00E4FF]' : 'bg-white/5 text-gray-400 group-hover/card:text-[#8C4BFF] group-hover/card:bg-[#8C4BFF]/10 transition-all'}`}>
+                      <plan.icon className="w-7 h-7 relative z-10" />
+                      {plan.highlight && (
+                        <div className="absolute inset-0 bg-[#00E4FF] opacity-20 blur-xl animate-pulse"></div>
+                      )}
                     </div>
                     <h3 className="text-3xl font-bold text-white tracking-tight font-space mb-2">
                       {plan.name}
@@ -195,13 +223,23 @@ export default function Pricing() {
                     <Button
                       onClick={() => handleSubscribe(plan)}
                       disabled={loading === plan.name}
-                      className={`w-full h-12 text-lg font-bold uppercase tracking-wide transition-all ${
+                      className={`relative w-full h-12 text-lg font-bold uppercase tracking-wide transition-all overflow-hidden group/btn ${
                         plan.highlight
-                          ? "bg-gradient-to-r from-[#00E4FF] to-[#0099FF] hover:to-[#00E4FF] text-black shadow-[0_0_20px_rgba(0,228,255,0.3)] hover:shadow-[0_0_30px_rgba(0,228,255,0.5)] border-none"
-                          : "bg-white/10 hover:bg-white/20 text-white border-none"
+                          ? "bg-gradient-to-r from-[#00E4FF] to-[#0099FF] hover:to-[#00E4FF] text-black shadow-[0_0_20px_rgba(0,228,255,0.3)] hover:shadow-[0_0_40px_rgba(0,228,255,0.6)] border-none"
+                          : "bg-gradient-to-r from-white/10 to-white/5 hover:from-[#8C4BFF]/20 hover:to-[#8C4BFF]/10 text-white border border-white/10 hover:border-[#8C4BFF]/50"
                       }`}
                     >
-                      {loading === plan.name ? "Processing..." : "Get Started"}
+                      {loading === plan.name ? (
+                        <span className="flex items-center gap-2">
+                          <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
+                          Processing...
+                        </span>
+                      ) : (
+                        <>
+                          <span className="relative z-10">Get Started</span>
+                          <div className="absolute inset-0 bg-gradient-to-r from-[#00E4FF]/0 via-[#00E4FF]/20 to-[#00E4FF]/0 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700"></div>
+                        </>
+                      )}
                     </Button>
                   )}
                 </div>
@@ -209,19 +247,51 @@ export default function Pricing() {
             ))}
           </div>
 
-          <div className="text-center mt-32">
-            <h2 className="text-3xl font-bold text-white mb-4 font-space">
-              Need Guidance?
-            </h2>
-            <p className="text-gray-400 mb-8">
-              Talk to a GlyphLock security specialist to find your perfect fit.
-            </p>
-            <Link to={createPageUrl("Consultation")}>
-              <Button className="bg-transparent border border-[#00E4FF] text-[#00E4FF] hover:bg-[#00E4FF] hover:text-black transition-all px-8 py-6 text-lg font-bold uppercase tracking-wide shadow-[0_0_15px_rgba(0,228,255,0.2)]">
-                Schedule Consultation ($200)
-              </Button>
-            </Link>
+          <div className="text-center mt-32 relative">
+            <div className="absolute inset-0 bg-gradient-to-t from-[#00E4FF]/5 via-transparent to-transparent blur-3xl pointer-events-none"></div>
+            <div className="relative z-10">
+              <h2 className="text-4xl font-black text-white mb-4 font-space">
+                Need <span className="text-transparent bg-gradient-to-r from-[#00E4FF] to-[#8C4BFF] bg-clip-text">Guidance?</span>
+              </h2>
+              <p className="text-gray-300 mb-8 text-lg max-w-xl mx-auto">
+                Talk to a GlyphLock security specialist to architect your perfect defense.
+              </p>
+              <Link to={createPageUrl("Consultation")}>
+                <Button className="group relative bg-transparent border-2 border-[#00E4FF] text-[#00E4FF] hover:text-black transition-all px-10 py-7 text-lg font-bold uppercase tracking-wide shadow-[0_0_20px_rgba(0,228,255,0.3)] hover:shadow-[0_0_40px_rgba(0,228,255,0.5)] overflow-hidden">
+                  <span className="relative z-10 flex items-center gap-3">
+                    <Shield className="w-5 h-5" />
+                    Schedule Consultation ($200)
+                  </span>
+                  <div className="absolute inset-0 bg-[#00E4FF] translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                </Button>
+              </Link>
+            </div>
           </div>
+          
+          <style>{`
+            @keyframes gradient {
+              0%, 100% { background-position: 0% 50%; }
+              50% { background-position: 100% 50%; }
+            }
+            @keyframes scan-line {
+              0% { transform: translateY(0); }
+              100% { transform: translateY(100vh); }
+            }
+            @keyframes pulse-slow {
+              0%, 100% { opacity: 0.1; }
+              50% { opacity: 0.15; }
+            }
+            .animate-gradient { 
+              background-size: 200% 200%;
+              animation: gradient 3s ease infinite;
+            }
+            .animate-scan-line {
+              animation: scan-line 8s linear infinite;
+            }
+            .animate-pulse-slow {
+              animation: pulse-slow 4s ease-in-out infinite;
+            }
+          `}</style>
         </div>
       </div>
     </>

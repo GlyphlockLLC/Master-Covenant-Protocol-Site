@@ -7,7 +7,7 @@ Deno.serve(async (req) => {
         const user = await base44.auth.me();
         
         if (!user) {
-            return Response.json({ error: 'Unauthorized' }, { status: 401 });
+            return Response.json({ error: 'Unauthorized - Please sign in' }, { status: 401 });
         }
 
         const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY"), { 
@@ -17,13 +17,13 @@ Deno.serve(async (req) => {
         const { productId, priceId, mode } = await req.json();
 
         if (!priceId || !mode) {
-            return Response.json({ error: 'Missing priceId or mode' }, { status: 400 });
+            return Response.json({ error: 'Missing required payment parameters' }, { status: 400 });
         }
 
         const appHost = req.headers.get('x-forwarded-host') || req.headers.get('host');
         const protocol = req.headers.get('x-forwarded-proto') || 'https';
         const successUrl = `${protocol}://${appHost}/payment-success?session_id={CHECKOUT_SESSION_ID}`;
-        const cancelUrl = `${protocol}://${appHost}/payment-cancel`;
+        const cancelUrl = `${protocol}://${appHost}/pricing`;
 
         const session = await stripe.checkout.sessions.create({
             line_items: [{ 
@@ -34,21 +34,30 @@ Deno.serve(async (req) => {
             success_url: successUrl,
             cancel_url: cancelUrl,
             customer_email: user.email,
+            client_reference_id: user.id,
             metadata: { 
                 userId: user.id, 
-                userEmail: user.email, 
+                userEmail: user.email,
+                userName: user.full_name || 'N/A',
                 productId: productId || '', 
-                priceId: priceId 
+                priceId: priceId,
+                timestamp: new Date().toISOString()
             },
+            allow_promotion_codes: true,
+            billing_address_collection: 'auto',
         });
 
         return Response.json({ 
             checkoutUrl: session.url,
-            sessionId: session.id 
+            sessionId: session.id,
+            success: true
         });
 
     } catch (error) {
-        console.error("Stripe Checkout Function Error:", error);
-        return Response.json({ error: error.message }, { status: 500 });
+        console.error("Stripe Checkout Error:", error);
+        return Response.json({ 
+            error: error.message || 'Payment processing failed',
+            success: false
+        }, { status: 500 });
     }
 });
