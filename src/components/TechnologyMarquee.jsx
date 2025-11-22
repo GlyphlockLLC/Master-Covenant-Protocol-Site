@@ -1,7 +1,6 @@
 import React from "react";
 
 export default function TechnologyMarquee() {
-  // Row 1: 75 logos (main cybersecurity, cloud, AI ecosystem)
   const row1Logos = [
     { name: "AWS", logo: "https://www.vectorlogo.zone/logos/amazon_aws/amazon_aws-ar21.svg" },
     { name: "Google Cloud", logo: "https://upload.wikimedia.org/wikipedia/commons/5/51/Google_Cloud_logo.svg" },
@@ -16,6 +15,8 @@ export default function TechnologyMarquee() {
     { name: "Hugging Face", logo: "https://huggingface.co/front/assets/huggingface_logo.svg" },
     { name: "GitHub", logo: "https://www.vectorlogo.zone/logos/github/github-ar21.svg" },
     { name: "Cloudflare", logo: "https://www.vectorlogo.zone/logos/cloudflare/cloudflare-ar21.svg" },
+    { name: "Stripe", logo: "https://logo.clearbit.com/stripe.com" },
+    { name: "Square", logo: "https://logo.clearbit.com/squareup.com" },
     { name: "Kubernetes", logo: "https://www.vectorlogo.zone/logos/kubernetes/kubernetes-ar21.svg" },
     { name: "Terraform", logo: "https://www.vectorlogo.zone/logos/terraformio/terraformio-ar21.svg" },
     { name: "Supabase", logo: "https://upload.wikimedia.org/wikipedia/commons/b/b8/Supabase_Logo.svg" },
@@ -102,15 +103,11 @@ export default function TechnologyMarquee() {
     { name: "TikTok", logo: "https://upload.wikimedia.org/wikipedia/en/a/a9/TikTok_logo.svg" },
     { name: "Snapchat", logo: "https://upload.wikimedia.org/wikipedia/en/c/c4/Snapchat_logo.svg" },
     { name: "US Bank", logo: "https://upload.wikimedia.org/wikipedia/commons/2/2d/US_Bank_logo_2020.svg" },
-    { name: "Elavon", logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxVfqLXnqhF6CaGqG-7vPiFXvLwClMFp8Bag&s" },
+    { name: "Elavon", logo: "https://logo.clearbit.com/elavon.com" },
     { name: "GoDaddy", logo: "https://upload.wikimedia.org/wikipedia/commons/3/36/GoDaddy_logo.svg" },
-    { name: "Block (Square)", logo: "https://logo.clearbit.com/squareup.com" },
-    { name: "Base44", logo: "https://avatars.githubusercontent.com/u/145019558?s=200&v=4" },
-    { name: "Stripe", logo: "https://logo.clearbit.com/stripe.com" },
-    { name: "Square", logo: "https://logo.clearbit.com/squareup.com" }
+    { name: "Base44", logo: "https://avatars.githubusercontent.com/u/145019558?s=200&v=4" }
   ];
 
-  // Row 2: 34 logos (enterprise & security)
   const row2Logos = [
     { name: "Salesforce", logo: "https://www.vectorlogo.zone/logos/salesforce/salesforce-ar21.svg" },
     { name: "Oracle", logo: "https://www.vectorlogo.zone/logos/oracle/oracle-ar21.svg" },
@@ -147,7 +144,6 @@ export default function TechnologyMarquee() {
     { name: "Toast POS", logo: "https://logo.clearbit.com/toasttab.com" }
   ];
 
-  // Row 3: 33 logos (major tech & finance)
   const row3Logos = [
     { name: "Apple", logo: "https://www.vectorlogo.zone/logos/apple/apple-ar21.svg" },
     { name: "Microsoft", logo: "https://www.vectorlogo.zone/logos/microsoft/microsoft-ar21.svg" },
@@ -183,6 +179,11 @@ export default function TechnologyMarquee() {
     { name: "Citibank", logo: "https://upload.wikimedia.org/wikipedia/commons/1/1b/Citi.svg" }
   ];
 
+  // Triple each array for infinite loop
+  const repeatedRow1 = [...row1Logos, ...row1Logos, ...row1Logos];
+  const repeatedRow2 = [...row2Logos, ...row2Logos, ...row2Logos, ...row2Logos, ...row2Logos, ...row2Logos];
+  const repeatedRow3 = [...row3Logos, ...row3Logos, ...row3Logos, ...row3Logos, ...row3Logos, ...row3Logos];
+
   return (
     <div className="w-full max-w-7xl mx-auto px-4 py-16">
       <div className="text-center mb-12">
@@ -195,48 +196,51 @@ export default function TechnologyMarquee() {
       </div>
 
       <div className="space-y-1 relative overflow-hidden">
-        {/* Row 1: 111 logos - scroll left fast */}
+        {/* Row 1: 107 logos - scroll left */}
         <div className="marquee-container">
           <div className="marquee-content marquee-row-1">
-            {[...row1Logos, ...row1Logos, ...row1Logos].map((company, idx) => (
-              <div key={`r1-${idx}`} className="logo-item">
+            {repeatedRow1.map((company, idx) => (
+              <div key={`r1-${company.name}-${idx}`} className="logo-item">
                 <img 
                   src={company.logo} 
                   alt={company.name}
                   className="logo-img"
                   loading="lazy"
+                  onError={(e) => { e.target.style.display = 'none'; }}
                 />
               </div>
             ))}
           </div>
         </div>
 
-        {/* Row 2: 34 logos - scroll right medium */}
+        {/* Row 2: 33 logos - scroll right */}
         <div className="marquee-container">
           <div className="marquee-content marquee-row-2">
-            {[...row2Logos, ...row2Logos, ...row2Logos, ...row2Logos, ...row2Logos, ...row2Logos].map((company, idx) => (
-              <div key={`r2-${idx}`} className="logo-item">
+            {repeatedRow2.map((company, idx) => (
+              <div key={`r2-${company.name}-${idx}`} className="logo-item">
                 <img 
                   src={company.logo} 
                   alt={company.name}
                   className="logo-img"
                   loading="lazy"
+                  onError={(e) => { e.target.style.display = 'none'; }}
                 />
               </div>
             ))}
           </div>
         </div>
 
-        {/* Row 3: 33 logos - scroll left slow */}
+        {/* Row 3: 32 logos - scroll left */}
         <div className="marquee-container">
           <div className="marquee-content marquee-row-3">
-            {[...row3Logos, ...row3Logos, ...row3Logos, ...row3Logos, ...row3Logos, ...row3Logos].map((company, idx) => (
-              <div key={`r3-${idx}`} className="logo-item">
+            {repeatedRow3.map((company, idx) => (
+              <div key={`r3-${company.name}-${idx}`} className="logo-item">
                 <img 
                   src={company.logo} 
                   alt={company.name}
                   className="logo-img"
                   loading="lazy"
+                  onError={(e) => { e.target.style.display = 'none'; }}
                 />
               </div>
             ))}
@@ -250,20 +254,8 @@ export default function TechnologyMarquee() {
           position: relative;
           width: 100%;
           padding: 0.75rem 0;
-          mask-image: linear-gradient(
-            to right,
-            transparent,
-            black 5%,
-            black 95%,
-            transparent
-          );
-          -webkit-mask-image: linear-gradient(
-            to right,
-            transparent,
-            black 5%,
-            black 95%,
-            transparent
-          );
+          mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+          -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
         }
 
         .marquee-content {
@@ -272,19 +264,16 @@ export default function TechnologyMarquee() {
           will-change: transform;
         }
 
-        /* Row 1: Fast scroll left (111 items x3 = 333 visible) */
         .marquee-row-1 {
-          animation: marquee-left 90s linear infinite;
+          animation: marquee-left 120s linear infinite;
         }
 
-        /* Row 2: Medium scroll right (34 items x6 = 204 visible) */
         .marquee-row-2 {
-          animation: marquee-right 70s linear infinite;
+          animation: marquee-right 90s linear infinite;
         }
 
-        /* Row 3: Slow scroll left (33 items x6 = 198 visible) */
         .marquee-row-3 {
-          animation: marquee-left 80s linear infinite;
+          animation: marquee-left 100s linear infinite;
         }
 
         .marquee-container:hover .marquee-content {
@@ -321,7 +310,6 @@ export default function TechnologyMarquee() {
           drop-shadow: 0 0 20px rgba(0, 228, 255, 0.6));
         }
 
-        /* Combination lock effect: alternating directions at different speeds */
         @keyframes marquee-left {
           0% {
             transform: translateX(0);
@@ -340,7 +328,6 @@ export default function TechnologyMarquee() {
           }
         }
 
-        /* Add slight vertical offset for combination lock effect */
         .marquee-container:nth-child(1) {
           transform: translateY(-2px);
         }
@@ -353,7 +340,6 @@ export default function TechnologyMarquee() {
           transform: translateY(-2px);
         }
 
-        /* Add subtle scan line effect */
         @keyframes scan {
           0%, 100% {
             opacity: 0;
@@ -370,12 +356,7 @@ export default function TechnologyMarquee() {
           left: -100%;
           width: 100%;
           height: 100%;
-          background: linear-gradient(
-            90deg,
-            transparent,
-            rgba(0, 228, 255, 0.1),
-            transparent
-          );
+          background: linear-gradient(90deg, transparent, rgba(0, 228, 255, 0.1), transparent);
           animation: scan 4s linear infinite;
         }
       `}</style>
