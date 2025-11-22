@@ -4,6 +4,8 @@
  * applies CSS variable multipliers, handles viewport bugs
  */
 
+import { injectMobileStyles } from './mobile-styles';
+
 class MobileScalingSystem {
   constructor() {
     this.isMobile = this.detectMobile();
@@ -337,6 +339,9 @@ class MobileScalingSystem {
    * Initialize mobile system
    */
   init() {
+    // Inject mobile styles
+    injectMobileStyles();
+
     // Apply initial scale factors
     this.applyScaleFactors();
 
