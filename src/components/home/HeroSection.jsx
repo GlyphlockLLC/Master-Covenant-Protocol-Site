@@ -22,14 +22,14 @@ export default function HeroSection() {
           
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
           
-          <div className="absolute z-10 bottom-3 right-3 md:bottom-5 md:right-5 flex items-center gap-3">
-            <span className="text-white/80 font-bold font-space tracking-widest text-xs md:text-sm uppercase hidden sm:block">
+          <div className="absolute z-10 bottom-2 right-2 sm:bottom-3 sm:right-3 md:bottom-4 md:right-4 lg:bottom-5 lg:right-5 flex items-center gap-2 md:gap-3">
+            <span className="text-white/80 font-bold font-space tracking-widest text-[10px] sm:text-xs md:text-sm uppercase hidden sm:block">
               System Active
             </span>
             <img
               src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/08025b614_gl-logo.png"
               alt="GlyphLock"
-              className="h-8 md:h-12 w-auto drop-shadow-[0_0_10px_rgba(0,228,255,0.5)]"
+              className="h-6 sm:h-8 md:h-10 lg:h-12 w-auto drop-shadow-[0_0_10px_rgba(0,228,255,0.5)]"
             />
           </div>
         </div>
