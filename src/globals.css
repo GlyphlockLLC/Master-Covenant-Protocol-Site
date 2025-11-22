@@ -238,19 +238,46 @@ div[data-radix-popper-content-wrapper] > * > * {
   z-index: 99999 !important;
 }
 
-/* Card components - force dark */
+/* Card components - NUCLEAR OVERRIDE */
 [class*="Card"],
-[data-card] {
+[class*="card"],
+[data-card],
+div[class*="rounded"],
+section[class*="rounded"],
+article[class*="rounded"] {
   background: rgba(10, 15, 36, 0.8) !important;
   background-color: rgba(10, 15, 36, 0.8) !important;
   color: white !important;
 }
 
-/* CardContent specifically */
+/* All shadcn card variants */
+.card,
+[data-slot="card"],
+[role="article"],
+div[class*="shadow"],
+div[class*="border"][class*="rounded"] {
+  background: rgba(10, 15, 36, 0.8) !important;
+  background-color: rgba(10, 15, 36, 0.8) !important;
+  color: white !important;
+}
+
+/* CardContent, CardHeader, CardFooter */
 [class*="CardContent"],
-[class*="card-content"] {
+[class*="CardHeader"],
+[class*="CardFooter"],
+[class*="card-content"],
+[class*="card-header"],
+[class*="card-footer"] {
   background: transparent !important;
   background-color: transparent !important;
+  color: white !important;
+}
+
+/* CardTitle and CardDescription */
+[class*="CardTitle"],
+[class*="CardDescription"],
+[class*="card-title"],
+[class*="card-description"] {
   color: white !important;
 }
 
