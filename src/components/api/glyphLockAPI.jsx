@@ -136,6 +136,36 @@ export const glyphLockAPI = {
     
     downloadInvoice: async (invoiceId) => {
       return callFunction('downloadInvoice', { invoiceId });
+    },
+
+    sendInvite: async (email, role) => {
+      return callFunction('sendTeamInvite', { email, role });
+    }
+  },
+
+  // Team Management
+  team: {
+    getOrganization: async () => {
+      return callFunction('getOrganization');
+    },
+
+    listMembers: async () => {
+      return callFunction('listTeamMembers');
+    },
+
+    updateMemberRole: async (memberId, role) => {
+      return callFunction('updateMemberRole', { memberId, role });
+    },
+
+    removeMember: async (memberId) => {
+      return callFunction('removeMember', { memberId });
+    }
+  },
+
+  // Usage Metering
+  usage: {
+    get: async () => {
+      return callFunction('getUsageMetrics');
     }
   }
 };

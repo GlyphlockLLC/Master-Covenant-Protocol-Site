@@ -228,7 +228,7 @@ export default function BillingAndPayments({ user }) {
           {billingStatus && (
             <Card className="glass-card border-purple-500/30 mb-8">
               <CardHeader>
-                <CardTitle className="text-2xl font-bold text-purple-400">Current Plan</CardTitle>
+                <CardTitle className="text-2xl font-bold text-purple-400">Current Plan & License Tier</CardTitle>
               </CardHeader>
               <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-6 text-white/80">
                 <div className="space-y-2">
@@ -236,6 +236,12 @@ export default function BillingAndPayments({ user }) {
                   <p><span className="font-semibold text-white">Status:</span> <span className={`${billingStatus.status === 'active' ? 'text-green-400' : 'text-yellow-400'}`}>{billingStatus.status}</span></p>
                   <p><span className="font-semibold text-white">Renews:</span> {formatDate(billingStatus.renewalDate)}</p>
                   {billingStatus.trialEndDate && <p><span className="font-semibold text-white">Trial Ends:</span> {formatDate(billingStatus.trialEndDate)}</p>}
+                  <div className="pt-2">
+                    <p className="font-semibold text-white mb-1">License Tier:</p>
+                    <div className="inline-block px-3 py-1 rounded-full bg-gradient-to-r from-[#8C4BFF] to-[#00E4FF] text-white font-bold">
+                      {billingStatus.licenseTier || 'Starter'}
+                    </div>
+                  </div>
                 </div>
                 <div className="space-y-2">
                   <p><span className="font-semibold text-white">Price:</span> {formatCurrency(billingStatus.currentPrice)} / {billingStatus.interval}</p>

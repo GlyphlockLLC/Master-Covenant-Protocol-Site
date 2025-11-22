@@ -14,6 +14,7 @@ import SecuritySettings from "@/components/console/SecuritySettings";
 import APIReference from "@/components/console/APIReference";
 import BillingAndPayments from "@/components/console/BillingAndPayments";
 import AdminBillingOverview from "@/components/console/admin/AdminBillingOverview";
+import TeamAndRoles from "@/components/console/TeamAndRoles";
 
 export default function EnterpriseConsole() {
   const navigate = useNavigate();
@@ -66,6 +67,8 @@ export default function EnterpriseConsole() {
         return <BillingAndPayments user={user} />;
       case "admin-billing":
         return <AdminBillingOverview user={user} />;
+      case "team-roles":
+        return <TeamAndRoles user={user} />;
       default:
         return <DashboardHome user={user} />;
     }
