@@ -244,7 +244,10 @@ div[data-radix-popper-content-wrapper] > * > * {
 [data-card],
 div[class*="rounded"],
 section[class*="rounded"],
-article[class*="rounded"] {
+article[class*="rounded"],
+div[class*="bg-white"],
+section[class*="bg-white"],
+article[class*="bg-white"] {
   background: rgba(10, 15, 36, 0.8) !important;
   background-color: rgba(10, 15, 36, 0.8) !important;
   color: white !important;
@@ -259,6 +262,14 @@ div[class*="border"][class*="rounded"] {
   background: rgba(10, 15, 36, 0.8) !important;
   background-color: rgba(10, 15, 36, 0.8) !important;
   color: white !important;
+}
+
+/* ULTIMATE WHITE KILLER - covers any remaining white backgrounds */
+div[class*="bg-white"]:not([class*="text"]):not([class*="border"]),
+section[class*="bg-white"]:not([class*="text"]):not([class*="border"]),
+.bg-white:not([class*="text"]):not([class*="border"]) {
+  background: rgba(10, 15, 36, 0.8) !important;
+  background-color: rgba(10, 15, 36, 0.8) !important;
 }
 
 /* CardContent, CardHeader, CardFooter */
