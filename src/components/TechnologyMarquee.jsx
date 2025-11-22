@@ -16,7 +16,6 @@ export default function TechnologyMarquee() {
     { name: "Hugging Face", logo: "https://huggingface.co/front/assets/huggingface_logo.svg" },
     { name: "GitHub", logo: "https://www.vectorlogo.zone/logos/github/github-ar21.svg" },
     { name: "Cloudflare", logo: "https://www.vectorlogo.zone/logos/cloudflare/cloudflare-ar21.svg" },
-    { name: "Stripe", logo: "https://www.vectorlogo.zone/logos/stripe/stripe-ar21.svg" },
     { name: "Kubernetes", logo: "https://www.vectorlogo.zone/logos/kubernetes/kubernetes-ar21.svg" },
     { name: "Terraform", logo: "https://www.vectorlogo.zone/logos/terraformio/terraformio-ar21.svg" },
     { name: "Supabase", logo: "https://upload.wikimedia.org/wikipedia/commons/b/b8/Supabase_Logo.svg" },
@@ -106,10 +105,12 @@ export default function TechnologyMarquee() {
     { name: "Elavon", logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxVfqLXnqhF6CaGqG-7vPiFXvLwClMFp8Bag&s" },
     { name: "GoDaddy", logo: "https://upload.wikimedia.org/wikipedia/commons/3/36/GoDaddy_logo.svg" },
     { name: "Block (Square)", logo: "https://logo.clearbit.com/squareup.com" },
-    { name: "Base44", logo: "https://avatars.githubusercontent.com/u/145019558?s=200&v=4" }
+    { name: "Base44", logo: "https://avatars.githubusercontent.com/u/145019558?s=200&v=4" },
+    { name: "Stripe", logo: "https://logo.clearbit.com/stripe.com" },
+    { name: "Square", logo: "https://logo.clearbit.com/squareup.com" }
   ];
 
-  // Row 2: 25 logos (enterprise & security)
+  // Row 2: 34 logos (enterprise & security)
   const row2Logos = [
     { name: "Salesforce", logo: "https://www.vectorlogo.zone/logos/salesforce/salesforce-ar21.svg" },
     { name: "Oracle", logo: "https://www.vectorlogo.zone/logos/oracle/oracle-ar21.svg" },
@@ -142,12 +143,11 @@ export default function TechnologyMarquee() {
     { name: "Varonis", logo: "https://upload.wikimedia.org/wikipedia/commons/d/d5/Varonis_logo.svg" },
     { name: "Ping Identity", logo: "https://upload.wikimedia.org/wikipedia/commons/7/73/Ping_Identity_logo.svg" },
     { name: "JumpCloud", logo: "https://upload.wikimedia.org/wikipedia/commons/7/7f/JumpCloud_logo.svg" },
-    { name: "Stripe", logo: "https://logo.clearbit.com/stripe.com" },
     { name: "Clover", logo: "https://logo.clearbit.com/clover.com" },
     { name: "Toast POS", logo: "https://logo.clearbit.com/toasttab.com" }
   ];
 
-  // Row 3: 25 logos (major tech & finance)
+  // Row 3: 33 logos (major tech & finance)
   const row3Logos = [
     { name: "Apple", logo: "https://www.vectorlogo.zone/logos/apple/apple-ar21.svg" },
     { name: "Microsoft", logo: "https://www.vectorlogo.zone/logos/microsoft/microsoft-ar21.svg" },
@@ -160,7 +160,6 @@ export default function TechnologyMarquee() {
     { name: "Visa", logo: "https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" },
     { name: "Mastercard", logo: "https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" },
     { name: "American Express", logo: "https://upload.wikimedia.org/wikipedia/commons/f/fa/American_Express_logo_%282018%29.svg" },
-    { name: "Square", logo: "https://upload.wikimedia.org/wikipedia/commons/e/e4/Square%2C_Inc._-_Square_Logo.svg" },
     { name: "Adyen", logo: "https://www.vectorlogo.zone/logos/adyen/adyen-ar21.svg" },
     { name: "Braintree", logo: "https://www.vectorlogo.zone/logos/braintreepayments/braintreepayments-ar21.svg" },
     { name: "Plaid", logo: "https://upload.wikimedia.org/wikipedia/commons/2/2d/Plaid_logo.svg" },
