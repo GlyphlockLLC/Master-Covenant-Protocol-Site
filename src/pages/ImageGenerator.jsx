@@ -41,9 +41,30 @@ export default function ImageGenerator() {
     setImages([]);
     
     try {
-      const promises = Array.from({ length: batchCount }, async () => {
-        const result = await base44.integrations.Core.GenerateImage({ prompt });
-        return { url: result.url };
+      // Enhanced prompt with style and quality settings
+      const enhancedPrompt = `${prompt}${selectedStyle !== 'photorealistic' ? `, ${selectedStyle} style` : ''}, ${controls.qualityMode.toLowerCase()} quality, highly detailed`;
+      
+      const promises = Array.from({ length: batchCount }, async (_, idx) => {
+        try {
+          // Primary: Use Core.GenerateImage with enhanced prompt
+          const result = await base44.integrations.Core.GenerateImage({ 
+            prompt: enhancedPrompt 
+          });
+          return { url: result.url, source: 'primary' };
+        } catch (primaryError) {
+          console.warn(`Primary generation failed for image ${idx + 1}:`, primaryError);
+          
+          // Fallback: Try with original prompt
+          try {
+            const fallbackResult = await base44.integrations.Core.GenerateImage({ 
+              prompt: prompt 
+            });
+            return { url: fallbackResult.url, source: 'fallback' };
+          } catch (fallbackError) {
+            console.error(`All generation methods failed for image ${idx + 1}:`, fallbackError);
+            throw new Error(`Image generation failed: ${fallbackError.message || 'Unknown error'}`);
+          }
+        }
       });
       
       const results = await Promise.all(promises);
@@ -64,8 +85,8 @@ export default function ImageGenerator() {
       localStorage.setItem('glyphlock_generated_images', JSON.stringify(savedImages));
       
     } catch (error) {
-      console.error("Error generating image:", error);
-      alert("Failed to generate image. Please try again.");
+      console.error("Error generating images:", error);
+      alert(`Failed to generate images: ${error.message}. Please try again.`);
     } finally {
       setLoading(false);
       if (!controls.seedLocked) {
