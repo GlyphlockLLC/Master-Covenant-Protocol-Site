@@ -37,10 +37,9 @@ import Solutions from './pages/Solutions';
 import ContentGenerator from './pages/ContentGenerator';
 import GlyphBot from './pages/GlyphBot';
 import InteractiveImageStudio from './pages/InteractiveImageStudio';
-import DeveloperConsole from './pages/DeveloperConsole';
-import EnterpriseConsole from './pages/EnterpriseConsole';
 import BillingAndPayments from './pages/BillingAndPayments';
 import PaymentCancel from './pages/PaymentCancel';
+import CommandCenter from './pages/CommandCenter';
 import __Layout from './Layout.jsx';
 
 
@@ -84,10 +83,9 @@ export const PAGES = {
     "ContentGenerator": ContentGenerator,
     "GlyphBot": GlyphBot,
     "InteractiveImageStudio": InteractiveImageStudio,
-    "DeveloperConsole": DeveloperConsole,
-    "EnterpriseConsole": EnterpriseConsole,
     "BillingAndPayments": BillingAndPayments,
     "PaymentCancel": PaymentCancel,
+    "CommandCenter": CommandCenter,
 }
 
 export const pagesConfig = {
