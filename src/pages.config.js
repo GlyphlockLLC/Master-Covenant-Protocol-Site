@@ -19,14 +19,8 @@ import ConsultationSuccess from './pages/ConsultationSuccess';
 import HotzoneMapper from './pages/HotzoneMapper';
 import HSSS from './pages/HSSS';
 import SecurityDocs from './pages/SecurityDocs';
-import Payment from './pages/Payment';
 import PaymentSuccess from './pages/PaymentSuccess';
 import Dashboard from './pages/Dashboard';
-import Admin from './pages/Admin';
-import NUPSManager from './pages/NUPSManager';
-import RefactorTaskList from './pages/RefactorTaskList';
-import IntegrationPlan from './pages/IntegrationPlan';
-import SecurityOperations from './pages/SecurityOperations';
 import DreamTeam from './pages/DreamTeam';
 import VisualCryptography from './pages/VisualCryptography';
 import SecurityOperationsCenter from './pages/SecurityOperationsCenter';
@@ -41,14 +35,10 @@ import Sitemap from './pages/Sitemap';
 import FAQ from './pages/FAQ';
 import Services from './pages/Services';
 import Solutions from './pages/Solutions';
-import SiteAuditReport from './pages/SiteAuditReport';
-import TaskTracker from './pages/TaskTracker';
 import ContentGenerator from './pages/ContentGenerator';
 import GlyphBot from './pages/GlyphBot';
 import InteractiveImageStudio from './pages/InteractiveImageStudio';
 import DeveloperConsole from './pages/DeveloperConsole';
-import BackendSetup from './pages/BackendSetup';
-import BackendTest from './pages/BackendTest';
 import EnterpriseConsole from './pages/EnterpriseConsole';
 import BillingAndPayments from './pages/BillingAndPayments';
 import PaymentCancel from './pages/PaymentCancel';
@@ -77,14 +67,8 @@ export const PAGES = {
     "HotzoneMapper": HotzoneMapper,
     "HSSS": HSSS,
     "SecurityDocs": SecurityDocs,
-    "Payment": Payment,
     "PaymentSuccess": PaymentSuccess,
     "Dashboard": Dashboard,
-    "Admin": Admin,
-    "NUPSManager": NUPSManager,
-    "RefactorTaskList": RefactorTaskList,
-    "IntegrationPlan": IntegrationPlan,
-    "SecurityOperations": SecurityOperations,
     "DreamTeam": DreamTeam,
     "VisualCryptography": VisualCryptography,
     "SecurityOperationsCenter": SecurityOperationsCenter,
@@ -99,14 +83,10 @@ export const PAGES = {
     "FAQ": FAQ,
     "Services": Services,
     "Solutions": Solutions,
-    "SiteAuditReport": SiteAuditReport,
-    "TaskTracker": TaskTracker,
     "ContentGenerator": ContentGenerator,
     "GlyphBot": GlyphBot,
     "InteractiveImageStudio": InteractiveImageStudio,
     "DeveloperConsole": DeveloperConsole,
-    "BackendSetup": BackendSetup,
-    "BackendTest": BackendTest,
     "EnterpriseConsole": EnterpriseConsole,
     "BillingAndPayments": BillingAndPayments,
     "PaymentCancel": PaymentCancel,
