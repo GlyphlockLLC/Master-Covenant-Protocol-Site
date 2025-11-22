@@ -9,7 +9,6 @@ const sdks = [
   {
     name: "Node.js",
     language: "javascript",
-    icon: "📦",
     versions: ["v1.0.0", "v0.9.5", "v0.9.0"],
     installCmd: "npm install @glyphlock/sdk",
     color: "#68A063"
@@ -17,7 +16,6 @@ const sdks = [
   {
     name: "Python",
     language: "python",
-    icon: "🐍",
     versions: ["v1.0.0", "v0.9.5"],
     installCmd: "pip install glyphlock",
     color: "#3776AB"
@@ -25,7 +23,6 @@ const sdks = [
   {
     name: "Go",
     language: "go",
-    icon: "🔷",
     versions: ["v1.0.0", "v0.9.5"],
     installCmd: "go get github.com/glyphlock/sdk",
     color: "#00ADD8"
@@ -33,7 +30,6 @@ const sdks = [
   {
     name: "Java",
     language: "java",
-    icon: "☕",
     versions: ["v1.0.0", "v0.9.5"],
     installCmd: "maven: com.glyphlock:sdk:1.0.0",
     color: "#007396"
@@ -41,7 +37,6 @@ const sdks = [
   {
     name: ".NET",
     language: "csharp",
-    icon: "🔷",
     versions: ["v1.0.0", "v0.9.5"],
     installCmd: "dotnet add package GlyphLock.SDK",
     color: "#512BD4"
@@ -49,7 +44,6 @@ const sdks = [
   {
     name: "PHP",
     language: "php",
-    icon: "🐘",
     versions: ["v1.0.0", "v0.9.5"],
     installCmd: "composer require glyphlock/sdk",
     color: "#777BB4"
@@ -57,7 +51,6 @@ const sdks = [
   {
     name: "Rust",
     language: "rust",
-    icon: "🦀",
     versions: ["v1.0.0", "v0.9.5"],
     installCmd: "cargo add glyphlock-sdk",
     color: "#CE422B"
@@ -65,7 +58,6 @@ const sdks = [
   {
     name: "Ruby",
     language: "ruby",
-    icon: "💎",
     versions: ["v1.0.0"],
     installCmd: "gem install glyphlock",
     color: "#CC342D"
@@ -150,7 +142,9 @@ export default function SDKDownloadCenter() {
           <Card key={sdk.language} className="bg-[#0A0F24] border-[#8C4BFF]/20 hover:border-[#8C4BFF]/40 transition-all">
             <CardHeader>
               <CardTitle className="flex items-center gap-3 text-white">
-                <span className="text-3xl">{sdk.icon}</span>
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center text-2xl" style={{ backgroundColor: `${sdk.color}20` }}>
+                  <FileCode className="w-6 h-6" style={{ color: sdk.color }} />
+                </div>
                 <div>
                   <div>{sdk.name}</div>
                   <div className="text-xs text-white/50 font-normal">{sdk.language}</div>
