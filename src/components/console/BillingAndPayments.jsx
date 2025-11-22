@@ -233,7 +233,7 @@ export default function BillingAndPayments({ user }) {
       )}
 
       {paymentStatus && (
-        <div className="mb-8 p-4 rounded-lg glass-card border-cyan-500/30 flex items-center justify-center">
+        <div className="mb-8 p-4 rounded-lg bg-[#0A0F24]/80 border-[#00E4FF]/30 backdrop-blur-xl flex items-center justify-center">
           {paymentStatus === 'complete' ? (
             <>
               <CheckCircle className="h-6 w-6 text-green-500 mr-3" />
@@ -250,14 +250,14 @@ export default function BillingAndPayments({ user }) {
 
       {loadingBillingData ? (
         <div className="space-y-6 mb-12">
-          <Skeleton className="h-32 w-full glass-card bg-white/5" />
-          <Skeleton className="h-48 w-full glass-card bg-white/5" />
+          <Skeleton className="h-32 w-full bg-[#0A0F24]/80 border border-[#00E4FF]/20" />
+          <Skeleton className="h-48 w-full bg-[#0A0F24]/80 border border-[#00E4FF]/20" />
         </div>
       ) : (
         <div>
           {/* Past Due Recovery Panel */}
           {billingStatus && (billingStatus.status === 'past_due' || billingStatus.status === 'payment_failed') && (
-            <Card className="glass-card border-red-500/30 mb-8">
+            <Card className="bg-[#0A0F24]/80 border-red-500/30 backdrop-blur-xl mb-8">
               <CardHeader>
                 <CardTitle className="text-2xl font-bold text-red-400 flex items-center gap-2">
                   <AlertCircle className="h-6 w-6" />
@@ -297,9 +297,9 @@ export default function BillingAndPayments({ user }) {
           )}
 
           {billingStatus && (
-            <Card className="glass-card border-purple-500/30 mb-8">
+            <Card className="bg-[#0A0F24]/80 border-[#8C4BFF]/20 backdrop-blur-xl mb-8">
               <CardHeader>
-                <CardTitle className="text-2xl font-bold text-purple-400">Current Plan & License Tier</CardTitle>
+                <CardTitle className="text-2xl font-bold text-[#8C4BFF]">Current Plan & License Tier</CardTitle>
               </CardHeader>
               <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-6 text-white/80">
                 <div className="space-y-2">
@@ -333,7 +333,7 @@ export default function BillingAndPayments({ user }) {
 
           {/* Feature Flags */}
           {billingStatus && billingStatus.entitlements?.flags && (
-            <Card className="glass-card border-yellow-500/30 mb-8">
+            <Card className="bg-[#0A0F24]/80 border-yellow-500/20 backdrop-blur-xl mb-8">
               <CardHeader>
                 <CardTitle className="text-2xl font-bold text-yellow-400">Feature Flags</CardTitle>
               </CardHeader>
@@ -366,9 +366,9 @@ export default function BillingAndPayments({ user }) {
           )}
 
           {billingHistory && billingHistory.length > 0 && (
-            <Card className="glass-card border-cyan-500/30 mb-8">
+            <Card className="bg-[#0A0F24]/80 border-[#00E4FF]/20 backdrop-blur-xl mb-8">
               <CardHeader>
-                <CardTitle className="text-2xl font-bold text-cyan-400">Billing History</CardTitle>
+                <CardTitle className="text-2xl font-bold text-[#00E4FF]">Billing History</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="overflow-x-auto">
@@ -418,10 +418,10 @@ export default function BillingAndPayments({ user }) {
       <h2 className="text-3xl font-bold text-white mb-6 text-center">Available Plans</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {productCatalog.map((item) => (
-          <Card key={item.product.id} className="glass-card border-cyan-500/30 flex flex-col justify-between">
+          <Card key={item.product.id} className="bg-[#0A0F24]/80 border-[#00E4FF]/20 backdrop-blur-xl hover:border-[#00E4FF]/50 transition-all flex flex-col justify-between">
             <CardHeader>
-              <CardTitle className="text-3xl font-bold text-cyan-400 mb-2">{item.product.name}</CardTitle>
-              <CardDescription className="text-white/70 min-h-[80px]">{item.product.description}</CardDescription>
+              <CardTitle className="text-3xl font-bold text-[#00E4FF] mb-2">{item.product.name}</CardTitle>
+              <CardDescription className="text-white/60 min-h-[80px]">{item.product.description}</CardDescription>
             </CardHeader>
             <CardContent>
               {item.prices.map(price => (
@@ -438,7 +438,7 @@ export default function BillingAndPayments({ user }) {
                       const iconKey = Object.keys(featureIcons).find(key => feature.includes(key));
                       return (
                         <li key={idx} className="flex items-center text-sm">
-                          {iconKey ? featureIcons[iconKey] : <Check className="h-4 w-4 mr-2 text-purple-400" />}
+                          {iconKey ? featureIcons[iconKey] : <Check className="h-4 w-4 mr-2 text-[#8C4BFF]" />}
                           <span>{feature}</span>
                         </li>
                       );
