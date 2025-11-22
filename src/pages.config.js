@@ -54,6 +54,7 @@ import BackendTest from './pages/BackendTest';
 import EnterpriseConsole from './pages/EnterpriseConsole';
 import BillingAndPayments from './pages/BillingAndPayments';
 import PaymentCancel from './pages/PaymentCancel';
+import StripeTest from './pages/StripeTest';
 import __Layout from './Layout.jsx';
 
 
@@ -114,6 +115,7 @@ export const PAGES = {
     "EnterpriseConsole": EnterpriseConsole,
     "BillingAndPayments": BillingAndPayments,
     "PaymentCancel": PaymentCancel,
+    "StripeTest": StripeTest,
 }
 
 export const pagesConfig = {
