@@ -1,5 +1,5 @@
 import React from "react";
-import { Shield, Lock, Database, Eye, Trash2, Globe, Bell } from "lucide-react";
+import { Shield, Lock, Database, Eye, Trash2, DollarSign } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
 
 export default function Privacy() {
@@ -28,115 +28,229 @@ export default function Privacy() {
             </div>
           </div>
 
-          <div className="glass-card rounded-3xl border border-white/10 p-8 md:p-12 space-y-12 backdrop-blur-xl bg-black/40">
+          <div className="glass-card rounded-3xl border border-white/10 p-8 md:p-12 space-y-12 backdrop-blur-xl bg-[#0A0F24]/90">
+            
+            {/* Scope and Purpose */}
             <section>
               <div className="flex items-center gap-4 mb-6">
                 <div className="p-3 bg-[#00E4FF]/10 rounded-xl border border-[#00E4FF]/20">
                   <Database className="w-6 h-6 text-[#00E4FF]" />
                 </div>
-                <h2 className="text-2xl font-bold text-white font-space">1. Information We Collect</h2>
+                <h2 className="text-2xl font-bold text-white font-space">Scope and Purpose</h2>
               </div>
               <div className="pl-4 border-l-2 border-white/10 ml-6 space-y-4">
-                <p className="text-gray-300 text-lg">We collect only the information necessary to operate our platform and services, including:</p>
-                <ul className="space-y-3 text-gray-400">
-                  <li className="flex items-start gap-3">
-                    <span className="text-[#00E4FF] mt-1.5 text-xs">●</span>
-                    <span>Account details (name, email)</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-[#00E4FF] mt-1.5 text-xs">●</span>
-                    <span>Uploaded content (images, files, metadata)</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-[#00E4FF] mt-1.5 text-xs">●</span>
-                    <span>Security-related activity logs (authentication events, system interactions)</span>
-                  </li>
-                </ul>
+                <p className="text-gray-300 leading-relaxed">
+                  This Privacy Policy explains how GlyphLock LLC collects, uses, stores, protects, and shares information when you access our websites, applications, developer tools, SDKs, APIs, consoles, vouchers, and interactive security services. It also explains your rights and choices. By using GlyphLock, you agree to these practices and to the binding terms referenced in our Terms of Service and Master Covenant disclosures.
+                </p>
+              </div>
+            </section>
+
+            {/* Information We Collect */}
+            <section>
+              <div className="flex items-center gap-4 mb-6">
+                <div className="p-3 bg-[#00E4FF]/10 rounded-xl border border-[#00E4FF]/20">
+                  <Database className="w-6 h-6 text-[#00E4FF]" />
+                </div>
+                <h2 className="text-2xl font-bold text-white font-space">Information We Collect</h2>
+              </div>
+              <div className="pl-4 border-l-2 border-white/10 ml-6 space-y-6">
+                <p className="text-gray-300">We collect only what we need to operate and secure the platform. Depending on what you use, this may include:</p>
+                
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="text-white font-semibold mb-2">Account and Identity Data</h3>
+                    <p className="text-gray-400 text-sm">Name, email address, phone number (if provided), organization name, role, billing contact details, and authentication settings.</p>
+                  </div>
+                  
+                  <div>
+                    <h3 className="text-white font-semibold mb-2">Content and Assets You Provide</h3>
+                    <p className="text-gray-400 text-sm">Images, files, QR or steganographic payloads, metadata, hotspot maps, project configurations, uploaded documents, and any instructions you submit through our tools.</p>
+                  </div>
+                  
+                  <div>
+                    <h3 className="text-white font-semibold mb-2">Transaction and Voucher Related Data</h3>
+                    <p className="text-gray-400 text-sm">Voucher identifiers, redemption status, issuance records, access conditions, scan or tap events, payment records, refunds, chargeback outcomes, and related audit logs.</p>
+                  </div>
+                  
+                  <div>
+                    <h3 className="text-white font-semibold mb-2">Usage and Device Data</h3>
+                    <p className="text-gray-400 text-sm">IP address, device and browser type, session identifiers, timestamps, referring pages, performance metrics, error logs, and event telemetry needed to secure and improve the system.</p>
+                  </div>
+                  
+                  <div>
+                    <h3 className="text-white font-semibold mb-2">Security and Integrity Logs</h3>
+                    <p className="text-gray-400 text-sm">Authentication events, key creation and rotation events, policy changes, admin actions, API usage, anomaly flags, and tamper detection records.</p>
+                  </div>
+                </div>
+
                 <div className="mt-6 p-4 bg-[#00E4FF]/5 border border-[#00E4FF]/20 rounded-xl text-center">
                   <p className="text-[#00E4FF] font-bold text-sm uppercase tracking-wide">We do not sell, rent, or trade your personal information.</p>
                 </div>
               </div>
             </section>
 
+            {/* How We Use Your Information */}
             <section>
               <div className="flex items-center gap-4 mb-6">
                 <div className="p-3 bg-[#8C4BFF]/10 rounded-xl border border-[#8C4BFF]/20">
                   <Eye className="w-6 h-6 text-[#8C4BFF]" />
                 </div>
-                <h2 className="text-2xl font-bold text-white font-space">2. How We Use Your Information</h2>
+                <h2 className="text-2xl font-bold text-white font-space">How We Use Your Information</h2>
               </div>
               <div className="pl-4 border-l-2 border-white/10 ml-6 space-y-4">
-                <p className="text-gray-300 text-lg">Your data is used solely for:</p>
+                <p className="text-gray-300">We use your data only for legitimate business and security purposes, including:</p>
                 <ul className="space-y-3 text-gray-400">
                   <li className="flex items-start gap-3">
                     <span className="text-[#8C4BFF] mt-1.5 text-xs">●</span>
-                    <span>Providing and improving our services</span>
+                    <div>
+                      <strong className="text-white">Service Delivery:</strong> To provide features you request, run scans, generate outputs, process vouchers, and deliver developer and enterprise functions.
+                    </div>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-[#8C4BFF] mt-1.5 text-xs">●</span>
-                    <span>Securing your account</span>
+                    <div>
+                      <strong className="text-white">Security and Fraud Prevention:</strong> To verify identity, enforce access rules, detect abuse, prevent fraud, and protect users, creators, and partners.
+                    </div>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-[#8C4BFF] mt-1.5 text-xs">●</span>
-                    <span>Generating verifiable logs for security integrity</span>
+                    <div>
+                      <strong className="text-white">Integrity and Auditability:</strong> To generate verifiable logs, maintain chain of custody for protected assets, and support dispute resolution or legal compliance.
+                    </div>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-[#8C4BFF] mt-1.5 text-xs">●</span>
-                    <span>Preventing fraud and abuse</span>
+                    <div>
+                      <strong className="text-white">Operations and Improvement:</strong> To maintain platform reliability, diagnose issues, and improve performance and features.
+                    </div>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="text-[#8C4BFF] mt-1.5 text-xs">●</span>
+                    <div>
+                      <strong className="text-white">Payments and Account Administration:</strong> To process payments, refunds, subscriptions, and chargebacks, and to enforce billing eligibility and usage limits.
+                    </div>
                   </li>
                 </ul>
               </div>
             </section>
 
+            {/* Master Covenant Warning */}
+            <section className="bg-red-500/10 border-2 border-red-500/30 rounded-2xl p-6">
+              <div className="flex items-start gap-4">
+                <Shield className="w-8 h-8 text-red-400 flex-shrink-0 mt-1" />
+                <div>
+                  <h2 className="text-xl font-bold text-red-400 mb-3 font-space">Master Covenant and Binding Notice</h2>
+                  <p className="text-gray-300 text-sm leading-relaxed">
+                    GlyphLock operates under a dual-layer governance model consisting of standard platform terms and the Master Covenant framework. Certain actions create binding records, including but not limited to exposure to protected assets, scan or tap verification, key issuance, voucher redemption, and acceptance of enterprise policies. Covenant-bound records are stored as integrity logs and may be used to verify provenance, ownership, and compliance across human and machine systems. <strong className="text-red-400">If you do not agree to Covenant-bound operation, do not use the platform.</strong>
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            {/* Security */}
             <section>
               <div className="flex items-center gap-4 mb-6">
                 <div className="p-3 bg-emerald-500/10 rounded-xl border border-emerald-500/20">
                   <Lock className="w-6 h-6 text-emerald-400" />
                 </div>
-                <h2 className="text-2xl font-bold text-white font-space">3. Security & Encryption</h2>
+                <h2 className="text-2xl font-bold text-white font-space">Security and Encryption</h2>
               </div>
               <div className="pl-4 border-l-2 border-white/10 ml-6 space-y-4">
-                <p className="text-gray-300 text-lg">GlyphLock applies multi-layered security including:</p>
+                <p className="text-gray-300">We apply layered security controls appropriate for enterprise and high-value IP systems. Controls may include:</p>
                 <div className="grid md:grid-cols-2 gap-4">
                   {[
-                    "AES-256 encryption at rest",
-                    "TLS 1.3 encryption in transit",
+                    "Encryption in transit (modern TLS)",
+                    "Encryption at rest (strong mechanisms)",
                     "Zero-trust access controls",
-                    "Automated tamper-detection logs"
+                    "Key vault and rotation",
+                    "Tamper detection and audit trails"
                   ].map((item, i) => (
                     <div key={i} className="bg-white/5 p-3 rounded-lg text-sm text-gray-300 border border-white/5">
                       {item}
                     </div>
                   ))}
                 </div>
+                <p className="text-gray-500 text-sm italic mt-4">No system is perfectly secure. We work to prevent incidents, but you acknowledge that residual risk exists.</p>
               </div>
             </section>
 
+            {/* Payments and Refunds */}
+            <section>
+              <div className="flex items-center gap-4 mb-6">
+                <div className="p-3 bg-[#00E4FF]/10 rounded-xl border border-[#00E4FF]/20">
+                  <DollarSign className="w-6 h-6 text-[#00E4FF]" />
+                </div>
+                <h2 className="text-2xl font-bold text-white font-space">Payments, Refunds, and Chargebacks</h2>
+              </div>
+              <div className="pl-4 border-l-2 border-white/10 ml-6 space-y-4">
+                <p className="text-gray-300">Payments are processed through approved payment providers. By purchasing, you authorize GlyphLock to charge your selected payment method for the amounts displayed at checkout.</p>
+                
+                <div>
+                  <h3 className="text-white font-semibold mb-2">Refunds</h3>
+                  <p className="text-gray-400 text-sm">Refund eligibility depends on the product or plan purchased. Digital services, one-time token purchases, or redeemed vouchers are generally non-refundable once delivered or used, unless otherwise required by law or explicitly stated at purchase. Subscription refunds are prorated only if required by law or specified in your plan terms.</p>
+                </div>
+                
+                <div>
+                  <h3 className="text-white font-semibold mb-2">Chargebacks</h3>
+                  <p className="text-gray-400 text-sm">If you file a chargeback, we may suspend access to the account and associated assets while the dispute is reviewed. We will provide transaction records, usage logs, voucher redemption logs, and integrity proofs to the payment provider to contest fraudulent or bad-faith chargebacks. If a chargeback is resolved against you, we may recover unpaid balances, revoke related licenses, and disable associated API keys or vouchers.</p>
+                </div>
+              </div>
+            </section>
+
+            {/* Data Retention */}
             <section>
               <div className="flex items-center gap-4 mb-6">
                 <div className="p-3 bg-orange-500/10 rounded-xl border border-orange-500/20">
                   <Trash2 className="w-6 h-6 text-orange-400" />
                 </div>
-                <h2 className="text-2xl font-bold text-white font-space">4. Data Retention & Deletion</h2>
+                <h2 className="text-2xl font-bold text-white font-space">Data Retention</h2>
               </div>
               <div className="pl-4 border-l-2 border-white/10 ml-6 space-y-4">
-                <p className="text-gray-300 text-lg">
-                  We retain only what is required to maintain account validity and legal compliance. 
-                  You may request full data deletion at any time via your account settings or support.
+                <p className="text-gray-300">
+                  We retain data only as long as needed to operate the platform, meet legal obligations, enforce the Covenant, and resolve disputes. Retention periods vary by data type:
+                </p>
+                <ul className="space-y-2 text-gray-400 text-sm">
+                  <li className="flex items-start gap-2">
+                    <span className="text-orange-400 mt-1">•</span>
+                    <span>Account and billing records are kept as required for compliance.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-orange-400 mt-1">•</span>
+                    <span>Security and integrity logs may be retained longer to support provenance, fraud prevention, and legal enforceability.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-orange-400 mt-1">•</span>
+                    <span>Uploaded content remains until you delete it, unless it is required for an ongoing dispute, legal hold, or covenant enforcement record.</span>
+                  </li>
+                </ul>
+              </div>
+            </section>
+
+            {/* Your Rights */}
+            <section>
+              <div className="flex items-center gap-4 mb-6">
+                <div className="p-3 bg-[#8C4BFF]/10 rounded-xl border border-[#8C4BFF]/20">
+                  <Shield className="w-6 h-6 text-[#8C4BFF]" />
+                </div>
+                <h2 className="text-2xl font-bold text-white font-space">Your Rights and Choices</h2>
+              </div>
+              <div className="pl-4 border-l-2 border-white/10 ml-6 space-y-4">
+                <p className="text-gray-300">
+                  You can request access, correction, export, or deletion of your personal data, subject to legal and covenant-bound retention requirements. Some records cannot be deleted if they are required to preserve system integrity, resolve disputes, or comply with law. You can manage most privacy settings inside your account, or contact us directly.
                 </p>
               </div>
             </section>
 
+            {/* Contact */}
             <section className="mt-16 p-8 bg-gradient-to-r from-[#00E4FF]/10 to-[#8C4BFF]/10 border border-[#00E4FF]/30 rounded-2xl text-center">
               <h2 className="text-3xl font-bold text-white mb-4 font-space">Contact Privacy Officer</h2>
-              <p className="text-gray-300 mb-8">
-                For questions, concerns, or data requests:
-              </p>
+              <p className="text-gray-300 mb-2">Privacy Officer, GlyphLock LLC</p>
+              <p className="text-gray-400 mb-6">El Mirage, Arizona</p>
               <a 
-                href="mailto:glyphlock@gmail.com" 
-                className="inline-flex items-center justify-center bg-white text-black font-bold uppercase tracking-wide px-8 py-4 rounded-xl hover:bg-[#00E4FF] transition-colors"
+                href="mailto:support@glyphlock.io" 
+                className="inline-flex items-center justify-center bg-[#00E4FF] text-black font-bold uppercase tracking-wide px-8 py-4 rounded-xl hover:bg-[#00D4FF] transition-colors shadow-lg shadow-[#00E4FF]/20"
               >
-                Email Support
+                support@glyphlock.io
               </a>
             </section>
           </div>
