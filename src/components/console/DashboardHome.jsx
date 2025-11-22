@@ -48,7 +48,7 @@ export default function DashboardHome({ user }) {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-w-7xl mx-auto">
       {/* Header */}
       <div>
         <h1 className="text-3xl font-bold text-white mb-2">Dashboard</h1>

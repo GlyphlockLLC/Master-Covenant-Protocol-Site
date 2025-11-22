@@ -3,8 +3,7 @@ import { base44 } from "@/api/base44Client";
 import { useNavigate } from "react-router-dom";
 import SEOHead from "@/components/SEOHead";
 import GlyphLoader from "@/components/GlyphLoader";
-import ConsoleSidebar from "@/components/console/ConsoleSidebar";
-import TopBar from "@/components/console/TopBar";
+import ConsoleLayout from "@/components/console/ConsoleLayout";
 import DashboardHome from "@/components/console/DashboardHome";
 import APIKeyVault from "@/components/console/APIKeyVault";
 import SDKDownloadCenter from "@/components/console/SDKDownloadCenter";
@@ -73,20 +72,11 @@ export default function EnterpriseConsole() {
         description="Manage API keys, monitor security, deploy edge functions, and control your GlyphLock enterprise infrastructure."
       />
       
-      <div className="min-h-screen bg-black text-white flex flex-col">
-        <div className="flex flex-1 overflow-hidden">
-          <ConsoleSidebar activeModule={activeModule} setActiveModule={setActiveModule} user={user} />
-          
-          <div className="flex-1 flex flex-col overflow-hidden">
-            <TopBar user={user} />
-            <main className="flex-1 overflow-auto">
-              <div className="p-8">
-                {renderModule()}
-              </div>
-            </main>
-          </div>
+      <ConsoleLayout user={user} activeModule={activeModule} setActiveModule={setActiveModule}>
+        <div className="p-8">
+          {renderModule()}
         </div>
-      </div>
+      </ConsoleLayout>
     </>
   );
 }

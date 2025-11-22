@@ -98,7 +98,7 @@ export default function SDKDownloadCenter() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-w-7xl mx-auto">
       {/* Header */}
       <div>
         <h1 className="text-3xl font-bold text-white mb-2">SDK Download Center</h1>
