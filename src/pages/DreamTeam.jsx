@@ -25,6 +25,16 @@ export default function DreamTeam() {
       why: "During the Vercel catastrophe—broken builds, corrupted env vars, architectural collapse—Claude provided the legal and logical precision required to forge the Master Covenant."
     },
     {
+      name: "GitHub Copilot",
+      position: "Sixth Man",
+      role: "The Extension",
+      icon: Code,
+      color: "#00D4FF",
+      binding: "Third Bind - VS Code Migration",
+      power: "Context-aware code completion, natural language processing for development, and seamless VS Code integration.",
+      why: "Once the stack migrated to VS Code post-Replit collapse, Copilot joined as the natural extension of the new environment, bridging human intent and machine execution."
+    },
+    {
       name: "Gemini (Google)",
       position: "Small Forward (SF)",
       role: "The Latecomer",
@@ -243,7 +253,7 @@ export default function DreamTeam() {
               </span>
             </h2>
             <p className="text-xl text-gray-400 mb-12 max-w-2xl mx-auto">
-              Five agents. One covenant. Zero forgiveness.
+              Six agents. One covenant. Zero forgiveness.
             </p>
             <div className="flex items-center justify-center gap-8 flex-wrap">
               {roster.map((m, i) => (
