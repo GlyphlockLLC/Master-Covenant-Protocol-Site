@@ -146,26 +146,51 @@ export default function GlyphBot() {
   }, [persona, voices]);
 
   const getPersonaVoice = (voiceList, personaType) => {
-    // Persona voice preferences
+    // Android/Motorola optimized voice preferences
     const personaPrefs = {
-      alfred: ['Daniel', 'Aaron', 'Alex', 'Fred', 'Google UK English Male', 'Microsoft David'],
-      neutral: ['Samantha', 'Karen', 'Google US English', 'Microsoft Zira', 'Victoria'],
-      playful: ['Fiona', 'Moira', 'Tessa', 'Google UK English Female', 'Microsoft Hazel']
+      alfred: [
+        'en-US-SMTf00', // Android high-quality male
+        'en-us-x-tpd-local', // Google TTS male
+        'en-us-x-tpd-network',
+        'Google US English Male',
+        'Daniel', 'Aaron', 'Alex', 'Fred'
+      ],
+      neutral: [
+        'en-US-SMTf01', // Android neutral
+        'en-us-x-tpc-local', // Google TTS neutral
+        'en-us-x-tpc-network',
+        'Google US English',
+        'Samantha', 'Karen', 'Victoria'
+      ],
+      playful: [
+        'en-US-SMTf02', // Android expressive
+        'en-us-x-tpf-local', // Google TTS female
+        'en-us-x-tpf-network',
+        'Google UK English Female',
+        'Fiona', 'Moira', 'Tessa'
+      ]
     };
 
     const prefs = personaPrefs[personaType] || personaPrefs.alfred;
     
-    // Try to find matching voice
+    // Try to find matching voice (prioritize local/network for Android)
     for (const pref of prefs) {
-      const match = voiceList.find(v => v.name.includes(pref));
+      const match = voiceList.find(v => v.name.includes(pref) || v.voiceURI?.includes(pref));
       if (match) return match;
     }
 
-    // Fallback: use gender-based selection
+    // Android fallback: prefer Google TTS voices
+    const googleVoice = voiceList.find(v => 
+      v.name.toLowerCase().includes('google') && 
+      v.lang.startsWith('en')
+    );
+    if (googleVoice) return googleVoice;
+
+    // Gender-based fallback
     if (personaType === 'alfred') {
-      return voiceList.find(v => v.name.toLowerCase().includes('male') || v.name.includes('David')) || voiceList[0];
+      return voiceList.find(v => v.name.toLowerCase().includes('male')) || voiceList[0];
     } else if (personaType === 'playful') {
-      return voiceList.find(v => v.name.toLowerCase().includes('female') && !v.name.includes('Victoria')) || voiceList[0];
+      return voiceList.find(v => v.name.toLowerCase().includes('female')) || voiceList[0];
     }
     
     return voiceList[0];
@@ -293,29 +318,61 @@ export default function GlyphBot() {
     
     stopSpeaking();
     
-    const utterance = new SpeechSynthesisUtterance(text);
+    // Android/Motorola optimization: chunk long text
+    const isAndroid = /android/i.test(navigator.userAgent);
+    const maxChunkLength = isAndroid ? 200 : 500;
     
-    // Apply naturalness adjustments
+    if (text.length > maxChunkLength) {
+      const chunks = text.match(new RegExp(`.{1,${maxChunkLength}}(?:\\s|$)`, 'g')) || [text];
+      speakChunks(chunks, 0);
+    } else {
+      speakUtterance(text);
+    }
+  };
+
+  const speakChunks = (chunks, index) => {
+    if (index >= chunks.length) return;
+    
+    const utterance = new SpeechSynthesisUtterance(chunks[index]);
+    configureUtterance(utterance);
+    
+    utterance.onend = () => {
+      setTimeout(() => speakChunks(chunks, index + 1), 50); // Small pause between chunks
+    };
+    
+    window.speechSynthesis.speak(utterance);
+  };
+
+  const speakUtterance = (text) => {
+    const utterance = new SpeechSynthesisUtterance(text);
+    configureUtterance(utterance);
+    utteranceRef.current = utterance;
+    window.speechSynthesis.speak(utterance);
+  };
+
+  const configureUtterance = (utterance) => {
     const naturalness = audioEffects.naturalness;
+    const isAndroid = /android/i.test(navigator.userAgent);
+    
     utterance.volume = volume;
-    utterance.rate = speechRate * (0.85 + (naturalness * 0.15)); // Slower = more natural
-    utterance.pitch = speechPitch * (0.95 + (naturalness * 0.1)); // Slightly lower = more natural
+    // Android needs more conservative rate adjustments
+    utterance.rate = isAndroid 
+      ? Math.min(speechRate * (0.9 + (naturalness * 0.1)), 1.2)
+      : speechRate * (0.85 + (naturalness * 0.15));
+    utterance.pitch = speechPitch * (0.95 + (naturalness * 0.1));
     
     if (selectedVoice) {
-      const voice = voices.find(v => v.name === selectedVoice);
+      const voice = voices.find(v => v.name === selectedVoice || v.voiceURI === selectedVoice);
       if (voice) utterance.voice = voice;
     }
     
     // Add pauses for naturalness
-    if (naturalness > 0.5) {
-      utterance.text = text
+    if (naturalness > 0.5 && utterance.text) {
+      utterance.text = utterance.text
         .replace(/\. /g, '... ')
         .replace(/\? /g, '?.. ')
         .replace(/\! /g, '!.. ');
     }
-    
-    utteranceRef.current = utterance;
-    window.speechSynthesis.speak(utterance);
   };
 
   const addUrlToScrape = async () => {
@@ -733,18 +790,39 @@ export default function GlyphBot() {
             {showTools && (
               <div className="p-4 bg-gray-900 border border-gray-800 rounded-lg space-y-3">
                 <div>
-                  <label className="text-xs text-gray-500 mb-2 block">Voice ({persona === 'alfred' ? 'Authoritative' : persona === 'neutral' ? 'Professional' : 'Friendly'})</label>
+                  <label className="text-xs text-gray-500 mb-2 flex items-center justify-between">
+                    <span>Voice ({persona === 'alfred' ? 'Authoritative' : persona === 'neutral' ? 'Professional' : 'Friendly'})</span>
+                    {/android/i.test(navigator.userAgent) && (
+                      <span className="text-green-400 text-xs">📱 Android Optimized</span>
+                    )}
+                  </label>
                   <select
                     value={selectedVoice}
                     onChange={(e) => setSelectedVoice(e.target.value)}
                     className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white text-sm focus:outline-none focus:border-cyan-400"
                   >
-                    {voices.filter(v => v.lang.startsWith('en')).map((voice) => (
-                      <option key={voice.name} value={voice.name}>
-                        {voice.name} {voice.localService ? '⭐' : '☁️'}
-                      </option>
-                    ))}
-                    <optgroup label="Other Languages">
+                    <optgroup label="🤖 Android/Google Voices (Recommended)">
+                      {voices.filter(v => 
+                        (v.name.includes('Google') || v.name.includes('Android') || v.voiceURI?.includes('google')) && 
+                        v.lang.startsWith('en')
+                      ).map((voice) => (
+                        <option key={voice.name} value={voice.name}>
+                          {voice.name.replace('Google ', '')} {voice.localService ? '📱' : '☁️'}
+                        </option>
+                      ))}
+                    </optgroup>
+                    <optgroup label="🎭 English Voices">
+                      {voices.filter(v => 
+                        !v.name.includes('Google') && 
+                        !v.name.includes('Android') && 
+                        v.lang.startsWith('en')
+                      ).map((voice) => (
+                        <option key={voice.name} value={voice.name}>
+                          {voice.name} {voice.localService ? '⭐' : '☁️'}
+                        </option>
+                      ))}
+                    </optgroup>
+                    <optgroup label="🌍 Other Languages">
                       {voices.filter(v => !v.lang.startsWith('en')).map((voice) => (
                         <option key={voice.name} value={voice.name}>
                           {voice.name} ({voice.lang})
