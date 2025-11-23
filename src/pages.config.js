@@ -40,6 +40,7 @@ import InteractiveImageStudio from './pages/InteractiveImageStudio';
 import BillingAndPayments from './pages/BillingAndPayments';
 import PaymentCancel from './pages/PaymentCancel';
 import CommandCenter from './pages/CommandCenter';
+import IntegrationTests from './pages/IntegrationTests';
 import __Layout from './Layout.jsx';
 
 
@@ -86,6 +87,7 @@ export const PAGES = {
     "BillingAndPayments": BillingAndPayments,
     "PaymentCancel": PaymentCancel,
     "CommandCenter": CommandCenter,
+    "IntegrationTests": IntegrationTests,
 }
 
 export const pagesConfig = {
