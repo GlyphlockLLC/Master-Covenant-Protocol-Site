@@ -12,6 +12,7 @@ import BoundAISystemsSection from '@/components/home/BoundAISystemsSection';
 import CTASection from '@/components/home/CTASection';
 import SEOHead from '@/components/SEOHead';
 import SecurityMonitor from '@/components/SecurityMonitor';
+import DreamTeamRoster from '@/components/DreamTeamRoster';
 
 const useScrollEffect = (sectionRef) => {
   const [style, setStyle] = useState({ transform: 'perspective(1000px)', opacity: 1 });
@@ -64,30 +65,15 @@ const useScrollEffect = (sectionRef) => {
   return style;
 };
 
-const ScrollSection = ({ children, className = "" }) => {
+const ScrollSection = ({ children }) => {
   const sectionRef = useRef(null);
-  const [isMobile, setIsMobile] = useState(false);
   const style = useScrollEffect(sectionRef);
-
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth <= 760);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
   return (
-    <section 
-      ref={sectionRef} 
-      className={`w-full min-h-screen flex items-center justify-center relative py-12 md:py-16 px-4 md:px-6 ${className}`}
-    >
+    <section ref={sectionRef} className="w-full min-h-screen flex items-center justify-center relative py-8 md:py-16">
       <div className="absolute inset-0 -z-10">
         <div className="glass-card w-full h-full mx-auto rounded-none md:w-[95%] md:h-[90%] md:rounded-3xl" />
       </div>
-      <div 
-        style={isMobile ? { opacity: 1, transform: 'none' } : style} 
-        className="w-full max-w-7xl mx-auto transition-all duration-200 ease-out"
-      >
+      <div style={style} className="w-full transition-all duration-200 ease-out">
         {children}
       </div>
     </section>
@@ -166,6 +152,10 @@ export default function Home() {
       
       <ScrollSection>
         <ComparisonSection />
+      </ScrollSection>
+
+      <ScrollSection>
+        <DreamTeamRoster />
       </ScrollSection>
       
       <ScrollSection>
