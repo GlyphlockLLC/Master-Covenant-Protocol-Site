@@ -113,10 +113,10 @@ COVENANT: MASTER_COVENANT_001
   ];
 
   return (
-    <section className="py-12 md:py-24 relative overflow-hidden bg-black">
-      <div className="absolute inset-0 bg-gradient-to-b from-purple-500/5 via-transparent to-blue-500/5" />
+    <section className="py-12 md:py-24 relative overflow-hidden bg-black z-20">
+      <div className="absolute inset-0 bg-gradient-to-b from-purple-500/5 via-transparent to-blue-500/5 z-0" />
       
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-4 relative z-10 min-h-screen">
         <div className="text-center mb-8 md:mb-16">
           <Badge className="mb-4 md:mb-6 bg-purple-500/20 text-purple-400 border-purple-500/50 px-4 md:px-6 py-1.5 md:py-2 text-xs md:text-sm backdrop-blur-md">
             <Shield className="w-3 h-3 md:w-4 md:h-4 mr-2" />
