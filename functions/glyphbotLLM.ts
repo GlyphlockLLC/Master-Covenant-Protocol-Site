@@ -38,6 +38,16 @@ Deno.serve(async (req) => {
 
     const { messages, persona = 'alfred' } = await req.json();
     
+    // Handle ping/status check
+    if (messages?.length === 1 && messages[0].content === "ping") {
+      return Response.json({ 
+        status: "ok", 
+        text: "pong",
+        model: "system",
+        promptVersion: "status-check"
+      });
+    }
+    
     if (!messages || !Array.isArray(messages)) {
       return Response.json({ error: 'Invalid messages' }, { status: 400 });
     }
