@@ -5,6 +5,7 @@ import { Shield } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
 import GlyphLoader from "@/components/GlyphLoader";
 import ConsoleLayout from "@/components/console/ConsoleLayout";
+import DashboardHome from "@/components/console/DashboardHome";
 import APIKeyVault from "@/components/console/APIKeyVault";
 import SDKDownloadCenter from "@/components/console/SDKDownloadCenter";
 import LogsPanel from "@/components/console/LogsPanel";
@@ -23,7 +24,7 @@ export default function CommandCenter() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [activeModule, setActiveModule] = useState("api-keys");
+  const [activeModule, setActiveModule] = useState("dashboard");
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [billingStatus, setBillingStatus] = useState(null);
 
@@ -62,6 +63,9 @@ export default function CommandCenter() {
   }
 
   const renderModule = () => {
+    // Dashboard Home
+    if (activeModule === "dashboard") return <DashboardHome user={user} />;
+    
     // Developer Mode Modules
     if (activeModule === "api-keys") return <APIKeyVault user={user} />;
     if (activeModule === "sdk") return <SDKDownloadCenter />;
@@ -92,8 +96,8 @@ export default function CommandCenter() {
       return <AdminBillingOverview user={user} />;
     }
 
-    // Default: redirect to API Keys (first developer tab)
-    return <APIKeyVault user={user} />;
+    // Default: Dashboard Home
+    return <DashboardHome user={user} />;
   };
 
   return (

@@ -13,14 +13,20 @@ export default function DashboardHome({ user }) {
   });
   const [health, setHealth] = useState("checking");
   const [recentLogs, setRecentLogs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     loadDashboardData();
+    const interval = setInterval(() => loadDashboardData(true), 30000); // Refresh every 30s
+    return () => clearInterval(interval);
   }, []);
 
-  const loadDashboardData = async () => {
+  const loadDashboardData = async (silent = false) => {
+    if (!silent) setLoading(true);
+    setRefreshing(silent);
+    
     try {
-      // Fetch real data from backend
       const [healthStatus, usageSummary, recentLogsData] = await Promise.all([
         glyphLockAPI.healthCheck(),
         glyphLockAPI.usage.getSummary(),
@@ -28,8 +34,6 @@ export default function DashboardHome({ user }) {
       ]);
 
       setHealth(healthStatus.status);
-      
-      // Set real stats from backend
       setStats({
         apiKeys: usageSummary.api_keys?.active || 0,
         functions: usageSummary.functions?.deployed || 0,
@@ -37,7 +41,6 @@ export default function DashboardHome({ user }) {
         uptime: healthStatus.uptime || "99.9%"
       });
 
-      // Transform logs into activity items
       const activities = (recentLogsData.logs || []).map(log => ({
         id: log.id,
         type: log.status === 'failure' ? 'warning' : 
@@ -55,6 +58,9 @@ export default function DashboardHome({ user }) {
       setRecentLogs([
         { id: 1, type: "warning", message: "Failed to load dashboard data", time: "Just now" }
       ]);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
     }
   };
 
@@ -65,12 +71,33 @@ export default function DashboardHome({ user }) {
     { label: "System Uptime", value: stats.uptime, icon: TrendingUp, color: "#00FF88" }
   ];
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-[#00E4FF]/30 border-t-[#00E4FF] rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-white/60">Loading dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
       {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold text-white mb-2">Dashboard</h1>
-        <p className="text-white/70">Welcome back, {user?.email}</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-white mb-2">Dashboard</h1>
+          <p className="text-white/70">Welcome back, {user?.email}</p>
+        </div>
+        <button
+          onClick={() => loadDashboardData()}
+          disabled={refreshing}
+          className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#00E4FF]/10 border border-[#00E4FF]/30 text-[#00E4FF] hover:bg-[#00E4FF]/20 transition-all disabled:opacity-50"
+        >
+          <Activity className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`} />
+          {refreshing ? 'Refreshing...' : 'Refresh'}
+        </button>
       </div>
 
       {/* System Health */}
@@ -151,25 +178,32 @@ export default function DashboardHome({ user }) {
       </Card>
 
       {/* Quick Actions */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <button className="group p-6 rounded-lg bg-[#0A0F24]/80 border border-[#00E4FF]/20 hover:border-[#00E4FF]/50 hover:bg-[#00E4FF]/5 transition-all text-left backdrop-blur-xl">
-          <Key className="w-8 h-8 text-[#00E4FF] mb-3 group-hover:scale-110 transition-transform" />
-          <h3 className="text-white font-medium mb-1">Generate API Key</h3>
-          <p className="text-sm text-white/60">Create new cryptographic key</p>
-        </button>
+      <Card className="bg-[#0A0F24]/80 border-[#00E4FF]/20 backdrop-blur-xl">
+        <CardHeader>
+          <CardTitle className="text-white">Quick Actions</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <button className="group p-6 rounded-lg bg-gradient-to-br from-[#00E4FF]/10 to-transparent border border-[#00E4FF]/20 hover:border-[#00E4FF]/50 hover:from-[#00E4FF]/20 transition-all text-left">
+              <Key className="w-8 h-8 text-[#00E4FF] mb-3 group-hover:scale-110 transition-transform" />
+              <h3 className="text-white font-medium mb-1">Generate API Key</h3>
+              <p className="text-sm text-white/60">Create new cryptographic key</p>
+            </button>
 
-        <button className="group p-6 rounded-lg bg-[#0A0F24]/80 border border-[#8C4BFF]/20 hover:border-[#8C4BFF]/50 hover:bg-[#8C4BFF]/5 transition-all text-left backdrop-blur-xl">
-          <Zap className="w-8 h-8 text-[#8C4BFF] mb-3 group-hover:scale-110 transition-transform" />
-          <h3 className="text-white font-medium mb-1">Deploy Function</h3>
-          <p className="text-sm text-white/60">Push edge function live</p>
-        </button>
+            <button className="group p-6 rounded-lg bg-gradient-to-br from-[#8C4BFF]/10 to-transparent border border-[#8C4BFF]/20 hover:border-[#8C4BFF]/50 hover:from-[#8C4BFF]/20 transition-all text-left">
+              <Zap className="w-8 h-8 text-[#8C4BFF] mb-3 group-hover:scale-110 transition-transform" />
+              <h3 className="text-white font-medium mb-1">Deploy Function</h3>
+              <p className="text-sm text-white/60">Push edge function live</p>
+            </button>
 
-        <button className="group p-6 rounded-lg bg-[#0A0F24]/80 border border-[#9F00FF]/20 hover:border-[#9F00FF]/50 hover:bg-[#9F00FF]/5 transition-all text-left backdrop-blur-xl">
-          <Shield className="w-8 h-8 text-[#9F00FF] mb-3 group-hover:scale-110 transition-transform" />
-          <h3 className="text-white font-medium mb-1">Security Audit</h3>
-          <p className="text-sm text-white/60">Deep system analysis</p>
-        </button>
-      </div>
+            <button className="group p-6 rounded-lg bg-gradient-to-br from-[#9F00FF]/10 to-transparent border border-[#9F00FF]/20 hover:border-[#9F00FF]/50 hover:from-[#9F00FF]/20 transition-all text-left">
+              <Shield className="w-8 h-8 text-[#9F00FF] mb-3 group-hover:scale-110 transition-transform" />
+              <h3 className="text-white font-medium mb-1">Security Audit</h3>
+              <p className="text-sm text-white/60">Deep system analysis</p>
+            </button>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
