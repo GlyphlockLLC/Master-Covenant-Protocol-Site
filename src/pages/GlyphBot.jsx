@@ -47,6 +47,16 @@ export default function GlyphBot() {
     const saved = localStorage.getItem("glyphbot_volume");
     return saved ? Number(saved) : 1;
   });
+  const [voices, setVoices] = useState([]);
+  const [selectedVoice, setSelectedVoice] = useState(() => localStorage.getItem("glyphbot_voice") || "");
+  const [speechRate, setSpeechRate] = useState(() => {
+    const saved = localStorage.getItem("glyphbot_rate");
+    return saved ? Number(saved) : 1;
+  });
+  const [speechPitch, setSpeechPitch] = useState(() => {
+    const saved = localStorage.getItem("glyphbot_pitch");
+    return saved ? Number(saved) : 1;
+  });
   const [userScrolledUp, setUserScrolledUp] = useState(false);
   const [showTools, setShowTools] = useState(false);
   const [activeTab, setActiveTab] = useState("chat");
@@ -81,6 +91,32 @@ export default function GlyphBot() {
   useEffect(() => {
     localStorage.setItem("glyphbot_volume", String(volume));
   }, [volume]);
+
+  useEffect(() => {
+    localStorage.setItem("glyphbot_voice", selectedVoice);
+  }, [selectedVoice]);
+
+  useEffect(() => {
+    localStorage.setItem("glyphbot_rate", String(speechRate));
+  }, [speechRate]);
+
+  useEffect(() => {
+    localStorage.setItem("glyphbot_pitch", String(speechPitch));
+  }, [speechPitch]);
+
+  // Load available voices
+  useEffect(() => {
+    const loadVoices = () => {
+      const availableVoices = window.speechSynthesis.getVoices();
+      setVoices(availableVoices);
+      if (availableVoices.length > 0 && !selectedVoice) {
+        setSelectedVoice(availableVoices[0].name);
+      }
+    };
+
+    loadVoices();
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+  }, []);
 
   useEffect(() => {
     localStorage.setItem("glyphbot_language", language);
@@ -188,9 +224,15 @@ export default function GlyphBot() {
     
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.volume = volume;
-    utterance.rate = 1.0;
-    utteranceRef.current = utterance;
+    utterance.rate = speechRate;
+    utterance.pitch = speechPitch;
     
+    if (selectedVoice) {
+      const voice = voices.find(v => v.name === selectedVoice);
+      if (voice) utterance.voice = voice;
+    }
+    
+    utteranceRef.current = utterance;
     window.speechSynthesis.speak(utterance);
   };
 
@@ -489,38 +531,121 @@ export default function GlyphBot() {
           </div>
 
           {/* Controls */}
-          <div className="flex items-center justify-between mt-3 text-sm">
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={autoTalkback}
-                onChange={(e) => {
-                  setAutoTalkback(e.target.checked);
-                  if (!e.target.checked) stopSpeaking();
-                }}
-                className="w-4 h-4 rounded accent-cyan-600"
-              />
-              <span className="text-gray-400">Auto talkback</span>
-              {autoTalkback ? (
-                <Volume2 className="w-4 h-4 text-cyan-400" />
-              ) : (
-                <VolumeX className="w-4 h-4 text-gray-600" />
-              )}
-            </label>
+          <div className="mt-3 space-y-3">
+            <div className="flex items-center justify-between">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={autoTalkback}
+                  onChange={(e) => {
+                    setAutoTalkback(e.target.checked);
+                    if (!e.target.checked) stopSpeaking();
+                  }}
+                  className="w-4 h-4 rounded accent-cyan-600"
+                />
+                <span className="text-gray-400 text-sm">Auto talkback</span>
+                {autoTalkback ? (
+                  <Volume2 className="w-4 h-4 text-cyan-400" />
+                ) : (
+                  <VolumeX className="w-4 h-4 text-gray-600" />
+                )}
+              </label>
 
-            <label className="flex items-center gap-2">
-              <span className="text-gray-400">Volume</span>
-              <input
-                type="range"
-                min="0"
-                max="1"
-                step="0.05"
-                value={volume}
-                onChange={(e) => setVolume(Number(e.target.value))}
-                className="w-24 accent-cyan-600"
-              />
-              <span className="text-gray-400 w-8">{Math.round(volume * 100)}%</span>
-            </label>
+              <button
+                onClick={() => setShowTools(!showTools)}
+                className="text-xs px-3 py-1 rounded-lg bg-gray-800 text-gray-400 hover:text-cyan-400 transition-colors"
+              >
+                {showTools ? "Hide" : "Show"} Voice Settings
+              </button>
+            </div>
+
+            {showTools && (
+              <div className="p-4 bg-gray-900 border border-gray-800 rounded-lg space-y-3">
+                <div>
+                  <label className="text-xs text-gray-500 mb-2 block">Voice</label>
+                  <select
+                    value={selectedVoice}
+                    onChange={(e) => setSelectedVoice(e.target.value)}
+                    className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white text-sm focus:outline-none focus:border-cyan-400"
+                  >
+                    {voices.map((voice) => (
+                      <option key={voice.name} value={voice.name}>
+                        {voice.name} ({voice.lang})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="grid grid-cols-3 gap-3">
+                  <div>
+                    <label className="text-xs text-gray-500 mb-2 block">Volume</label>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="range"
+                        min="0"
+                        max="1"
+                        step="0.05"
+                        value={volume}
+                        onChange={(e) => setVolume(Number(e.target.value))}
+                        className="flex-1 accent-cyan-600"
+                      />
+                      <span className="text-xs text-gray-400 w-10">{Math.round(volume * 100)}%</span>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-xs text-gray-500 mb-2 block">Speed</label>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="range"
+                        min="0.5"
+                        max="2"
+                        step="0.1"
+                        value={speechRate}
+                        onChange={(e) => setSpeechRate(Number(e.target.value))}
+                        className="flex-1 accent-cyan-600"
+                      />
+                      <span className="text-xs text-gray-400 w-10">{speechRate.toFixed(1)}x</span>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="text-xs text-gray-500 mb-2 block">Pitch</label>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="range"
+                        min="0.5"
+                        max="2"
+                        step="0.1"
+                        value={speechPitch}
+                        onChange={(e) => setSpeechPitch(Number(e.target.value))}
+                        className="flex-1 accent-cyan-600"
+                      />
+                      <span className="text-xs text-gray-400 w-10">{speechPitch.toFixed(1)}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => {
+                      setVolume(1);
+                      setSpeechRate(1);
+                      setSpeechPitch(1);
+                    }}
+                    className="text-xs px-3 py-1 rounded bg-gray-800 text-gray-400 hover:text-white transition-colors"
+                  >
+                    Reset to Default
+                  </button>
+                  <button
+                    onClick={() => speakText("This is a test of the voice settings.")}
+                    className="text-xs px-3 py-1 rounded bg-cyan-600 text-white hover:bg-cyan-500 transition-colors"
+                  >
+                    Test Voice
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
