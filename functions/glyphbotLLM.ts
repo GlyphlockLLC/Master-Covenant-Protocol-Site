@@ -58,24 +58,30 @@ Deno.serve(async (req) => {
 
 ${conversationText}`;
 
-    // Use Base44's built-in LLM integration
+    // Route through Base44 LLM broker
     const result = await base44.integrations.Core.InvokeLLM({
       prompt: fullPrompt,
       add_context_from_internet: false
     });
 
+    // Log successful LLM call
     await base44.entities.SystemAuditLog.create({
       event_type: 'GLYPHBOT_LLM_CALL',
-      description: 'Successful LLM call',
+      description: 'LLM call via Base44 broker',
       actor_email: user.email,
       resource_id: 'glyphbot',
-      metadata: { persona, messageCount: messages.length },
+      metadata: { 
+        persona, 
+        messageCount: messages.length,
+        broker: 'base44',
+        directCalls: 0
+      },
       status: 'success'
     }).catch(console.error);
 
     return Response.json({
       text: result,
-      model: 'base44-llm',
+      model: 'base44-broker',
       promptVersion: 'v2.0'
     });
   } catch (error) {

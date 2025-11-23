@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
+import { analyzeLLM } from "@/utils/llmClient";
 import { Upload, File, X, Loader2, AlertCircle } from "lucide-react";
 
 export default function FileAnalysisView() {
@@ -38,11 +39,7 @@ Provide a comprehensive security analysis including:
 4. Recommendations
 5. Risk level (LOW/MEDIUM/HIGH/CRITICAL)`;
 
-      const response = await base44.integrations.Core.InvokeLLM({
-        prompt: analysisPrompt,
-        add_context_from_internet: false,
-        file_urls: uploadedFiles.map(f => f.url)
-      });
+      const response = await analyzeLLM(analysisPrompt, uploadedFiles.map(f => f.url));
 
       setResults({
         files: uploadedFiles,

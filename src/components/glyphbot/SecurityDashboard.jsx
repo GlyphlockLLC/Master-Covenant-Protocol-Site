@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
+import { structuredLLM, securityLLM } from "@/utils/llmClient";
 import { Shield, Activity, AlertTriangle, CheckCircle, TrendingUp, Clock, FileText, ExternalLink, RefreshCw } from "lucide-react";
 
 export default function SecurityDashboard() {
@@ -90,22 +91,18 @@ Identify:
 Return JSON array of anomalies:
 [{"type": "string", "severity": "low|medium|high", "description": "string", "timestamp": "ISO date"}]`;
 
-      const response = await base44.integrations.Core.InvokeLLM({
-        prompt,
-        add_context_from_internet: false,
-        response_json_schema: {
-          type: "object",
-          properties: {
-            anomalies: {
-              type: "array",
-              items: {
-                type: "object",
-                properties: {
-                  type: { type: "string" },
-                  severity: { type: "string" },
-                  description: { type: "string" },
-                  timestamp: { type: "string" }
-                }
+      const response = await structuredLLM(prompt, {
+        type: "object",
+        properties: {
+          anomalies: {
+            type: "array",
+            items: {
+              type: "object",
+              properties: {
+                type: { type: "string" },
+                severity: { type: "string" },
+                description: { type: "string" },
+                timestamp: { type: "string" }
               }
             }
           }
@@ -185,10 +182,7 @@ Analyze:
 
 Return detailed findings with risk assessment.`;
 
-      const response = await base44.integrations.Core.InvokeLLM({
-        prompt,
-        add_context_from_internet: true
-      });
+      const response = await securityLLM(prompt, { useInternet: true });
 
       // Update source with scan results
       const sources = JSON.parse(localStorage.getItem("glyphbot_knowledge_sources") || "[]");

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
+import { securityLLM } from "@/utils/llmClient";
 import { Shield, Search, Loader2, AlertTriangle, CheckCircle, XCircle } from "lucide-react";
 
 export default function SecurityScanner() {
@@ -58,9 +59,8 @@ Check for:
 Provide a detailed threat analysis.`;
       }
 
-      const response = await base44.integrations.Core.InvokeLLM({
-        prompt,
-        add_context_from_internet: scanType === "url" || scanType === "ip"
+      const response = await securityLLM(prompt, {
+        useInternet: scanType === "url" || scanType === "ip"
       });
 
       setResults({

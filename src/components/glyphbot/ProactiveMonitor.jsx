@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { base44 } from "@/api/base44Client";
+import { securityLLM } from "@/utils/llmClient";
 
 /**
  * Background service that runs proactive security monitoring
@@ -74,10 +75,7 @@ Check for:
 
 Return brief status: SAFE, WARNING, or ALERT with explanation.`;
 
-      const response = await base44.integrations.Core.InvokeLLM({
-        prompt,
-        add_context_from_internet: true
-      });
+      const response = await securityLLM(prompt, { useInternet: true });
 
       // Update source scan timestamp
       const sources = JSON.parse(localStorage.getItem("glyphbot_knowledge_sources") || "[]");

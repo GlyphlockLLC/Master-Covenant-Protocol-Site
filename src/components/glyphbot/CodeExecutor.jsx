@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
+import { promptLLM } from "@/utils/llmClient";
 import { Play, Loader2, AlertTriangle, Terminal } from "lucide-react";
 
 export default function CodeExecutor() {
@@ -37,10 +38,7 @@ SECURITY NOTES:
 SUGGESTIONS:
 [code improvements]`;
 
-      const response = await base44.integrations.Core.InvokeLLM({
-        prompt,
-        add_context_from_internet: false
-      });
+      const response = await promptLLM(prompt);
 
       setOutput({
         result: response,
