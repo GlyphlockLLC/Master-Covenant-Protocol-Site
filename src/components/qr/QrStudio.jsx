@@ -164,63 +164,108 @@ export default function QrStudio() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8 max-w-7xl">
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        {/* Desktop Tabs - Horizontal */}
-        <TabsList className="hidden lg:flex w-full mb-6 glyph-glass-dark border border-cyan-500/20 p-2 shadow-lg">
-          <TabsTrigger value="create" className="flex-1 min-h-[44px] rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-cyan-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:glyph-glow text-gray-400 hover:text-white transition-all">
-            <Wand2 className="w-4 h-4 mr-2" />
-            Create
-          </TabsTrigger>
-          <TabsTrigger value="preview" className="flex-1 min-h-[44px] rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-cyan-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:glyph-glow text-gray-400 hover:text-white transition-all">
-            Preview
-          </TabsTrigger>
-          <TabsTrigger value="customize" className="flex-1 min-h-[44px] rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-cyan-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:glyph-glow text-gray-400 hover:text-white transition-all">
-            Customize
-          </TabsTrigger>
-          <TabsTrigger value="hotzones" className="flex-1 min-h-[44px] rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-cyan-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:glyph-glow text-gray-400 hover:text-white transition-all">
-            <Layers className="w-4 h-4 mr-2" />
-            Hot Zones
-          </TabsTrigger>
-          <TabsTrigger value="stego" className="flex-1 min-h-[44px] rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-cyan-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:glyph-glow text-gray-400 hover:text-white transition-all">
-            Stego
-          </TabsTrigger>
-          <TabsTrigger value="security" className="flex-1 min-h-[44px] rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-cyan-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:glyph-glow text-gray-400 hover:text-white transition-all">
-            <Shield className="w-4 h-4 mr-2" />
-            Security
-          </TabsTrigger>
-          <TabsTrigger value="analytics" className="flex-1 min-h-[44px] rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-cyan-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:glyph-glow text-gray-400 hover:text-white transition-all">
-            Analytics
-          </TabsTrigger>
-          <TabsTrigger value="bulk" className="flex-1 min-h-[44px] rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-cyan-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:glyph-glow text-gray-400 hover:text-white transition-all">
-            Bulk
-          </TabsTrigger>
-        </TabsList>
+        {/* Desktop Tabs - Technical Flow */}
+        <div className="hidden lg:flex w-full mb-6 relative">
+          <div className="absolute inset-0 bg-black/40 backdrop-blur-md border-t-2 border-b-2 border-cyan-500/20"></div>
+          <div className="relative z-10 flex w-full">
+            <TabsTrigger 
+              value="create" 
+              className="flex-1 min-h-[52px] relative group border-r border-cyan-500/10 data-[state=active]:bg-gradient-to-b data-[state=active]:from-cyan-500/20 data-[state=active]:to-transparent data-[state=active]:border-t-2 data-[state=active]:border-t-cyan-400 data-[state=active]:text-cyan-300 text-gray-500 hover:text-gray-300 transition-all font-mono text-xs uppercase tracking-widest"
+            >
+              <Wand2 className="w-4 h-4 mr-2" />
+              <span>01_Create</span>
+              <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-0 group-data-[state=active]:opacity-100 glyph-glow"></div>
+            </TabsTrigger>
+            
+            <TabsTrigger 
+              value="preview" 
+              className="flex-1 min-h-[52px] relative group border-r border-cyan-500/10 data-[state=active]:bg-gradient-to-b data-[state=active]:from-purple-500/20 data-[state=active]:to-transparent data-[state=active]:border-t-2 data-[state=active]:border-t-purple-400 data-[state=active]:text-purple-300 text-gray-500 hover:text-gray-300 transition-all font-mono text-xs uppercase tracking-widest"
+            >
+              <span>02_Preview</span>
+              <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-purple-400 to-transparent opacity-0 group-data-[state=active]:opacity-100"></div>
+            </TabsTrigger>
+            
+            <TabsTrigger 
+              value="customize" 
+              className="flex-1 min-h-[52px] relative group border-r border-cyan-500/10 data-[state=active]:bg-gradient-to-b data-[state=active]:from-blue-500/20 data-[state=active]:to-transparent data-[state=active]:border-t-2 data-[state=active]:border-t-blue-400 data-[state=active]:text-blue-300 text-gray-500 hover:text-gray-300 transition-all font-mono text-xs uppercase tracking-widest"
+            >
+              <span>03_Customize</span>
+              <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-blue-400 to-transparent opacity-0 group-data-[state=active]:opacity-100"></div>
+            </TabsTrigger>
+            
+            <TabsTrigger 
+              value="hotzones" 
+              className="flex-1 min-h-[52px] relative group border-r border-cyan-500/10 data-[state=active]:bg-gradient-to-b data-[state=active]:from-cyan-500/20 data-[state=active]:to-transparent data-[state=active]:border-t-2 data-[state=active]:border-t-cyan-400 data-[state=active]:text-cyan-300 text-gray-500 hover:text-gray-300 transition-all font-mono text-xs uppercase tracking-widest"
+            >
+              <Layers className="w-3 h-3 mr-2" />
+              <span>04_HotZones</span>
+              <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-0 group-data-[state=active]:opacity-100 glyph-glow"></div>
+            </TabsTrigger>
+            
+            <TabsTrigger 
+              value="stego" 
+              className="flex-1 min-h-[52px] relative group border-r border-cyan-500/10 data-[state=active]:bg-gradient-to-b data-[state=active]:from-purple-500/20 data-[state=active]:to-transparent data-[state=active]:border-t-2 data-[state=active]:border-t-purple-400 data-[state=active]:text-purple-300 text-gray-500 hover:text-gray-300 transition-all font-mono text-xs uppercase tracking-widest"
+            >
+              <span>05_Stego</span>
+              <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-purple-400 to-transparent opacity-0 group-data-[state=active]:opacity-100"></div>
+            </TabsTrigger>
+            
+            <TabsTrigger 
+              value="security" 
+              className="flex-1 min-h-[52px] relative group border-r border-cyan-500/10 data-[state=active]:bg-gradient-to-b data-[state=active]:from-green-500/20 data-[state=active]:to-transparent data-[state=active]:border-t-2 data-[state=active]:border-t-green-400 data-[state=active]:text-green-300 text-gray-500 hover:text-gray-300 transition-all font-mono text-xs uppercase tracking-widest"
+            >
+              <Shield className="w-3 h-3 mr-2" />
+              <span>06_Security</span>
+              <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-green-400 to-transparent opacity-0 group-data-[state=active]:opacity-100"></div>
+            </TabsTrigger>
+            
+            <TabsTrigger 
+              value="analytics" 
+              className="flex-1 min-h-[52px] relative group border-r border-cyan-500/10 data-[state=active]:bg-gradient-to-b data-[state=active]:from-blue-500/20 data-[state=active]:to-transparent data-[state=active]:border-t-2 data-[state=active]:border-t-blue-400 data-[state=active]:text-blue-300 text-gray-500 hover:text-gray-300 transition-all font-mono text-xs uppercase tracking-widest"
+            >
+              <span>07_Analytics</span>
+              <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-blue-400 to-transparent opacity-0 group-data-[state=active]:opacity-100"></div>
+            </TabsTrigger>
+            
+            <TabsTrigger 
+              value="bulk" 
+              className="flex-1 min-h-[52px] relative group data-[state=active]:bg-gradient-to-b data-[state=active]:from-purple-500/20 data-[state=active]:to-transparent data-[state=active]:border-t-2 data-[state=active]:border-t-purple-400 data-[state=active]:text-purple-300 text-gray-500 hover:text-gray-300 transition-all font-mono text-xs uppercase tracking-widest"
+            >
+              <span>08_Bulk</span>
+              <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-purple-400 to-transparent opacity-0 group-data-[state=active]:opacity-100"></div>
+            </TabsTrigger>
+          </div>
+        </div>
 
-        {/* Mobile Tabs - Scrollable Pills */}
+        {/* Mobile Tabs - Technical Segmented */}
         <div className="lg:hidden mb-6 -mx-4 px-4">
-          <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+          <div className="flex gap-1 overflow-x-auto pb-2 scrollbar-hide bg-black/60 backdrop-blur-sm border border-cyan-500/20 p-1">
             {[
-              { value: 'create', icon: Wand2, label: 'Create' },
-              { value: 'preview', icon: null, label: 'Preview' },
-              { value: 'customize', icon: null, label: 'Customize' },
-              { value: 'hotzones', icon: Layers, label: 'Hot Zones' },
-              { value: 'stego', icon: null, label: 'Stego' },
-              { value: 'security', icon: Shield, label: 'Security' },
-              { value: 'analytics', icon: null, label: 'Analytics' },
-              { value: 'bulk', icon: null, label: 'Bulk' },
+              { value: 'create', icon: Wand2, label: 'Create', num: '01' },
+              { value: 'preview', icon: null, label: 'Preview', num: '02' },
+              { value: 'customize', icon: null, label: 'Customize', num: '03' },
+              { value: 'hotzones', icon: Layers, label: 'HotZones', num: '04' },
+              { value: 'stego', icon: null, label: 'Stego', num: '05' },
+              { value: 'security', icon: Shield, label: 'Security', num: '06' },
+              { value: 'analytics', icon: null, label: 'Analytics', num: '07' },
+              { value: 'bulk', icon: null, label: 'Bulk', num: '08' },
             ].map((tab) => {
               const Icon = tab.icon;
               return (
                 <button
                   key={tab.value}
                   onClick={() => setActiveTab(tab.value)}
-                  className={`flex items-center gap-2 px-4 py-2.5 rounded-full whitespace-nowrap text-sm font-medium transition-all min-h-[44px] ${
+                  className={`flex flex-col items-center justify-center px-3 py-2 whitespace-nowrap text-xs font-mono uppercase tracking-wider transition-all min-h-[48px] min-w-[72px] border-r border-cyan-500/10 last:border-r-0 ${
                     activeTab === tab.value
-                      ? 'bg-gradient-to-r from-purple-600 to-cyan-600 text-white shadow-lg glyph-glow'
-                      : 'glyph-glass-dark text-gray-400 border border-cyan-500/20 hover:border-cyan-500/40'
+                      ? 'bg-gradient-to-b from-cyan-500/30 to-transparent text-cyan-300 border-t-2 border-t-cyan-400 shadow-lg'
+                      : 'text-gray-500 hover:text-gray-300'
                   }`}
                 >
-                  {Icon && <Icon className="w-4 h-4" />}
-                  {tab.label}
+                  <div className="flex items-center gap-1 mb-0.5">
+                    {Icon && <Icon className="w-3 h-3" />}
+                    <span className="text-[10px] opacity-60">{tab.num}</span>
+                  </div>
+                  <span className="text-[9px]">{tab.label}</span>
                 </button>
               );
             })}
