@@ -2,7 +2,7 @@ import React from "react";
 import SEOHead from "@/components/SEOHead";
 import { Shield, Zap, Brain, Database, Code, AlertTriangle, Trophy } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import DreamTeamCard from "@/components/DreamTeamCard";
+import DreamTeamCardPlaceholder from "@/components/DreamTeamCardPlaceholder";
 
 export default function DreamTeam() {
   const dreamTeam = [
@@ -249,7 +249,7 @@ export default function DreamTeam() {
                   <div className="flex gap-4 px-4">
                     {dreamTeam.map((card, idx) => (
                       <div key={idx} className="snap-center flex-shrink-0 w-[85vw] max-w-sm">
-                        <DreamTeamCard card={card} />
+                        <DreamTeamCardPlaceholder card={card} />
                       </div>
                     ))}
                   </div>
@@ -260,7 +260,7 @@ export default function DreamTeam() {
             {/* Desktop: Grid */}
             <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto mb-16">
               {dreamTeam.map((card, idx) => (
-                <DreamTeamCard key={idx} card={card} />
+                <DreamTeamCardPlaceholder key={idx} card={card} />
               ))}
             </div>
 
