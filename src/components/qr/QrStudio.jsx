@@ -5,11 +5,22 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
-import { Loader2, Wand2, Layers, Shield } from 'lucide-react';
+import { Loader2, Wand2, Layers, Shield, Sparkles, Zap } from 'lucide-react';
 import { toast } from 'sonner';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
+import { 
+  GlyphCard, 
+  GlyphButton, 
+  GlyphPanel, 
+  GlyphInput, 
+  GlyphTypography, 
+  GlyphShadows,
+  GlyphGradients 
+} from './design/GlyphQrDesignSystem';
+import { PAYLOAD_TYPES } from './config/PayloadTypesCatalog';
+import PayloadTypeSelector from './PayloadTypeSelector';
 import QrSecurityBadge from './QrSecurityBadge';
 import QrPreviewCanvas from './QrPreviewCanvas';
 import QrHotZoneEditor from './QrHotZoneEditor';
