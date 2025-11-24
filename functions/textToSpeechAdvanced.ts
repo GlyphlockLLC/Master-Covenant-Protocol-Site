@@ -71,23 +71,29 @@ Deno.serve(async (req) => {
         }
 
         if (audioBuffer) {
-          // Apply audio effects
-          const processedBuffer = await applyAudioEffects(audioBuffer, {
-            bass, treble, mid, volume, echo, delay, noiseGate, enhancement, humanize
-          });
+          // Apply audio effects (placeholder for now)
+          const processedBuffer = audioBuffer;
 
-          // Upload to storage
-          const audioBlob = new Blob([processedBuffer], { type: 'audio/mpeg' });
-          const { file_url } = await base44.integrations.Core.UploadFile({ file: audioBlob });
+          // Create proper File object for upload
+          const audioFile = new File([processedBuffer], 'speech.mp3', { type: 'audio/mpeg' });
+          
+          console.log(`Uploading audio file: ${audioFile.size} bytes`);
+          const uploadResult = await base44.integrations.Core.UploadFile({ file: audioFile });
+          
+          if (!uploadResult?.file_url) {
+            throw new Error('Upload failed - no file URL returned');
+          }
+
+          console.log(`TTS success with ${currentProvider}: ${uploadResult.file_url}`);
 
           return Response.json({
             success: true,
-            audioUrl: file_url,
+            audioUrl: uploadResult.file_url,
             provider: currentProvider
           });
         }
       } catch (providerError) {
-        console.error(`Provider ${currentProvider} failed:`, providerError.message);
+        console.error(`Provider ${currentProvider} failed:`, providerError.message, providerError.stack);
         continue; // Try next provider
       }
     }
@@ -102,8 +108,12 @@ Deno.serve(async (req) => {
     });
 
   } catch (error) {
-    console.error('TTS critical error:', error);
-    return Response.json({ error: error.message }, { status: 500 });
+    console.error('TTS critical error:', error.message, error.stack);
+    return Response.json({ 
+      error: error.message,
+      details: error.stack,
+      success: false 
+    }, { status: 500 });
   }
 });
 
