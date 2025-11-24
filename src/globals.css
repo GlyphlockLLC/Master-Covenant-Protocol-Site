@@ -231,6 +231,70 @@ p {
   }
 }
 
+/* GlyphLock Theme - Cosmic Dark Space with Ultraviolet Accents */
+
+:root {
+  --uv: #6a00ff;
+  --uv-light: #b27dff;
+  --uv-dark: #3d0099;
+  --blue-glyph: #00caff;
+  --blue-light-glyph: #66e2ff;
+  --blue-dark-glyph: #006a88;
+  --white-soft: rgba(255, 255, 255, 0.1);
+  --white-glass: rgba(255, 255, 255, 0.18);
+  --blur-glyph: blur(14px);
+}
+
+/* Frosted Glass Effect */
+.glyph-glass {
+  background: var(--white-soft);
+  backdrop-filter: var(--blur-glyph);
+  -webkit-backdrop-filter: var(--blur-glyph);
+  border: 1px solid var(--white-glass);
+  border-radius: 20px;
+}
+
+/* Neon Glow Effect */
+.glyph-glow {
+  box-shadow: 0 0 25px var(--uv), 0 0 45px var(--blue-glyph);
+}
+
+/* Floating Cosmic Orbs */
+.glyph-orb {
+  width: 200px;
+  height: 200px;
+  border-radius: 100%;
+  background: radial-gradient(circle, var(--blue-light-glyph), var(--blue-dark-glyph));
+  box-shadow: 0 0 60px var(--blue-glyph), 0 0 90px var(--uv);
+  animation: float-orb 6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes float-orb {
+  0% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(-16px) scale(1.05); }
+  100% { transform: translateY(0px) scale(1); }
+}
+
+/* UV Gradient Text */
+.glyph-text-gradient {
+  background: linear-gradient(135deg, var(--uv-light), var(--blue-light-glyph));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* Pulsing UV Glow */
+.glyph-pulse {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px var(--uv), 0 0 40px var(--blue-glyph); }
+  50% { box-shadow: 0 0 40px var(--uv), 0 0 80px var(--blue-glyph); }
+}
+
 /* GlyphLock Theme */
 :root {
   --uv: #6a00ff;
