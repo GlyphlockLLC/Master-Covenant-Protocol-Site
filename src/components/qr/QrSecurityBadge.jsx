@@ -2,7 +2,7 @@ import React from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Shield, AlertTriangle, AlertOctagon, CheckCircle2 } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { getRiskLevel } from '@/utils/qrUtils';
+import { getRiskLevel } from './qrUtils';
 
 export default function QrSecurityBadge({ riskScore = 0, riskFlags = [] }) {
   const { level, color } = getRiskLevel(riskScore);
