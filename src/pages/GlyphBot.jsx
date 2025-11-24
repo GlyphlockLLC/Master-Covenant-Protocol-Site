@@ -539,9 +539,17 @@ export default function GlyphBot() {
           <div className="w-96 border-r border-purple-500/20 glyph-glass p-4 overflow-y-auto">
             <Card className="glyph-glass border-purple-500/30 glyph-glow">
               <CardHeader>
-                <CardTitle className="text-purple-300 flex items-center gap-2">
-                  <Settings className="w-5 h-5" />
-                  Voice Studio
+                <CardTitle className="text-purple-300 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Settings className="w-5 h-5" />
+                    Voice Studio
+                  </div>
+                  <button
+                    onClick={() => setShowVoiceStudio(false)}
+                    className="text-gray-400 hover:text-white transition-colors"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -707,14 +715,22 @@ export default function GlyphBot() {
             <div className="p-4">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-purple-300">Conversations</h3>
-                <Button
-                  onClick={newConversation}
-                  size="sm"
-                  className="bg-purple-600 hover:bg-purple-700"
-                >
-                  <Plus className="w-4 h-4 mr-1" />
-                  New
-                </Button>
+                <div className="flex items-center gap-2">
+                  <Button
+                    onClick={newConversation}
+                    size="sm"
+                    className="bg-purple-600 hover:bg-purple-700"
+                  >
+                    <Plus className="w-4 h-4 mr-1" />
+                    New
+                  </Button>
+                  <button
+                    onClick={() => setShowConversations(false)}
+                    className="text-gray-400 hover:text-white transition-colors p-1"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
               </div>
               <div className="space-y-2">
                 {conversations.map(conv => (
@@ -830,9 +846,17 @@ export default function GlyphBot() {
             <div className="border-t border-purple-500/20 glyph-glass p-4">
               <Card className="glyph-glass border-green-500/30 glyph-glow">
                 <CardHeader>
-                  <CardTitle className="text-green-300 flex items-center gap-2">
-                    <FileText className="w-5 h-5" />
-                    Audit Report
+                  <CardTitle className="text-green-300 flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <FileText className="w-5 h-5" />
+                      Audit Report
+                    </div>
+                    <button
+                      onClick={() => setShowAuditPanel(false)}
+                      className="text-gray-400 hover:text-white transition-colors"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
