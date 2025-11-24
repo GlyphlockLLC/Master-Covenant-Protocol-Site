@@ -231,6 +231,45 @@ p {
   }
 }
 
+/* GlyphLock Theme */
+:root {
+  --uv: #6a00ff;
+  --uv-light: #b27dff;
+  --uv-dark: #3d0099;
+  --blue: #00caff;
+  --blue-light: #66e2ff;
+  --blue-dark: #006a88;
+  --white-soft: rgba(255, 255, 255, 0.1);
+  --white-glass: rgba(255, 255, 255, 0.18);
+  --blur: blur(14px);
+}
+
+.glyph-glass {
+  background: var(--white-soft);
+  backdrop-filter: var(--blur);
+  border: 1px solid var(--white-glass);
+  border-radius: 20px;
+}
+
+.glyph-glow {
+  box-shadow: 0 0 25px var(--uv), 0 0 45px var(--blue);
+}
+
+.glyph-orb {
+  width: 200px;
+  height: 200px;
+  border-radius: 100%;
+  background: radial-gradient(circle, var(--blue-light), var(--blue-dark));
+  box-shadow: 0 0 60px var(--blue), 0 0 90px var(--uv);
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-16px); }
+  100% { transform: translateY(0px); }
+}
+
 /* DinoBot Chat Styles */
 .dino-fab {
   position: fixed;
