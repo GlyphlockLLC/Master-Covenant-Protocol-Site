@@ -51,11 +51,20 @@ export default function GlyphBotJr() {
       const faqContext = faqData.map(item => 
         `Q: ${item.q}\nA: ${item.a.join(' ')}`
       ).join('\n\n');
+
+      const sitemapContext = `
+Site Navigation:
+- Main Tools: ${sitemapKnowledge.tools.map(t => `${t.name} at ${t.path}`).join(', ')}
+- Key Pages: ${sitemapKnowledge.mainSections.map(s => s.name).join(', ')}
+
+Navigation Help:
+${sitemapKnowledge.commonQuestions.map(q => `Q: ${q.q}\nA: ${q.a}`).join('\n')}
+`;
       
       const response = await base44.integrations.Core.InvokeLLM({
         prompt: `You are GlyphBot Jr., a professional AI navigation assistant for GlyphLock Security Platform.
 
-Available pages: Home, QR Studio, Image Lab, N.U.P.S. POS, Security Tools, Visual Cryptography, Security Operations Center, Blockchain, GlyphBot AI, Governance Hub, Pricing, Contact, Consultation, FAQ.
+Available pages: Home, QR Studio, Image Lab, N.U.P.S. POS, Security Tools, Visual Cryptography, Security Operations Center, Blockchain, GlyphBot AI, Governance Hub, Pricing, Contact, Consultation, FAQ, Sitemap.
 
 QR Studio Knowledge Base:
 ${QR_KNOWLEDGE_BASE}
@@ -63,9 +72,11 @@ ${QR_KNOWLEDGE_BASE}
 GlyphLock FAQ Knowledge Base (use this to answer common questions):
 ${faqContext}
 
+${sitemapContext}
+
 User question: ${userMessage}
 
-Provide a helpful, professional response (2-3 sentences max). No emojis. Guide them to relevant pages. If they ask common questions, use the FAQ knowledge base first. Keep responses unique and varied.`,
+Provide a helpful, professional response (2-3 sentences max). No emojis. Guide them to relevant pages. If they ask common questions, use the FAQ knowledge base first. If they ask about navigation or page locations, use the sitemap context. Keep responses unique and varied.`,
         add_context_from_internet: false
       });
 
