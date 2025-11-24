@@ -27,8 +27,8 @@ const NAV = [
     label: "Services",
     items: [
       { label: "QR Studio", page: "QRGenerator" },
+      { label: "Image Lab", page: "ImageLab" },
       { label: "Blockchain Verification", page: "Blockchain" },
-      { label: "Interactive Image Studio", page: "InteractiveImageStudio" },
       { label: "Steganography", page: "Steganography" },
       { label: "NUPS POS System", page: "NUPSLogin" },
     ],
@@ -38,7 +38,6 @@ const NAV = [
     items: [
       { label: "GlyphBot Assistant", page: "GlyphBot" },
       { label: "Content Generator", page: "ContentGenerator" },
-      { label: "Image Generator", page: "ImageGenerator" },
     ],
   },
   {

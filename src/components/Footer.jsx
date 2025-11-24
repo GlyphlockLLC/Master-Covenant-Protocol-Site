@@ -60,9 +60,9 @@ export default function Footer() {
             <h4 className="text-white font-bold mb-6 uppercase tracking-widest text-xs">Solutions</h4>
             <div className="flex flex-col gap-4">
               <Link to={createPageUrl("QRGenerator")} className="hover:text-[#00E4FF] transition-colors">QR Studio</Link>
+              <Link to={createPageUrl("ImageLab")} className="hover:text-[#00E4FF] transition-colors">Image Lab</Link>
               <Link to={createPageUrl("Blockchain")} className="hover:text-[#00E4FF] transition-colors">Blockchain</Link>
-              <Link to={createPageUrl("InteractiveImageStudio")} className="hover:text-[#00E4FF] transition-colors">Image Studio</Link>
-              <Link to={createPageUrl("HotzoneMapper")} className="hover:text-[#00E4FF] transition-colors">Hotzone Mapper</Link>
+              <Link to={createPageUrl("Steganography")} className="hover:text-[#00E4FF] transition-colors">Steganography</Link>
               <Link to={createPageUrl("NUPSLogin")} className="hover:text-[#00E4FF] transition-colors">NUPS POS</Link>
             </div>
           </div>
