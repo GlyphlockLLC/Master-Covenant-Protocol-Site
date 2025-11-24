@@ -477,6 +477,15 @@ export default function GlyphBot() {
               </div>
             </div>
 
+            <div className="flex items-center gap-2">
+              <a
+                href="/glyphbot-junior"
+                className="px-4 py-2 bg-gradient-to-r from-blue-600/80 to-cyan-600/80 hover:from-blue-500/80 hover:to-cyan-500/80 border-2 border-blue-400/40 rounded-xl text-sm font-semibold text-white shadow-lg transition-all"
+              >
+                Switch to Junior 🌟
+              </a>
+            </div>
+
             <div className="flex items-center gap-2 flex-wrap">
               <select
                 value={personaId}
@@ -724,9 +733,40 @@ export default function GlyphBot() {
                   onClick={async () => {
                     try {
                       const testText = "Hello! This is a test of the GlyphBot voice system with all effects applied.";
-                      await speak(testText, "voice_test_" + Date.now());
+                      stopAudio();
+
+                      const response = await base44.functions.invoke('textToSpeechAdvanced', {
+                        text: testText,
+                        provider: voiceProvider,
+                        voice: voiceId,
+                        speed: voiceSpeed,
+                        pitch: voicePitch,
+                        stability: 0.5,
+                        similarity: 0.75,
+                        style: 0.0,
+                        useSpeakerBoost: true
+                      });
+
+                      const audioUrl = response.data?.audioUrl;
+                      if (!audioUrl) {
+                        throw new Error("No audio URL returned");
+                      }
+
+                      const audio = new Audio(audioUrl);
+                      audioRef.current = audio;
+                      audio.playbackRate = voiceSpeed;
+
+                      applyAudioEffects(audio, {
+                        bass: voiceBass,
+                        treble: voiceTreble,
+                        mid: voiceWarmth,
+                        volume: voiceVolume
+                      });
+
+                      await audio.play();
                     } catch (error) {
                       console.error("Test voice error:", error);
+                      alert("Voice test failed: " + error.message);
                     }
                   }}
                   className="w-full bg-purple-600 hover:bg-purple-700 min-h-[36px] mt-3 text-sm"
@@ -806,10 +846,12 @@ export default function GlyphBot() {
             style={{ WebkitOverflowScrolling: "touch", overscrollBehavior: "contain" }}
           >
             {messages.length === 0 && (
-              <div className="text-center py-12">
-                <MessageCircle className="w-12 h-12 mx-auto mb-3 text-purple-400 opacity-50" />
-                <p className="text-base text-purple-300">GlyphBot is online and ready.</p>
-                <p className="text-xs mt-1 text-gray-400">Ask anything. I'm here to help.</p>
+              <div className="text-center py-16">
+                <MessageCircle className="w-16 h-16 mx-auto mb-4 text-purple-400 opacity-50" />
+                <h2 className="text-2xl font-bold bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-500 bg-clip-text text-transparent mb-2">
+                  GlyphBot is online and ready
+                </h2>
+                <p className="text-base text-gray-400">Ask anything. I'm here to help.</p>
               </div>
             )}
 
@@ -872,20 +914,20 @@ export default function GlyphBot() {
 
           {/* Audit Panel */}
           {showAuditPanel && auditData && (
-            <div className="flex-none border-t border-green-500/20 glyph-glass-dark p-3 max-h-[200px] overflow-y-auto">
-              <div className="flex items-center justify-between mb-2">
+            <div className="flex-none border-t border-green-500/20 glyph-glass-dark p-4 max-h-[300px] overflow-y-auto">
+              <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
-                  <FileText className="w-4 h-4 text-green-400" />
-                  <h3 className="text-sm font-semibold text-green-300">Audit Report</h3>
+                  <FileText className="w-5 h-5 text-green-400" />
+                  <h3 className="text-base font-semibold text-green-300">Audit Report</h3>
                 </div>
                 <button
                   onClick={() => setShowAuditPanel(false)}
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className="text-gray-400 hover:text-white transition-colors p-2 hover:bg-gray-800/50 rounded-lg"
                 >
-                  <X className="w-4 h-4" />
+                  <X className="w-5 h-5" />
                 </button>
               </div>
-              <pre className="text-xs text-green-200 whitespace-pre-wrap overflow-x-auto bg-black/30 p-2 rounded border border-green-500/20">
+              <pre className="text-sm text-green-200 whitespace-pre-wrap overflow-x-auto bg-black/50 p-4 rounded-lg border-2 border-green-500/30 shadow-xl">
                 {JSON.stringify(auditData, null, 2)}
               </pre>
             </div>
