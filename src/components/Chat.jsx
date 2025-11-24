@@ -3,11 +3,13 @@ import { base44 } from "@/api/base44Client";
 import { MessageCircle, X, Save, FolderOpen, Plus, Settings, Volume2 } from "lucide-react";
 import { generateAudio, applyAudioEffects } from "@/components/utils/ttsEngine";
 import VoiceSettingsPanel from "@/components/chat/VoiceSettingsPanel";
+import { PERSONAS } from "@/components/glyphbot/personas";
 
-export default function Chat() {
+export default function Chat({ defaultPersona = null }) {
   const [isOpen, setIsOpen] = useState(false);
+  const activePersona = defaultPersona || PERSONAS[0];
   const [messages, setMessages] = useState([
-    { role: "assistant", text: "🦕 Roar! I'm DinoBot. How can I help?", timestamp: new Date().toISOString() }
+    { role: "assistant", text: defaultPersona ? "Hi! I'm GlyphBot Junior! 🌟 How can I help?" : "🦕 Roar! I'm DinoBot. How can I help?", timestamp: new Date().toISOString() }
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -15,20 +17,41 @@ export default function Chat() {
   const [currentConvId, setCurrentConvId] = useState(null);
   const [showConvList, setShowConvList] = useState(false);
   const [showVoiceSettings, setShowVoiceSettings] = useState(false);
-  const [voiceSettings, setVoiceSettings] = useState({
-    provider: 'openai',
-    voice: 'alloy',
-    speed: 1.0,
-    pitch: 1.0,
-    naturalness: 0.8,
-    volume: 1.0,
-    bass: 0,
-    treble: 0,
-    mid: 0,
-    stability: 0.5,
-    similarity: 0.75,
-    style: 0.0,
-    useSpeakerBoost: true
+  const [voiceSettings, setVoiceSettings] = useState(() => {
+    if (defaultPersona?.voice) {
+      return {
+        provider: defaultPersona.voice.provider,
+        voice: defaultPersona.voice.model,
+        speed: defaultPersona.voice.speed,
+        pitch: defaultPersona.voice.pitch,
+        naturalness: 0.8,
+        volume: 1.0,
+        bass: 0,
+        treble: 0,
+        mid: 0,
+        stability: 0.5,
+        similarity: 0.75,
+        style: 0.0,
+        useSpeakerBoost: true,
+        effects: defaultPersona.voice.effects
+      };
+    }
+    return {
+      provider: 'openai',
+      voice: 'alloy',
+      speed: 1.0,
+      pitch: 1.0,
+      naturalness: 0.8,
+      volume: 1.0,
+      bass: 0,
+      treble: 0,
+      mid: 0,
+      stability: 0.5,
+      similarity: 0.75,
+      style: 0.0,
+      useSpeakerBoost: true,
+      effects: { echo: false, delay: false, gate: true, enhance: true }
+    };
   });
   const msgRef = useRef(null);
   const audioRef = useRef(new Audio());
@@ -107,7 +130,12 @@ export default function Chat() {
           bass: voiceSettings.bass || 0,
           treble: voiceSettings.treble || 0,
           mid: voiceSettings.mid || 0,
-          volume: voiceSettings.volume || 1.0
+          volume: voiceSettings.volume || 1.0,
+          echo: voiceSettings.effects?.echo || false,
+          delay: voiceSettings.effects?.delay || false,
+          gate: voiceSettings.effects?.gate || true,
+          enhance: voiceSettings.effects?.enhance || true,
+          humanize: voiceSettings.effects?.humanize || false
         });
         
         audio.play().catch(() => {});
@@ -154,7 +182,7 @@ ${sitemapKnowledge.commonQuestions.map(q => `Q: ${q.q}\nA: ${q.a}`).join('\n')}
         : `User: ${userMessage}`;
 
       const response = await base44.integrations.Core.InvokeLLM({
-        prompt: `You are DinoBot, a friendly AI assistant for GlyphLock Security. Be helpful and professional. Maintain context from the conversation history and reference previous messages when relevant.
+        prompt: `${activePersona.system}
 
 QR Studio Knowledge Base:
 ${QR_KNOWLEDGE_BASE}

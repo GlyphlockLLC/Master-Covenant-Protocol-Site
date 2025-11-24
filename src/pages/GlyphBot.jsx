@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { base44 } from "@/api/base44Client";
-import { MessageCircle, Volume2, VolumeX, Settings, Shield, FileText, AlertTriangle, Save, FolderOpen, Plus, X, Sliders } from "lucide-react";
+import { MessageCircle, Volume2, VolumeX, Settings, Shield, FileText, AlertTriangle, Save, FolderOpen, Plus, X, Sliders, Wand2 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { generateAudio, applyAudioEffects, TTS_PROVIDERS, getVoicesForProvider } from "@/components/utils/ttsEngine";
 import { Button } from "@/components/ui/button";
@@ -9,24 +9,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import { PERSONAS } from "@/components/glyphbot/personas";
 
-const PERSONAS = [
-  {
-    id: "glyphbot_default",
-    name: "GlyphBot",
-    system: "You are GlyphBot, a sharp, helpful, confident assistant for GlyphLock and Glyph Tech. Speak clearly, be practical, match Carlo energy."
-  },
-  {
-    id: "glyphbot_cynical",
-    name: "GlyphBot Cynical",
-    system: "You are GlyphBot in cynical mode. Blunt, a little roasted, still helpful, never cruel. Keep it real."
-  },
-  {
-    id: "glyphbot_legal",
-    name: "GlyphBot Legal",
-    system: "You are GlyphBot in legal mode. Clear, precise communication. Structured guidance. Professional."
-  }
-];
+import { PERSONAS } from "@/components/glyphbot/personas";
 
 export default function GlyphBot() {
   const [messages, setMessages] = useState(() => {
@@ -99,6 +84,18 @@ export default function GlyphBot() {
   );
   const [voiceEnhance, setVoiceEnhance] = useState(() => 
     localStorage.getItem("glyphbot_voice_enhance") === "true"
+  );
+  const [voiceEchoEffect, setVoiceEchoEffect] = useState(() =>
+    localStorage.getItem("glyphbot_voice_echo_effect") === "true"
+  );
+  const [voiceDelayEffect, setVoiceDelayEffect] = useState(() =>
+    localStorage.getItem("glyphbot_voice_delay_effect") === "true"
+  );
+  const [voiceGateEffect, setVoiceGateEffect] = useState(() =>
+    localStorage.getItem("glyphbot_voice_gate_effect") === "true"
+  );
+  const [voiceHumanizeEffect, setVoiceHumanizeEffect] = useState(() =>
+    localStorage.getItem("glyphbot_voice_humanize_effect") === "true"
   );
 
   const [voices, setVoices] = useState([]);
@@ -179,6 +176,22 @@ export default function GlyphBot() {
   useEffect(() => {
     localStorage.setItem("glyphbot_voice_enhance", String(voiceEnhance));
   }, [voiceEnhance]);
+
+  useEffect(() => {
+    localStorage.setItem("glyphbot_voice_echo_effect", String(voiceEchoEffect));
+  }, [voiceEchoEffect]);
+
+  useEffect(() => {
+    localStorage.setItem("glyphbot_voice_delay_effect", String(voiceDelayEffect));
+  }, [voiceDelayEffect]);
+
+  useEffect(() => {
+    localStorage.setItem("glyphbot_voice_gate_effect", String(voiceGateEffect));
+  }, [voiceGateEffect]);
+
+  useEffect(() => {
+    localStorage.setItem("glyphbot_voice_humanize_effect", String(voiceHumanizeEffect));
+  }, [voiceHumanizeEffect]);
 
   // Auto-scroll
   useEffect(() => {
@@ -288,7 +301,12 @@ export default function GlyphBot() {
           bass: voiceBass,
           treble: voiceTreble,
           mid: voiceWarmth,
-          volume: voiceVolume
+          volume: voiceVolume,
+          echo: voiceEchoEffect,
+          delay: voiceDelayEffect,
+          gate: voiceGateEffect,
+          enhance: voiceEnhance,
+          humanize: voiceHumanizeEffect
         });
 
         audio.play().catch(() => {});
@@ -625,18 +643,55 @@ export default function GlyphBot() {
                   />
                 </div>
 
-                <div className="flex items-center justify-between py-2">
-                  <Label className="text-purple-200">Human Enhancement</Label>
-                  <Switch
-                    checked={voiceEnhance}
-                    onCheckedChange={setVoiceEnhance}
-                  />
+                <h3 className="text-purple-300 font-semibold mt-4 mb-2">Audio Effects</h3>
+
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between py-2">
+                    <Label className="text-purple-200">Echo</Label>
+                    <Switch
+                      checked={voiceEchoEffect}
+                      onCheckedChange={setVoiceEchoEffect}
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between py-2">
+                    <Label className="text-purple-200">Delay</Label>
+                    <Switch
+                      checked={voiceDelayEffect}
+                      onCheckedChange={setVoiceDelayEffect}
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between py-2">
+                    <Label className="text-purple-200">Noise Gate</Label>
+                    <Switch
+                      checked={voiceGateEffect}
+                      onCheckedChange={setVoiceGateEffect}
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between py-2">
+                    <Label className="text-purple-200">Human Enhancement</Label>
+                    <Switch
+                      checked={voiceEnhance}
+                      onCheckedChange={setVoiceEnhance}
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between py-2">
+                    <Label className="text-purple-200">Humanize</Label>
+                    <Switch
+                      checked={voiceHumanizeEffect}
+                      onCheckedChange={setVoiceHumanizeEffect}
+                    />
+                  </div>
                 </div>
 
                 <Button
                   onClick={() => speak("Hello! This is a test of the GlyphBot voice system.", "test")}
-                  className="w-full bg-purple-600 hover:bg-purple-700 min-h-[44px]"
+                  className="w-full bg-purple-600 hover:bg-purple-700 min-h-[44px] mt-4"
                 >
+                  <Wand2 className="w-4 h-4 mr-2" />
                   Test Voice
                 </Button>
               </CardContent>

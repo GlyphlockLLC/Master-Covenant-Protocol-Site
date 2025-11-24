@@ -48,6 +48,7 @@ import SitemapQr from './pages/SitemapQr';
 import SitemapImages from './pages/SitemapImages';
 import SitemapInteractive from './pages/SitemapInteractive';
 import SitemapDynamic from './pages/SitemapDynamic';
+import GlyphBotJunior from './pages/GlyphBotJunior';
 import __Layout from './Layout.jsx';
 
 
@@ -102,6 +103,7 @@ export const PAGES = {
     "SitemapImages": SitemapImages,
     "SitemapInteractive": SitemapInteractive,
     "SitemapDynamic": SitemapDynamic,
+    "GlyphBotJunior": GlyphBotJunior,
 }
 
 export const pagesConfig = {

@@ -1,139 +1,96 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { base44 } from "@/api/base44Client";
-import { MessageCircle, X, Send, Menu, Volume2, Settings } from "lucide-react";
-import { Link } from "react-router-dom";
-import { createPageUrl } from "@/utils";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu";
+import { Sparkles, Send, Loader2 } from "lucide-react";
+import ReactMarkdown from "react-markdown";
 import { generateAudio, applyAudioEffects } from "@/components/utils/ttsEngine";
-import VoiceSettingsPanel from "@/components/chat/VoiceSettingsPanel";
+import { PERSONAS } from "@/components/glyphbot/personas";
 
 export default function GlyphBotJr() {
-  const [isOpen, setIsOpen] = useState(false);
+  const jrPersona = PERSONAS.find(p => p.id === "glyphbot_jr") || PERSONAS[4];
+  
   const [messages, setMessages] = useState([
-    {
-      role: "assistant",
-      content: "Hi, I'm GlyphBot Jr. How can I help you navigate GlyphLock Security today?"
-    }
+    { role: "assistant", text: "Hi there! I'm GlyphBot Junior! 🌟 How can I help you today?", timestamp: Date.now() }
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const [showVoiceSettings, setShowVoiceSettings] = useState(false);
-  const [voiceSettings, setVoiceSettings] = useState({
-    provider: 'openai',
-    voice: 'echo',
-    speed: 1.0,
-    pitch: 1.0,
-    naturalness: 0.8,
-    volume: 1.0,
-    bass: 0,
-    treble: 0,
-    mid: 0,
-    stability: 0.5,
-    similarity: 0.75,
-    style: 0.0,
-    useSpeakerBoost: true
-  });
-  const audioRef = useRef(new Audio());
+  const messagesEndRef = useRef(null);
+  const audioRef = useRef(null);
 
-  const quickLinks = [
-    { label: "Home", page: "Home" },
-    { label: "N.U.P.S. POS", page: "NUPSLogin" },
-    { label: "Security Tools", page: "SecurityTools" },
-    { label: "Visual Cryptography", page: "VisualCryptography" },
-    { label: "Security Operations", page: "SecurityOperationsCenter" },
-    { label: "GlyphBot AI", page: "GlyphBot" },
-    { label: "Governance Hub", page: "GovernanceHub" },
-    { label: "Pricing", page: "Pricing" }
-  ];
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   const playVoice = async (text) => {
     try {
       const audioUrl = await generateAudio(
-        voiceSettings.provider,
-        voiceSettings.voice,
+        jrPersona.voice.provider,
+        jrPersona.voice.model,
         text,
-        voiceSettings
+        {
+          speed: jrPersona.voice.speed,
+          pitch: jrPersona.voice.pitch,
+          volume: 1.0
+        }
       );
-      
+
       if (audioUrl) {
-        const audio = audioRef.current;
-        audio.pause();
-        audio.currentTime = 0;
-        audio.src = audioUrl;
-        audio.playbackRate = voiceSettings.speed || 1.0;
+        const audio = new Audio(audioUrl);
+        audioRef.current = audio;
+        audio.playbackRate = jrPersona.voice.speed;
         
         applyAudioEffects(audio, {
-          bass: voiceSettings.bass || 0,
-          treble: voiceSettings.treble || 0,
-          mid: voiceSettings.mid || 0,
-          volume: voiceSettings.volume || 1.0
+          volume: 1.0,
+          enhance: jrPersona.voice.effects.enhance,
+          gate: jrPersona.voice.effects.gate
         });
-        
+
         audio.play().catch(() => {});
       }
-    } catch (e) {
-      console.error("Voice error:", e);
+    } catch (err) {
+      console.error("Voice error:", err);
     }
   };
 
   const handleSend = async () => {
     if (!input.trim() || loading) return;
 
-    const userMessage = input;
+    const userMessage = input.trim();
     setInput("");
-    setMessages(prev => [...prev, { role: "user", content: userMessage }]);
+    setMessages(prev => [...prev, { role: "user", text: userMessage, timestamp: Date.now() }]);
     setLoading(true);
 
     try {
-      const { QR_KNOWLEDGE_BASE } = await import('./qr/QrKnowledgeBase');
-      const { default: faqData } = await import('@/components/content/faqMasterData');
-      const { default: sitemapKnowledge } = await import('@/components/content/sitemapKnowledge');
-      
-      const faqContext = faqData.map(item => 
-        `Q: ${item.q}\nA: ${item.a.join(' ')}`
-      ).join('\n\n');
+      const conversationHistory = messages.map(msg => ({
+        role: msg.role,
+        content: msg.text
+      })).concat([{ role: "user", content: userMessage }]);
 
-      const sitemapContext = `
-Site Navigation:
-- Main Tools: ${sitemapKnowledge.tools.map(t => `${t.name} at ${t.path}`).join(', ')}
-- Key Pages: ${sitemapKnowledge.mainSections.map(s => s.name).join(', ')}
-
-Navigation Help:
-${sitemapKnowledge.commonQuestions.map(q => `Q: ${q.q}\nA: ${q.a}`).join('\n')}
-`;
-      
       const response = await base44.integrations.Core.InvokeLLM({
-        prompt: `You are GlyphBot Jr., a professional AI navigation assistant for GlyphLock Security Platform.
+        prompt: `${jrPersona.system}
 
-Available pages: Home, QR Studio, Image Lab, N.U.P.S. POS, Security Tools, Visual Cryptography, Security Operations Center, Blockchain, GlyphBot AI, Governance Hub, Pricing, Contact, Consultation, FAQ, Sitemap.
+Conversation history:
+${conversationHistory.map(m => `${m.role}: ${m.content}`).join('\n')}
 
-QR Studio Knowledge Base:
-${QR_KNOWLEDGE_BASE}
-
-GlyphLock FAQ Knowledge Base (use this to answer common questions):
-${faqContext}
-
-${sitemapContext}
-
-User question: ${userMessage}
-
-Provide a helpful, professional response (2-3 sentences max). No emojis. Guide them to relevant pages. If they ask common questions, use the FAQ knowledge base first. If they ask about navigation or page locations, use the sitemap context. Keep responses unique and varied.`,
+Remember to be friendly, helpful, and explain things simply!`,
         add_context_from_internet: false
       });
 
-      setMessages(prev => [...prev, { role: "assistant", content: response }]);
-    } catch (error) {
-      setMessages(prev => [...prev, { 
+      const assistantMessage = { 
         role: "assistant", 
-        content: "I apologize for the connection issue. Please use the menu to navigate or try again." 
+        text: response, 
+        timestamp: Date.now() 
+      };
+      
+      setMessages(prev => [...prev, assistantMessage]);
+      
+      // Auto-play voice response
+      setTimeout(() => playVoice(response), 300);
+      
+    } catch (error) {
+      setMessages(prev => [...prev, {
+        role: "assistant",
+        text: "Oops! Something went wrong. Can you try asking again? 😊",
+        timestamp: Date.now()
       }]);
     }
 
@@ -141,135 +98,90 @@ Provide a helpful, professional response (2-3 sentences max). No emojis. Guide t
   };
 
   return (
-    <>
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 z-50 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white p-4 rounded-full shadow-2xl transition-all duration-300 hover:scale-110 border-2 border-blue-500/50"
-        aria-label="Open chat assistant"
-      >
-        {isOpen ? <X className="w-6 h-6" /> : <MessageCircle className="w-6 h-6" />}
-      </button>
-
-      {isOpen && (
-        <div className="fixed bottom-24 right-6 z-50 w-96 max-w-[calc(100vw-3rem)] h-[500px] rounded-2xl shadow-2xl overflow-hidden glass-royal">
-          <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-4 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <img 
-                src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/61e45d108_glyphbot-size-lg.png"
-                alt="GlyphBot"
-                className="w-8 h-8 rounded-full bg-white/10 p-1"
-              />
-              <div>
-                <span className="font-bold text-white block">GlyphBot Jr.</span>
-                <span className="text-xs text-white/80">Navigation Assistant</span>
-              </div>
+    <div className="min-h-screen w-full bg-gradient-to-br from-indigo-900 via-purple-800 to-pink-700 flex flex-col relative overflow-hidden">
+      {/* Playful background */}
+      <div className="fixed inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzRjMC0yLjIxLTEuNzktNC00LTRzLTQgMS43OS00IDQgMS43OSA0IDQgNCA0LTEuNzkgNC00em0wLTEwYzAtMi4yMS0xLjc5LTQtNC00cy00IDEuNzktNCA0IDEuNzkgNCA0IDQgNC0xLjc5IDQtNHoiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-30 pointer-events-none"></div>
+      
+      {/* Header */}
+      <header className="bg-white/10 backdrop-blur-xl border-b border-white/20 shadow-lg">
+        <div className="px-6 py-4">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-full bg-gradient-to-r from-yellow-400 to-pink-500 flex items-center justify-center shadow-lg">
+              <Sparkles className="w-7 h-7 text-white" />
             </div>
-            <div className="flex items-center gap-2">
-              <Button
-                size="sm"
-                variant="ghost"
-                onClick={() => setShowVoiceSettings(!showVoiceSettings)}
-                className="text-white hover:bg-white/10"
-                title="Voice Settings"
-              >
-                <Volume2 className="w-5 h-5" />
-              </Button>
-              <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  className="text-white hover:bg-white/10"
-                >
-                  <Menu className="w-5 h-5" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48">
-                <div className="px-2 py-2">
-                  <p className="text-xs font-semibold text-white">Quick Navigation</p>
-                </div>
-                <DropdownMenuSeparator />
-                {quickLinks.map((link, idx) => (
-                  <DropdownMenuItem key={idx} asChild>
-                    <Link 
-                      to={createPageUrl(link.page)}
-                      onClick={() => setIsOpen(false)}
-                      className="cursor-pointer text-white"
-                    >
-                      {link.label}
-                    </Link>
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-
-          {showVoiceSettings ? (
-            <div className="p-4 h-[400px] overflow-y-auto">
-              <VoiceSettingsPanel
-                settings={voiceSettings}
-                onChange={setVoiceSettings}
-              />
-            </div>
-          ) : (
-            <div className="p-4 h-[340px] overflow-y-auto space-y-4">
-              {messages.map((msg, idx) => (
-                <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  <div 
-                    className={`max-w-[80%] p-3 rounded-lg ${
-                      msg.role === 'user'
-                        ? 'bg-blue-600 text-white'
-                        : 'glass-card text-white'
-                    }`}
-                  >
-                    <p className="text-sm">{msg.content}</p>
-                    {msg.role === 'assistant' && (
-                      <button
-                        onClick={() => playVoice(msg.content)}
-                        className="mt-2 text-xs text-blue-300 hover:text-blue-200 flex items-center gap-1"
-                      >
-                        <Volume2 className="w-3 h-3" />
-                        Play
-                      </button>
-                    )}
-                  </div>
-                </div>
-              ))}
-              {loading && (
-                <div className="flex justify-start">
-                  <div className="glass-card p-3 rounded-lg">
-                    <div className="flex gap-1">
-                      <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"></div>
-                      <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
-                      <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-
-          <div className="border-t border-blue-500/30 p-3">
-            <div className="flex gap-2">
-              <Input
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-                placeholder="Ask me anything..."
-                className="flex-1 text-white"
-                disabled={loading}
-              />
-              <Button 
-                onClick={handleSend}
-                disabled={loading || !input.trim()}
-                className="bg-blue-600 hover:bg-blue-700"
-              >
-                <Send className="w-4 h-4" />
-              </Button>
+            <div>
+              <h1 className="text-2xl font-bold text-white">GlyphBot Junior</h1>
+              <p className="text-sm text-white/80">Your friendly AI helper! 🌈</p>
             </div>
           </div>
         </div>
-      )}
-    </>
+      </header>
+
+      {/* Chat Messages */}
+      <main className="flex-1 overflow-y-auto px-4 py-6 space-y-4">
+        {messages.map((msg, idx) => (
+          <div
+            key={idx}
+            className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
+          >
+            <div
+              className={`max-w-[85%] rounded-2xl px-5 py-3 shadow-lg ${
+                msg.role === "user"
+                  ? "bg-gradient-to-r from-blue-500 to-cyan-500 text-white"
+                  : "bg-white/95 backdrop-blur text-gray-800"
+              }`}
+            >
+              <ReactMarkdown
+                className={`prose ${msg.role === "assistant" ? "prose-gray" : "prose-invert"} prose-sm max-w-none`}
+                components={{
+                  p: ({ children }) => <p className="mb-2 last:mb-0 leading-relaxed">{children}</p>,
+                  code: ({ inline, children }) =>
+                    inline ? (
+                      <code className="bg-gray-200 px-1.5 py-0.5 rounded text-sm">{children}</code>
+                    ) : (
+                      <code className="block bg-gray-100 p-3 rounded-lg text-sm overflow-x-auto">{children}</code>
+                    )
+                }}
+              >
+                {msg.text}
+              </ReactMarkdown>
+            </div>
+          </div>
+        ))}
+        {loading && (
+          <div className="flex justify-start">
+            <div className="bg-white/95 backdrop-blur rounded-2xl px-5 py-3 shadow-lg flex items-center gap-2">
+              <Loader2 className="w-4 h-4 animate-spin text-purple-600" />
+              <span className="text-gray-600 text-sm">Thinking...</span>
+            </div>
+          </div>
+        )}
+        <div ref={messagesEndRef} />
+      </main>
+
+      {/* Input Area */}
+      <footer className="bg-white/10 backdrop-blur-xl border-t border-white/20 px-4 py-4">
+        <div className="flex items-center gap-3">
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleSend()}
+            placeholder="Ask me anything! 🌟"
+            disabled={loading}
+            className="flex-1 bg-white/90 border-2 border-white/30 rounded-xl px-4 py-3 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent min-h-[52px]"
+            style={{ fontSize: "16px" }}
+          />
+          <button
+            onClick={handleSend}
+            disabled={loading || !input.trim()}
+            className="bg-gradient-to-r from-yellow-400 to-pink-500 hover:from-yellow-500 hover:to-pink-600 text-white rounded-xl px-6 py-3 font-semibold shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all min-h-[52px] min-w-[80px] flex items-center justify-center"
+          >
+            <Send className="w-5 h-5" />
+          </button>
+        </div>
+        <p className="text-center text-white/60 text-xs mt-2">Press Enter to send</p>
+      </footer>
+    </div>
   );
 }
