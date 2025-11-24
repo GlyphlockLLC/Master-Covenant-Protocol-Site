@@ -35,13 +35,16 @@ export default function FAQ() {
         url="/faq"
       />
       
-      <div className="min-h-screen bg-black text-white py-32 relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#001F54]/20 to-transparent pointer-events-none"></div>
+      <div className="min-h-screen bg-gradient-to-br from-black via-purple-950/20 to-black text-white py-32 relative">
+        {/* Cosmic Background */}
+        <div className="fixed inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-900/30 via-cyan-900/10 to-transparent pointer-events-none z-0" />
+        <div className="fixed inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iZ3JpZCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj48cGF0aCBkPSJNIDQwIDAgTCAwIDAgMCA0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDYsIDE4MiwgMjEyLCAwLjEpIiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-20 pointer-events-none z-0" />
+        <div className="glyph-orb fixed top-20 right-20 opacity-20 glyph-pulse" style={{ background: 'radial-gradient(circle, rgba(6,182,212,0.3), rgba(59,130,246,0.2))' }}></div>
         
         <div className="container mx-auto px-6 max-w-7xl relative z-10">
           <div className="text-center mb-16">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-[#00E4FF]/10 rounded-2xl mb-6 border border-[#00E4FF]/20">
-              <HelpCircle className="w-8 h-8 text-[#00E4FF]" />
+            <div className="inline-flex items-center justify-center w-16 h-16 glyph-glass border-2 border-cyan-500/40 rounded-2xl mb-6 glyph-glow">
+              <HelpCircle className="w-8 h-8 text-cyan-400" />
             </div>
             <h1 className="text-5xl md:text-6xl font-black mb-6 font-space tracking-tight">
               FREQUENTLY ASKED <span className="text-transparent bg-gradient-to-r from-[#00E4FF] to-[#8C4BFF] bg-clip-text">QUESTIONS</span>
@@ -53,14 +56,14 @@ export default function FAQ() {
 
           <FaqSectionGlyphPanel />
 
-          <div className="glass-card rounded-2xl border border-[#8C4BFF]/30 p-8 text-center mt-16 bg-[#8C4BFF]/5">
+          <div className="glyph-glass-dark rounded-2xl border-2 border-purple-500/40 p-8 text-center mt-16 glyph-glow">
             <h3 className="text-2xl font-bold text-white mb-4 font-space">Still Need Help?</h3>
             <p className="text-gray-400 mb-8 max-w-lg mx-auto">
               Our security specialists are available 24/7 for enterprise clients, and within 24 hours for all users.
             </p>
             <a
               href="mailto:glyphlock@gmail.com"
-              className="inline-flex items-center justify-center bg-gradient-to-r from-[#00E4FF] to-[#8C4BFF] hover:scale-105 text-black font-bold uppercase tracking-wide px-8 py-4 rounded-xl shadow-lg transition-all"
+              className="inline-flex items-center justify-center bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold uppercase tracking-wide px-8 py-4 rounded-xl shadow-lg transition-all glyph-glow min-h-[52px]"
             >
               Contact Support
             </a>

@@ -37,25 +37,28 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-[#000000] flex overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-black via-purple-950/20 to-black flex overflow-hidden relative">
+      {/* Cosmic Background */}
+      <div className="fixed inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-900/30 via-cyan-900/10 to-transparent pointer-events-none z-0" />
+      <div className="fixed inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iZ3JpZCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj48cGF0aCBkPSJNIDQwIDAgTCAwIDAgMCA0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDYsIDE4MiwgMjEyLCAwLjEpIiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-20 pointer-events-none z-0" />
       <DashboardSidebar 
         selectedModel={selectedModel} 
         setSelectedModel={setSelectedModel}
       />
       
-      <div className="flex-1 flex flex-col h-screen overflow-hidden bg-[#000000] relative">
+      <div className="flex-1 flex flex-col h-screen overflow-hidden relative z-10">
         {/* Dashboard Header */}
-        <div className="glass-panel border-b border-[#00E4FF]/20 px-8 py-5 flex items-center justify-between z-10 shrink-0">
+        <div className="glyph-glass-dark border-b border-cyan-500/20 px-8 py-5 flex items-center justify-between z-20 shrink-0 glyph-glow">
           <div>
             <h1 className="text-2xl font-black text-white font-space tracking-tight">
-              ADMIN <span className="text-[#00E4FF]">DASHBOARD</span>
+              ADMIN <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">DASHBOARD</span>
             </h1>
             <p className="text-xs text-gray-400 mt-1 uppercase tracking-wide font-medium">
-              {user?.email} • <span className="text-[#8C4BFF]">{user?.role}</span>
+              {user?.email} • <span className="text-purple-400">{user?.role}</span>
             </p>
           </div>
           <div className="flex items-center gap-3">
-            <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse"></div>
+            <div className="h-2 w-2 rounded-full bg-green-500 glyph-pulse"></div>
             <span className="text-xs text-green-400 font-bold uppercase tracking-wider">System Active</span>
           </div>
         </div>

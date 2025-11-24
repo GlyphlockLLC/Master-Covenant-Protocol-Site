@@ -128,17 +128,18 @@ export default function Pricing() {
         url="/pricing"
       />
 
-      <div className="min-h-screen bg-black text-white pt-32 pb-32 relative overflow-hidden">
-        {/* Enhanced Background Elements */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-[#00E4FF]/10 rounded-full blur-[120px] pointer-events-none animate-pulse-slow"></div>
-        <div className="absolute bottom-0 right-0 w-[800px] h-[500px] bg-[#8C4BFF]/10 rounded-full blur-[100px] pointer-events-none animate-pulse-slow" style={{ animationDelay: '2s' }}></div>
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/hexellence.png')] opacity-5"></div>
+      <div className="min-h-screen bg-gradient-to-br from-black via-purple-950/20 to-black text-white pt-32 pb-32 relative overflow-hidden">
+        {/* Cosmic Background */}
+        <div className="fixed inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-900/30 via-cyan-900/10 to-transparent pointer-events-none z-0" />
+        <div className="fixed inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iZ3JpZCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj48cGF0aCBkPSJNIDQwIDAgTCAwIDAgMCA0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDYsIDE4MiwgMjEyLCAwLjEpIiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-20 pointer-events-none z-0" />
+        <div className="glyph-orb fixed top-20 right-20 opacity-20 glyph-pulse" style={{ background: 'radial-gradient(circle, rgba(6,182,212,0.3), rgba(59,130,246,0.2))' }}></div>
+        <div className="glyph-orb fixed bottom-40 left-40 opacity-15 glyph-pulse" style={{ width: '150px', height: '150px', background: 'radial-gradient(circle, rgba(168,85,247,0.3), rgba(59,130,246,0.2))', animationDelay: '2s' }}></div>
         
         <div className="container mx-auto px-6 relative z-10 max-w-7xl">
           <div className="text-center mb-24">
             <div className="inline-block mb-6">
-              <div className="px-6 py-2 rounded-full border border-[#00E4FF]/30 bg-[#00E4FF]/5 backdrop-blur-sm">
-                <span className="text-[#00E4FF] text-sm font-bold uppercase tracking-wider">Premium Security Plans</span>
+              <div className="px-6 py-2 rounded-full border-2 border-cyan-500/40 glyph-glass glyph-glow">
+                <span className="text-cyan-300 text-sm font-bold uppercase tracking-wider">Premium Security Plans</span>
               </div>
             </div>
             <h1 className="text-6xl md:text-8xl font-black tracking-tighter font-space mb-8 relative">
@@ -165,10 +166,10 @@ export default function Pricing() {
             </Alert>
           )}
 
-          <Alert className="mb-16 bg-[#0A0F24]/80 border-[#00E4FF]/30 max-w-3xl mx-auto backdrop-blur-xl shadow-[0_0_20px_rgba(0,228,255,0.1)]">
-            <Shield className="h-5 w-5 text-[#00E4FF]" />
+          <Alert className="mb-16 glyph-glass-dark border-cyan-500/30 max-w-3xl mx-auto glyph-glow">
+            <Shield className="h-5 w-5 text-cyan-400" />
             <AlertDescription className="text-gray-300 font-medium">
-              <span className="text-[#00E4FF] font-bold">Secure Checkout:</span> All sales final. 14-day refund window for subscriptions. Enterprise-grade payment protection.
+              <span className="text-cyan-300 font-bold">Secure Checkout:</span> All sales final. 14-day refund window for subscriptions. Enterprise-grade payment protection.
             </AlertDescription>
           </Alert>
 
@@ -186,9 +187,9 @@ export default function Pricing() {
                 <div
                   className={`relative h-full p-8 rounded-2xl transition-all duration-300 border group/card
                     ${plan.highlight 
-                      ? "bg-gradient-to-br from-[#0A0F24]/90 to-[#001F54]/80 border-[#00E4FF] shadow-[0_0_40px_rgba(0,228,255,0.25)] scale-105" 
-                      : "bg-gradient-to-br from-black/60 to-[#0A0F24]/40 border-white/10 hover:border-[#8C4BFF]/50 hover:bg-[#0A0F24]/70 hover:scale-[1.02]"
-                    } backdrop-blur-xl flex flex-col overflow-hidden`}
+                      ? "glyph-glass-dark border-cyan-500 glyph-glow scale-105" 
+                      : "glyph-glass-dark border-purple-500/20 hover:border-purple-500/50 hover:scale-[1.02]"
+                    } flex flex-col overflow-hidden`}
                 >
                   {/* Animated gradient overlay */}
                   <div className={`absolute inset-0 opacity-0 group-hover/card:opacity-100 transition-opacity duration-500 pointer-events-none ${plan.highlight ? 'opacity-20' : ''}`}>
