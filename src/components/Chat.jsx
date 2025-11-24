@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
-import { MessageCircle, X, Save, FolderOpen, Plus } from "lucide-react";
+import { MessageCircle, X, Save, FolderOpen, Plus, Settings, Volume2 } from "lucide-react";
 
 export default function Chat() {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,6 +12,17 @@ export default function Chat() {
   const [conversations, setConversations] = useState([]);
   const [currentConvId, setCurrentConvId] = useState(null);
   const [showConvList, setShowConvList] = useState(false);
+  const [showVoiceSettings, setShowVoiceSettings] = useState(false);
+  const [voiceSettings, setVoiceSettings] = useState({
+    provider: 'elevenlabs', // elevenlabs, google, microsoft, openai, streamelements
+    voice: 'Rachel', // voice ID
+    speed: 1.0,
+    pitch: 1.0,
+    stability: 0.5,
+    similarity: 0.75,
+    style: 0.0,
+    useSpeakerBoost: true
+  });
   const msgRef = useRef(null);
   const audioRef = useRef(new Audio());
 
@@ -42,17 +53,27 @@ export default function Chat() {
   const playVoice = async (text) => {
     try {
       const cleanText = text.replace(/[#*`🦕💠]/g, '').replace(/\n/g, ' ').replace(/\s+/g, ' ').trim();
-      const apiUrl = `https://api.streamelements.com/kappa/v2/speech?voice=Joanna&text=${encodeURIComponent(cleanText)}`;
-      const response = await fetch(apiUrl);
-      if (!response.ok) throw new Error("TTS failed");
-      const blob = await response.blob();
-      const url = URL.createObjectURL(blob);
       
-      const audio = audioRef.current;
-      audio.pause();
-      audio.currentTime = 0;
-      audio.src = url;
-      audio.play().catch(() => {});
+      const response = await base44.functions.invoke('textToSpeechAdvanced', {
+        text: cleanText,
+        provider: voiceSettings.provider,
+        voice: voiceSettings.voice,
+        speed: voiceSettings.speed,
+        pitch: voiceSettings.pitch,
+        stability: voiceSettings.stability,
+        similarity: voiceSettings.similarity,
+        style: voiceSettings.style,
+        useSpeakerBoost: voiceSettings.useSpeakerBoost
+      });
+
+      if (response.data?.audioUrl) {
+        const audio = audioRef.current;
+        audio.pause();
+        audio.currentTime = 0;
+        audio.src = response.data.audioUrl;
+        audio.playbackRate = voiceSettings.speed;
+        audio.play().catch(() => {});
+      }
     } catch (e) {
       console.error("Voice error:", e);
     }
@@ -184,6 +205,9 @@ When answering questions, check the FAQ knowledge base first for common question
           <FolderOpen className="w-5 h-5" />
         </button>
         <div className="dino-title">GlyphBot • Dino Edition</div>
+        <button onClick={() => setShowVoiceSettings(!showVoiceSettings)} className="dino-icon-btn" title="Voice Settings">
+          <Volume2 className="w-5 h-5" />
+        </button>
         <button onClick={() => saveCurrentConversation(currentConvId)} className="dino-icon-btn" title="Save">
           <Save className="w-5 h-5" />
         </button>
@@ -215,6 +239,171 @@ When answering questions, check the FAQ knowledge base first for common question
             ))}
             {conversations.length === 0 && (
               <div className="dino-conv-empty">No saved conversations</div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {showVoiceSettings && (
+        <div className="dino-voice-settings">
+          <div className="dino-voice-header">
+            <h3>Voice Settings</h3>
+            <button onClick={() => setShowVoiceSettings(false)} className="dino-close-btn">
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+          <div className="dino-voice-content">
+            <div className="dino-voice-group">
+              <label>Provider</label>
+              <select 
+                value={voiceSettings.provider} 
+                onChange={(e) => setVoiceSettings({...voiceSettings, provider: e.target.value})}
+                className="dino-voice-select"
+              >
+                <option value="elevenlabs">ElevenLabs (Celebrity Voices)</option>
+                <option value="openai">OpenAI</option>
+                <option value="google">Google Cloud</option>
+                <option value="microsoft">Microsoft Azure</option>
+                <option value="streamelements">StreamElements (Free)</option>
+              </select>
+            </div>
+
+            <div className="dino-voice-group">
+              <label>Voice</label>
+              <select 
+                value={voiceSettings.voice} 
+                onChange={(e) => setVoiceSettings({...voiceSettings, voice: e.target.value})}
+                className="dino-voice-select"
+              >
+                {voiceSettings.provider === 'elevenlabs' && (
+                  <>
+                    <option value="Rachel">Rachel (Natural)</option>
+                    <option value="Domi">Domi (Warm)</option>
+                    <option value="Bella">Bella (Soft)</option>
+                    <option value="Antoni">Antoni (Deep)</option>
+                    <option value="Elli">Elli (Energetic)</option>
+                    <option value="Josh">Josh (Professional)</option>
+                    <option value="Arnold">Arnold (Celebrity)</option>
+                    <option value="Adam">Adam (Narrative)</option>
+                  </>
+                )}
+                {voiceSettings.provider === 'openai' && (
+                  <>
+                    <option value="alloy">Alloy</option>
+                    <option value="echo">Echo</option>
+                    <option value="fable">Fable</option>
+                    <option value="onyx">Onyx</option>
+                    <option value="nova">Nova</option>
+                    <option value="shimmer">Shimmer</option>
+                  </>
+                )}
+                {voiceSettings.provider === 'google' && (
+                  <>
+                    <option value="en-US-Neural2-A">Neural2 A (Female)</option>
+                    <option value="en-US-Neural2-C">Neural2 C (Female)</option>
+                    <option value="en-US-Neural2-D">Neural2 D (Male)</option>
+                    <option value="en-US-Neural2-F">Neural2 F (Female)</option>
+                    <option value="en-US-Neural2-J">Neural2 J (Male)</option>
+                  </>
+                )}
+                {voiceSettings.provider === 'microsoft' && (
+                  <>
+                    <option value="en-US-JennyNeural">Jenny (Female)</option>
+                    <option value="en-US-GuyNeural">Guy (Male)</option>
+                    <option value="en-US-AriaNeural">Aria (Female)</option>
+                    <option value="en-US-DavisNeural">Davis (Male)</option>
+                    <option value="en-US-JaneNeural">Jane (Female)</option>
+                  </>
+                )}
+                {voiceSettings.provider === 'streamelements' && (
+                  <>
+                    <option value="Joanna">Joanna</option>
+                    <option value="Matthew">Matthew</option>
+                    <option value="Amy">Amy</option>
+                    <option value="Brian">Brian</option>
+                  </>
+                )}
+              </select>
+            </div>
+
+            <div className="dino-voice-group">
+              <label>Speed: {voiceSettings.speed.toFixed(2)}x</label>
+              <input 
+                type="range" 
+                min="0.5" 
+                max="2" 
+                step="0.1" 
+                value={voiceSettings.speed}
+                onChange={(e) => setVoiceSettings({...voiceSettings, speed: parseFloat(e.target.value)})}
+                className="dino-voice-slider"
+              />
+            </div>
+
+            <div className="dino-voice-group">
+              <label>Pitch: {voiceSettings.pitch.toFixed(2)}</label>
+              <input 
+                type="range" 
+                min="0.5" 
+                max="2" 
+                step="0.1" 
+                value={voiceSettings.pitch}
+                onChange={(e) => setVoiceSettings({...voiceSettings, pitch: parseFloat(e.target.value)})}
+                className="dino-voice-slider"
+              />
+            </div>
+
+            {voiceSettings.provider === 'elevenlabs' && (
+              <>
+                <div className="dino-voice-group">
+                  <label>Stability: {voiceSettings.stability.toFixed(2)}</label>
+                  <input 
+                    type="range" 
+                    min="0" 
+                    max="1" 
+                    step="0.05" 
+                    value={voiceSettings.stability}
+                    onChange={(e) => setVoiceSettings({...voiceSettings, stability: parseFloat(e.target.value)})}
+                    className="dino-voice-slider"
+                  />
+                </div>
+
+                <div className="dino-voice-group">
+                  <label>Similarity: {voiceSettings.similarity.toFixed(2)}</label>
+                  <input 
+                    type="range" 
+                    min="0" 
+                    max="1" 
+                    step="0.05" 
+                    value={voiceSettings.similarity}
+                    onChange={(e) => setVoiceSettings({...voiceSettings, similarity: parseFloat(e.target.value)})}
+                    className="dino-voice-slider"
+                  />
+                </div>
+
+                <div className="dino-voice-group">
+                  <label>Style: {voiceSettings.style.toFixed(2)}</label>
+                  <input 
+                    type="range" 
+                    min="0" 
+                    max="1" 
+                    step="0.05" 
+                    value={voiceSettings.style}
+                    onChange={(e) => setVoiceSettings({...voiceSettings, style: parseFloat(e.target.value)})}
+                    className="dino-voice-slider"
+                  />
+                </div>
+
+                <div className="dino-voice-group">
+                  <label>
+                    <input 
+                      type="checkbox"
+                      checked={voiceSettings.useSpeakerBoost}
+                      onChange={(e) => setVoiceSettings({...voiceSettings, useSpeakerBoost: e.target.checked})}
+                    />
+                    Speaker Boost
+                  </label>
+                </div>
+              </>
             )}
           </div>
         </div>

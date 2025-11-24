@@ -230,3 +230,110 @@ p {
     display: none !important;
   }
 }
+
+/* DinoBot Voice Settings */
+.dino-voice-settings {
+  position: absolute;
+  top: 60px;
+  left: 0;
+  right: 0;
+  bottom: 60px;
+  background: rgba(15, 23, 42, 0.98);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(96, 165, 250, 0.2);
+  z-index: 10;
+  overflow-y: auto;
+}
+
+.dino-voice-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  border-bottom: 1px solid rgba(96, 165, 250, 0.2);
+}
+
+.dino-voice-header h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #60a5fa;
+  margin: 0;
+}
+
+.dino-voice-content {
+  padding: 16px;
+}
+
+.dino-voice-group {
+  margin-bottom: 20px;
+}
+
+.dino-voice-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: #cbd5e1;
+  margin-bottom: 8px;
+}
+
+.dino-voice-select {
+  width: 100%;
+  padding: 10px 12px;
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid rgba(96, 165, 250, 0.3);
+  border-radius: 8px;
+  color: #e2e8f0;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.dino-voice-select:focus {
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+}
+
+.dino-voice-slider {
+  width: 100%;
+  height: 6px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: rgba(30, 41, 59, 0.8);
+  border-radius: 3px;
+  outline: none;
+}
+
+.dino-voice-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  background: linear-gradient(135deg, #60a5fa, #3b82f6);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s;
+}
+
+.dino-voice-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 12px rgba(96, 165, 250, 0.6);
+}
+
+.dino-voice-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  background: linear-gradient(135deg, #60a5fa, #3b82f6);
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.dino-voice-group input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin-right: 8px;
+  cursor: pointer;
+  accent-color: #60a5fa;
+}
