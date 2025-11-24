@@ -46,6 +46,7 @@ export default function GlyphBotJr() {
     try {
       const { QR_KNOWLEDGE_BASE } = await import('./qr/QrKnowledgeBase');
       const { default: faqData } = await import('@/components/content/faqMasterData');
+      const { default: sitemapKnowledge } = await import('@/components/content/sitemapKnowledge');
       
       const faqContext = faqData.map(item => 
         `Q: ${item.q}\nA: ${item.a.join(' ')}`

@@ -74,6 +74,7 @@ export default function Footer() {
               <Link to={createPageUrl("DeveloperConsole")} className="hover:text-[#00E4FF] transition-colors">API Reference</Link>
               <Link to={createPageUrl("Roadmap")} className="hover:text-[#00E4FF] transition-colors">Roadmap</Link>
               <Link to={createPageUrl("FAQ")} className="hover:text-[#00E4FF] transition-colors">FAQ</Link>
+              <Link to={createPageUrl("Sitemap")} className="hover:text-[#00E4FF] transition-colors">Sitemap</Link>
               <Link to={createPageUrl("Pricing")} className="hover:text-[#00E4FF] transition-colors">Pricing</Link>
             </div>
           </div>

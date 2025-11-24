@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { getSeoData } from '@/components/seo/seoData';
@@ -111,6 +110,25 @@ export default function SEOHead({
       document.head.appendChild(canonical);
     }
     canonical.setAttribute('href', fullUrl);
+
+    // Sitemap links for SEO
+    let sitemapLink = document.querySelector('link[rel="sitemap"]');
+    if (!sitemapLink) {
+      sitemapLink = document.createElement('link');
+      sitemapLink.setAttribute('rel', 'sitemap');
+      sitemapLink.setAttribute('type', 'application/xml');
+      document.head.appendChild(sitemapLink);
+    }
+    sitemapLink.setAttribute('href', `${siteUrl}/sitemap.xml`);
+
+    let llmIndexLink = document.querySelector('link[rel="alternate"][type="application/json"]');
+    if (!llmIndexLink) {
+      llmIndexLink = document.createElement('link');
+      llmIndexLink.setAttribute('rel', 'alternate');
+      llmIndexLink.setAttribute('type', 'application/json');
+      document.head.appendChild(llmIndexLink);
+    }
+    llmIndexLink.setAttribute('href', `${siteUrl}/glyphlock-llm-index.json`);
 
     // Structured Data - Comprehensive Organization Schema (always present)
     let script = document.querySelector('script[type="application/ld+json"]#org-schema');
