@@ -49,7 +49,9 @@ export default function FAQ() {
   );
 }
 
-/* OLD IMPLEMENTATION - PRESERVED FOR SAFETY - DO NOT DELETE
+/*
+OLD IMPLEMENTATION - PRESERVED FOR SAFETY - DO NOT DELETE
+
 export default function FAQOld() {
   const [searchTerm, setSearchTerm] = useState("");
   const [expandedItems, setExpandedItems] = useState([]);
@@ -442,7 +444,7 @@ export default function FAQOld() {
     )
   })).filter(category => category.questions.length > 0);
 
-  return OLD FAQ CONTENT
+  return (
     <>
       <SEOHead 
         title="FAQ - Frequently Asked Questions | GlyphLock Help Center"
@@ -454,7 +456,7 @@ export default function FAQOld() {
       <div className="min-h-screen bg-black text-white py-32 relative">
         <div className="absolute inset-0 bg-gradient-to-b from-[#001F54]/20 to-transparent pointer-events-none"></div>
         
-        <div className="container mx-auto px-6 max-w-5xl relative z-10 OLD">
+        <div className="container mx-auto px-6 max-w-5xl relative z-10">
           <div className="text-center mb-16">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-[#00E4FF]/10 rounded-2xl mb-6 border border-[#00E4FF]/20">
               <HelpCircle className="w-8 h-8 text-[#00E4FF]" />
