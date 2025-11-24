@@ -34,8 +34,8 @@ export default function Privacy() {
             {/* Scope and Purpose */}
             <section>
               <div className="flex items-center gap-4 mb-6">
-                <div className="p-3 bg-[#00E4FF]/10 rounded-xl border border-[#00E4FF]/20">
-                  <Database className="w-6 h-6 text-[#00E4FF]" />
+                <div className="p-3 glyph-glass border border-cyan-500/40 rounded-xl">
+                  <Database className="w-6 h-6 text-cyan-400" />
                 </div>
                 <h2 className="text-2xl font-bold text-white font-space">Scope and Purpose</h2>
               </div>
@@ -49,8 +49,8 @@ export default function Privacy() {
             {/* Information We Collect */}
             <section>
               <div className="flex items-center gap-4 mb-6">
-                <div className="p-3 bg-[#00E4FF]/10 rounded-xl border border-[#00E4FF]/20">
-                  <Database className="w-6 h-6 text-[#00E4FF]" />
+                <div className="p-3 glyph-glass border border-blue-500/40 rounded-xl">
+                  <Database className="w-6 h-6 text-blue-400" />
                 </div>
                 <h2 className="text-2xl font-bold text-white font-space">Information We Collect</h2>
               </div>
@@ -151,8 +151,8 @@ export default function Privacy() {
             {/* Security */}
             <section>
               <div className="flex items-center gap-4 mb-6">
-                <div className="p-3 bg-emerald-500/10 rounded-xl border border-emerald-500/20">
-                  <Lock className="w-6 h-6 text-emerald-400" />
+                <div className="p-3 glyph-glass border border-green-500/40 rounded-xl">
+                  <Lock className="w-6 h-6 text-green-400" />
                 </div>
                 <h2 className="text-2xl font-bold text-white font-space">Security and Encryption</h2>
               </div>
@@ -178,8 +178,8 @@ export default function Privacy() {
             {/* Payments and Refunds */}
             <section>
               <div className="flex items-center gap-4 mb-6">
-                <div className="p-3 bg-[#00E4FF]/10 rounded-xl border border-[#00E4FF]/20">
-                  <DollarSign className="w-6 h-6 text-[#00E4FF]" />
+                <div className="p-3 glyph-glass border border-cyan-500/40 rounded-xl">
+                  <DollarSign className="w-6 h-6 text-cyan-400" />
                 </div>
                 <h2 className="text-2xl font-bold text-white font-space">Payments, Refunds, and Chargebacks</h2>
               </div>
@@ -201,7 +201,7 @@ export default function Privacy() {
             {/* Data Retention */}
             <section>
               <div className="flex items-center gap-4 mb-6">
-                <div className="p-3 bg-orange-500/10 rounded-xl border border-orange-500/20">
+                <div className="p-3 glyph-glass border border-orange-500/40 rounded-xl">
                   <Trash2 className="w-6 h-6 text-orange-400" />
                 </div>
                 <h2 className="text-2xl font-bold text-white font-space">Data Retention</h2>
@@ -230,8 +230,8 @@ export default function Privacy() {
             {/* Your Rights */}
             <section>
               <div className="flex items-center gap-4 mb-6">
-                <div className="p-3 bg-[#8C4BFF]/10 rounded-xl border border-[#8C4BFF]/20">
-                  <Shield className="w-6 h-6 text-[#8C4BFF]" />
+                <div className="p-3 glyph-glass border border-purple-500/40 rounded-xl">
+                  <Shield className="w-6 h-6 text-purple-400" />
                 </div>
                 <h2 className="text-2xl font-bold text-white font-space">Your Rights and Choices</h2>
               </div>
