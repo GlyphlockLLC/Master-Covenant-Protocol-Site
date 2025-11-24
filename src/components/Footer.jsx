@@ -59,6 +59,7 @@ export default function Footer() {
           <div className="lg:col-span-2">
             <h4 className="text-white font-bold mb-6 uppercase tracking-widest text-xs">Solutions</h4>
             <div className="flex flex-col gap-4">
+              <Link to={createPageUrl("QRGenerator")} className="hover:text-[#00E4FF] transition-colors">QR Studio</Link>
               <Link to={createPageUrl("QRGenerator")} className="hover:text-[#00E4FF] transition-colors">Secure QR</Link>
               <Link to={createPageUrl("Blockchain")} className="hover:text-[#00E4FF] transition-colors">Blockchain</Link>
               <Link to={createPageUrl("InteractiveImageStudio")} className="hover:text-[#00E4FF] transition-colors">Image Studio</Link>

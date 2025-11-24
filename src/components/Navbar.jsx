@@ -26,6 +26,7 @@ const NAV = [
   {
     label: "Services",
     items: [
+      { label: "QR Studio", page: "QRGenerator" },
       { label: "QR Code Generator", page: "QRGenerator" },
       { label: "Blockchain Verification", page: "Blockchain" },
       { label: "Interactive Image Studio", page: "InteractiveImageStudio" },
@@ -246,6 +247,18 @@ export default function Navbar({ user, onLogin, onLogout }) {
             className="lg:hidden border-t border-white/10 bg-[#020617] overflow-hidden"
           >
             <div className="p-6 space-y-6 max-h-[80vh] overflow-y-auto">
+              <div className="space-y-3">
+                <h3 className="text-[#00E4FF] text-xs font-bold uppercase tracking-widest">Featured</h3>
+                <div className="grid grid-cols-1 gap-2 pl-4 border-l border-white/10">
+                  <Link
+                    to={createPageUrl("QRGenerator")}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="text-gray-400 hover:text-white text-sm py-1 block"
+                  >
+                    QR Studio
+                  </Link>
+                </div>
+              </div>
               {NAV.map((section) => (
                 <div key={section.label} className="space-y-3">
                   <h3 className="text-[#00E4FF] text-xs font-bold uppercase tracking-widest">{section.label}</h3>

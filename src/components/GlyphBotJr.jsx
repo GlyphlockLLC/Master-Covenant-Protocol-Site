@@ -44,14 +44,19 @@ export default function GlyphBotJr() {
     setLoading(true);
 
     try {
+      const { QR_KNOWLEDGE_BASE } = await import('./qr/QrKnowledgeBase');
+      
       const response = await base44.integrations.Core.InvokeLLM({
         prompt: `You are GlyphBot Jr., a professional AI navigation assistant for GlyphLock Security Platform.
 
-Available pages: Home, N.U.P.S. POS, Security Tools, Visual Cryptography, Security Operations Center, Blockchain, GlyphBot AI, Governance Hub, Pricing, Contact, Consultation.
+Available pages: Home, QR Studio, N.U.P.S. POS, Security Tools, Visual Cryptography, Security Operations Center, Blockchain, GlyphBot AI, Governance Hub, Pricing, Contact, Consultation.
+
+QR Studio Knowledge Base (use this to answer QR-related questions):
+${QR_KNOWLEDGE_BASE}
 
 User question: ${userMessage}
 
-Provide a helpful, professional response (2-3 sentences max). No emojis. Guide them to relevant pages. Keep responses unique and varied.`,
+Provide a helpful, professional response (2-3 sentences max). No emojis. Guide them to relevant pages. If they ask about QR codes, use the knowledge base. Keep responses unique and varied.`,
         add_context_from_internet: false
       });
 

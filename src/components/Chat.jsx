@@ -68,6 +68,8 @@ export default function Chat() {
     setLoading(true);
 
     try {
+      const { QR_KNOWLEDGE_BASE } = await import('./qr/QrKnowledgeBase');
+      
       // Build conversation context from message history
       const conversationHistory = messages.slice(1).map(msg => 
         `${msg.role === 'user' ? 'User' : 'DinoBot'}: ${msg.text}`
@@ -78,7 +80,12 @@ export default function Chat() {
         : `User: ${userMessage}`;
 
       const response = await base44.integrations.Core.InvokeLLM({
-        prompt: `You are DinoBot, a friendly AI assistant. Be helpful and professional. Maintain context from the conversation history and reference previous messages when relevant.\n\n${contextPrompt}`,
+        prompt: `You are DinoBot, a friendly AI assistant for GlyphLock Security. Be helpful and professional. Maintain context from the conversation history and reference previous messages when relevant.
+
+QR Studio Knowledge Base (use this to answer QR-related questions):
+${QR_KNOWLEDGE_BASE}
+
+${contextPrompt}`,
         add_context_from_internet: false
       });
 
