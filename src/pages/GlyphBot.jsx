@@ -894,10 +894,10 @@ export default function GlyphBot() {
             </div>
           )}
 
-          <footer className="flex-none glyph-glass-dark border-t border-purple-500/20 pb-1">
-            <div className="px-3 pt-1.5">
+          <footer className="flex-none glyph-glass-dark border-t border-purple-500/20 py-3">
+            <div className="max-w-4xl mx-auto px-4">
               {oneTestMode && (
-                <div className="mb-1.5">
+                <div className="mb-2">
                   <Button
                     onClick={runOneTest}
                     className="w-full bg-blue-600 hover:bg-blue-700 h-8 text-xs"
@@ -909,21 +909,23 @@ export default function GlyphBot() {
               )}
               
               <div className="flex items-center gap-2">
-                <textarea
-                  ref={inputRef}
-                  value={input}
-                  onChange={e => setInput(e.target.value)}
-                  onKeyDown={onKeyDown}
-                  rows={1}
-                  placeholder="Type your message..."
-                  className="flex-1 resize-none bg-purple-950/50 border border-purple-500/30 rounded-xl px-3 py-2 text-sm leading-relaxed focus:outline-none focus:ring-2 focus:ring-blue-400 h-10 text-white placeholder-gray-400"
-                  style={{ fontSize: "16px" }}
-                />
+                <div className="flex-1 relative">
+                  <textarea
+                    ref={inputRef}
+                    value={input}
+                    onChange={e => setInput(e.target.value)}
+                    onKeyDown={onKeyDown}
+                    rows={1}
+                    placeholder="Type your message..."
+                    className="w-full resize-none bg-gradient-to-br from-purple-950/80 to-blue-950/80 border-2 border-blue-500/40 rounded-3xl px-5 py-3 text-sm leading-relaxed focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 h-12 text-white placeholder-gray-400 shadow-lg glyph-glow"
+                    style={{ fontSize: "16px" }}
+                  />
+                </div>
 
                 <Button
                   onClick={sendMessage}
                   disabled={isSending}
-                  className={`min-w-[70px] h-10 rounded-xl text-sm font-semibold bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 glyph-glow ${
+                  className={`min-w-[80px] h-12 rounded-full text-sm font-semibold bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 glyph-glow shadow-lg ${
                     isSending ? "opacity-50" : ""
                   }`}
                 >
@@ -934,7 +936,7 @@ export default function GlyphBot() {
                   <Button
                     onClick={() => setShowAuditPanel(!showAuditPanel)}
                     size="sm"
-                    className="bg-green-900/50 hover:bg-green-800/50 border border-green-500/50 text-green-400 h-10"
+                    className="bg-green-900/50 hover:bg-green-800/50 border border-green-500/50 text-green-400 h-12 rounded-full"
                   >
                     <FileText className="w-4 h-4" />
                   </Button>
@@ -943,7 +945,7 @@ export default function GlyphBot() {
                 <Button
                   onClick={saveConversation}
                   size="sm"
-                  className="bg-blue-900/50 hover:bg-blue-800/50 border border-blue-500/50 text-blue-400 h-10"
+                  className="bg-blue-900/50 hover:bg-blue-800/50 border border-blue-500/50 text-blue-400 h-12 rounded-full"
                 >
                   <Save className="w-4 h-4" />
                 </Button>
