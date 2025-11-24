@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { base44 } from "@/api/base44Client";
-import { Sparkles, Send, Loader2 } from "lucide-react";
+import { Sparkles, Send, Loader2, X } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { generateAudio, applyAudioEffects } from "@/components/utils/ttsEngine";
 import { PERSONAS } from "@/components/glyphbot/personas";
@@ -8,6 +8,7 @@ import { PERSONAS } from "@/components/glyphbot/personas";
 export default function GlyphBotJr() {
   const jrPersona = PERSONAS.find(p => p.id === "glyphbot_jr") || PERSONAS[4];
   
+  const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
     { role: "assistant", text: "Hi there! I'm GlyphBot Junior! 🌟 How can I help you today?", timestamp: Date.now() }
   ]);
@@ -97,28 +98,48 @@ Remember to be friendly, helpful, and explain things simply!`,
     setLoading(false);
   };
 
+  if (!isOpen) {
+    return (
+      <button
+        onClick={() => setIsOpen(true)}
+        className="fixed bottom-6 right-6 z-[9999] w-16 h-16 rounded-full bg-gradient-to-r from-yellow-400 to-pink-500 hover:from-yellow-500 hover:to-pink-600 text-white shadow-2xl flex items-center justify-center transition-all hover:scale-110"
+        aria-label="Open GlyphBot Junior"
+      >
+        <Sparkles className="w-8 h-8" />
+      </button>
+    );
+  }
+
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-indigo-900 via-purple-800 to-pink-700 flex flex-col relative overflow-hidden">
+    <div className="fixed bottom-6 right-6 z-[9999] w-[400px] max-w-[calc(100vw-48px)] h-[600px] max-h-[calc(100vh-100px)] bg-gradient-to-br from-indigo-900 via-purple-800 to-pink-700 flex flex-col relative overflow-hidden rounded-2xl shadow-2xl border border-white/20">
       {/* Playful background */}
-      <div className="fixed inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzRjMC0yLjIxLTEuNzktNC00LTRzLTQgMS43OS00IDQgMS43OSA0IDQgNCA0LTEuNzkgNC00em0wLTEwYzAtMi4yMS0xLjc5LTQtNC00cy00IDEuNzktNCA0IDEuNzkgNCA0IDQgNC0xLjc5IDQtNHoiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-30 pointer-events-none"></div>
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzRjMC0yLjIxLTEuNzktNC00LTRzLTQgMS43OS00IDQgMS43OSA0IDQgNCA0LTEuNzkgNC00em0wLTEwYzAtMi4yMS0xLjc5LTQtNC00cy00IDEuNzktNCA0IDEuNzkgNCA0IDQgNC0xLjc5IDQtNHoiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-30 pointer-events-none"></div>
       
       {/* Header */}
-      <header className="bg-white/10 backdrop-blur-xl border-b border-white/20 shadow-lg">
-        <div className="px-6 py-4">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-gradient-to-r from-yellow-400 to-pink-500 flex items-center justify-center shadow-lg">
-              <Sparkles className="w-7 h-7 text-white" />
+      <header className="bg-white/10 backdrop-blur-xl border-b border-white/20 shadow-lg relative z-10">
+        <div className="px-4 py-3">
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-r from-yellow-400 to-pink-500 flex items-center justify-center shadow-lg">
+                <Sparkles className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h1 className="text-lg font-bold text-white">GlyphBot Jr</h1>
+                <p className="text-xs text-white/80">24/7 Helper 🌈</p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-2xl font-bold text-white">GlyphBot Junior</h1>
-              <p className="text-sm text-white/80">Your friendly AI helper! 🌈</p>
-            </div>
+            <button
+              onClick={() => setIsOpen(false)}
+              className="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors"
+            >
+              ✕
+            </button>
           </div>
         </div>
       </header>
 
       {/* Chat Messages */}
-      <main className="flex-1 overflow-y-auto px-4 py-6 space-y-4">
+      <main className="flex-1 overflow-y-auto px-4 py-6 space-y-4 relative z-10">
         {messages.map((msg, idx) => (
           <div
             key={idx}
@@ -160,7 +181,7 @@ Remember to be friendly, helpful, and explain things simply!`,
       </main>
 
       {/* Input Area */}
-      <footer className="bg-white/10 backdrop-blur-xl border-t border-white/20 px-4 py-4">
+      <footer className="bg-white/10 backdrop-blur-xl border-t border-white/20 px-4 py-4 relative z-10">
         <div className="flex items-center gap-3">
           <input
             type="text"

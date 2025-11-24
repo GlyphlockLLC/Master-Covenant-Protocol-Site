@@ -10,7 +10,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { PERSONAS } from "@/components/glyphbot/personas";
-import GlyphBotJr from "@/components/GlyphBotJr";
 
 export default function GlyphBot() {
   const [messages, setMessages] = useState(() => {
@@ -49,7 +48,6 @@ export default function GlyphBot() {
   const [showVoiceStudio, setShowVoiceStudio] = useState(false);
   const [showAuditPanel, setShowAuditPanel] = useState(false);
   const [showConversations, setShowConversations] = useState(false);
-  const [showJuniorMode, setShowJuniorMode] = useState(false);
 
   const [conversations, setConversations] = useState([]);
   const [currentConvId, setCurrentConvId] = useState(null);
@@ -446,10 +444,6 @@ export default function GlyphBot() {
     addMessage("assistant", `# 🧪 One Test Result\n\n\`\`\`json\n${JSON.stringify(testResult, null, 2)}\n\`\`\`\n\nSystem integrity verified.`);
   }
 
-  if (showJuniorMode) {
-    return <GlyphBotJr />;
-  }
-
   return (
     <div className="min-h-screen w-full bg-gradient-to-br from-[#0a0a0f] via-[#0f0f1a] to-black text-white flex flex-col relative overflow-hidden">
       {/* Cosmic background effects */}
@@ -533,14 +527,6 @@ export default function GlyphBot() {
                 className="min-h-[44px] border-red-500/30 text-red-400 hover:bg-red-950/20"
               >
                 Clear
-              </Button>
-
-              <Button
-                onClick={() => setShowJuniorMode(!showJuniorMode)}
-                variant={showJuniorMode ? "default" : "outline"}
-                className={`min-h-[44px] ${showJuniorMode ? "bg-pink-600 hover:bg-pink-700" : "border-purple-500/30"}`}
-              >
-                🌟 Jr Mode
               </Button>
             </div>
           </div>

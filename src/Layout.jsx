@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import SecurityMonitor from "@/components/SecurityMonitor";
-import Chat from "@/components/Chat";
+import GlyphBotJr from "@/components/GlyphBotJr";
 import InteractiveNebula from "@/components/InteractiveNebula";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -75,7 +75,7 @@ export default function Layout({ children, currentPageName }) {
         {children}
       </main>
 
-      <Chat />
+      <GlyphBotJr />
 
       <div className="relative z-30">
         <Footer />
