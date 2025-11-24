@@ -49,16 +49,6 @@ export default function FAQ() {
   );
 }
 
-/*
-OLD IMPLEMENTATION - PRESERVED FOR SAFETY - DO NOT DELETE
-
-export default function FAQOld() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [expandedItems, setExpandedItems] = useState([]);
-
-  const faqs = [
-    {
-      category: "Getting Started",
       questions: [
         {
           q: "I'm new to cybersecurity - what is GlyphLock in simple terms?",
