@@ -139,16 +139,16 @@ export default function QrBatchUploader() {
 
   return (
     <div className="space-y-6">
-      <Card className="bg-gray-900/50 border-gray-700">
-        <CardHeader>
-          <CardTitle className="text-white flex items-center gap-2">
-            <FileSpreadsheet className="w-5 h-5" />
+      <Card className="bg-gray-900/50 border-gray-800 shadow-xl">
+        <CardHeader className="border-b border-gray-800">
+          <CardTitle className="text-white flex items-center gap-2 text-lg lg:text-xl">
+            <FileSpreadsheet className="w-5 h-5 lg:w-6 lg:h-6" />
             Bulk QR Generation
           </CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <label htmlFor="csvUpload" className="text-sm text-gray-400">
+        <CardContent className="space-y-6 pt-6">
+          <div className="space-y-3">
+            <label htmlFor="csvUpload" className="text-sm lg:text-base text-gray-300 font-medium">
               Upload CSV (max 100 rows)
             </label>
             <Input
@@ -157,30 +157,30 @@ export default function QrBatchUploader() {
               accept=".csv"
               onChange={handleCsvUpload}
               disabled={isProcessing}
-              className="min-h-[44px]"
+              className="min-h-[48px] text-base bg-gray-800 border-gray-700"
             />
-            <p className="text-xs text-gray-500">
-              CSV should have columns: title, payloadValue, payloadType (optional)
+            <p className="text-xs lg:text-sm text-gray-500">
+              CSV should have columns: <span className="font-mono text-cyan-400">title, payloadValue, payloadType</span> (optional)
             </p>
           </div>
 
           {csvData.length > 0 && (
             <>
-              <div className="bg-cyan-500/10 border border-cyan-500/30 rounded-lg p-4">
-                <p className="text-sm text-cyan-400">
-                  Loaded {csvData.length} rows from CSV
+              <div className="bg-cyan-500/10 border border-cyan-500/50 rounded-lg p-4 lg:p-6">
+                <p className="text-sm lg:text-base text-cyan-400 font-semibold">
+                  ✓ Loaded {csvData.length} rows from CSV
                 </p>
               </div>
 
-              <div className="flex gap-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <Button
                   onClick={handleCreateDrafts}
                   disabled={isProcessing || drafts.length > 0}
-                  className="flex-1 bg-blue-600 hover:bg-blue-700 min-h-[44px]"
+                  className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 min-h-[52px] text-base font-semibold shadow-lg shadow-blue-500/30"
                 >
                   {isProcessing ? (
                     <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      <Loader2 className="w-5 h-5 mr-2 animate-spin" />
                       Creating Drafts...
                     </>
                   ) : (
@@ -192,11 +192,11 @@ export default function QrBatchUploader() {
                   <Button
                     onClick={handleGenerateAll}
                     disabled={isProcessing}
-                    className="flex-1 bg-purple-600 hover:bg-purple-700 min-h-[44px]"
+                    className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 min-h-[52px] text-base font-semibold shadow-lg shadow-purple-500/30"
                   >
                     {isProcessing ? (
                       <>
-                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        <Loader2 className="w-5 h-5 mr-2 animate-spin" />
                         Generating {Math.round(progress)}%
                       </>
                     ) : (
@@ -216,22 +216,22 @@ export default function QrBatchUploader() {
 
       {/* Drafts List */}
       {drafts.length > 0 && (
-        <Card className="bg-gray-900/50 border-gray-700">
-          <CardHeader>
-            <CardTitle className="text-white">Draft Assets ({drafts.length})</CardTitle>
+        <Card className="bg-gray-900/50 border-gray-800 shadow-xl">
+          <CardHeader className="border-b border-gray-800">
+            <CardTitle className="text-white text-lg lg:text-xl">Draft Assets ({drafts.length})</CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="space-y-2">
+          <CardContent className="pt-6">
+            <div className="space-y-3">
               {drafts.map((draft, idx) => (
                 <div
                   key={idx}
-                  className="flex items-center justify-between p-3 bg-gray-800/30 rounded-lg border border-gray-700"
+                  className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 bg-gray-800/50 rounded-lg border border-gray-700 hover:border-gray-600 transition-colors gap-3 sm:gap-0"
                 >
-                  <div className="flex-1">
-                    <p className="text-sm font-semibold text-white">{draft.title}</p>
-                    <p className="text-xs text-gray-400 truncate">{draft.payloadValue}</p>
+                  <div className="flex-1 w-full sm:w-auto">
+                    <p className="text-sm lg:text-base font-semibold text-white mb-1">{draft.title}</p>
+                    <p className="text-xs lg:text-sm text-gray-400 truncate">{draft.payloadValue}</p>
                   </div>
-                  <div>
+                  <div className="w-full sm:w-auto">
                     {draft.generationStatus === 'pending' && (
                       <Badge variant="outline" className="bg-gray-700/50">
                         Pending

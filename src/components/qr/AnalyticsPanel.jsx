@@ -89,8 +89,8 @@ export default function AnalyticsPanel({ qrAssetId }) {
   return (
     <div className="space-y-6">
       {/* Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="bg-gray-900/50 border-gray-700">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <Card className="bg-gray-900/50 border-gray-800 shadow-xl hover:shadow-cyan-500/10 transition-shadow">
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
@@ -128,13 +128,13 @@ export default function AnalyticsPanel({ qrAssetId }) {
       </div>
 
       {/* Charts */}
-      <div className="grid md:grid-cols-2 gap-6">
-        <Card className="bg-gray-900/50 border-gray-700">
-          <CardHeader>
-            <CardTitle className="text-white text-lg">Scans Over Time</CardTitle>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <Card className="bg-gray-900/50 border-gray-800 shadow-xl">
+          <CardHeader className="border-b border-gray-800">
+            <CardTitle className="text-white text-base lg:text-lg">Scans Over Time</CardTitle>
           </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width="100%" height={250}>
+          <CardContent className="pt-6">
+            <ResponsiveContainer width="100%" height={280}>
               <LineChart data={scansOverTime}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
                 <XAxis dataKey="date" stroke="#9ca3af" />
@@ -149,12 +149,12 @@ export default function AnalyticsPanel({ qrAssetId }) {
           </CardContent>
         </Card>
 
-        <Card className="bg-gray-900/50 border-gray-700">
-          <CardHeader>
-            <CardTitle className="text-white text-lg">Risk Distribution</CardTitle>
+        <Card className="bg-gray-900/50 border-gray-800 shadow-xl">
+          <CardHeader className="border-b border-gray-800">
+            <CardTitle className="text-white text-base lg:text-lg">Risk Distribution</CardTitle>
           </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width="100%" height={250}>
+          <CardContent className="pt-6">
+            <ResponsiveContainer width="100%" height={280}>
               <BarChart data={riskDistribution}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
                 <XAxis dataKey="level" stroke="#9ca3af" />
@@ -171,64 +171,70 @@ export default function AnalyticsPanel({ qrAssetId }) {
       </div>
 
       {/* Events Table */}
-      <Card className="bg-gray-900/50 border-gray-700">
-        <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle className="text-white">Recent Scan Events</CardTitle>
+      <Card className="bg-gray-900/50 border-gray-800 shadow-xl">
+        <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-gray-800">
+          <CardTitle className="text-white text-base lg:text-lg">Recent Scan Events</CardTitle>
           <Button
             onClick={handleExportCSV}
             variant="outline"
             size="sm"
-            className="gap-2 min-h-[44px]"
+            className="gap-2 min-h-[48px] px-6 border-gray-700 hover:bg-gray-800"
           >
-            <Download className="w-4 h-4" />
-            Export CSV
+            <Download className="w-5 h-5" />
+            <span className="hidden sm:inline">Export CSV</span>
+            <span className="sm:hidden">Export</span>
           </Button>
         </CardHeader>
-        <CardContent>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+        <CardContent className="pt-6">
+          <div className="overflow-x-auto -mx-4 sm:mx-0">
+            <table className="w-full text-xs sm:text-sm">
               <thead>
-                <tr className="border-b border-gray-700">
-                  <th className="text-left p-3 text-gray-400 font-semibold">Time</th>
-                  <th className="text-left p-3 text-gray-400 font-semibold">Location</th>
-                  <th className="text-left p-3 text-gray-400 font-semibold">Device</th>
-                  <th className="text-left p-3 text-gray-400 font-semibold">Risk</th>
-                  <th className="text-left p-3 text-gray-400 font-semibold">Tamper</th>
+                <tr className="border-b border-gray-800">
+                  <th className="text-left p-2 sm:p-3 text-gray-400 font-semibold text-xs sm:text-sm">Time</th>
+                  <th className="text-left p-2 sm:p-3 text-gray-400 font-semibold text-xs sm:text-sm">Location</th>
+                  <th className="text-left p-2 sm:p-3 text-gray-400 font-semibold text-xs sm:text-sm hidden md:table-cell">Device</th>
+                  <th className="text-left p-2 sm:p-3 text-gray-400 font-semibold text-xs sm:text-sm">Risk</th>
+                  <th className="text-left p-2 sm:p-3 text-gray-400 font-semibold text-xs sm:text-sm">Tamper</th>
                 </tr>
               </thead>
               <tbody>
                 {scanEvents.slice(0, 20).map((event, idx) => (
-                  <tr key={idx} className="border-b border-gray-800 hover:bg-gray-800/30">
-                    <td className="p-3 text-gray-300">
-                      {new Date(event.scannedAt).toLocaleString()}
-                    </td>
-                    <td className="p-3 text-gray-300">
-                      <div className="flex items-center gap-1">
-                        <MapPin className="w-3 h-3" />
-                        {event.geoApprox || 'Unknown'}
+                  <tr key={idx} className="border-b border-gray-800 hover:bg-gray-800/50 transition-colors">
+                    <td className="p-2 sm:p-3 text-gray-300 text-xs sm:text-sm">
+                      <div className="whitespace-nowrap">
+                        {new Date(event.scannedAt).toLocaleDateString()}
+                      </div>
+                      <div className="text-xs text-gray-500">
+                        {new Date(event.scannedAt).toLocaleTimeString()}
                       </div>
                     </td>
-                    <td className="p-3 text-gray-400 text-xs truncate max-w-[150px]">
+                    <td className="p-2 sm:p-3 text-gray-300 text-xs sm:text-sm">
+                      <div className="flex items-center gap-1">
+                        <MapPin className="w-3 h-3 flex-shrink-0" />
+                        <span className="truncate max-w-[80px] sm:max-w-none">{event.geoApprox || 'Unknown'}</span>
+                      </div>
+                    </td>
+                    <td className="p-2 sm:p-3 text-gray-400 text-xs truncate max-w-[150px] hidden md:table-cell">
                       {event.deviceHint || 'Unknown'}
                     </td>
-                    <td className="p-3">
-                      <span className={`px-2 py-1 rounded text-xs ${
+                    <td className="p-2 sm:p-3">
+                      <span className={`px-2 py-1 rounded text-xs font-semibold ${
                         (event.riskScoreAtScan || 0) >= 50
-                          ? 'bg-red-500/20 text-red-400'
+                          ? 'bg-red-500/20 text-red-400 border border-red-500/50'
                           : (event.riskScoreAtScan || 0) >= 30
-                          ? 'bg-yellow-500/20 text-yellow-400'
-                          : 'bg-green-500/20 text-green-400'
+                          ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/50'
+                          : 'bg-green-500/20 text-green-400 border border-green-500/50'
                       }`}>
                         {event.riskScoreAtScan || 0}
                       </span>
                     </td>
-                    <td className="p-3">
+                    <td className="p-2 sm:p-3">
                       {event.tamperSuspected ? (
-                        <span className="px-2 py-1 rounded text-xs bg-red-500/20 text-red-400">
+                        <span className="px-2 py-1 rounded text-xs font-semibold bg-red-500/20 text-red-400 border border-red-500/50">
                           Yes
                         </span>
                       ) : (
-                        <span className="px-2 py-1 rounded text-xs bg-green-500/20 text-green-400">
+                        <span className="px-2 py-1 rounded text-xs font-semibold bg-green-500/20 text-green-400 border border-green-500/50">
                           No
                         </span>
                       )}
