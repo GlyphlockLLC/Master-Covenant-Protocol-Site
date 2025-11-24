@@ -110,43 +110,66 @@ export default function ImageLab() {
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8 max-w-7xl relative z-10">
           <Tabs value={activeTab} onValueChange={setActiveTab}>
-            {/* Desktop Tabs - Horizontal */}
-            <TabsList className="hidden lg:flex w-full mb-6 glyph-glass-dark border border-cyan-500/20 p-2 shadow-lg">
-              <TabsTrigger value="generate" className="flex-1 min-h-[44px] rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-cyan-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:glyph-glow text-gray-400 hover:text-white transition-all">
-                <ImageIcon className="w-4 h-4 mr-2" />
-                Generate
-              </TabsTrigger>
-              <TabsTrigger value="interactive" className="flex-1 min-h-[44px] rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-cyan-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:glyph-glow text-gray-400 hover:text-white transition-all">
-                <Layers className="w-4 h-4 mr-2" />
-                Interactive
-              </TabsTrigger>
-              <TabsTrigger value="gallery" className="flex-1 min-h-[44px] rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-cyan-600 data-[state=active]:text-white data-[state=active]:shadow-lg data-[state=active]:glyph-glow text-gray-400 hover:text-white transition-all">
-                <Database className="w-4 h-4 mr-2" />
-                Gallery
-              </TabsTrigger>
-            </TabsList>
+            {/* Desktop Tabs - Technical Segmented */}
+            <div className="hidden lg:flex w-full mb-6 relative">
+              <div className="absolute inset-0 bg-black/40 backdrop-blur-md border-t-2 border-b-2 border-cyan-500/20"></div>
+              <div className="relative z-10 flex w-full">
+                <TabsTrigger 
+                  value="generate" 
+                  className="flex-1 min-h-[56px] relative group border-r border-cyan-500/10 data-[state=active]:bg-gradient-to-b data-[state=active]:from-purple-500/20 data-[state=active]:to-transparent data-[state=active]:border-t-2 data-[state=active]:border-t-purple-400 data-[state=active]:text-purple-300 text-gray-500 hover:text-gray-300 transition-all font-mono text-xs uppercase tracking-widest"
+                >
+                  <span className="mr-2 text-[10px] opacity-60">01</span>
+                  <ImageIcon className="w-4 h-4 mr-2" />
+                  <span>Generate</span>
+                  <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-purple-400 to-transparent opacity-0 group-data-[state=active]:opacity-100 glyph-glow"></div>
+                </TabsTrigger>
+                
+                <TabsTrigger 
+                  value="interactive" 
+                  className="flex-1 min-h-[56px] relative group border-r border-cyan-500/10 data-[state=active]:bg-gradient-to-b data-[state=active]:from-cyan-500/20 data-[state=active]:to-transparent data-[state=active]:border-t-2 data-[state=active]:border-t-cyan-400 data-[state=active]:text-cyan-300 text-gray-500 hover:text-gray-300 transition-all font-mono text-xs uppercase tracking-widest"
+                >
+                  <span className="mr-2 text-[10px] opacity-60">02</span>
+                  <Layers className="w-4 h-4 mr-2" />
+                  <span>Interactive</span>
+                  <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-0 group-data-[state=active]:opacity-100 glyph-glow"></div>
+                </TabsTrigger>
+                
+                <TabsTrigger 
+                  value="gallery" 
+                  className="flex-1 min-h-[56px] relative group data-[state=active]:bg-gradient-to-b data-[state=active]:from-blue-500/20 data-[state=active]:to-transparent data-[state=active]:border-t-2 data-[state=active]:border-t-blue-400 data-[state=active]:text-blue-300 text-gray-500 hover:text-gray-300 transition-all font-mono text-xs uppercase tracking-widest"
+                >
+                  <span className="mr-2 text-[10px] opacity-60">03</span>
+                  <Database className="w-4 h-4 mr-2" />
+                  <span>Gallery</span>
+                  <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-blue-400 to-transparent opacity-0 group-data-[state=active]:opacity-100 glyph-glow"></div>
+                </TabsTrigger>
+              </div>
+            </div>
 
-            {/* Mobile Tabs - Scrollable Pills */}
+            {/* Mobile Tabs - Technical Segmented */}
             <div className="lg:hidden mb-6 -mx-4 px-4">
-              <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+              <div className="flex gap-1 bg-black/60 backdrop-blur-sm border border-cyan-500/20 p-1">
                 {[
-                  { value: 'generate', icon: ImageIcon, label: 'Generate' },
-                  { value: 'interactive', icon: Layers, label: 'Interactive' },
-                  { value: 'gallery', icon: Database, label: 'Gallery' },
+                  { value: 'generate', icon: ImageIcon, label: 'Generate', num: '01' },
+                  { value: 'interactive', icon: Layers, label: 'Interactive', num: '02' },
+                  { value: 'gallery', icon: Database, label: 'Gallery', num: '03' },
                 ].map((tab) => {
                   const Icon = tab.icon;
                   return (
                     <button
                       key={tab.value}
                       onClick={() => setActiveTab(tab.value)}
-                      className={`flex items-center gap-2 px-4 py-2.5 rounded-full whitespace-nowrap text-sm font-medium transition-all min-h-[44px] ${
+                      className={`flex-1 flex flex-col items-center justify-center py-3 text-xs font-mono uppercase tracking-wider transition-all min-h-[52px] border-r border-cyan-500/10 last:border-r-0 ${
                         activeTab === tab.value
-                          ? 'bg-gradient-to-r from-purple-600 to-cyan-600 text-white shadow-lg glyph-glow'
-                          : 'glyph-glass-dark text-gray-400 border border-cyan-500/20 hover:border-cyan-500/40'
+                          ? 'bg-gradient-to-b from-purple-500/30 to-transparent text-purple-300 border-t-2 border-t-purple-400 shadow-lg'
+                          : 'text-gray-500'
                       }`}
                     >
-                      <Icon className="w-4 h-4" />
-                      {tab.label}
+                      <div className="flex items-center gap-1 mb-1">
+                        <Icon className="w-4 h-4" />
+                        <span className="text-[10px] opacity-60">{tab.num}</span>
+                      </div>
+                      <span className="text-[9px]">{tab.label}</span>
                     </button>
                   );
                 })}
