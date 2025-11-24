@@ -27,7 +27,6 @@ const NAV = [
     label: "Services",
     items: [
       { label: "QR Studio", page: "QRGenerator" },
-      { label: "QR Code Generator", page: "QRGenerator" },
       { label: "Blockchain Verification", page: "Blockchain" },
       { label: "Interactive Image Studio", page: "InteractiveImageStudio" },
       { label: "Steganography", page: "Steganography" },
