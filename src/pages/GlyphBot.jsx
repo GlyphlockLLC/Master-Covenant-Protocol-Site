@@ -520,6 +520,16 @@ export default function GlyphBot() {
               </Button>
 
               <Button
+                onClick={() => setOneTestMode(v => !v)}
+                variant={oneTestMode ? "default" : "outline"}
+                size="sm"
+                className={`min-h-[36px] text-xs ${oneTestMode ? "bg-blue-600 hover:bg-blue-700" : "border-purple-500/30"}`}
+              >
+                <AlertTriangle className="w-3 h-3 mr-1" />
+                Test
+              </Button>
+
+              <Button
                 onClick={() => setShowConversations(!showConversations)}
                 variant="outline"
                 size="sm"
@@ -544,27 +554,27 @@ export default function GlyphBot() {
       <div className="flex-1 flex relative z-10 overflow-hidden">
         {/* Voice Studio Panel */}
         {showVoiceStudio && (
-          <div className="w-96 border-r border-purple-500/20 glyph-glass-dark p-4 overflow-y-auto">
+          <div className="w-80 border-r border-purple-500/20 glyph-glass-dark p-3 overflow-y-auto">
             <Card className="glyph-glass-dark border-purple-500/30 glyph-glow">
-              <CardHeader>
-                <CardTitle className="text-purple-300 flex items-center justify-between">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-purple-300 flex items-center justify-between text-base">
                   <div className="flex items-center gap-2">
-                    <Settings className="w-5 h-5" />
+                    <Settings className="w-4 h-4" />
                     Voice Studio
                   </div>
                   <button
                     onClick={() => setShowVoiceStudio(false)}
                     className="text-gray-400 hover:text-white transition-colors"
                   >
-                    <X className="w-5 h-5" />
+                    <X className="w-4 h-4" />
                   </button>
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-3">
                 <div>
-                  <Label className="text-purple-200 mb-2">Provider</Label>
+                  <Label className="text-purple-200 mb-1 text-xs">Provider</Label>
                   <Select value={voiceProvider} onValueChange={setVoiceProvider}>
-                    <SelectTrigger className="bg-purple-950/30 border-purple-500/30">
+                    <SelectTrigger className="bg-purple-950/50 border-purple-500/30 h-9 text-sm">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -576,12 +586,12 @@ export default function GlyphBot() {
                 </div>
 
                 <div>
-                  <Label className="text-purple-200 mb-2">Voice</Label>
+                  <Label className="text-purple-200 mb-1 text-xs">Voice</Label>
                   <Select value={voiceId} onValueChange={setVoiceId}>
-                    <SelectTrigger className="bg-purple-950/30 border-purple-500/30">
+                    <SelectTrigger className="bg-purple-950/50 border-purple-500/30 h-9 text-sm">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="max-h-[200px]">
                       {voices.map(v => (
                         <SelectItem key={v} value={v}>{v}</SelectItem>
                       ))}
@@ -590,114 +600,126 @@ export default function GlyphBot() {
                 </div>
 
                 <div>
-                  <Label className="text-purple-200 mb-2">Speed: {voiceSpeed.toFixed(2)}x</Label>
+                  <div className="flex justify-between mb-1">
+                    <Label className="text-purple-200 text-xs">Speed</Label>
+                    <span className="text-purple-400 text-xs">{voiceSpeed.toFixed(2)}x</span>
+                  </div>
                   <Slider
                     value={[voiceSpeed]}
                     onValueChange={v => setVoiceSpeed(v[0])}
                     min={0.5}
                     max={2.0}
                     step={0.05}
-                    className="mt-2"
                   />
                 </div>
 
                 <div>
-                  <Label className="text-purple-200 mb-2">Pitch: {voicePitch.toFixed(2)}</Label>
+                  <div className="flex justify-between mb-1">
+                    <Label className="text-purple-200 text-xs">Pitch</Label>
+                    <span className="text-purple-400 text-xs">{voicePitch.toFixed(2)}</span>
+                  </div>
                   <Slider
                     value={[voicePitch]}
                     onValueChange={v => setVoicePitch(v[0])}
                     min={0.5}
                     max={2.0}
                     step={0.05}
-                    className="mt-2"
                   />
                 </div>
 
                 <div>
-                  <Label className="text-purple-200 mb-2">Volume: {Math.round(voiceVolume * 100)}%</Label>
+                  <div className="flex justify-between mb-1">
+                    <Label className="text-purple-200 text-xs">Volume</Label>
+                    <span className="text-purple-400 text-xs">{Math.round(voiceVolume * 100)}%</span>
+                  </div>
                   <Slider
                     value={[voiceVolume]}
                     onValueChange={v => setVoiceVolume(v[0])}
                     min={0}
                     max={1}
                     step={0.05}
-                    className="mt-2"
                   />
                 </div>
 
                 <div>
-                  <Label className="text-purple-200 mb-2">Bass: {voiceBass > 0 ? '+' : ''}{voiceBass} dB</Label>
+                  <div className="flex justify-between mb-1">
+                    <Label className="text-purple-200 text-xs">Bass</Label>
+                    <span className="text-purple-400 text-xs">{voiceBass > 0 ? '+' : ''}{voiceBass} dB</span>
+                  </div>
                   <Slider
                     value={[voiceBass]}
                     onValueChange={v => setVoiceBass(v[0])}
                     min={-10}
                     max={10}
                     step={1}
-                    className="mt-2"
                   />
                 </div>
 
                 <div>
-                  <Label className="text-purple-200 mb-2">Treble: {voiceTreble > 0 ? '+' : ''}{voiceTreble} dB</Label>
+                  <div className="flex justify-between mb-1">
+                    <Label className="text-purple-200 text-xs">Treble</Label>
+                    <span className="text-purple-400 text-xs">{voiceTreble > 0 ? '+' : ''}{voiceTreble} dB</span>
+                  </div>
                   <Slider
                     value={[voiceTreble]}
                     onValueChange={v => setVoiceTreble(v[0])}
                     min={-10}
                     max={10}
                     step={1}
-                    className="mt-2"
                   />
                 </div>
 
                 <div>
-                  <Label className="text-purple-200 mb-2">Warmth: {voiceWarmth > 0 ? '+' : ''}{voiceWarmth} dB</Label>
+                  <div className="flex justify-between mb-1">
+                    <Label className="text-purple-200 text-xs">Warmth</Label>
+                    <span className="text-purple-400 text-xs">{voiceWarmth > 0 ? '+' : ''}{voiceWarmth} dB</span>
+                  </div>
                   <Slider
                     value={[voiceWarmth]}
                     onValueChange={v => setVoiceWarmth(v[0])}
                     min={-10}
                     max={10}
                     step={1}
-                    className="mt-2"
                   />
                 </div>
 
-                <h3 className="text-purple-300 font-semibold mt-4 mb-2">Audio Effects</h3>
+                <h3 className="text-purple-300 font-semibold mt-3 mb-2 text-sm">Audio Effects</h3>
 
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between py-2">
-                    <Label className="text-purple-200">Echo</Label>
+                <div className="space-y-1">
+                  <div className="flex items-center justify-between py-1">
+                    <Label className="text-purple-200 text-xs">Echo</Label>
                     <Switch
                       checked={voiceEchoEffect}
                       onCheckedChange={setVoiceEchoEffect}
                     />
                   </div>
 
-                  <div className="flex items-center justify-between py-2">
-                    <Label className="text-purple-200">Delay</Label>
+                  <div className="flex items-center justify-between py-1">
+                    <Label className="text-purple-200 text-xs">Delay</Label>
                     <Switch
                       checked={voiceDelayEffect}
                       onCheckedChange={setVoiceDelayEffect}
                     />
                   </div>
 
-                  <div className="flex items-center justify-between py-2">
-                    <Label className="text-purple-200">Noise Gate</Label>
+                  <div className="flex items-center justify-between py-1">
+                    <Label className="text-purple-200 text-xs">Noise Gate</Label>
                     <Switch
                       checked={voiceGateEffect}
                       onCheckedChange={setVoiceGateEffect}
                     />
                   </div>
 
-                  <div className="flex items-center justify-between py-2">
-                    <Label className="text-purple-200">Human Enhancement</Label>
+                  <div className="flex items-center justify-between py-1">
+                    <Label className="text-purple-200 text-xs">Enhancement</Label>
                     <Switch
                       checked={voiceEnhance}
                       onCheckedChange={setVoiceEnhance}
                     />
                   </div>
 
-                  <div className="flex items-center justify-between py-2">
-                    <Label className="text-purple-200">Humanize</Label>
+                  <div className="flex items-center justify-between py-1">
+                    <Label className="text-purple-200 text-xs">Humanize</Label>
                     <Switch
                       checked={voiceHumanizeEffect}
                       onCheckedChange={setVoiceHumanizeEffect}
@@ -714,9 +736,9 @@ export default function GlyphBot() {
                       console.error("Test voice error:", error);
                     }
                   }}
-                  className="w-full bg-purple-600 hover:bg-purple-700 min-h-[44px] mt-4"
+                  className="w-full bg-purple-600 hover:bg-purple-700 min-h-[36px] mt-3 text-sm"
                 >
-                  <Wand2 className="w-4 h-4 mr-2" />
+                  <Wand2 className="w-3 h-3 mr-2" />
                   Test Voice
                 </Button>
               </CardContent>
@@ -726,28 +748,28 @@ export default function GlyphBot() {
 
         {/* Conversations Panel */}
         {showConversations && (
-          <div className="w-80 border-r border-purple-500/20 glyph-glass-dark overflow-y-auto">
-            <div className="p-4">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-purple-300">Conversations</h3>
+          <div className="w-72 border-r border-purple-500/20 glyph-glass-dark overflow-y-auto">
+            <div className="p-3">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-base font-semibold text-purple-300">Conversations</h3>
                 <div className="flex items-center gap-2">
                   <Button
                     onClick={newConversation}
                     size="sm"
-                    className="bg-purple-600 hover:bg-purple-700"
+                    className="bg-purple-600 hover:bg-purple-700 h-8 text-xs"
                   >
-                    <Plus className="w-4 h-4 mr-1" />
+                    <Plus className="w-3 h-3 mr-1" />
                     New
                   </Button>
                   <button
                     onClick={() => setShowConversations(false)}
                     className="text-gray-400 hover:text-white transition-colors p-1"
                   >
-                    <X className="w-5 h-5" />
+                    <X className="w-4 h-4" />
                   </button>
                 </div>
               </div>
-              <div className="space-y-2">
+              <div className="space-y-1.5">
                 {conversations.map(conv => (
                   <div
                     key={conv.id}
@@ -826,21 +848,21 @@ export default function GlyphBot() {
                 </ReactMarkdown>
 
                 {m.role === "assistant" && !m.isTyping && (
-                  <div className="mt-3 flex gap-2 flex-wrap">
+                  <div className="mt-2 flex gap-2 flex-wrap">
                     <Button
                       onClick={() => speak(m.text, m.id)}
                       size="sm"
                       variant="outline"
-                      className="border-purple-500/30 text-purple-300 hover:bg-purple-950/20 min-h-[44px]"
+                      className="border-purple-500/30 text-purple-300 hover:bg-purple-950/20 min-h-[36px] text-xs"
                     >
-                      <Volume2 className="w-4 h-4 mr-1" />
+                      <Volume2 className="w-3 h-3 mr-1" />
                       Speak
                     </Button>
                     <Button
                       onClick={stopAudio}
                       size="sm"
                       variant="outline"
-                      className="border-purple-500/30 text-purple-300 hover:bg-purple-950/20 min-h-[44px]"
+                      className="border-purple-500/30 text-purple-300 hover:bg-purple-950/20 min-h-[36px] text-xs"
                     >
                       Stop
                     </Button>
@@ -848,16 +870,49 @@ export default function GlyphBot() {
                 )}
 
                 {m.model && (
-                  <div className="mt-2 text-xs text-gray-500">
-                    {m.model} • {m.promptVersion}
+                  <div className="mt-1 text-xs text-gray-500">
+                    {m.model} • v{m.promptVersion}
                   </div>
                 )}
               </div>
             ))}
           </main>
 
+          {/* Audit Panel */}
+          {showAuditPanel && auditData && (
+            <div className="flex-none border-t border-green-500/20 glyph-glass-dark p-3 max-h-[200px] overflow-y-auto">
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <FileText className="w-4 h-4 text-green-400" />
+                  <h3 className="text-sm font-semibold text-green-300">Audit Report</h3>
+                </div>
+                <button
+                  onClick={() => setShowAuditPanel(false)}
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+              <pre className="text-xs text-green-200 whitespace-pre-wrap overflow-x-auto bg-black/30 p-2 rounded border border-green-500/20">
+                {JSON.stringify(auditData, null, 2)}
+              </pre>
+            </div>
+          )}
+
           <footer className="flex-none glyph-glass-dark border-t border-purple-500/20">
             <div className="px-4 py-3">
+              {oneTestMode && (
+                <div className="mb-2">
+                  <Button
+                    onClick={runOneTest}
+                    className="w-full bg-blue-600 hover:bg-blue-700 min-h-[36px] text-sm"
+                  >
+                    <AlertTriangle className="w-3 h-3 mr-2" />
+                    Run One Test
+                  </Button>
+                </div>
+              )}
+              
               <div className="flex items-center gap-2">
                 <textarea
                   ref={inputRef}
@@ -885,7 +940,7 @@ export default function GlyphBot() {
                     onClick={() => setShowAuditPanel(!showAuditPanel)}
                     size="sm"
                     variant="outline"
-                    className="border-green-500/30 text-green-400"
+                    className="border-green-500/30 text-green-400 h-[44px]"
                   >
                     <FileText className="w-4 h-4" />
                   </Button>
@@ -895,10 +950,14 @@ export default function GlyphBot() {
                   onClick={saveConversation}
                   size="sm"
                   variant="ghost"
-                  className="text-purple-400 hover:text-purple-300"
+                  className="text-purple-400 hover:text-purple-300 h-[44px]"
                 >
                   <Save className="w-4 h-4" />
                 </Button>
+              </div>
+              
+              <div className="mt-1 text-xs text-gray-500 text-center">
+                Enter to send • Shift+Enter for new line
               </div>
             </div>
           </footer>
