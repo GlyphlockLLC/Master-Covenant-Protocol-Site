@@ -262,19 +262,26 @@ export default function GenerateTab({ user, onImageGenerated }) {
                 className="hidden"
                 id="reference-upload"
               />
-              <label htmlFor="reference-upload">
-                <Button
-                  type="button"
-                  onClick={() => document.getElementById('reference-upload').click()}
-                  className={GlyphImageButton.secondary}
-                >
-                  <Upload className="w-4 h-4 mr-2" />
-                  Upload Reference
-                </Button>
-              </label>
+              <Button
+                type="button"
+                onClick={() => document.getElementById('reference-upload')?.click()}
+                className={GlyphImageButton.secondary}
+              >
+                <Upload className="w-4 h-4 mr-2" />
+                Upload Reference
+              </Button>
               {referenceImage && (
                 <div className="flex-1">
-                  <img src={referenceImage} alt="Reference" className="h-20 rounded-lg border border-cyan-500/30" />
+                  <img 
+                    src={referenceImage} 
+                    alt="Reference" 
+                    className="h-20 rounded-lg border border-cyan-500/30 object-cover"
+                    onError={(e) => {
+                      console.error('Image failed to load:', referenceImage);
+                      e.target.style.display = 'none';
+                      toast.error('Failed to display uploaded image');
+                    }}
+                  />
                 </div>
               )}
             </div>
