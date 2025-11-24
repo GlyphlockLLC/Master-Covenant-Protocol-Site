@@ -191,11 +191,13 @@ export default function GlyphBot() {
     localStorage.setItem("glyphbot_voice_humanize_effect", String(voiceHumanizeEffect));
   }, [voiceHumanizeEffect]);
 
-  // Auto-scroll
+  // Auto-scroll messages only
   useEffect(() => {
     const el = listRef.current;
     if (!el) return;
-    el.scrollTop = el.scrollHeight;
+    requestAnimationFrame(() => {
+      el.scrollTop = el.scrollHeight;
+    });
   }, [messages]);
 
   // Autoplay latest assistant message
@@ -463,9 +465,9 @@ export default function GlyphBot() {
       <div className="glyph-orb fixed top-20 right-20 opacity-20" style={{ animation: 'float-orb 8s ease-in-out infinite' }}></div>
       <div className="glyph-orb fixed bottom-40 left-40 opacity-15" style={{ animation: 'float-orb 10s ease-in-out infinite', width: '150px', height: '150px' }}></div>
 
-      <header className="sticky top-0 z-20 glyph-glass border-b border-purple-500/20 shadow-lg glyph-glow">
-        <div className="px-4 py-3">
-          <div className="flex items-center justify-between gap-3 flex-wrap">
+      <header className="flex-none z-20 glyph-glass-dark border-b border-purple-500/20 shadow-lg glyph-glow">
+        <div className="px-4 py-2">
+          <div className="flex items-center justify-between gap-2">
             <div className="flex items-center gap-3">
               <MessageCircle className="w-7 h-7 text-purple-400" />
               <div>
@@ -480,7 +482,7 @@ export default function GlyphBot() {
               <select
                 value={personaId}
                 onChange={e => setPersonaId(e.target.value)}
-                className="bg-purple-950/30 border border-purple-500/30 rounded-lg px-3 py-2 text-sm min-h-[44px] text-white focus:outline-none focus:ring-2 focus:ring-purple-400"
+                className="bg-purple-950/50 border border-purple-500/30 rounded-lg px-2 py-1 text-xs min-h-[36px] text-white focus:outline-none focus:ring-2 focus:ring-purple-400"
               >
                 {PERSONAS.map(p => (
                   <option key={p.id} value={p.id}>{p.name}</option>
@@ -490,52 +492,47 @@ export default function GlyphBot() {
               <Button
                 onClick={() => setAutoplay(v => !v)}
                 variant={autoplay ? "default" : "outline"}
-                className={`min-h-[44px] ${autoplay ? "bg-purple-600 hover:bg-purple-700" : "border-purple-500/30"}`}
+                size="sm"
+                className={`min-h-[36px] text-xs ${autoplay ? "bg-purple-600 hover:bg-purple-700" : "border-purple-500/30"}`}
               >
-                {autoplay ? <Volume2 className="w-4 h-4 mr-2" /> : <VolumeX className="w-4 h-4 mr-2" />}
-                {autoplay ? "Autoplay" : "Silent"}
+                {autoplay ? <Volume2 className="w-3 h-3 mr-1" /> : <VolumeX className="w-3 h-3 mr-1" />}
+                Voice
               </Button>
 
               <Button
                 onClick={() => setShowVoiceStudio(!showVoiceStudio)}
                 variant="outline"
-                className="min-h-[44px] border-purple-500/30"
+                size="sm"
+                className="min-h-[36px] border-purple-500/30 text-xs"
               >
-                <Sliders className="w-4 h-4 mr-2" />
-                Voice Studio
+                <Sliders className="w-3 h-3 mr-1" />
+                Studio
               </Button>
 
               <Button
                 onClick={() => setAuditMode(v => !v)}
                 variant={auditMode ? "default" : "outline"}
-                className={`min-h-[44px] ${auditMode ? "bg-green-600 hover:bg-green-700" : "border-purple-500/30"}`}
+                size="sm"
+                className={`min-h-[36px] text-xs ${auditMode ? "bg-green-600 hover:bg-green-700" : "border-purple-500/30"}`}
               >
-                <Shield className="w-4 h-4 mr-2" />
-                {auditMode ? "Audit ON" : "Audit OFF"}
-              </Button>
-
-              <Button
-                onClick={() => setOneTestMode(v => !v)}
-                variant={oneTestMode ? "default" : "outline"}
-                className={`min-h-[44px] ${oneTestMode ? "bg-blue-600 hover:bg-blue-700" : "border-purple-500/30"}`}
-              >
-                <AlertTriangle className="w-4 h-4 mr-2" />
-                {oneTestMode ? "Test ON" : "Test OFF"}
+                <Shield className="w-3 h-3 mr-1" />
+                Audit
               </Button>
 
               <Button
                 onClick={() => setShowConversations(!showConversations)}
                 variant="outline"
-                className="min-h-[44px] border-purple-500/30"
+                size="sm"
+                className="min-h-[36px] border-purple-500/30 text-xs"
               >
-                <FolderOpen className="w-4 h-4 mr-2" />
-                History
+                <FolderOpen className="w-3 h-3" />
               </Button>
 
               <Button
                 onClick={clearChat}
                 variant="outline"
-                className="min-h-[44px] border-red-500/30 text-red-400 hover:bg-red-950/20"
+                size="sm"
+                className="min-h-[36px] border-red-500/30 text-red-400 hover:bg-red-950/20 text-xs"
               >
                 Clear
               </Button>
@@ -544,7 +541,7 @@ export default function GlyphBot() {
         </div>
       </header>
 
-      <div className="flex-1 flex relative z-10">
+      <div className="flex-1 flex relative z-10 overflow-hidden">
         {/* Voice Studio Panel */}
         {showVoiceStudio && (
           <div className="w-96 border-r border-purple-500/20 glyph-glass-dark p-4 overflow-y-auto">
@@ -787,27 +784,27 @@ export default function GlyphBot() {
         )}
 
         {/* Main Chat Area */}
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1 flex flex-col overflow-hidden">
           <main
             ref={listRef}
             className="flex-1 overflow-y-auto px-4 py-4 space-y-3"
-            style={{ WebkitOverflowScrolling: "touch" }}
+            style={{ WebkitOverflowScrolling: "touch", maxHeight: "calc(100vh - 180px)" }}
           >
             {messages.length === 0 && (
-              <div className="text-center text-gray-400 py-20">
-                <MessageCircle className="w-16 h-16 mx-auto mb-4 opacity-30" />
-                <p className="text-lg">GlyphBot is online and ready.</p>
-                <p className="text-sm mt-2">Ask anything. I'm here to help.</p>
+              <div className="text-center py-12">
+                <MessageCircle className="w-12 h-12 mx-auto mb-3 text-purple-400 opacity-50" />
+                <p className="text-base text-purple-300">GlyphBot is online and ready.</p>
+                <p className="text-xs mt-1 text-gray-400">Ask anything. I'm here to help.</p>
               </div>
             )}
 
             {messages.map(m => (
               <div
                 key={m.id}
-                className={`max-w-[90%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-lg ${
+                className={`max-w-[85%] rounded-2xl px-3 py-2 text-sm leading-relaxed ${
                   m.role === "user"
-                    ? "ml-auto bg-gradient-to-br from-purple-600 to-blue-600 text-white"
-                    : "mr-auto bg-gray-900/80 backdrop-blur border border-purple-500/20 text-white"
+                    ? "ml-auto bg-gradient-to-br from-purple-600/90 to-blue-600/90 text-white glyph-glow"
+                    : "mr-auto glyph-glass-dark border border-purple-500/30 text-white"
                 }`}
               >
                 <ReactMarkdown
@@ -859,48 +856,9 @@ export default function GlyphBot() {
             ))}
           </main>
 
-          {/* Audit Panel */}
-          {showAuditPanel && auditData && (
-            <div className="border-t border-purple-500/20 glyph-glass-dark p-4">
-              <Card className="glyph-glass-dark border-green-500/30 glyph-glow">
-                <CardHeader>
-                  <CardTitle className="text-green-300 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <FileText className="w-5 h-5" />
-                      Audit Report
-                    </div>
-                    <button
-                      onClick={() => setShowAuditPanel(false)}
-                      className="text-gray-400 hover:text-white transition-colors"
-                    >
-                      <X className="w-5 h-5" />
-                    </button>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <pre className="text-xs text-green-200 whitespace-pre-wrap overflow-x-auto">
-                    {JSON.stringify(auditData, null, 2)}
-                  </pre>
-                </CardContent>
-              </Card>
-            </div>
-          )}
-
-          <footer className="sticky bottom-0 glyph-glass-dark border-t border-purple-500/20">
-            <div className="px-4 py-4">
-              {oneTestMode && (
-                <div className="mb-3">
-                  <Button
-                    onClick={runOneTest}
-                    className="w-full bg-blue-600 hover:bg-blue-700 min-h-[44px]"
-                  >
-                    <AlertTriangle className="w-4 h-4 mr-2" />
-                    Run One Test
-                  </Button>
-                </div>
-              )}
-
-              <div className="flex items-end gap-2">
+          <footer className="flex-none glyph-glass-dark border-t border-purple-500/20">
+            <div className="px-4 py-3">
+              <div className="flex items-center gap-2">
                 <textarea
                   ref={inputRef}
                   value={input}
@@ -908,31 +866,38 @@ export default function GlyphBot() {
                   onKeyDown={onKeyDown}
                   rows={1}
                   placeholder="Type your message..."
-                  className="flex-1 resize-none bg-purple-950/30 border border-purple-500/30 rounded-2xl px-4 py-3 text-base leading-relaxed focus:outline-none focus:ring-2 focus:ring-purple-400 min-h-[52px] text-white placeholder-gray-400"
+                  className="flex-1 resize-none bg-purple-950/50 border border-purple-500/30 rounded-xl px-4 py-2 text-sm leading-relaxed focus:outline-none focus:ring-2 focus:ring-purple-400 min-h-[44px] max-h-[44px] text-white placeholder-gray-400"
                   style={{ fontSize: "16px" }}
                 />
 
                 <Button
                   onClick={sendMessage}
                   disabled={isSending}
-                  className={`min-w-[96px] h-[52px] rounded-2xl text-base font-semibold bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 ${
+                  className={`min-w-[80px] h-[44px] rounded-xl text-sm font-semibold bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 glyph-glow ${
                     isSending ? "opacity-50" : ""
                   }`}
                 >
-                  {isSending ? "Sending..." : "Send"}
+                  {isSending ? "..." : "Send"}
                 </Button>
-              </div>
-
-              <div className="mt-2 flex items-center justify-between text-xs text-gray-400">
-                <span>Enter to send • Shift+Enter for new line</span>
+                
+                {auditMode && auditData && (
+                  <Button
+                    onClick={() => setShowAuditPanel(!showAuditPanel)}
+                    size="sm"
+                    variant="outline"
+                    className="border-green-500/30 text-green-400"
+                  >
+                    <FileText className="w-4 h-4" />
+                  </Button>
+                )}
+                
                 <Button
                   onClick={saveConversation}
                   size="sm"
                   variant="ghost"
                   className="text-purple-400 hover:text-purple-300"
                 >
-                  <Save className="w-3 h-3 mr-1" />
-                  Save
+                  <Save className="w-4 h-4" />
                 </Button>
               </div>
             </div>
