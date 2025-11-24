@@ -41,6 +41,7 @@ import BillingAndPayments from './pages/BillingAndPayments';
 import PaymentCancel from './pages/PaymentCancel';
 import CommandCenter from './pages/CommandCenter';
 import IntegrationTests from './pages/IntegrationTests';
+import ImageLab from './pages/ImageLab';
 import __Layout from './Layout.jsx';
 
 
@@ -88,6 +89,7 @@ export const PAGES = {
     "PaymentCancel": PaymentCancel,
     "CommandCenter": CommandCenter,
     "IntegrationTests": IntegrationTests,
+    "ImageLab": ImageLab,
 }
 
 export const pagesConfig = {
