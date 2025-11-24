@@ -479,8 +479,8 @@ export default function GlyphBot() {
 
             <div className="flex items-center gap-2">
               <a
-                href="/glyphbot-junior"
-                className="px-4 py-2 bg-gradient-to-r from-blue-600/80 to-cyan-600/80 hover:from-blue-500/80 hover:to-cyan-500/80 border-2 border-blue-400/40 rounded-xl text-sm font-semibold text-white shadow-lg transition-all"
+                href="/glyphbotjunior"
+                className="px-4 py-2 bg-gradient-to-r from-blue-600/80 to-cyan-600/80 hover:from-blue-500/80 hover:to-cyan-500/80 border-2 border-blue-400/40 rounded-xl text-sm font-semibold text-white shadow-lg transition-all min-h-[40px] flex items-center"
               >
                 Switch to Junior 🌟
               </a>
