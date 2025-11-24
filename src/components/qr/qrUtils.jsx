@@ -63,7 +63,7 @@ export function generateScanToken(qrAssetId) {
 }
 
 /**
- * Formats risk score for display
+ * Formats risk score for display (detailed)
  */
 export function getRiskLevel(riskScore) {
   if (riskScore >= 70) return { level: 'critical', color: 'red' };
@@ -71,6 +71,15 @@ export function getRiskLevel(riskScore) {
   if (riskScore >= 30) return { level: 'medium', color: 'yellow' };
   if (riskScore >= 10) return { level: 'low', color: 'blue' };
   return { level: 'safe', color: 'green' };
+}
+
+/**
+ * Simple risk level string (for exports/compatibility)
+ */
+export function getRiskLevelSimple(score = 0) {
+  if (score <= 20) return "safe";
+  if (score <= 60) return "caution";
+  return "danger";
 }
 
 /**
