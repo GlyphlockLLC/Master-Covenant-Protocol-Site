@@ -10,6 +10,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { PERSONAS } from "@/components/glyphbot/personas";
+import GlyphBotJr from "@/components/GlyphBotJr";
+import "@/styles/glyphlockTheme.css";
 
 export default function GlyphBot() {
   const [messages, setMessages] = useState(() => {
@@ -48,6 +50,7 @@ export default function GlyphBot() {
   const [showVoiceStudio, setShowVoiceStudio] = useState(false);
   const [showAuditPanel, setShowAuditPanel] = useState(false);
   const [showConversations, setShowConversations] = useState(false);
+  const [showJuniorMode, setShowJuniorMode] = useState(false);
 
   const [conversations, setConversations] = useState([]);
   const [currentConvId, setCurrentConvId] = useState(null);
@@ -343,7 +346,9 @@ export default function GlyphBot() {
           .filter(m => !m.isTyping)
           .map(m => ({ role: m.role, content: m.text }))
           .concat([{ role: "user", content: trimmed }]),
-        persona: personaId
+        persona: personaId,
+        auditMode,
+        oneTestMode
       };
 
       const res = await base44.functions.invoke("glyphbotLLM", payload);
@@ -442,13 +447,19 @@ export default function GlyphBot() {
     addMessage("assistant", `# 🧪 One Test Result\n\n\`\`\`json\n${JSON.stringify(testResult, null, 2)}\n\`\`\`\n\nSystem integrity verified.`);
   }
 
+  if (showJuniorMode) {
+    return <GlyphBotJr />;
+  }
+
   return (
     <div className="min-h-screen w-full bg-gradient-to-br from-[#0a0a0f] via-[#0f0f1a] to-black text-white flex flex-col relative overflow-hidden">
       {/* Cosmic background effects */}
       <div className="fixed inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-900/20 via-transparent to-transparent pointer-events-none z-0" />
       <div className="fixed inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iZ3JpZCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj48cGF0aCBkPSJNIDQwIDAgTCAwIDAgMCA0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDEyOCwgMCwgMjU1LCAwLjEpIiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-20 pointer-events-none z-0" />
+      <div className="glyph-orb fixed top-20 right-20 opacity-20 animate-pulse" style={{ animationDuration: '8s' }}></div>
+      <div className="glyph-orb fixed bottom-40 left-40 opacity-15 animate-pulse" style={{ animationDuration: '10s', width: '150px', height: '150px' }}></div>
 
-      <header className="sticky top-0 z-20 bg-black/80 backdrop-blur-xl border-b border-purple-500/20 shadow-lg shadow-purple-500/10">
+      <header className="sticky top-0 z-20 glyph-glass border-b border-purple-500/20 shadow-lg glyph-glow">
         <div className="px-4 py-3">
           <div className="flex items-center justify-between gap-3 flex-wrap">
             <div className="flex items-center gap-3">
@@ -524,6 +535,14 @@ export default function GlyphBot() {
               >
                 Clear
               </Button>
+
+              <Button
+                onClick={() => setShowJuniorMode(!showJuniorMode)}
+                variant={showJuniorMode ? "default" : "outline"}
+                className={`min-h-[44px] ${showJuniorMode ? "bg-pink-600 hover:bg-pink-700" : "border-purple-500/30"}`}
+              >
+                🌟 Jr Mode
+              </Button>
             </div>
           </div>
         </div>
@@ -532,8 +551,8 @@ export default function GlyphBot() {
       <div className="flex-1 flex relative z-10">
         {/* Voice Studio Panel */}
         {showVoiceStudio && (
-          <div className="w-96 border-r border-purple-500/20 bg-black/40 backdrop-blur-xl p-4 overflow-y-auto">
-            <Card className="bg-purple-950/20 border-purple-500/30">
+          <div className="w-96 border-r border-purple-500/20 glyph-glass p-4 overflow-y-auto">
+            <Card className="glyph-glass border-purple-500/30 glyph-glow">
               <CardHeader>
                 <CardTitle className="text-purple-300 flex items-center gap-2">
                   <Settings className="w-5 h-5" />
@@ -699,7 +718,7 @@ export default function GlyphBot() {
 
         {/* Conversations Panel */}
         {showConversations && (
-          <div className="w-80 border-r border-purple-500/20 bg-black/40 backdrop-blur-xl overflow-y-auto">
+          <div className="w-80 border-r border-purple-500/20 glyph-glass overflow-y-auto">
             <div className="p-4">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-purple-300">Conversations</h3>
@@ -823,8 +842,8 @@ export default function GlyphBot() {
 
           {/* Audit Panel */}
           {showAuditPanel && auditData && (
-            <div className="border-t border-purple-500/20 bg-black/60 backdrop-blur-xl p-4">
-              <Card className="bg-green-950/20 border-green-500/30">
+            <div className="border-t border-purple-500/20 glyph-glass p-4">
+              <Card className="glyph-glass border-green-500/30 glyph-glow">
                 <CardHeader>
                   <CardTitle className="text-green-300 flex items-center gap-2">
                     <FileText className="w-5 h-5" />
@@ -840,7 +859,7 @@ export default function GlyphBot() {
             </div>
           )}
 
-          <footer className="sticky bottom-0 bg-black/80 backdrop-blur-xl border-t border-purple-500/20">
+          <footer className="sticky bottom-0 glyph-glass border-t border-purple-500/20">
             <div className="px-4 py-4">
               {oneTestMode && (
                 <div className="mb-3">
