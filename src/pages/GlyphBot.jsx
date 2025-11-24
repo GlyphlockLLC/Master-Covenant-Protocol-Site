@@ -286,7 +286,7 @@ export default function GlyphBot() {
       stopAudio();
       lastSpokenIdRef.current = messageId;
 
-      const cleanText = text.replace(/[#*`🦕💠🦖]/g, '').trim();
+      const cleanText = text.replace(/[#*`🦕💠🦖🌟✨]/g, '').trim();
       if (!cleanText) return;
 
       const audioUrl = await generateAudio(voiceProvider, voiceId, cleanText, {
@@ -309,27 +309,30 @@ export default function GlyphBot() {
         }
       });
 
-      if (audioUrl) {
-        const audio = new Audio(audioUrl);
-        audioRef.current = audio;
-        audio.playbackRate = voiceSpeed;
-
-        applyAudioEffects(audio, {
-          bass: voiceBass,
-          treble: voiceTreble,
-          mid: voiceWarmth,
-          volume: voiceVolume,
-          echo: voiceEchoEffect,
-          delay: voiceDelayEffect,
-          gate: voiceGateEffect,
-          enhance: voiceEnhance,
-          humanize: voiceHumanizeEffect
-        });
-
-        audio.play().catch(() => {});
+      if (!audioUrl) {
+        throw new Error("No audio URL returned from provider");
       }
+
+      const audio = new Audio(audioUrl);
+      audioRef.current = audio;
+      audio.playbackRate = voiceSpeed;
+
+      applyAudioEffects(audio, {
+        bass: voiceBass,
+        treble: voiceTreble,
+        mid: voiceWarmth,
+        volume: voiceVolume,
+        echo: voiceEchoEffect,
+        delay: voiceDelayEffect,
+        gate: voiceGateEffect,
+        enhance: voiceEnhance,
+        humanize: voiceHumanizeEffect
+      });
+
+      await audio.play();
     } catch (err) {
-      console.error("Voice error:", err);
+      console.error("Voice playback failed:", err);
+      // Do not fall back to browser TTS - providers should handle fallback
     }
   }
 
@@ -809,8 +812,8 @@ export default function GlyphBot() {
         <div className="flex-1 flex flex-col overflow-hidden">
           <main
             ref={listRef}
-            className="flex-1 overflow-y-auto px-4 py-4 space-y-3"
-            style={{ WebkitOverflowScrolling: "touch", maxHeight: "calc(100vh - 180px)" }}
+            className="flex-1 overflow-y-auto px-4 py-3 space-y-3"
+            style={{ WebkitOverflowScrolling: "touch", maxHeight: "calc(100vh - 160px)" }}
           >
             {messages.length === 0 && (
               <div className="text-center py-12">
@@ -900,7 +903,7 @@ export default function GlyphBot() {
           )}
 
           <footer className="flex-none glyph-glass-dark border-t border-purple-500/20">
-            <div className="px-4 py-3">
+            <div className="px-4 py-2">
               {oneTestMode && (
                 <div className="mb-2">
                   <Button

@@ -118,25 +118,55 @@ export async function generateAudio(provider, voiceId, text, settings = {}) {
   const finalSettings = { ...defaultSettings, ...settings, effects: { ...defaultSettings.effects, ...(settings.effects || {}) } };
 
   try {
+    let audioUrl = null;
+    
     switch (provider) {
       case 'openai':
-        return await generateOpenAI(voiceId, cleanText, finalSettings);
+        audioUrl = await generateOpenAI(voiceId, cleanText, finalSettings);
+        break;
       case 'elevenlabs':
-        return await generateElevenLabs(voiceId, cleanText, finalSettings);
+        audioUrl = await generateElevenLabs(voiceId, cleanText, finalSettings);
+        break;
       case 'google':
-        return await generateGoogle(voiceId, cleanText, finalSettings);
+        audioUrl = await generateGoogle(voiceId, cleanText, finalSettings);
+        break;
       case 'microsoft':
-        return await generateMicrosoft(voiceId, cleanText, finalSettings);
+        audioUrl = await generateMicrosoft(voiceId, cleanText, finalSettings);
+        break;
       case 'coqui':
-        return await generateCoqui(voiceId, cleanText, finalSettings);
+        audioUrl = await generateCoqui(voiceId, cleanText, finalSettings);
+        break;
       case 'streamelements':
-      default:
-        return generateStreamElements(voiceId, cleanText);
+        audioUrl = generateStreamElements(voiceId, cleanText);
+        break;
     }
+    
+    if (!audioUrl) {
+      // Try fallback providers in sequence
+      const fallbacks = ['google', 'microsoft', 'streamelements'];
+      for (const fallback of fallbacks) {
+        if (fallback === provider) continue;
+        try {
+          console.log(`Trying fallback provider: ${fallback}`);
+          if (fallback === 'google') {
+            audioUrl = await generateGoogle('en-US-Neural2-A', cleanText, finalSettings);
+          } else if (fallback === 'microsoft') {
+            audioUrl = await generateMicrosoft('en-US-JennyNeural', cleanText, finalSettings);
+          } else {
+            audioUrl = generateStreamElements('Matthew', cleanText);
+          }
+          if (audioUrl) break;
+        } catch (e) {
+          console.log(`Fallback ${fallback} failed:`, e);
+        }
+      }
+    }
+    
+    return audioUrl;
   } catch (error) {
     console.error(`TTS Error [${provider}]:`, error);
-    // Fallback to StreamElements
-    return generateStreamElements(voiceId || 'Matthew', cleanText);
+    // Final fallback
+    return generateStreamElements('Matthew', cleanText);
   }
 }
 
