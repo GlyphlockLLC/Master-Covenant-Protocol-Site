@@ -111,40 +111,37 @@ export default function ImageLab() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8 max-w-7xl relative z-10">
           <Tabs value={activeTab} onValueChange={setActiveTab}>
             {/* Desktop Tabs - Technical Segmented */}
-            <div className="hidden lg:flex w-full mb-6 relative">
-              <div className="absolute inset-0 bg-black/40 backdrop-blur-md border-t-2 border-b-2 border-cyan-500/20"></div>
-              <div className="relative z-10 flex w-full">
-                <TabsTrigger 
-                  value="generate" 
-                  className="flex-1 min-h-[56px] relative group border-r border-cyan-500/10 data-[state=active]:bg-gradient-to-b data-[state=active]:from-purple-500/20 data-[state=active]:to-transparent data-[state=active]:border-t-2 data-[state=active]:border-t-purple-400 data-[state=active]:text-purple-300 text-gray-500 hover:text-gray-300 transition-all font-mono text-xs uppercase tracking-widest"
-                >
-                  <span className="mr-2 text-[10px] opacity-60">01</span>
-                  <ImageIcon className="w-4 h-4 mr-2" />
-                  <span>Generate</span>
-                  <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-purple-400 to-transparent opacity-0 group-data-[state=active]:opacity-100 glyph-glow"></div>
-                </TabsTrigger>
-                
-                <TabsTrigger 
-                  value="interactive" 
-                  className="flex-1 min-h-[56px] relative group border-r border-cyan-500/10 data-[state=active]:bg-gradient-to-b data-[state=active]:from-cyan-500/20 data-[state=active]:to-transparent data-[state=active]:border-t-2 data-[state=active]:border-t-cyan-400 data-[state=active]:text-cyan-300 text-gray-500 hover:text-gray-300 transition-all font-mono text-xs uppercase tracking-widest"
-                >
-                  <span className="mr-2 text-[10px] opacity-60">02</span>
-                  <Layers className="w-4 h-4 mr-2" />
-                  <span>Interactive</span>
-                  <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-0 group-data-[state=active]:opacity-100 glyph-glow"></div>
-                </TabsTrigger>
-                
-                <TabsTrigger 
-                  value="gallery" 
-                  className="flex-1 min-h-[56px] relative group data-[state=active]:bg-gradient-to-b data-[state=active]:from-blue-500/20 data-[state=active]:to-transparent data-[state=active]:border-t-2 data-[state=active]:border-t-blue-400 data-[state=active]:text-blue-300 text-gray-500 hover:text-gray-300 transition-all font-mono text-xs uppercase tracking-widest"
-                >
-                  <span className="mr-2 text-[10px] opacity-60">03</span>
-                  <Database className="w-4 h-4 mr-2" />
-                  <span>Gallery</span>
-                  <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-blue-400 to-transparent opacity-0 group-data-[state=active]:opacity-100 glyph-glow"></div>
-                </TabsTrigger>
-              </div>
-            </div>
+            <TabsList className="hidden lg:flex w-full mb-6 bg-black/40 backdrop-blur-md border-t-2 border-b-2 border-cyan-500/20 p-0 h-auto rounded-none">
+              <TabsTrigger 
+                value="generate" 
+                className="flex-1 min-h-[56px] relative group border-r border-cyan-500/10 data-[state=active]:bg-gradient-to-b data-[state=active]:from-purple-500/20 data-[state=active]:to-transparent data-[state=active]:border-t-2 data-[state=active]:border-t-purple-400 data-[state=active]:text-purple-300 text-gray-500 hover:text-gray-300 transition-all font-mono text-xs uppercase tracking-widest rounded-none"
+              >
+                <span className="mr-2 text-[10px] opacity-60">01</span>
+                <ImageIcon className="w-4 h-4 mr-2" />
+                <span>Generate</span>
+                <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-purple-400 to-transparent opacity-0 group-data-[state=active]:opacity-100 glyph-glow"></div>
+              </TabsTrigger>
+              
+              <TabsTrigger 
+                value="interactive" 
+                className="flex-1 min-h-[56px] relative group border-r border-cyan-500/10 data-[state=active]:bg-gradient-to-b data-[state=active]:from-cyan-500/20 data-[state=active]:to-transparent data-[state=active]:border-t-2 data-[state=active]:border-t-cyan-400 data-[state=active]:text-cyan-300 text-gray-500 hover:text-gray-300 transition-all font-mono text-xs uppercase tracking-widest rounded-none"
+              >
+                <span className="mr-2 text-[10px] opacity-60">02</span>
+                <Layers className="w-4 h-4 mr-2" />
+                <span>Interactive</span>
+                <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-0 group-data-[state=active]:opacity-100 glyph-glow"></div>
+              </TabsTrigger>
+              
+              <TabsTrigger 
+                value="gallery" 
+                className="flex-1 min-h-[56px] relative group data-[state=active]:bg-gradient-to-b data-[state=active]:from-blue-500/20 data-[state=active]:to-transparent data-[state=active]:border-t-2 data-[state=active]:border-t-blue-400 data-[state=active]:text-blue-300 text-gray-500 hover:text-gray-300 transition-all font-mono text-xs uppercase tracking-widest rounded-none"
+              >
+                <span className="mr-2 text-[10px] opacity-60">03</span>
+                <Database className="w-4 h-4 mr-2" />
+                <span>Gallery</span>
+                <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-blue-400 to-transparent opacity-0 group-data-[state=active]:opacity-100 glyph-glow"></div>
+              </TabsTrigger>
+            </TabsList>
 
             {/* Mobile Tabs - Technical Segmented */}
             <div className="lg:hidden mb-6 -mx-4 px-4">
