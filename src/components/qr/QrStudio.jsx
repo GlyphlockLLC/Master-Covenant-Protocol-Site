@@ -548,6 +548,7 @@ export default function QrStudio() {
           <QrBatchUploader />
         </TabsContent>
       </Tabs>
+      </div>
     </div>
   );
 }
