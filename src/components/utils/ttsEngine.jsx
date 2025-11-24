@@ -85,7 +85,7 @@ export async function getVoicesForProvider(provider) {
 export async function generateAudio(provider, voiceId, text, settings = {}) {
   // Clean text
   const cleanText = text
-    .replace(/[#*`🦕💠🦖]/g, '')
+    .replace(/[#*`🦕💠🦖🌟✨]/g, '')
     .replace(/\n/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
@@ -99,13 +99,23 @@ export async function generateAudio(provider, voiceId, text, settings = {}) {
     pitch: 1.0,
     naturalness: 0.8,
     volume: 1.0,
+    bass: 0,
+    treble: 0,
+    mid: 0,
     stability: 0.5,
     similarity: 0.75,
     style: 0.0,
-    useSpeakerBoost: true
+    useSpeakerBoost: true,
+    effects: {
+      echo: false,
+      delay: false,
+      gate: true,
+      enhance: true,
+      humanize: false
+    }
   };
 
-  const finalSettings = { ...defaultSettings, ...settings };
+  const finalSettings = { ...defaultSettings, ...settings, effects: { ...defaultSettings.effects, ...(settings.effects || {}) } };
 
   try {
     switch (provider) {

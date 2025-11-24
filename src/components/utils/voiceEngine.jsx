@@ -1,208 +1,154 @@
 /**
- * GlyphLock Universal Voice Engine
- * Routes to different TTS providers with advanced audio processing
+ * GlyphLock Voice Engine
+ * Unified voice synthesis controller with full provider support
  */
 
-import { base44 } from '@/api/base44Client';
+import { generateAudio, applyAudioEffects, TTS_PROVIDERS } from './ttsEngine';
 
-/**
- * Main voice generation router
- */
-export async function generateVoice(provider, text, opts = {}) {
-  const cleanText = text.replace(/[#*`🦕💠]/g, '').replace(/\n/g, ' ').replace(/\s+/g, ' ').trim();
-  
-  if (!cleanText) {
-    throw new Error('No text to speak');
+export class VoiceEngine {
+  constructor() {
+    this.currentAudio = null;
+    this.settings = this.loadSettings();
   }
 
-  switch (provider) {
-    case 'google':
-      return await googleTTS(cleanText, opts);
-    case 'microsoft':
-      return await azureTTS(cleanText, opts);
-    case 'elevenlabs':
-      return await elevenLabsTTS(cleanText, opts);
-    case 'openai':
-      return await openaiTTS(cleanText, opts);
-    case 'coqui':
-      return await coquiLocalTTS(cleanText, opts);
-    case 'streamelements':
-    default:
-      return await streamElementsTTS(cleanText, opts);
+  loadSettings() {
+    try {
+      return {
+        provider: localStorage.getItem('voice_provider') || 'openai',
+        voice: localStorage.getItem('voice_id') || 'alloy',
+        speed: Number(localStorage.getItem('voice_speed')) || 1.0,
+        pitch: Number(localStorage.getItem('voice_pitch')) || 1.0,
+        volume: Number(localStorage.getItem('voice_volume')) || 1.0,
+        bass: Number(localStorage.getItem('voice_bass')) || 0,
+        treble: Number(localStorage.getItem('voice_treble')) || 0,
+        mid: Number(localStorage.getItem('voice_mid')) || 0,
+        stability: Number(localStorage.getItem('voice_stability')) || 0.5,
+        similarity: Number(localStorage.getItem('voice_similarity')) || 0.75,
+        style: Number(localStorage.getItem('voice_style')) || 0.0,
+        useSpeakerBoost: localStorage.getItem('voice_speaker_boost') !== 'false',
+        effects: {
+          echo: localStorage.getItem('voice_echo') === 'true',
+          delay: localStorage.getItem('voice_delay') === 'true',
+          gate: localStorage.getItem('voice_gate') !== 'false',
+          enhance: localStorage.getItem('voice_enhance') !== 'false',
+          humanize: localStorage.getItem('voice_humanize') === 'true'
+        }
+      };
+    } catch {
+      return this.getDefaultSettings();
+    }
   }
-}
 
-/**
- * Google Cloud TTS
- */
-async function googleTTS(text, opts) {
-  try {
-    const response = await base44.functions.invoke('textToSpeechAdvanced', {
-      text,
-      provider: 'google',
-      voice: opts.voice || 'en-US-Neural2-A',
-      speed: opts.speed || 1.0,
-      pitch: opts.pitch || 1.0
-    });
-
-    return response.data?.audioUrl || null;
-  } catch (error) {
-    console.error('Google TTS error:', error);
-    throw error;
-  }
-}
-
-/**
- * Microsoft Azure TTS
- */
-async function azureTTS(text, opts) {
-  try {
-    const response = await base44.functions.invoke('textToSpeechAdvanced', {
-      text,
-      provider: 'microsoft',
-      voice: opts.voice || 'en-US-JennyNeural',
-      speed: opts.speed || 1.0,
-      pitch: opts.pitch || 1.0
-    });
-
-    return response.data?.audioUrl || null;
-  } catch (error) {
-    console.error('Azure TTS error:', error);
-    throw error;
-  }
-}
-
-/**
- * ElevenLabs TTS (Celebrity Voices)
- */
-async function elevenLabsTTS(text, opts) {
-  try {
-    const response = await base44.functions.invoke('textToSpeechAdvanced', {
-      text,
-      provider: 'elevenlabs',
-      voice: opts.voice || 'Rachel',
-      speed: opts.speed || 1.0,
-      pitch: opts.pitch || 1.0,
-      stability: opts.stability || 0.5,
-      similarity: opts.similarity || 0.75,
-      style: opts.style || 0.0,
-      useSpeakerBoost: opts.useSpeakerBoost !== false
-    });
-
-    return response.data?.audioUrl || null;
-  } catch (error) {
-    console.error('ElevenLabs TTS error:', error);
-    throw error;
-  }
-}
-
-/**
- * OpenAI TTS
- */
-async function openaiTTS(text, opts) {
-  try {
-    const response = await base44.functions.invoke('textToSpeechAdvanced', {
-      text,
+  getDefaultSettings() {
+    return {
       provider: 'openai',
-      voice: opts.voice || 'alloy',
-      speed: opts.speed || 1.0
-    });
+      voice: 'alloy',
+      speed: 1.0,
+      pitch: 1.0,
+      volume: 1.0,
+      bass: 0,
+      treble: 0,
+      mid: 0,
+      stability: 0.5,
+      similarity: 0.75,
+      style: 0.0,
+      useSpeakerBoost: true,
+      effects: {
+        echo: false,
+        delay: false,
+        gate: true,
+        enhance: true,
+        humanize: false
+      }
+    };
+  }
 
-    return response.data?.audioUrl || null;
-  } catch (error) {
-    console.error('OpenAI TTS error:', error);
-    throw error;
+  saveSettings(settings) {
+    this.settings = { ...this.settings, ...settings };
+    try {
+      Object.keys(settings).forEach(key => {
+        if (key === 'effects') {
+          Object.keys(settings.effects).forEach(effect => {
+            localStorage.setItem(`voice_${effect}`, String(settings.effects[effect]));
+          });
+        } else {
+          localStorage.setItem(`voice_${key}`, String(settings[key]));
+        }
+      });
+    } catch (error) {
+      console.error('Failed to save voice settings:', error);
+    }
+  }
+
+  stop() {
+    if (this.currentAudio) {
+      this.currentAudio.pause();
+      this.currentAudio.src = '';
+      this.currentAudio = null;
+    }
+    window.speechSynthesis?.cancel();
+  }
+
+  async speak(text, customSettings = {}) {
+    try {
+      this.stop();
+
+      const cleanText = text.replace(/[#*`🦕💠🦖🌟✨]/g, '').trim();
+      if (!cleanText) return;
+
+      const finalSettings = { ...this.settings, ...customSettings };
+
+      const audioUrl = await generateAudio(
+        finalSettings.provider,
+        finalSettings.voice,
+        cleanText,
+        {
+          speed: finalSettings.speed,
+          pitch: finalSettings.pitch,
+          volume: finalSettings.volume,
+          bass: finalSettings.bass,
+          treble: finalSettings.treble,
+          mid: finalSettings.mid,
+          stability: finalSettings.stability,
+          similarity: finalSettings.similarity,
+          style: finalSettings.style,
+          useSpeakerBoost: finalSettings.useSpeakerBoost,
+          effects: finalSettings.effects
+        }
+      );
+
+      if (audioUrl) {
+        const audio = new Audio(audioUrl);
+        this.currentAudio = audio;
+        audio.playbackRate = finalSettings.speed;
+
+        applyAudioEffects(audio, {
+          bass: finalSettings.bass,
+          treble: finalSettings.treble,
+          mid: finalSettings.mid,
+          volume: finalSettings.volume,
+          ...finalSettings.effects
+        });
+
+        await audio.play();
+        return true;
+      }
+
+      return false;
+    } catch (error) {
+      console.error('Voice engine error:', error);
+      return false;
+    }
+  }
+
+  async testVoice(customSettings = {}) {
+    const testText = "Hello! This is a test of the GlyphBot voice system with all effects and settings applied.";
+    return this.speak(testText, customSettings);
+  }
+
+  getAvailableProviders() {
+    return TTS_PROVIDERS;
   }
 }
 
-/**
- * Coqui Local TTS (Open Source)
- */
-async function coquiLocalTTS(text, opts) {
-  try {
-    const response = await base44.functions.invoke('coquiTTS', {
-      text,
-      voice: opts.voice || 'default',
-      speed: opts.speed || 1.0,
-      pitch: opts.pitch || 1.0
-    });
-
-    return response.data?.audioUrl || null;
-  } catch (error) {
-    console.error('Coqui TTS error:', error);
-    // Fallback to StreamElements
-    return await streamElementsTTS(text, opts);
-  }
-}
-
-/**
- * StreamElements TTS (Free Fallback)
- */
-async function streamElementsTTS(text, opts) {
-  const voice = opts.voice || 'Joanna';
-  return `https://api.streamelements.com/kappa/v2/speech?voice=${voice}&text=${encodeURIComponent(text)}`;
-}
-
-/**
- * Apply audio processing effects
- */
-export function applyAudioEffects(audioElement, effects = {}) {
-  if (!audioElement || !window.AudioContext) return;
-
-  try {
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    const source = audioContext.createMediaElementSource(audioElement);
-    
-    // Bass boost
-    if (effects.bass) {
-      const bassBoost = audioContext.createBiquadFilter();
-      bassBoost.type = 'lowshelf';
-      bassBoost.frequency.value = 200;
-      bassBoost.gain.value = effects.bass;
-      source.connect(bassBoost);
-      bassBoost.connect(audioContext.destination);
-    }
-    
-    // Treble boost
-    if (effects.treble) {
-      const trebleBoost = audioContext.createBiquadFilter();
-      trebleBoost.type = 'highshelf';
-      trebleBoost.frequency.value = 3000;
-      trebleBoost.gain.value = effects.treble;
-      source.connect(trebleBoost);
-      trebleBoost.connect(audioContext.destination);
-    }
-    
-    // Mid range
-    if (effects.mid) {
-      const midBoost = audioContext.createBiquadFilter();
-      midBoost.type = 'peaking';
-      midBoost.frequency.value = 1000;
-      midBoost.Q.value = 1;
-      midBoost.gain.value = effects.mid;
-      source.connect(midBoost);
-      midBoost.connect(audioContext.destination);
-    }
-    
-    // Delay/Echo
-    if (effects.delay) {
-      const delay = audioContext.createDelay();
-      delay.delayTime.value = effects.delay;
-      const feedback = audioContext.createGain();
-      feedback.gain.value = 0.5;
-      source.connect(delay);
-      delay.connect(feedback);
-      feedback.connect(delay);
-      delay.connect(audioContext.destination);
-    }
-    
-    source.connect(audioContext.destination);
-  } catch (error) {
-    console.error('Audio effects error:', error);
-  }
-}
-
-export default {
-  generateVoice,
-  applyAudioEffects
-};
+export default new VoiceEngine();

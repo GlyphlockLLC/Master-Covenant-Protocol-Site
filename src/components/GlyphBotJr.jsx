@@ -180,7 +180,8 @@ When answering questions, use the knowledge bases to provide accurate informatio
 
   return (
     <div 
-      className="fixed bottom-6 right-6 z-[9999] flex flex-col overflow-hidden rounded-2xl shadow-2xl border border-blue-400/30 bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900"
+        className="fixed bottom-6 right-6 z-[9999] flex flex-col overflow-hidden rounded-2xl shadow-2xl border glyph-glass-dark"
+        style={{ borderColor: 'rgba(37, 99, 235, 0.3)' }}
       style={{ 
         width: '400px',
         height: '600px',
@@ -190,10 +191,10 @@ When answering questions, use the knowledge bases to provide accurate informatio
       }}
     >
       {/* Playful background */}
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzRjMC0yLjIxLTEuNzktNC00LTRzLTQgMS43OS00IDQgMS43OSA0IDQgNCA0LTEuNzkgNC00em0wLTEwYzAtMi4yMS0xLjc5LTQtNC00cy00IDEuNzktNCA0IDEuNzkgNCA0IDQgNC0xLjc5IDQtNHoiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-30 pointer-events-none"></div>
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiM2YTAwZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDM0YzAtMi4yMS0xLjc5LTQtNC00cy00IDEuNzktNCA0IDEuNzkgNCA0IDQgNC0xLjc5IDQtNHptMC0xMGMwLTIuMjEtMS43OS00LTQtNHMtNCAxLjc5LTQgNCAxLjc5IDQgNCA0IDQtMS43OSA0LTR6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-20 pointer-events-none"></div>
       
       {/* Header */}
-      <header className="bg-blue-900/30 backdrop-blur-xl border-b border-blue-400/20 shadow-lg relative z-10" style={{ boxShadow: '0 4px 20px rgba(37, 99, 235, 0.3)' }}>
+      <header className="glyph-glass-dark border-b border-blue-400/20 shadow-lg relative z-10 glyph-glow">
         <div className="px-4 py-3">
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-2">
@@ -270,7 +271,7 @@ When answering questions, use the knowledge bases to provide accurate informatio
       </main>
 
       {/* Input Area */}
-      <footer className="bg-blue-900/30 backdrop-blur-xl border-t border-blue-400/20 px-4 py-4 relative z-10">
+      <footer className="glyph-glass-dark border-t border-blue-400/20 px-4 py-4 relative z-10">
         <div className="flex items-center gap-3">
           <input
             type="text"

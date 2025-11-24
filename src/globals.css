@@ -243,6 +243,7 @@ p {
   --white-soft: rgba(255, 255, 255, 0.1);
   --white-glass: rgba(255, 255, 255, 0.18);
   --blur-glyph: blur(14px);
+  --cosmic-bg: linear-gradient(135deg, #0a0a0f 0%, #0f0f1a 50%, #000000 100%);
 }
 
 /* Frosted Glass Effect */
@@ -251,6 +252,14 @@ p {
   backdrop-filter: var(--blur-glyph);
   -webkit-backdrop-filter: var(--blur-glyph);
   border: 1px solid var(--white-glass);
+  border-radius: 20px;
+}
+
+.glyph-glass-dark {
+  background: rgba(10, 10, 15, 0.85);
+  backdrop-filter: var(--blur-glyph);
+  -webkit-backdrop-filter: var(--blur-glyph);
+  border: 1px solid rgba(106, 0, 255, 0.3);
   border-radius: 20px;
 }
 

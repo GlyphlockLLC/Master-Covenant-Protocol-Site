@@ -284,10 +284,27 @@ export default function GlyphBot() {
       stopAudio();
       lastSpokenIdRef.current = messageId;
 
-      const audioUrl = await generateAudio(voiceProvider, voiceId, text, {
+      const cleanText = text.replace(/[#*`🦕💠🦖]/g, '').trim();
+      if (!cleanText) return;
+
+      const audioUrl = await generateAudio(voiceProvider, voiceId, cleanText, {
         speed: voiceSpeed,
         pitch: voicePitch,
         volume: voiceVolume,
+        bass: voiceBass,
+        treble: voiceTreble,
+        mid: voiceWarmth,
+        stability: 0.5,
+        similarity: 0.75,
+        style: 0.0,
+        useSpeakerBoost: true,
+        effects: {
+          echo: voiceEchoEffect,
+          delay: voiceDelayEffect,
+          gate: voiceGateEffect,
+          enhance: voiceEnhance,
+          humanize: voiceHumanizeEffect
+        }
       });
 
       if (audioUrl) {
@@ -311,12 +328,6 @@ export default function GlyphBot() {
       }
     } catch (err) {
       console.error("Voice error:", err);
-      // Fallback to browser TTS
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.rate = voiceSpeed;
-      utterance.pitch = voicePitch;
-      utterance.volume = voiceVolume;
-      window.speechSynthesis.speak(utterance);
     }
   }
 
@@ -445,12 +456,12 @@ export default function GlyphBot() {
   }
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-[#0a0a0f] via-[#0f0f1a] to-black text-white flex flex-col relative overflow-hidden">
+    <div className="min-h-screen w-full text-white flex flex-col relative overflow-hidden" style={{ background: 'var(--cosmic-bg)' }}>
       {/* Cosmic background effects */}
       <div className="fixed inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-900/20 via-transparent to-transparent pointer-events-none z-0" />
-      <div className="fixed inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iZ3JpZCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj48cGF0aCBkPSJNIDQwIDAgTCAwIDAgMCA0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDEyOCwgMCwgMjU1LCAwLjEpIiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-20 pointer-events-none z-0" />
-      <div className="glyph-orb fixed top-20 right-20 opacity-20 animate-pulse" style={{ animationDuration: '8s' }}></div>
-      <div className="glyph-orb fixed bottom-40 left-40 opacity-15 animate-pulse" style={{ animationDuration: '10s', width: '150px', height: '150px' }}></div>
+      <div className="fixed inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48cGF0dGVybiBpZD0iZ3JpZCIgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiBwYXR0ZXJuVW5pdHM9InVzZXJTcGFjZU9uVXNlIj48cGF0aCBkPSJNIDQwIDAgTCAwIDAgMCA0MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDEwNiwgMCwgMjU1LCAwLjEpIiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-20 pointer-events-none z-0" />
+      <div className="glyph-orb fixed top-20 right-20 opacity-20" style={{ animation: 'float-orb 8s ease-in-out infinite' }}></div>
+      <div className="glyph-orb fixed bottom-40 left-40 opacity-15" style={{ animation: 'float-orb 10s ease-in-out infinite', width: '150px', height: '150px' }}></div>
 
       <header className="sticky top-0 z-20 glyph-glass border-b border-purple-500/20 shadow-lg glyph-glow">
         <div className="px-4 py-3">
@@ -536,8 +547,8 @@ export default function GlyphBot() {
       <div className="flex-1 flex relative z-10">
         {/* Voice Studio Panel */}
         {showVoiceStudio && (
-          <div className="w-96 border-r border-purple-500/20 glyph-glass p-4 overflow-y-auto">
-            <Card className="glyph-glass border-purple-500/30 glyph-glow">
+          <div className="w-96 border-r border-purple-500/20 glyph-glass-dark p-4 overflow-y-auto">
+            <Card className="glyph-glass-dark border-purple-500/30 glyph-glow">
               <CardHeader>
                 <CardTitle className="text-purple-300 flex items-center justify-between">
                   <div className="flex items-center gap-2">
@@ -698,7 +709,14 @@ export default function GlyphBot() {
                 </div>
 
                 <Button
-                  onClick={() => speak("Hello! This is a test of the GlyphBot voice system.", "test")}
+                  onClick={async () => {
+                    try {
+                      const testText = "Hello! This is a test of the GlyphBot voice system with all effects applied.";
+                      await speak(testText, "voice_test_" + Date.now());
+                    } catch (error) {
+                      console.error("Test voice error:", error);
+                    }
+                  }}
                   className="w-full bg-purple-600 hover:bg-purple-700 min-h-[44px] mt-4"
                 >
                   <Wand2 className="w-4 h-4 mr-2" />
@@ -711,7 +729,7 @@ export default function GlyphBot() {
 
         {/* Conversations Panel */}
         {showConversations && (
-          <div className="w-80 border-r border-purple-500/20 glyph-glass overflow-y-auto">
+          <div className="w-80 border-r border-purple-500/20 glyph-glass-dark overflow-y-auto">
             <div className="p-4">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-purple-300">Conversations</h3>
@@ -843,8 +861,8 @@ export default function GlyphBot() {
 
           {/* Audit Panel */}
           {showAuditPanel && auditData && (
-            <div className="border-t border-purple-500/20 glyph-glass p-4">
-              <Card className="glyph-glass border-green-500/30 glyph-glow">
+            <div className="border-t border-purple-500/20 glyph-glass-dark p-4">
+              <Card className="glyph-glass-dark border-green-500/30 glyph-glow">
                 <CardHeader>
                   <CardTitle className="text-green-300 flex items-center justify-between">
                     <div className="flex items-center gap-2">
@@ -868,7 +886,7 @@ export default function GlyphBot() {
             </div>
           )}
 
-          <footer className="sticky bottom-0 glyph-glass border-t border-purple-500/20">
+          <footer className="sticky bottom-0 glyph-glass-dark border-t border-purple-500/20">
             <div className="px-4 py-4">
               {oneTestMode && (
                 <div className="mb-3">
