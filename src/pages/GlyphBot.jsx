@@ -11,8 +11,6 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { PERSONAS } from "@/components/glyphbot/personas";
 
-import { PERSONAS } from "@/components/glyphbot/personas";
-
 export default function GlyphBot() {
   const [messages, setMessages] = useState(() => {
     try {
