@@ -62,7 +62,7 @@ import {
   Trash,
   AlertCircle
 } from "lucide-react"
-import faqData from "@/content/faq/faqMaster.json"
+import faqData from "@/components/content/faqMaster.json"
 
 const ICON_MAP = {
   ShieldCheck, Sparkles, ScanLine, AlertTriangle, LockKeyhole, HelpCircle,
