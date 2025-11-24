@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { base44 } from "@/api/base44Client";
-import { Sparkles, Send, Loader2, X } from "lucide-react";
+import { Sparkles, Send, Loader2, X, Volume2 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
-import { generateAudio, applyAudioEffects } from "@/components/utils/ttsEngine";
 import { PERSONAS } from "@/components/glyphbot/personas";
 
 export default function GlyphBotJr() {
@@ -27,32 +26,29 @@ export default function GlyphBotJr() {
     }
   }, []);
 
-  const playVoice = async (text) => {
+  const playVoice = (text) => {
     try {
-      const audioUrl = await generateAudio(
-        jrPersona.voice.provider,
-        jrPersona.voice.model,
-        text,
-        {
-          speed: jrPersona.voice.speed,
-          pitch: jrPersona.voice.pitch,
-          volume: 1.0
-        }
-      );
+      const cleanText = text.replace(/[🌟💠✨🦕]/g, '').trim();
+      if (!cleanText) return;
 
-      if (audioUrl) {
-        const audio = new Audio(audioUrl);
-        audioRef.current = audio;
-        audio.playbackRate = jrPersona.voice.speed;
-        
-        applyAudioEffects(audio, {
-          volume: 1.0,
-          enhance: jrPersona.voice.effects.enhance,
-          gate: jrPersona.voice.effects.gate
-        });
+      // Cancel any ongoing speech
+      window.speechSynthesis.cancel();
 
-        audio.play().catch(() => {});
+      const utterance = new SpeechSynthesisUtterance(cleanText);
+      utterance.rate = 1.1;
+      utterance.pitch = 1.0;
+      utterance.volume = 1.0;
+
+      // Try to get Microsoft or Google voice
+      const voices = window.speechSynthesis.getVoices();
+      const preferredVoice = voices.find(v => v.lang.startsWith('en') && (v.name.includes('Microsoft') || v.name.includes('Google')))
+        || voices.find(v => v.lang.startsWith('en'));
+      
+      if (preferredVoice) {
+        utterance.voice = preferredVoice;
       }
+
+      window.speechSynthesis.speak(utterance);
     } catch (err) {
       console.error("Voice error:", err);
     }
@@ -211,6 +207,17 @@ When answering questions, use the knowledge bases to provide accurate informatio
               >
                 {msg.text}
               </ReactMarkdown>
+              
+              {msg.role === "assistant" && (
+                <button
+                  onClick={() => playVoice(msg.text)}
+                  className="mt-3 text-xs bg-blue-600/30 hover:bg-blue-600/50 px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5 border border-blue-400/30"
+                  style={{ boxShadow: '0 0 10px rgba(37, 99, 235, 0.2)' }}
+                >
+                  <Volume2 className="w-3 h-3" />
+                  Listen
+                </button>
+              )}
             </div>
           </div>
         ))}
