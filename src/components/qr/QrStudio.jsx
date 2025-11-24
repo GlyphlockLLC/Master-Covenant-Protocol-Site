@@ -125,17 +125,38 @@ export default function QrStudio() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
+    <div className="min-h-screen bg-gradient-to-br from-black via-purple-950/20 to-black">
+      {/* Animated Background Grid */}
+      <div className="fixed inset-0 z-0 opacity-20 pointer-events-none">
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/diagmonds-light.png')] opacity-30"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-purple-500/5 to-blue-500/5 animate-pulse"></div>
+      </div>
+
       {/* Header */}
-      <div className="border-b border-gray-800 bg-black/50 backdrop-blur-sm sticky top-0 z-50">
+      <div className="border-b border-cyan-500/20 bg-black/80 backdrop-blur-xl sticky top-0 z-50 shadow-2xl shadow-black/50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex flex-col space-y-2">
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
-              GlyphLock QR Studio
-            </h1>
-            <p className="text-sm sm:text-base text-gray-400">
-              Next-generation QR codes with stego art, hot zones, and anti-quishing protection
-            </p>
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+            <div className="flex flex-col space-y-2">
+              <h1 className={`${GlyphTypography.display.md} ${GlyphGradients.primaryText} flex items-center gap-3`}>
+                <Zap className="w-10 h-10 text-cyan-400 animate-pulse" />
+                GlyphLock QR Studio
+              </h1>
+              <p className="text-sm sm:text-base text-gray-400 flex items-center gap-2">
+                <Shield className="w-4 h-4 text-purple-400" />
+                Military-grade QR generation with steganography, hot zones & anti-quishing
+              </p>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="px-4 py-2 bg-cyan-500/10 border border-cyan-500/30 rounded-lg">
+                <p className="text-xs text-cyan-400 font-semibold">90+ Payload Types</p>
+              </div>
+              <div className="px-4 py-2 bg-purple-500/10 border border-purple-500/30 rounded-lg">
+                <p className="text-xs text-purple-400 font-semibold flex items-center gap-1">
+                  <Sparkles className="w-3 h-3" />
+                  Premium Features
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -209,37 +230,58 @@ export default function QrStudio() {
         {/* Create Tab */}
         <TabsContent value="create">
           {/* Desktop: 2-column layout */}
-          <div className="hidden lg:grid lg:grid-cols-2 gap-6">
-            <Card className="bg-gray-900/50 border-gray-800 shadow-xl">
-              <CardHeader className="border-b border-gray-800">
-                <CardTitle className="text-white">QR Configuration</CardTitle>
+          <div className="hidden lg:grid lg:grid-cols-2 gap-6 relative z-10">
+            <Card className={`${GlyphCard.premium} ${GlyphShadows.depth.lg}`}>
+              <CardHeader className="border-b border-purple-500/20">
+                <CardTitle className={`${GlyphTypography.heading.lg} text-white flex items-center gap-2`}>
+                  <Sparkles className="w-5 h-5 text-cyan-400" />
+                  QR Configuration
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4 pt-6">
                 <div className="space-y-2">
-                  <Label htmlFor="title" className="text-gray-300">Title</Label>
+                  <Label htmlFor="title" className="text-gray-300 font-semibold">Title</Label>
                   <Input
                     id="title"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     placeholder="My QR Code"
-                    className="min-h-[44px]"
+                    className={GlyphInput.glow}
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="payloadType" className="text-gray-300">Payload Type</Label>
-                  <Select value={payloadType} onValueChange={setPayloadType}>
-                    <SelectTrigger id="payloadType" className="min-h-[44px]">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="url">URL</SelectItem>
-                      <SelectItem value="text">Text</SelectItem>
-                      <SelectItem value="vcard">vCard</SelectItem>
-                      <SelectItem value="wifi">WiFi</SelectItem>
-                      <SelectItem value="app">App Link</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <Label htmlFor="payloadType" className="text-gray-300 flex items-center gap-2">
+                    Payload Type
+                    {selectedPayloadType?.premium && (
+                      <span className="text-xs text-purple-400 flex items-center gap-1">
+                        <Sparkles className="w-3 h-3" />
+                        Premium
+                      </span>
+                    )}
+                  </Label>
+                  <Button
+                    type="button"
+                    onClick={() => setShowPayloadSelector(!showPayloadSelector)}
+                    className={`${GlyphButton.secondary} w-full justify-between`}
+                  >
+                    <span className="flex items-center gap-2">
+                      {selectedPayloadType && <selectedPayloadType.icon className="w-4 h-4" />}
+                      {selectedPayloadType?.label || 'Select Payload Type'}
+                    </span>
+                    <span className="text-xs text-gray-500">90+ types available</span>
+                  </Button>
+                  {showPayloadSelector && (
+                    <div className={`${GlyphCard.glass} p-4 mt-2`}>
+                      <PayloadTypeSelector
+                        value={payloadType}
+                        onChange={(newType) => {
+                          setPayloadType(newType);
+                          setShowPayloadSelector(false);
+                        }}
+                      />
+                    </div>
+                  )}
                 </div>
 
                 <div className="space-y-2">
@@ -248,9 +290,12 @@ export default function QrStudio() {
                     id="payloadValue"
                     value={payloadValue}
                     onChange={(e) => setPayloadValue(e.target.value)}
-                    placeholder={payloadType === 'url' ? 'https://example.com' : 'Your content here'}
-                    className="min-h-[80px]"
+                    placeholder={selectedPayloadType?.placeholder || 'Enter your payload data here...'}
+                    className={`${GlyphInput.glow} min-h-[80px]`}
                   />
+                  {selectedPayloadType && (
+                    <p className="text-xs text-gray-500">{selectedPayloadType.description}</p>
+                  )}
                 </div>
 
                 <div className="flex items-center justify-between py-2 border-t border-gray-700">
@@ -283,15 +328,18 @@ export default function QrStudio() {
                 <Button
                   onClick={handleGenerate}
                   disabled={isGenerating || !title || !payloadValue}
-                  className="w-full bg-cyan-600 hover:bg-cyan-700 min-h-[44px]"
+                  className={`${GlyphButton.primary} w-full ${GlyphShadows.neonCyan}`}
                 >
                   {isGenerating ? (
                     <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Generating...
+                      <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                      Generating QR Asset...
                     </>
                   ) : (
-                    'Generate QR Asset'
+                    <>
+                      <Wand2 className="w-5 h-5 mr-2" />
+                      Generate QR Asset
+                    </>
                   )}
                 </Button>
               </CardContent>
@@ -309,48 +357,72 @@ export default function QrStudio() {
           </div>
 
           {/* Mobile: Stacked layout */}
-          <div className="lg:hidden space-y-6">
-            <Card className="bg-gray-900/50 border-gray-800 shadow-xl">
-              <CardHeader className="border-b border-gray-800">
-                <CardTitle className="text-white">QR Configuration</CardTitle>
+          <div className="lg:hidden space-y-6 relative z-10">
+            <Card className={`${GlyphCard.premium} ${GlyphShadows.depth.md}`}>
+              <CardHeader className="border-b border-purple-500/20">
+                <CardTitle className={`${GlyphTypography.heading.md} text-white flex items-center gap-2`}>
+                  <Sparkles className="w-5 h-5 text-cyan-400" />
+                  QR Configuration
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4 pt-6">
                 <div className="space-y-2">
-                  <Label htmlFor="title-mobile" className="text-gray-300 text-base">Title</Label>
+                  <Label htmlFor="title-mobile" className="text-gray-300 text-base font-semibold">Title</Label>
                   <Input
                     id="title-mobile"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     placeholder="My QR Code"
-                    className="min-h-[48px] text-base bg-gray-800 border-gray-700"
+                    className={`${GlyphInput.glow} text-base`}
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="payloadType-mobile" className="text-gray-300 text-base">Payload Type</Label>
-                  <Select value={payloadType} onValueChange={setPayloadType}>
-                    <SelectTrigger id="payloadType-mobile" className="min-h-[48px] text-base bg-gray-800 border-gray-700">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="url">URL</SelectItem>
-                      <SelectItem value="text">Text</SelectItem>
-                      <SelectItem value="vcard">vCard</SelectItem>
-                      <SelectItem value="wifi">WiFi</SelectItem>
-                      <SelectItem value="app">App Link</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <Label htmlFor="payloadType-mobile" className="text-gray-300 text-base font-semibold flex items-center gap-2">
+                    Payload Type
+                    {selectedPayloadType?.premium && (
+                      <span className="text-xs text-purple-400 flex items-center gap-1">
+                        <Sparkles className="w-3 h-3" />
+                        Premium
+                      </span>
+                    )}
+                  </Label>
+                  <Button
+                    type="button"
+                    onClick={() => setShowPayloadSelector(!showPayloadSelector)}
+                    className={`${GlyphButton.secondary} w-full justify-between text-base`}
+                  >
+                    <span className="flex items-center gap-2">
+                      {selectedPayloadType && <selectedPayloadType.icon className="w-5 h-5" />}
+                      {selectedPayloadType?.label || 'Select Payload Type'}
+                    </span>
+                    <span className="text-xs text-gray-500">90+</span>
+                  </Button>
+                  {showPayloadSelector && (
+                    <div className={`${GlyphCard.glass} p-4 mt-2`}>
+                      <PayloadTypeSelector
+                        value={payloadType}
+                        onChange={(newType) => {
+                          setPayloadType(newType);
+                          setShowPayloadSelector(false);
+                        }}
+                      />
+                    </div>
+                  )}
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="payloadValue-mobile" className="text-gray-300 text-base">Payload</Label>
+                  <Label htmlFor="payloadValue-mobile" className="text-gray-300 text-base font-semibold">Payload</Label>
                   <Textarea
                     id="payloadValue-mobile"
                     value={payloadValue}
                     onChange={(e) => setPayloadValue(e.target.value)}
-                    placeholder={payloadType === 'url' ? 'https://example.com' : 'Your content here'}
-                    className="min-h-[100px] text-base bg-gray-800 border-gray-700"
+                    placeholder={selectedPayloadType?.placeholder || 'Enter your payload data here...'}
+                    className={`${GlyphInput.glow} min-h-[100px] text-base`}
                   />
+                  {selectedPayloadType && (
+                    <p className="text-xs text-gray-500">{selectedPayloadType.description}</p>
+                  )}
                 </div>
 
                 <div className="flex items-center justify-between py-3 border-t border-gray-800">
@@ -383,15 +455,18 @@ export default function QrStudio() {
                 <Button
                   onClick={handleGenerate}
                   disabled={isGenerating || !title || !payloadValue}
-                  className="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 min-h-[52px] text-base font-semibold shadow-lg shadow-cyan-500/30"
+                  className={`${GlyphButton.primary} w-full min-h-[52px] text-base ${GlyphShadows.neonCyan}`}
                 >
                   {isGenerating ? (
                     <>
-                      <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                      Generating...
+                      <Loader2 className="w-6 h-6 mr-2 animate-spin" />
+                      Generating QR Asset...
                     </>
                   ) : (
-                    'Generate QR Asset'
+                    <>
+                      <Wand2 className="w-6 h-6 mr-2" />
+                      Generate QR Asset
+                    </>
                   )}
                 </Button>
               </CardContent>
@@ -421,19 +496,23 @@ export default function QrStudio() {
               title="QR Preview"
             />
           ) : (
-            <Card className="bg-gray-900/50 border-gray-700 p-12 text-center">
-              <p className="text-gray-400">Generate a QR code first to see preview</p>
+            <Card className={`${GlyphCard.glass} p-12 text-center relative z-10`}>
+              <Wand2 className="w-16 h-16 mx-auto mb-4 text-gray-600" />
+              <p className="text-gray-400 text-lg">Generate a QR code first to see preview</p>
             </Card>
           )}
         </TabsContent>
 
         {/* Customize Tab */}
         <TabsContent value="customize">
-          <Card className="bg-gray-900/50 border-gray-700">
-            <CardHeader>
-              <CardTitle className="text-white">Customize Appearance</CardTitle>
+          <Card className={`${GlyphCard.premium} ${GlyphShadows.depth.lg} relative z-10`}>
+            <CardHeader className="border-b border-purple-500/20">
+              <CardTitle className={`${GlyphTypography.heading.lg} text-white flex items-center gap-2`}>
+                <Layers className="w-5 h-5 text-cyan-400" />
+                Customize Appearance
+              </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-4 pt-6">
               <div className="space-y-2">
                 <Label htmlFor="artStyle" className="text-gray-300">Art Style (Optional)</Label>
                 <Input
@@ -494,8 +573,9 @@ export default function QrStudio() {
               onHotZonesChange={setHotZones}
             />
           ) : (
-            <Card className="bg-gray-900/50 border-gray-700 p-12 text-center">
-              <p className="text-gray-400">Generate a QR code first to add hot zones</p>
+            <Card className={`${GlyphCard.glass} p-12 text-center relative z-10`}>
+              <Layers className="w-16 h-16 mx-auto mb-4 text-gray-600" />
+              <p className="text-gray-400 text-lg">Generate a QR code first to add hot zones</p>
             </Card>
           )}
         </TabsContent>
@@ -508,17 +588,21 @@ export default function QrStudio() {
               onEmbedded={handleEmbedded}
             />
           ) : (
-            <Card className="bg-gray-900/50 border-gray-700 p-12 text-center">
-              <p className="text-gray-400">Generate a QR code first to create stego art</p>
+            <Card className={`${GlyphCard.glass} p-12 text-center relative z-10`}>
+              <Sparkles className="w-16 h-16 mx-auto mb-4 text-gray-600" />
+              <p className="text-gray-400 text-lg">Generate a QR code first to create stego art</p>
             </Card>
           )}
         </TabsContent>
 
         {/* Security Tab */}
         <TabsContent value="security">
-          <Card className="bg-gray-900/50 border-gray-700">
-            <CardHeader>
-              <CardTitle className="text-white">Security & Integrity</CardTitle>
+          <Card className={`${GlyphCard.premium} ${GlyphShadows.depth.lg} relative z-10`}>
+            <CardHeader className="border-b border-purple-500/20">
+              <CardTitle className={`${GlyphTypography.heading.lg} text-white flex items-center gap-2`}>
+                <Shield className="w-5 h-5 text-cyan-400" />
+                Security & Integrity
+              </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               {qrAssetDraft ? (
@@ -551,8 +635,9 @@ export default function QrStudio() {
           {qrAssetDraft ? (
             <AnalyticsPanel qrAssetId={qrAssetDraft.id} />
           ) : (
-            <Card className="bg-gray-900/50 border-gray-700 p-12 text-center">
-              <p className="text-gray-400">Generate a QR code first to view analytics</p>
+            <Card className={`${GlyphCard.glass} p-12 text-center relative z-10`}>
+              <Shield className="w-16 h-16 mx-auto mb-4 text-gray-600" />
+              <p className="text-gray-400 text-lg">Generate a QR code first to view analytics</p>
             </Card>
           )}
         </TabsContent>
