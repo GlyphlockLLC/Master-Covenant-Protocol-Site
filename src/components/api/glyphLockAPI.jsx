@@ -150,12 +150,15 @@ export const glyphLockAPI = {
   stripe: {
     startCheckout: async (productId, priceId, mode) => {
       try {
-        const response = await base44.functions.invoke('stripeCheckout', {
+        const response = await base44.functions.invoke('stripeCreateCheckout', {
           productId,
           priceId,
           mode,
+          successUrl: `${window.location.origin}/PaymentSuccess?session_id={CHECKOUT_SESSION_ID}`,
+          cancelUrl: `${window.location.origin}/PaymentCancel`
         });
-        return response.data;
+        // Map 'url' to 'checkoutUrl' for backward compatibility
+        return { ...response.data, checkoutUrl: response.data.url };
       } catch (error) {
         console.error('Error starting Stripe checkout:', error);
         throw error;

@@ -53,8 +53,8 @@ export default function PaywallGuard({ serviceName, children, requirePlan = "pro
       const response = await base44.functions.invoke('stripeCreateCheckout', {
         priceId: planPrice,
         mode: 'subscription',
-        successUrl: `${window.location.origin}${createPageUrl('PaymentSuccess')}`,
-        cancelUrl: `${window.location.origin}${createPageUrl('Pricing')}`
+        successUrl: `${window.location.origin}${createPageUrl('PaymentSuccess')}?session_id={CHECKOUT_SESSION_ID}`,
+        cancelUrl: `${window.location.origin}${createPageUrl('PaymentCancel')}`
       });
 
       if (response.data.url) {

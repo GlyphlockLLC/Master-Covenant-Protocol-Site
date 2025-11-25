@@ -48,6 +48,7 @@ Deno.serve(async (req) => {
         });
 
         return Response.json({ 
+            url: session.url,
             checkoutUrl: session.url,
             sessionId: session.id,
             success: true
