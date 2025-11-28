@@ -147,6 +147,10 @@ export default function Home() {
       </ScrollSection>
 
       <ScrollSection>
+        <DreamTeamRoster />
+      </ScrollSection>
+
+      <ScrollSection>
         <FeaturesSection />
       </ScrollSection>
       
