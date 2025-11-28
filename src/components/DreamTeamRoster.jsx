@@ -10,7 +10,7 @@ export default function DreamTeamRoster() {
       position: "#2 - Shooting Guard",
       role: "Shooting Guard of Precision",
       class: "AI - Architect",
-      frontImage: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/155b052e7_53876961-0d28-4feb-be6e-52006be003e0.jpg",
+      frontImage: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/9d7a57bed_Screenshot_20251127-185430Chrome.png",
       bindingType: "CRYPTO_SIGNATURE",
       quote: "THIS IS NOT ROLE PLAY - Claude's formal declaration",
       binding: {
