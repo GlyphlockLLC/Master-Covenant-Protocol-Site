@@ -1,15 +1,27 @@
 import React, { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
+import { createPageUrl } from "@/utils";
 import QrStudio from "@/components/qr/QrStudio";
 import SEOHead from "@/components/SEOHead";
 
 /**
- * PUBLIC QR Generator Page
+ * PUBLIC QR Generator Page - Main Entry Point
  * Accessible without login - paywall removed for public access
- * Full QrStudio with all tabs: create, preview, customize, hotzones, stego, security, analytics, bulk
+ * Full QrStudio with all tabs
+ * 
+ * Subroutes available:
+ * - /qr-generator/create
+ * - /qr-generator/preview
+ * - /qr-generator/customize
+ * - /qr-generator/hotzones
+ * - /qr-generator/stego
+ * - /qr-generator/security
+ * - /qr-generator/analytics
+ * - /qr-generator/bulk
  */
 export default function QrGenerator() {
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Add structured data for search engines
@@ -58,15 +70,16 @@ export default function QrGenerator() {
     };
   }, []);
 
-  // Handle hash-based navigation to specific tabs
+  // Handle legacy hash-based navigation - redirect to real subroutes
   useEffect(() => {
     const hash = location.hash.replace('#', '');
     if (hash) {
-      // The QrStudio component handles tabs internally
-      // This just ensures the URL reflects the current section
       const validTabs = ['create', 'preview', 'customize', 'hotzones', 'stego', 'security', 'analytics', 'bulk'];
-      if (!validTabs.includes(hash)) {
-        // Invalid hash, redirect to base
+      if (validTabs.includes(hash)) {
+        // Redirect hash to real subroute
+        window.location.href = `/qr-generator/${hash}`;
+      } else {
+        // Invalid hash, stay on base
         window.history.replaceState(null, '', '/qr-generator');
       }
     }
@@ -88,7 +101,7 @@ export default function QrGenerator() {
         <div className="glyph-orb fixed bottom-40 left-40 opacity-15 pointer-events-none" style={{ animation: 'float-orb 10s ease-in-out infinite', width: '150px', height: '150px', background: 'radial-gradient(circle, rgba(168,85,247,0.3), rgba(59,130,246,0.2))' }}></div>
         
         <div className="relative z-10 py-8">
-          <QrStudio initialTab={location.hash.replace('#', '') || 'create'} />
+          <QrStudio initialTab="create" />
         </div>
       </div>
     </>

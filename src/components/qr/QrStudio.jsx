@@ -31,7 +31,7 @@ import QrBatchUploader from './QrBatchUploader';
 export default function QrStudio({ initialTab = 'create' }) {
   const [activeTab, setActiveTab] = useState(initialTab);
 
-  // Sync activeTab with URL hash for direct linking
+  // Sync activeTab with initialTab prop (for subroute pages)
   React.useEffect(() => {
     if (initialTab && initialTab !== activeTab) {
       const validTabs = ['create', 'preview', 'customize', 'hotzones', 'stego', 'security', 'analytics', 'bulk'];
@@ -41,12 +41,16 @@ export default function QrStudio({ initialTab = 'create' }) {
     }
   }, [initialTab]);
 
-  // Update URL hash when tab changes
+  // Update URL when tab changes (use real routes instead of hashes)
   React.useEffect(() => {
-    if (activeTab && activeTab !== 'create') {
-      window.history.replaceState(null, '', `/qr-generator#${activeTab}`);
-    } else if (activeTab === 'create') {
-      window.history.replaceState(null, '', '/qr-generator');
+    // Only update URL if we're on a hash-based route (legacy support)
+    // Subroute pages already have the correct URL
+    const currentPath = window.location.pathname;
+    if (currentPath === '/qr-generator' || currentPath === '/QrGenerator') {
+      // Legacy hash support for main page
+      if (activeTab && activeTab !== 'create') {
+        window.history.replaceState(null, '', `/qr-generator/${activeTab}`);
+      }
     }
   }, [activeTab]);
   const [payloadType, setPayloadType] = useState('url');

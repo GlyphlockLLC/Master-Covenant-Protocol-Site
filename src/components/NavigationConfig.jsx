@@ -16,6 +16,8 @@ export const NAV_SECTIONS = [
     label: "Products",
     links: [
       { label: "QR Generator", href: "/qr-generator", page: "QrGenerator" },
+      { label: "QR Create", href: "/qr-generator/create", page: "QrGeneratorCreate" },
+      { label: "QR Security", href: "/qr-generator/security", page: "QrGeneratorSecurity" },
       { label: "Image Lab", href: "/ImageLab", page: "ImageLab" },
       { label: "Steganography", href: "/Steganography", page: "Steganography" },
       { label: "GlyphBot", href: "/GlyphBot", page: "GlyphBot" },
