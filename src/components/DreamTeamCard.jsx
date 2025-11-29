@@ -9,19 +9,33 @@ export default function DreamTeamCard({ card, member }) {
   
   if (!data) return null;
 
+  const handleClick = () => setIsFlipped(!isFlipped);
+  const handleMouseEnter = () => {
+    // Only flip on hover for non-touch devices
+    if (window.matchMedia('(hover: hover)').matches) {
+      setIsFlipped(true);
+    }
+  };
+  const handleMouseLeave = () => {
+    if (window.matchMedia('(hover: hover)').matches) {
+      setIsFlipped(false);
+    }
+  };
+
   return (
     <div 
-      className="relative w-full cursor-pointer group"
+      className="relative w-full cursor-pointer group card-flip-container"
       style={{ perspective: '1000px' }}
-      onClick={() => setIsFlipped(!isFlipped)}
-      onMouseEnter={() => setIsFlipped(true)}
-      onMouseLeave={() => setIsFlipped(false)}
+      onClick={handleClick}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       <div 
-        className="relative w-full transition-transform duration-700 ease-in-out"
+        className="relative w-full card-flip-inner"
         style={{ 
           transformStyle: 'preserve-3d',
-          transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)'
+          transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
+          transition: 'transform 0.7s cubic-bezier(0.4, 0, 0.2, 1)'
         }}
       >
         {/* Front of Card */}
@@ -107,6 +121,20 @@ export default function DreamTeamCard({ card, member }) {
           </div>
         </div>
       </div>
+
+      <style>{`
+        .card-flip-container {
+          transform-style: preserve-3d;
+        }
+        .card-flip-inner {
+          transform-style: preserve-3d;
+        }
+        @media (hover: none) {
+          .card-flip-container:active .card-flip-inner {
+            transform: rotateY(180deg);
+          }
+        }
+      `}</style>
     </div>
   );
 }
