@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { base44 } from "@/api/base44Client";
-import { MessageCircle, Volume2, VolumeX, Settings, Shield, FileText, AlertTriangle, Save, FolderOpen, Plus, X, Sliders, Wand2 } from "lucide-react";
+import { MessageCircle, Volume2, VolumeX, Settings, Shield, FileText, AlertTriangle, Save, FolderOpen, Plus, X, Sliders, Wand2, Globe, Mic } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { generateAudio, applyAudioEffects, TTS_PROVIDERS, getVoicesForProvider } from "@/components/utils/ttsEngine";
 import { Button } from "@/components/ui/button";
@@ -10,6 +10,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { PERSONAS } from "@/components/glyphbot/personas";
+import SEOHead from "@/components/SEOHead";
+import useTTS from "@/components/glyphbot/useTTS";
 
 export default function GlyphBot() {
   const [messages, setMessages] = useState(() => {
@@ -45,9 +47,13 @@ export default function GlyphBot() {
 
   const [auditMode, setAuditMode] = useState(false);
   const [oneTestMode, setOneTestMode] = useState(false);
+  const [realTimeMode, setRealTimeMode] = useState(false);
   const [showVoiceStudio, setShowVoiceStudio] = useState(false);
   const [showAuditPanel, setShowAuditPanel] = useState(false);
   const [showConversations, setShowConversations] = useState(false);
+  
+  // TTS hook for browser fallback support
+  const { speak: speakWithHook, stop: stopHook, isSpeaking: hookSpeaking, ttsAvailable, testTTS } = useTTS();
 
   const [conversations, setConversations] = useState([]);
   const [currentConvId, setCurrentConvId] = useState(null);
@@ -350,11 +356,27 @@ export default function GlyphBot() {
     const typingId = addMessage("assistant", "Typing…", { isTyping: true });
 
     try {
+      // If real-time mode is on, first fetch web search context
+      let realTimeContext = '';
+      if (realTimeMode) {
+        try {
+          const searchRes = await base44.functions.invoke('glyphbotWebSearch', {
+            query: trimmed,
+            maxResults: 3
+          });
+          if (searchRes.data?.success && searchRes.data?.summary) {
+            realTimeContext = `\n\n[REAL-TIME WEB CONTEXT - ${new Date().toISOString()}]\n${searchRes.data.summary}\n[END CONTEXT]\n`;
+          }
+        } catch (e) {
+          console.warn('Real-time search failed:', e);
+        }
+      }
+
       const payload = {
         messages: messages
           .filter(m => !m.isTyping)
           .map(m => ({ role: m.role, content: m.text }))
-          .concat([{ role: "user", content: trimmed }]),
+          .concat([{ role: "user", content: trimmed + realTimeContext }]),
         persona: personaId,
         auditMode,
         oneTestMode
@@ -457,6 +479,46 @@ export default function GlyphBot() {
   }
 
   return (
+    <>
+      <SEOHead 
+        title="GlyphBot AI Assistant - Elite Security Expert | GlyphLock"
+        description="GlyphBot is GlyphLock's elite AI security assistant. Get expert help with cybersecurity, code auditing, blockchain, debugging, and more. Multi-persona support with real-time web search and voice synthesis."
+        keywords="GlyphBot, AI assistant, security expert, code audit, cybersecurity AI, GlyphLock assistant, AI chat, blockchain expert, debugging AI"
+        url="/GlyphBot"
+      />
+      
+      {/* JSON-LD Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "GlyphBot AI Assistant",
+            "applicationCategory": "SecurityApplication",
+            "description": "Elite AI security assistant for cybersecurity analysis, code auditing, blockchain expertise, and debugging support.",
+            "operatingSystem": "Web Browser",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD"
+            },
+            "provider": {
+              "@type": "Organization",
+              "name": "GlyphLock Security LLC"
+            },
+            "featureList": [
+              "Multi-persona AI modes",
+              "Real-time web search",
+              "Voice synthesis (TTS)",
+              "Code auditing",
+              "Security analysis",
+              "Blockchain expertise"
+            ]
+          })
+        }}
+      />
+      
     <div className="h-screen w-full text-white flex flex-col relative overflow-hidden bg-gradient-to-br from-black via-purple-950/20 to-black">
       {/* Cosmic background effects */}
       <div className="fixed inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-900/30 via-cyan-900/10 to-transparent pointer-events-none z-0" />
@@ -532,6 +594,16 @@ export default function GlyphBot() {
               >
                 <AlertTriangle className="w-4 h-4 mr-2" />
                 Test
+              </Button>
+
+              <Button
+                onClick={() => setRealTimeMode(v => !v)}
+                size="sm"
+                className={`min-h-[40px] text-sm px-4 rounded-xl shadow-lg font-semibold ${realTimeMode ? "bg-gradient-to-r from-orange-600 to-yellow-600 hover:from-orange-500 hover:to-yellow-500 border-2 border-orange-400/40" : "bg-orange-900/60 hover:bg-orange-800/60 border-2 border-orange-500/40"}`}
+                title="Enable real-time web search for current information"
+              >
+                <Globe className="w-4 h-4 mr-2" />
+                Live
               </Button>
 
               <Button
@@ -775,6 +847,21 @@ export default function GlyphBot() {
                   <Wand2 className="w-3 h-3 mr-2" />
                   Test Voice
                 </Button>
+
+                {/* TTS Status Indicator */}
+                <div className="mt-3 p-2 rounded-lg bg-black/30 border border-purple-500/20">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-purple-300">TTS Status:</span>
+                    <span className={ttsAvailable ? "text-green-400" : "text-red-400"}>
+                      {ttsAvailable ? "✓ Available" : "✗ Unavailable"}
+                    </span>
+                  </div>
+                  {!ttsAvailable && (
+                    <p className="text-xs text-gray-500 mt-1">
+                      Browser fallback will be used if external TTS fails.
+                    </p>
+                  )}
+                </div>
               </CardContent>
             </Card>
           </div>
@@ -849,10 +936,18 @@ export default function GlyphBot() {
             {messages.length === 0 && (
               <div className="text-center py-16">
                 <MessageCircle className="w-16 h-16 mx-auto mb-4 text-purple-400 opacity-50" />
-                <h2 className="text-2xl font-bold bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-500 bg-clip-text text-transparent mb-2">
-                  GlyphBot is online and ready
-                </h2>
-                <p className="text-base text-gray-400">Ask anything. I'm here to help.</p>
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-500 bg-clip-text text-transparent mb-2">
+                  GlyphBot - Elite AI Security Expert
+                </h1>
+                <p className="text-base text-gray-400 mb-4">Ask anything about security, code, blockchain, or get expert debugging help.</p>
+                <div className="flex flex-wrap justify-center gap-2 text-xs text-gray-500">
+                  <span className="px-2 py-1 bg-purple-900/30 rounded-lg">Security Analysis</span>
+                  <span className="px-2 py-1 bg-cyan-900/30 rounded-lg">Code Auditing</span>
+                  <span className="px-2 py-1 bg-blue-900/30 rounded-lg">Blockchain</span>
+                  <span className="px-2 py-1 bg-green-900/30 rounded-lg">Debugging</span>
+                  {realTimeMode && <span className="px-2 py-1 bg-orange-900/30 rounded-lg">🌐 Live Web Search</span>}
+                  {ttsAvailable && <span className="px-2 py-1 bg-pink-900/30 rounded-lg">🔊 Voice Ready</span>}
+                </div>
               </div>
             )}
 
@@ -996,5 +1091,6 @@ export default function GlyphBot() {
         </div>
       </div>
     </div>
+    </>
   );
 }
