@@ -1,30 +1,62 @@
-// Shared Navigation Configuration for Navbar and Footer
-// Single source of truth for all navigation links
+// Unified Navigation Configuration
+// Single source of truth for Navbar and Footer
 
-// NAV_SECTIONS as an ARRAY for Navbar iteration
+export const NAV = [
+  { label: "Home", href: "/" },
+  { label: "Dream Team", href: "/DreamTeam" },
+  { label: "GlyphBot Jr", href: "/GlyphBotJunior" },
+  { label: "Command Center", href: "/CommandCenter" },
+  { label: "Pricing", href: "/Pricing" },
+  { label: "Consultation", href: "/Consultation" }
+];
+
 export const NAV_SECTIONS = [
   {
+    title: "Products",
     label: "Products",
+    links: [
+      { label: "QR Generator", href: "/QRGenerator", page: "QRGenerator" },
+      { label: "Image Lab", href: "/ImageLab", page: "ImageLab" },
+      { label: "Steganography", href: "/Steganography", page: "Steganography" },
+      { label: "GlyphBot", href: "/GlyphBot", page: "GlyphBot" },
+      { label: "Blockchain", href: "/Blockchain", page: "Blockchain" }
+    ],
     items: [
-      { label: "QR Generator", page: "QRGenerator", description: "Secure QR code generation" },
-      { label: "Image Lab", page: "ImageLab", description: "AI-powered image tools" },
-      { label: "Steganography", page: "Steganography", description: "Hidden data encoding" },
-      { label: "GlyphBot", page: "GlyphBot", description: "AI security assistant" },
-      { label: "Blockchain", page: "Blockchain", description: "Decentralized security" }
+      { label: "QR Generator", page: "QRGenerator" },
+      { label: "Image Lab", page: "ImageLab" },
+      { label: "Steganography", page: "Steganography" },
+      { label: "GlyphBot", page: "GlyphBot" },
+      { label: "Blockchain", page: "Blockchain" }
     ]
   },
   {
+    title: "Solutions",
     label: "Solutions",
+    links: [
+      { label: "Security Tools", href: "/SecurityTools", page: "SecurityTools" },
+      { label: "Visual Cryptography", href: "/VisualCryptography", page: "VisualCryptography" },
+      { label: "NUPS POS", href: "/NUPSLogin", page: "NUPSLogin" },
+      { label: "SOC", href: "/SecurityOperationsCenter", page: "SecurityOperationsCenter" },
+      { label: "Master Covenant", href: "/MasterCovenant", page: "MasterCovenant" }
+    ],
     items: [
-      { label: "Security Tools", page: "SecurityTools", description: "Enterprise security suite" },
-      { label: "Visual Cryptography", page: "VisualCryptography", description: "Visual encryption" },
-      { label: "NUPS POS", page: "NUPSLogin", description: "Point of sale system" },
-      { label: "SOC", page: "SecurityOperationsCenter", description: "Security operations" },
-      { label: "Master Covenant", page: "MasterCovenant", description: "AI governance" }
+      { label: "Security Tools", page: "SecurityTools" },
+      { label: "Visual Cryptography", page: "VisualCryptography" },
+      { label: "NUPS POS", page: "NUPSLogin" },
+      { label: "SOC", page: "SecurityOperationsCenter" },
+      { label: "Master Covenant", page: "MasterCovenant" }
     ]
   },
   {
+    title: "Company",
     label: "Company",
+    links: [
+      { label: "About", href: "/About", page: "About" },
+      { label: "Pricing", href: "/Pricing", page: "Pricing" },
+      { label: "Contact", href: "/Contact", page: "Contact" },
+      { label: "Partners", href: "/Partners", page: "Partners" },
+      { label: "Roadmap", href: "/Roadmap", page: "Roadmap" }
+    ],
     items: [
       { label: "About", page: "About" },
       { label: "Pricing", page: "Pricing" },
@@ -34,7 +66,14 @@ export const NAV_SECTIONS = [
     ]
   },
   {
+    title: "Resources",
     label: "Resources",
+    links: [
+      { label: "Documentation", href: "/SecurityDocs", page: "SecurityDocs" },
+      { label: "FAQ", href: "/FAQ", page: "FAQ" },
+      { label: "Dream Team", href: "/DreamTeam", page: "DreamTeam" },
+      { label: "Consultation", href: "/Consultation", page: "Consultation" }
+    ],
     items: [
       { label: "Documentation", page: "SecurityDocs" },
       { label: "FAQ", page: "FAQ" },
@@ -45,6 +84,18 @@ export const NAV_SECTIONS = [
 ];
 
 export const FOOTER_LINKS = {
+  legal: [
+    { label: "Privacy Policy", href: "/Privacy", page: "Privacy" },
+    { label: "Terms of Service", href: "/Terms", page: "Terms" },
+    { label: "Cookie Policy", href: "/Cookies", page: "Cookies" },
+    { label: "Accessibility", href: "/Accessibility", page: "Accessibility" }
+  ],
+  general: [
+    { label: "Home", href: "/", page: "Home" },
+    { label: "Dream Team", href: "/DreamTeam", page: "DreamTeam" },
+    { label: "GlyphBot Jr", href: "/GlyphBotJunior", page: "GlyphBotJunior" },
+    { label: "Command Center", href: "/CommandCenter", page: "CommandCenter" }
+  ],
   company: [
     { label: "About Us", page: "About" },
     { label: "Pricing", page: "Pricing" },
@@ -68,14 +119,4 @@ export const FOOTER_LINKS = {
   ]
 };
 
-export const LEGAL_LINKS = [
-  { label: "Privacy Policy", page: "Privacy" },
-  { label: "Terms of Service", page: "Terms" },
-  { label: "Cookie Policy", page: "Cookies" },
-  { label: "Accessibility", page: "Accessibility" }
-];
-
-// Add legal to FOOTER_LINKS for Footer component
-FOOTER_LINKS.legal = LEGAL_LINKS;
-
-export default { NAV_SECTIONS, FOOTER_LINKS, LEGAL_LINKS };
+export default { NAV, NAV_SECTIONS, FOOTER_LINKS };

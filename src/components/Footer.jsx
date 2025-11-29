@@ -4,6 +4,8 @@ import { createPageUrl } from "@/utils";
 import { Shield, Twitter, Linkedin, Instagram, Github, Mail, Phone } from "lucide-react";
 import { FOOTER_LINKS } from "@/components/NavigationConfig";
 
+// FOOTER_LINKS now has: legal, general, company, solutions, resources
+
 const certifications = [
   { name: "SOC 2", subtitle: "TYPE II" },
   { name: "GDPR", subtitle: "COMPLIANT" },

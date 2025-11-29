@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import { NAV_SECTIONS } from "@/components/NavigationConfig";
 
-// Use shared navigation config
+// Use shared navigation config - NAV_SECTIONS is already an array
 const NAV = NAV_SECTIONS;
 
 export default function Navbar({ user, onLogin, onLogout }) {
