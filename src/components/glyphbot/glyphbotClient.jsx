@@ -88,14 +88,21 @@ class GlyphBotClient {
       content: GLYPH_FORMAT_DIRECTIVE
     };
     
+    // Determine provider settings
+    const providerValue = options.provider || finalOptions.provider;
+    const isAutoMode = !providerValue || providerValue === 'AUTO';
+
     const payload = {
       messages: [systemMessage, ...enhancedMessages],
       persona: options.persona || this.defaultPersona,
       auditMode: finalOptions.auditMode,
       oneTestMode: finalOptions.oneTestMode,
+      realTime: finalOptions.realTime,
       enforceGlyphFormat: true,
       formatOverride: true,
-      systemFirst: true
+      systemFirst: true,
+      provider: isAutoMode ? null : providerValue,
+      autoProvider: isAutoMode
     };
 
     const response = await base44.functions.invoke('glyphbotLLM', payload);
