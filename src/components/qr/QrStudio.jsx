@@ -28,8 +28,8 @@ import QrStegoArtBuilder from './QrStegoArtBuilder';
 import AnalyticsPanel from './AnalyticsPanel';
 import QrBatchUploader from './QrBatchUploader';
 
-export default function QrStudio() {
-  const [activeTab, setActiveTab] = useState('create');
+export default function QrStudio({ initialTab = 'create' }) {
+  const [activeTab, setActiveTab] = useState(initialTab);
   const [payloadType, setPayloadType] = useState('url');
   const [payloadValue, setPayloadValue] = useState('');
   const [title, setTitle] = useState('');

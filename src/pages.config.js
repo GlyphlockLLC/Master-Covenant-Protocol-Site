@@ -51,6 +51,7 @@ import SitemapDynamic from './pages/SitemapDynamic';
 import GlyphBotJunior from './pages/GlyphBotJunior';
 import Cookies from './pages/Cookies';
 import Accessibility from './pages/Accessibility';
+import QrGenerator from './pages/QrGenerator';
 import __Layout from './Layout.jsx';
 
 
@@ -108,6 +109,7 @@ export const PAGES = {
     "GlyphBotJunior": GlyphBotJunior,
     "Cookies": Cookies,
     "Accessibility": Accessibility,
+    "QrGenerator": QrGenerator,
 }
 
 export const pagesConfig = {
