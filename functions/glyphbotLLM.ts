@@ -576,110 +576,218 @@ ${testPrefix}${conversationText}`;
 });
 
 /**
- * Build provider chain based on available API keys
- * Order: OpenAI -> Anthropic -> Gemini -> HuggingFace -> Base44 Broker
+ * Call a specific provider by ID
  */
-function buildProviderChain() {
-  const providers = [];
-  
-  // Provider 1: OpenAI GPT-4
-  const openaiKey = Deno.env.get('OPENAI_API_KEY');
-  if (openaiKey) {
-    providers.push({
-      name: 'openai-gpt4',
-      call: async (prompt) => {
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+async function callProvider(providerId, prompt) {
+  switch (providerId) {
+    case 'LLAMA_OSS': {
+      // Try Together first, then OpenRouter
+      const togetherKey = Deno.env.get('TOGETHER_API_KEY');
+      if (togetherKey) {
+        const response = await fetch('https://api.together.xyz/v1/chat/completions', {
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${openaiKey}`,
+            'Authorization': `Bearer ${togetherKey}`,
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            model: 'gpt-4-turbo-preview',
+            model: 'meta-llama/Llama-3.3-70B-Instruct-Turbo',
             messages: [{ role: 'user', content: prompt }],
             max_tokens: 4096,
             temperature: 0.7
           })
         });
-        if (!response.ok) throw new Error(`OpenAI error: ${response.status}`);
+        if (!response.ok) throw new Error(`Together/Llama error: ${response.status}`);
         const data = await response.json();
         return data.choices[0].message.content;
       }
-    });
-  }
-  
-  // Provider 2: Anthropic Claude
-  const anthropicKey = Deno.env.get('ANTHROPIC_API_KEY');
-  if (anthropicKey) {
-    providers.push({
-      name: 'anthropic-claude',
-      call: async (prompt) => {
-        const response = await fetch('https://api.anthropic.com/v1/messages', {
+      const openrouterKey = Deno.env.get('OPENROUTER_API_KEY');
+      if (openrouterKey) {
+        return await callOpenRouter(openrouterKey, 'meta-llama/llama-3.3-70b-instruct', prompt);
+      }
+      throw new Error('No Llama provider available');
+    }
+    
+    case 'MISTRAL_OSS': {
+      const mistralKey = Deno.env.get('MISTRAL_API_KEY');
+      if (mistralKey) {
+        const response = await fetch('https://api.mistral.ai/v1/chat/completions', {
           method: 'POST',
           headers: {
-            'x-api-key': anthropicKey,
-            'anthropic-version': '2023-06-01',
+            'Authorization': `Bearer ${mistralKey}`,
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            model: 'claude-3-opus-20240229',
-            max_tokens: 4096,
-            messages: [{ role: 'user', content: prompt }]
+            model: 'mistral-large-latest',
+            messages: [{ role: 'user', content: prompt }],
+            max_tokens: 4096
           })
         });
-        if (!response.ok) throw new Error(`Anthropic error: ${response.status}`);
+        if (!response.ok) throw new Error(`Mistral error: ${response.status}`);
         const data = await response.json();
-        return data.content[0].text;
+        return data.choices[0].message.content;
       }
-    });
-  }
-  
-  // Provider 3: Google Gemini
-  const geminiKey = Deno.env.get('GEMINI_API_KEY');
-  if (geminiKey) {
-    providers.push({
-      name: 'google-gemini',
-      call: async (prompt) => {
-        const response = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${geminiKey}`,
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              contents: [{ parts: [{ text: prompt }] }]
-            })
-          }
-        );
-        if (!response.ok) throw new Error(`Gemini error: ${response.status}`);
-        const data = await response.json();
-        return data.candidates[0].content.parts[0].text;
+      const openrouterKey = Deno.env.get('OPENROUTER_API_KEY');
+      if (openrouterKey) {
+        return await callOpenRouter(openrouterKey, 'mistralai/mistral-large', prompt);
       }
-    });
-  }
-  
-  // Provider 4: Hugging Face
-  const hfKey = Deno.env.get('HF_API_KEY');
-  const hfUrl = Deno.env.get('HF_API_URL');
-  if (hfKey && hfUrl) {
-    providers.push({
-      name: 'huggingface',
-      call: async (prompt) => {
-        const response = await fetch(hfUrl, {
+      const togetherKey = Deno.env.get('TOGETHER_API_KEY');
+      if (togetherKey) {
+        const response = await fetch('https://api.together.xyz/v1/chat/completions', {
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${hfKey}`,
+            'Authorization': `Bearer ${togetherKey}`,
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ inputs: prompt })
+          body: JSON.stringify({
+            model: 'mistralai/Mixtral-8x22B-Instruct-v0.1',
+            messages: [{ role: 'user', content: prompt }],
+            max_tokens: 4096
+          })
         });
-        if (!response.ok) throw new Error(`HuggingFace error: ${response.status}`);
+        if (!response.ok) throw new Error(`Together/Mistral error: ${response.status}`);
         const data = await response.json();
-        return data[0]?.generated_text || data.generated_text || JSON.stringify(data);
+        return data.choices[0].message.content;
       }
-    });
+      throw new Error('No Mistral provider available');
+    }
+    
+    case 'GEMMA_OSS': {
+      const openrouterKey = Deno.env.get('OPENROUTER_API_KEY');
+      if (openrouterKey) {
+        return await callOpenRouter(openrouterKey, 'google/gemma-2-27b-it', prompt);
+      }
+      const togetherKey = Deno.env.get('TOGETHER_API_KEY');
+      if (togetherKey) {
+        const response = await fetch('https://api.together.xyz/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${togetherKey}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            model: 'google/gemma-2-27b-it',
+            messages: [{ role: 'user', content: prompt }],
+            max_tokens: 4096
+          })
+        });
+        if (!response.ok) throw new Error(`Together/Gemma error: ${response.status}`);
+        const data = await response.json();
+        return data.choices[0].message.content;
+      }
+      throw new Error('No Gemma provider available');
+    }
+    
+    case 'DEEPSEEK_OSS': {
+      const deepseekKey = Deno.env.get('DEEPSEEK_API_KEY');
+      if (deepseekKey) {
+        const response = await fetch('https://api.deepseek.com/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${deepseekKey}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            model: 'deepseek-chat',
+            messages: [{ role: 'user', content: prompt }],
+            max_tokens: 4096
+          })
+        });
+        if (!response.ok) throw new Error(`DeepSeek error: ${response.status}`);
+        const data = await response.json();
+        return data.choices[0].message.content;
+      }
+      const openrouterKey = Deno.env.get('OPENROUTER_API_KEY');
+      if (openrouterKey) {
+        return await callOpenRouter(openrouterKey, 'deepseek/deepseek-chat', prompt);
+      }
+      throw new Error('No DeepSeek provider available');
+    }
+    
+    case 'CLAUDE': {
+      const anthropicKey = Deno.env.get('ANTHROPIC_API_KEY');
+      if (!anthropicKey) throw new Error('ANTHROPIC_API_KEY not set');
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'x-api-key': anthropicKey,
+          'anthropic-version': '2023-06-01',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          model: 'claude-3-5-sonnet-20241022',
+          max_tokens: 4096,
+          messages: [{ role: 'user', content: prompt }]
+        })
+      });
+      if (!response.ok) throw new Error(`Anthropic error: ${response.status}`);
+      const data = await response.json();
+      return data.content[0].text;
+    }
+    
+    case 'OPENAI': {
+      const openaiKey = Deno.env.get('OPENAI_API_KEY');
+      if (!openaiKey) throw new Error('OPENAI_API_KEY not set');
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${openaiKey}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          model: 'gpt-4-turbo-preview',
+          messages: [{ role: 'user', content: prompt }],
+          max_tokens: 4096,
+          temperature: 0.7
+        })
+      });
+      if (!response.ok) throw new Error(`OpenAI error: ${response.status}`);
+      const data = await response.json();
+      return data.choices[0].message.content;
+    }
+    
+    case 'GEMINI': {
+      const geminiKey = Deno.env.get('GEMINI_API_KEY');
+      if (!geminiKey) throw new Error('GEMINI_API_KEY not set');
+      const response = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${geminiKey}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }]
+          })
+        }
+      );
+      if (!response.ok) throw new Error(`Gemini error: ${response.status}`);
+      const data = await response.json();
+      return data.candidates[0].content.parts[0].text;
+    }
+    
+    default:
+      throw new Error(`Unknown provider: ${providerId}`);
   }
-  
-  return providers;
+}
+
+// OpenRouter helper
+async function callOpenRouter(apiKey, model, prompt) {
+  const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
+      'HTTP-Referer': 'https://glyphlock.io',
+      'X-Title': 'GlyphBot'
+    },
+    body: JSON.stringify({
+      model,
+      messages: [{ role: 'user', content: prompt }],
+      max_tokens: 4096
+    })
+  });
+  if (!response.ok) throw new Error(`OpenRouter error: ${response.status}`);
+  const data = await response.json();
+  return data.choices[0].message.content;
 }
 
 /**
