@@ -12,45 +12,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
+import { NAV_SECTIONS } from "@/components/NavigationConfig";
 
-const NAV = [
-  {
-    label: "Company",
-    items: [
-      { label: "About", page: "About" },
-      { label: "Dream Team", page: "DreamTeam" },
-      { label: "Partners", page: "Partners" },
-      { label: "Master Covenant", page: "MasterCovenant" },
-    ],
-  },
-  {
-    label: "Services",
-    items: [
-      { label: "QR Studio", page: "QRGenerator" },
-      { label: "Image Lab", page: "ImageLab" },
-      { label: "Blockchain Verification", page: "Blockchain" },
-      { label: "Steganography", page: "Steganography" },
-      { label: "NUPS POS System", page: "NUPSLogin" },
-    ],
-  },
-  {
-    label: "AI Tools",
-    items: [
-      { label: "GlyphBot Assistant", page: "GlyphBot" },
-      { label: "Content Generator", page: "ContentGenerator" },
-    ],
-  },
-  {
-    label: "Resources",
-    items: [
-      { label: "Command Center", page: "CommandCenter" },
-      { label: "Documentation", page: "SecurityDocs" },
-      { label: "Roadmap", page: "Roadmap" },
-      { label: "FAQ", page: "FAQ" },
-      { label: "Sitemap", page: "Sitemap" },
-    ],
-  },
-];
+// Use shared navigation config
+const NAV = NAV_SECTIONS;
 
 export default function Navbar({ user, onLogin, onLogout }) {
   const [open, setOpen] = useState(null);

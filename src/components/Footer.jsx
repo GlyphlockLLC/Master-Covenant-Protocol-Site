@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { Shield, Twitter, Linkedin, Instagram, Github, Mail, Phone } from "lucide-react";
+import { FOOTER_LINKS } from "@/components/NavigationConfig";
 
 const certifications = [
   { name: "SOC 2", subtitle: "TYPE II" },
@@ -45,37 +46,37 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Links Columns */}
+          {/* Links Columns - Using Shared Config */}
           <div className="lg:col-span-2">
             <h4 className="text-white font-bold mb-6 uppercase tracking-widest text-xs">Company</h4>
             <div className="flex flex-col gap-4">
-              <Link to={createPageUrl("About")} className="hover:text-[#00E4FF] transition-colors">About Us</Link>
-              <Link to={createPageUrl("Partners")} className="hover:text-[#00E4FF] transition-colors">Partners</Link>
-              <Link to={createPageUrl("MasterCovenant")} className="hover:text-[#00E4FF] transition-colors">Governance</Link>
-              <Link to={createPageUrl("Contact")} className="hover:text-[#00E4FF] transition-colors">Contact</Link>
+              {FOOTER_LINKS.company.map((link) => (
+                <Link key={link.page} to={createPageUrl(link.page)} className="hover:text-[#00E4FF] transition-colors">
+                  {link.label}
+                </Link>
+              ))}
             </div>
           </div>
 
           <div className="lg:col-span-2">
             <h4 className="text-white font-bold mb-6 uppercase tracking-widest text-xs">Solutions</h4>
             <div className="flex flex-col gap-4">
-              <Link to={createPageUrl("QRGenerator")} className="hover:text-[#00E4FF] transition-colors">QR Studio</Link>
-              <Link to={createPageUrl("ImageLab")} className="hover:text-[#00E4FF] transition-colors">Image Lab</Link>
-              <Link to={createPageUrl("Blockchain")} className="hover:text-[#00E4FF] transition-colors">Blockchain</Link>
-              <Link to={createPageUrl("Steganography")} className="hover:text-[#00E4FF] transition-colors">Steganography</Link>
-              <Link to={createPageUrl("NUPSLogin")} className="hover:text-[#00E4FF] transition-colors">NUPS POS</Link>
+              {FOOTER_LINKS.solutions.map((link) => (
+                <Link key={link.page} to={createPageUrl(link.page)} className="hover:text-[#00E4FF] transition-colors">
+                  {link.label}
+                </Link>
+              ))}
             </div>
           </div>
 
           <div className="lg:col-span-2">
             <h4 className="text-white font-bold mb-6 uppercase tracking-widest text-xs">Resources</h4>
             <div className="flex flex-col gap-4">
-              <Link to={createPageUrl("SecurityDocs")} className="hover:text-[#00E4FF] transition-colors">Documentation</Link>
-              <Link to={createPageUrl("DeveloperConsole")} className="hover:text-[#00E4FF] transition-colors">API Reference</Link>
-              <Link to={createPageUrl("Roadmap")} className="hover:text-[#00E4FF] transition-colors">Roadmap</Link>
-              <Link to={createPageUrl("FAQ")} className="hover:text-[#00E4FF] transition-colors">FAQ</Link>
-              <Link to={createPageUrl("Sitemap")} className="hover:text-[#00E4FF] transition-colors">Sitemap</Link>
-              <Link to={createPageUrl("Pricing")} className="hover:text-[#00E4FF] transition-colors">Pricing</Link>
+              {FOOTER_LINKS.resources.map((link) => (
+                <Link key={link.page} to={createPageUrl(link.page)} className="hover:text-[#00E4FF] transition-colors">
+                  {link.label}
+                </Link>
+              ))}
             </div>
           </div>
           
@@ -111,13 +112,15 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom Bar */}
+        {/* Bottom Bar - Using Shared Config */}
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm">
           <p>© {new Date().getFullYear()} GlyphLock Security LLC. All rights reserved.</p>
           <div className="flex items-center gap-8">
-            <Link to={createPageUrl("Terms")} className="hover:text-white transition-colors">Terms of Service</Link>
-            <Link to={createPageUrl("Privacy")} className="hover:text-white transition-colors">Privacy Policy</Link>
-            <Link to={createPageUrl("Cookies")} className="hover:text-white transition-colors">Cookies</Link>
+            {FOOTER_LINKS.legal.map((link) => (
+              <Link key={link.page} to={createPageUrl(link.page)} className="hover:text-white transition-colors">
+                {link.label}
+              </Link>
+            ))}
           </div>
         </div>
       </div>
