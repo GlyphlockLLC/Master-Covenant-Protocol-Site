@@ -526,102 +526,173 @@ export default function GlyphBot() {
       <div className="glyph-orb fixed top-20 right-20 opacity-20" style={{ animation: 'float-orb 8s ease-in-out infinite', background: 'radial-gradient(circle, rgba(6,182,212,0.3), rgba(59,130,246,0.2))' }}></div>
       <div className="glyph-orb fixed bottom-40 left-40 opacity-15" style={{ animation: 'float-orb 10s ease-in-out infinite', width: '150px', height: '150px', background: 'radial-gradient(circle, rgba(168,85,247,0.3), rgba(59,130,246,0.2))' }}></div>
 
-      <header className="flex-none z-20 glyph-glass-dark border-b border-cyan-500/20 shadow-lg glyph-glow">
-        <div className="px-4 py-2">
-          <div className="flex items-center justify-between gap-2">
+      <header className="flex-none z-20 glyph-glass-dark border-b border-cyan-500/20 shadow-2xl">
+        <div className="px-4 py-3">
+          {/* Top Row - Title and Junior Link */}
+          <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-3">
-              <MessageCircle className="w-7 h-7 text-purple-400" />
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-cyan-500 flex items-center justify-center shadow-lg">
+                <Zap className="w-6 h-6 text-white" />
+              </div>
               <div>
                 <h1 className="text-xl font-bold bg-gradient-to-r from-purple-400 via-cyan-400 to-blue-500 bg-clip-text text-transparent">
-                  GlyphBot
+                  GlyphBot — Elite AI Security Expert
                 </h1>
-                <p className="text-xs text-gray-400">Elite AI Security Expert</p>
+                <p className="text-xs text-gray-400">Ask anything about security, code, blockchain, or debugging.</p>
               </div>
             </div>
 
-            <div className="flex items-center gap-2">
-              <a
-                href="/glyphbotjunior"
-                className="px-4 py-2 bg-gradient-to-r from-blue-600/80 to-cyan-600/80 hover:from-blue-500/80 hover:to-cyan-500/80 border-2 border-blue-400/40 rounded-xl text-sm font-semibold text-white shadow-lg transition-all min-h-[40px] flex items-center"
-              >
-                Switch to Junior 🌟
-              </a>
-            </div>
+            <a
+              href="/glyphbotjunior"
+              className="px-4 py-2 bg-gradient-to-r from-blue-600/80 to-cyan-600/80 hover:from-blue-500/80 hover:to-cyan-500/80 border border-blue-400/40 rounded-xl text-sm font-semibold text-white shadow-lg transition-all flex items-center gap-2"
+            >
+              <span>Switch to Junior</span>
+              <span>🌟</span>
+            </a>
+          </div>
 
-            <div className="flex items-center gap-2 flex-wrap">
-              <Select value={personaId} onValueChange={setPersonaId}>
-                <SelectTrigger className="bg-gradient-to-r from-cyan-900/60 to-blue-900/60 border-2 border-cyan-500/40 rounded-xl px-4 py-2 text-sm min-h-[40px] text-white focus:outline-none focus:ring-2 focus:ring-cyan-400 shadow-lg font-semibold w-48">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent className="bg-gray-900 border-2 border-cyan-500/40 text-white">
-                  {PERSONAS.map(p => (
-                    <SelectItem key={p.id} value={p.id} className="text-white hover:bg-cyan-900/50 focus:bg-cyan-900/50">{p.name}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+          {/* Mode Indicators */}
+          <div className="flex items-center gap-2 mb-3 flex-wrap">
+            {auditMode && (
+              <Badge className="bg-green-500/20 text-green-400 border border-green-500/40">
+                <Shield className="w-3 h-3 mr-1" />
+                Audit Mode Active
+              </Badge>
+            )}
+            {oneTestMode && (
+              <Badge className="bg-blue-500/20 text-blue-400 border border-blue-500/40">
+                <AlertTriangle className="w-3 h-3 mr-1" />
+                Test Mode Active
+              </Badge>
+            )}
+            {realTimeMode && (
+              <Badge className="bg-orange-500/20 text-orange-400 border border-orange-500/40">
+                <Globe className="w-3 h-3 mr-1" />
+                Live Web Search
+              </Badge>
+            )}
+            {autoplay && (
+              <Badge className="bg-cyan-500/20 text-cyan-400 border border-cyan-500/40">
+                <Volume2 className="w-3 h-3 mr-1" />
+                Voice Enabled
+              </Badge>
+            )}
+          </div>
 
-              <Button
-                onClick={() => setAutoplay(v => !v)}
-                size="sm"
-                className={`min-h-[40px] text-sm px-4 rounded-xl shadow-lg font-semibold ${autoplay ? "bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 border-2 border-cyan-400/40" : "bg-cyan-900/60 hover:bg-cyan-800/60 border-2 border-cyan-500/40"}`}
-              >
-                {autoplay ? <Volume2 className="w-4 h-4 mr-2" /> : <VolumeX className="w-4 h-4 mr-2" />}
-                Voice
-              </Button>
+          {/* Controls Row */}
+          <div className="flex items-center gap-2 flex-wrap">
+            {/* Persona Selector */}
+            <Select value={personaId} onValueChange={setPersonaId}>
+              <SelectTrigger className="bg-gradient-to-r from-purple-900/60 to-blue-900/60 border border-purple-500/40 rounded-lg px-3 py-2 text-sm min-h-[40px] text-white focus:outline-none focus:ring-2 focus:ring-purple-400 shadow-lg font-medium w-44">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent className="bg-gray-900 border border-purple-500/40 text-white max-h-80">
+                {PERSONAS.map(p => (
+                  <SelectItem key={p.id} value={p.id} className="text-white hover:bg-purple-900/50 focus:bg-purple-900/50">
+                    <div className="flex flex-col">
+                      <span className="font-medium">{p.name}</span>
+                      <span className="text-xs text-gray-400">{p.description?.slice(0, 40)}...</span>
+                    </div>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
 
-              <Button
-                onClick={() => setShowVoiceStudio(!showVoiceStudio)}
-                size="sm"
-                className="min-h-[40px] bg-gradient-to-r from-purple-900/60 to-blue-900/60 hover:from-purple-800/60 hover:to-blue-800/60 border-2 border-purple-500/40 text-sm px-4 rounded-xl shadow-lg font-semibold"
-              >
-                <Sliders className="w-4 h-4 mr-2" />
-                Studio
-              </Button>
+            {/* Voice Toggle */}
+            <Button
+              onClick={() => setAutoplay(v => !v)}
+              size="sm"
+              className={`min-h-[40px] text-sm px-3 rounded-lg shadow-lg font-medium transition-all ${
+                autoplay 
+                  ? "bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 border border-cyan-400/60" 
+                  : "bg-gray-800/60 hover:bg-gray-700/60 border border-gray-600/40"
+              }`}
+            >
+              {autoplay ? <Volume2 className="w-4 h-4 mr-1.5" /> : <VolumeX className="w-4 h-4 mr-1.5" />}
+              Voice
+            </Button>
 
-              <Button
-                onClick={() => setAuditMode(v => !v)}
-                size="sm"
-                className={`min-h-[40px] text-sm px-4 rounded-xl shadow-lg font-semibold ${auditMode ? "bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 border-2 border-green-400/40" : "bg-green-900/60 hover:bg-green-800/60 border-2 border-green-500/40"}`}
-              >
-                <Shield className="w-4 h-4 mr-2" />
-                Audit
-              </Button>
+            {/* Voice Studio */}
+            <Button
+              onClick={() => setShowVoiceStudio(!showVoiceStudio)}
+              size="sm"
+              className={`min-h-[40px] text-sm px-3 rounded-lg shadow-lg font-medium ${
+                showVoiceStudio 
+                  ? "bg-purple-600 hover:bg-purple-500 border border-purple-400/60" 
+                  : "bg-gray-800/60 hover:bg-gray-700/60 border border-gray-600/40"
+              }`}
+            >
+              <Sliders className="w-4 h-4 mr-1.5" />
+              Studio
+            </Button>
 
-              <Button
-                onClick={() => setOneTestMode(v => !v)}
-                size="sm"
-                className={`min-h-[40px] text-sm px-4 rounded-xl shadow-lg font-semibold ${oneTestMode ? "bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 border-2 border-blue-400/40" : "bg-blue-900/60 hover:bg-blue-800/60 border-2 border-blue-500/40"}`}
-              >
-                <AlertTriangle className="w-4 h-4 mr-2" />
-                Test
-              </Button>
+            {/* Audit Toggle */}
+            <Button
+              onClick={() => setAuditMode(v => !v)}
+              size="sm"
+              className={`min-h-[40px] text-sm px-3 rounded-lg shadow-lg font-medium ${
+                auditMode 
+                  ? "bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 border border-green-400/60" 
+                  : "bg-gray-800/60 hover:bg-gray-700/60 border border-gray-600/40"
+              }`}
+            >
+              <Shield className="w-4 h-4 mr-1.5" />
+              Audit
+            </Button>
 
-              <Button
-                onClick={() => setRealTimeMode(v => !v)}
-                size="sm"
-                className={`min-h-[40px] text-sm px-4 rounded-xl shadow-lg font-semibold ${realTimeMode ? "bg-gradient-to-r from-orange-600 to-yellow-600 hover:from-orange-500 hover:to-yellow-500 border-2 border-orange-400/40" : "bg-orange-900/60 hover:bg-orange-800/60 border-2 border-orange-500/40"}`}
-                title="Enable real-time web search for current information"
-              >
-                <Globe className="w-4 h-4 mr-2" />
-                Live
-              </Button>
+            {/* Test Toggle */}
+            <Button
+              onClick={() => setOneTestMode(v => !v)}
+              size="sm"
+              className={`min-h-[40px] text-sm px-3 rounded-lg shadow-lg font-medium ${
+                oneTestMode 
+                  ? "bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 border border-blue-400/60" 
+                  : "bg-gray-800/60 hover:bg-gray-700/60 border border-gray-600/40"
+              }`}
+            >
+              <AlertTriangle className="w-4 h-4 mr-1.5" />
+              Test
+            </Button>
 
-              <Button
-                onClick={() => setShowConversations(!showConversations)}
-                size="sm"
-                className="min-h-[40px] bg-gradient-to-r from-indigo-900/60 to-purple-900/60 hover:from-indigo-800/60 hover:to-purple-800/60 border-2 border-indigo-500/40 text-sm px-4 rounded-xl shadow-lg font-semibold"
-              >
-                <FolderOpen className="w-4 h-4" />
-              </Button>
+            {/* Live Toggle */}
+            <Button
+              onClick={() => setRealTimeMode(v => !v)}
+              size="sm"
+              title="Enable real-time web search for current information"
+              className={`min-h-[40px] text-sm px-3 rounded-lg shadow-lg font-medium ${
+                realTimeMode 
+                  ? "bg-gradient-to-r from-orange-600 to-yellow-600 hover:from-orange-500 hover:to-yellow-500 border border-orange-400/60" 
+                  : "bg-gray-800/60 hover:bg-gray-700/60 border border-gray-600/40"
+              }`}
+            >
+              <Globe className="w-4 h-4 mr-1.5" />
+              Live
+            </Button>
 
-              <Button
-                onClick={clearChat}
-                size="sm"
-                className="min-h-[40px] bg-gradient-to-r from-red-900/60 to-pink-900/60 hover:from-red-800/60 hover:to-pink-800/60 border-2 border-red-500/40 text-red-300 text-sm px-4 rounded-xl shadow-lg font-semibold"
-              >
-                Clear
-              </Button>
-            </div>
+            {/* Spacer */}
+            <div className="flex-1" />
+
+            {/* Conversations */}
+            <Button
+              onClick={() => setShowConversations(!showConversations)}
+              size="sm"
+              className={`min-h-[40px] text-sm px-3 rounded-lg shadow-lg font-medium ${
+                showConversations 
+                  ? "bg-indigo-600 hover:bg-indigo-500 border border-indigo-400/60" 
+                  : "bg-gray-800/60 hover:bg-gray-700/60 border border-gray-600/40"
+              }`}
+            >
+              <FolderOpen className="w-4 h-4" />
+            </Button>
+
+            {/* Clear */}
+            <Button
+              onClick={clearChat}
+              size="sm"
+              className="min-h-[40px] bg-red-900/40 hover:bg-red-800/50 border border-red-500/30 text-red-300 text-sm px-3 rounded-lg shadow-lg font-medium"
+            >
+              <Trash2 className="w-4 h-4" />
+            </Button>
           </div>
         </div>
       </header>
