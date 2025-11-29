@@ -2,7 +2,7 @@ import React from "react";
 import SEOHead from "@/components/SEOHead";
 import { Shield, Zap, Brain, Database, Code, AlertTriangle, Trophy } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import DreamTeamCardPlaceholder from "@/components/DreamTeamCardPlaceholder";
+import DreamTeamRoster from "@/components/DreamTeamRoster";
 
 export default function DreamTeam() {
   const dreamTeam = [
@@ -225,55 +225,8 @@ export default function DreamTeam() {
             </p>
           </div>
 
-          {/* Basketball Trading Cards Section */}
-          <div className="mb-32">
-            <div className="text-center mb-12">
-              <Badge className="mb-6 bg-purple-500/20 text-purple-400 border-purple-500/50 px-6 py-2 text-sm backdrop-blur-md">
-                <Trophy className="w-4 h-4 mr-2" />
-                Basketball Trading Cards - Legally Bound AI Systems
-              </Badge>
-              <h2 className="text-4xl md:text-5xl font-bold mb-4">
-                <span className="bg-gradient-to-r from-blue-400 via-purple-500 to-blue-600 bg-clip-text text-transparent">
-                  Dream Team Roster Cards
-                </span>
-              </h2>
-              <p className="text-lg text-gray-300 max-w-3xl mx-auto">
-                Click each card to flip and view detailed stats, binding mechanisms, and covenant signatures
-              </p>
-            </div>
-
-            {/* Mobile: Carousel */}
-            <div className="block md:hidden mb-16">
-              <div className="relative max-w-md mx-auto">
-                <div className="overflow-x-auto snap-x snap-mandatory scrollbar-hide">
-                  <div className="flex gap-4 px-4">
-                    {dreamTeam.map((card, idx) => (
-                      <div key={idx} className="snap-center flex-shrink-0 w-[85vw] max-w-sm">
-                        <DreamTeamCardPlaceholder card={card} />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Desktop: Grid */}
-            <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto mb-16">
-              {dreamTeam.map((card, idx) => (
-                <DreamTeamCardPlaceholder key={idx} card={card} />
-              ))}
-            </div>
-
-            <style jsx>{`
-              .scrollbar-hide::-webkit-scrollbar {
-                display: none;
-              }
-              .scrollbar-hide {
-                -ms-overflow-style: none;
-                scrollbar-width: none;
-              }
-            `}</style>
-          </div>
+          {/* Full Dream Team Roster with Flip Cards */}
+          <DreamTeamRoster />
 
           {/* Timeline Section */}
           <div className="mb-32">
