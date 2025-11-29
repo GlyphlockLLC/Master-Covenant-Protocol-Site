@@ -37,7 +37,9 @@ class GlyphBotClient {
       oneTestMode: false,
       realTime: false,
       tts: false,
-      enforceGlyphFormat: true // Always enforce GlyphLock format
+      enforceGlyphFormat: true, // Always enforce GlyphLock format
+      provider: null, // null = AUTO mode
+      autoProvider: true // Let GlyphBot choose
     };
   }
 
