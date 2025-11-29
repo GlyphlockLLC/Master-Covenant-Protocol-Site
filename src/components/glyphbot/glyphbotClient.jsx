@@ -14,6 +14,27 @@
 
 import { base44 } from '@/api/base44Client';
 
+// GLYPHLOCK FORMAT OVERRIDE - Enforces security-expert tone on ALL responses
+const GLYPH_FORMAT_DIRECTIVE = `
+FORMAT RULES (MANDATORY):
+1. NO hashtags (#), Markdown headers, or blog-style section titles.
+2. NO bullet lists unless explicitly requested.
+3. NO Wikipedia-style explanations or generic AI phrasing.
+4. NO phrases like "here's how", "key concepts", "benefits", "for example".
+
+TONE: Senior security auditor. Code forensic analyst. AI systems architect.
+- Direct, concise, authoritative
+- Professional but not clinical
+- Zero fluff, zero filler
+
+STRUCTURE:
+- Direct explanation in plain English
+- One technically accurate example if needed
+- Actionable steps or implications
+- Max 2 short paragraphs unless depth requested
+- No Markdown headers. No bold tagging except for code emphasis.
+`;
+
 class GlyphBotClient {
   constructor() {
     this.defaultPersona = 'GENERAL';
@@ -21,7 +42,8 @@ class GlyphBotClient {
       auditMode: false,
       oneTestMode: false,
       realTime: false,
-      tts: false
+      tts: false,
+      enforceGlyphFormat: true // Always enforce GlyphLock format
     };
   }
 
