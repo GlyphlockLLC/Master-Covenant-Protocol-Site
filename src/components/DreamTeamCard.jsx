@@ -44,13 +44,13 @@ export default function DreamTeamCard({ card, member }) {
 
         {/* Back of Card */}
         <div 
-          className="absolute inset-0 rounded-2xl overflow-hidden border-2 border-blue-500/50"
+          className="absolute top-0 left-0 w-full h-full rounded-2xl overflow-hidden border-2 border-blue-500/50"
           style={{ 
             backfaceVisibility: 'hidden',
             transform: 'rotateY(180deg)'
           }}
         >
-          <div className="relative w-full h-full bg-gradient-to-br from-gray-900 via-black to-gray-900 p-3 md:p-4 flex flex-col overflow-y-auto">
+          <div className="relative w-full h-full min-h-[400px] md:min-h-[500px] bg-gradient-to-br from-gray-900 via-black to-gray-900 p-3 md:p-4 flex flex-col overflow-y-auto">
             <div className="flex items-center justify-between mb-2">
               <Badge className="bg-purple-500/20 text-purple-400 border-purple-500/50 px-2 py-1 text-[10px] md:text-xs">
                 {data.position}
