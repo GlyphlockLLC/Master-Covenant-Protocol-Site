@@ -355,57 +355,53 @@ export default function GlyphBot() {
     setIsSending(true);
     addMessage("user", trimmed);
 
-    const typingId = addMessage("assistant", "Typing…", { isTyping: true });
+    const typingId = addMessage("assistant", "Thinking…", { isTyping: true });
 
     try {
-      // If real-time mode is on, first fetch web search context
-      let realTimeContext = '';
-      if (realTimeMode) {
-        try {
-          const searchRes = await base44.functions.invoke('glyphbotWebSearch', {
-            query: trimmed,
-            maxResults: 3
-          });
-          if (searchRes.data?.success && searchRes.data?.summary) {
-            realTimeContext = `\n\n[REAL-TIME WEB CONTEXT - ${new Date().toISOString()}]\n${searchRes.data.summary}\n[END CONTEXT]\n`;
-          }
-        } catch (e) {
-          console.warn('Real-time search failed:', e);
-        }
-      }
+      // Use glyphbotClient SDK for all API calls
+      const messagesForApi = messages
+        .filter(m => !m.isTyping)
+        .map(m => ({ role: m.role, content: m.text }))
+        .concat([{ role: "user", content: trimmed }]);
 
-      const payload = {
-        messages: messages
-          .filter(m => !m.isTyping)
-          .map(m => ({ role: m.role, content: m.text }))
-          .concat([{ role: "user", content: trimmed + realTimeContext }]),
+      const response = await glyphbotClient.sendMessage(messagesForApi, {
         persona: personaId,
         auditMode,
-        oneTestMode
-      };
+        oneTestMode,
+        realTime: realTimeMode,
+        tts: autoplay
+      });
 
-      const res = await base44.functions.invoke("glyphbotLLM", payload);
       const endTime = Date.now();
-
-      const reply = typeof res.data === 'string' ? res.data : (res.data?.text || "No response returned.");
+      const reply = response.text || "No response returned.";
 
       setMessages(prev =>
         prev.map(m => (m.id === typingId ? { 
           ...m, 
           text: reply, 
           isTyping: false,
-          model: res.data.model,
-          promptVersion: res.data.promptVersion
+          model: response.model,
+          promptVersion: response.promptVersion,
+          realTimeUsed: response.realTimeUsed,
+          providerUsed: response.providerUsed
         } : m))
       );
+
+      // Auto-speak if TTS is enabled
+      if (response.shouldSpeak && autoplay) {
+        const lastMsg = { id: typingId, text: reply };
+        speak(reply, typingId);
+      }
 
       // Store audit data
       if (auditMode) {
         setAuditData({
           timestamp: new Date().toISOString(),
           persona: personaId,
-          model: res.data.model,
-          promptVersion: res.data.promptVersion,
+          model: response.model,
+          promptVersion: response.promptVersion,
+          providerUsed: response.providerUsed,
+          realTimeUsed: response.realTimeUsed,
           latency: endTime - startTime,
           messageLength: reply.length,
           status: "success"
@@ -418,6 +414,8 @@ export default function GlyphBot() {
 
     } catch (err) {
       const endTime = Date.now();
+      console.error("GlyphBot error:", err);
+      
       setMessages(prev =>
         prev.map(m =>
           m.id === typingId
