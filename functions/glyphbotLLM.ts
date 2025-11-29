@@ -336,7 +336,16 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { messages, persona = 'GENERAL', auditMode = false, oneTestMode = false, enforceGlyphFormat = true } = await req.json();
+    const { 
+      messages, 
+      persona = 'GENERAL', 
+      auditMode = false, 
+      oneTestMode = false, 
+      enforceGlyphFormat = true,
+      provider: requestedProvider = null,
+      autoProvider = true,
+      realTime = false
+    } = await req.json();
     
     // Handle ping/status check
     if (messages?.length === 1 && messages[0].content === "ping") {
