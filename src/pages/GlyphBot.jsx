@@ -202,24 +202,44 @@ const GlyphBotPage = () => {
 
         {/* Controls */}
         <section className="mb-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-          {/* Persona selector */}
-          <div className="flex items-center gap-2 flex-wrap">
-            <label className="text-xs uppercase tracking-wide text-slate-400">
-              Persona
-            </label>
-            <select
-              value={persona}
-              onChange={e => setPersona(e.target.value)}
-              className="bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm min-h-[40px] focus:outline-none focus:ring-1 focus:ring-purple-400"
-            >
-              {PERSONAS.map(p => (
-                <option key={p.id} value={p.id}>
-                  {p.label}
-                </option>
-              ))}
-            </select>
+          {/* Persona and Model selectors */}
+          <div className="flex items-center gap-4 flex-wrap">
+            <div className="flex items-center gap-2">
+              <label className="text-xs uppercase tracking-wide text-slate-400">
+                Persona
+              </label>
+              <select
+                value={persona}
+                onChange={e => setPersona(e.target.value)}
+                className="bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm min-h-[40px] focus:outline-none focus:ring-1 focus:ring-purple-400"
+              >
+                {PERSONAS.map(p => (
+                  <option key={p.id} value={p.id}>
+                    {p.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+            
+            <div className="flex items-center gap-2">
+              <label className="text-xs uppercase tracking-wide text-slate-400">
+                Model
+              </label>
+              <select
+                value={provider}
+                onChange={e => setProvider(e.target.value)}
+                className="bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm min-h-[40px] focus:outline-none focus:ring-1 focus:ring-cyan-400"
+              >
+                {MODEL_OPTIONS.map(m => (
+                  <option key={m.id} value={m.id}>
+                    {m.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+            
             {currentPersona?.desc && (
-              <span className="text-xs text-slate-500 hidden md:inline">
+              <span className="text-xs text-slate-500 hidden lg:inline">
                 — {currentPersona.desc}
               </span>
             )}
