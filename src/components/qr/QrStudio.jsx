@@ -30,6 +30,25 @@ import QrBatchUploader from './QrBatchUploader';
 
 export default function QrStudio({ initialTab = 'create' }) {
   const [activeTab, setActiveTab] = useState(initialTab);
+
+  // Sync activeTab with URL hash for direct linking
+  React.useEffect(() => {
+    if (initialTab && initialTab !== activeTab) {
+      const validTabs = ['create', 'preview', 'customize', 'hotzones', 'stego', 'security', 'analytics', 'bulk'];
+      if (validTabs.includes(initialTab)) {
+        setActiveTab(initialTab);
+      }
+    }
+  }, [initialTab]);
+
+  // Update URL hash when tab changes
+  React.useEffect(() => {
+    if (activeTab && activeTab !== 'create') {
+      window.history.replaceState(null, '', `/qr-generator#${activeTab}`);
+    } else if (activeTab === 'create') {
+      window.history.replaceState(null, '', '/qr-generator');
+    }
+  }, [activeTab]);
   const [payloadType, setPayloadType] = useState('url');
   const [payloadValue, setPayloadValue] = useState('');
   const [title, setTitle] = useState('');
