@@ -51,6 +51,14 @@ import GlyphBotJunior from './pages/GlyphBotJunior';
 import Cookies from './pages/Cookies';
 import Accessibility from './pages/Accessibility';
 import QrGenerator from './pages/QrGenerator';
+import QrGeneratorCreate from './pages/QrGeneratorCreate';
+import QrGeneratorPreview from './pages/QrGeneratorPreview';
+import QrGeneratorCustomize from './pages/QrGeneratorCustomize';
+import QrGeneratorHotzones from './pages/QrGeneratorHotzones';
+import QrGeneratorStego from './pages/QrGeneratorStego';
+import QrGeneratorSecurity from './pages/QrGeneratorSecurity';
+import QrGeneratorAnalytics from './pages/QrGeneratorAnalytics';
+import QrGeneratorBulk from './pages/QrGeneratorBulk';
 import __Layout from './Layout.jsx';
 
 
@@ -108,6 +116,14 @@ export const PAGES = {
     "Cookies": Cookies,
     "Accessibility": Accessibility,
     "QrGenerator": QrGenerator,
+    "QrGeneratorCreate": QrGeneratorCreate,
+    "QrGeneratorPreview": QrGeneratorPreview,
+    "QrGeneratorCustomize": QrGeneratorCustomize,
+    "QrGeneratorHotzones": QrGeneratorHotzones,
+    "QrGeneratorStego": QrGeneratorStego,
+    "QrGeneratorSecurity": QrGeneratorSecurity,
+    "QrGeneratorAnalytics": QrGeneratorAnalytics,
+    "QrGeneratorBulk": QrGeneratorBulk,
 }
 
 export const pagesConfig = {
