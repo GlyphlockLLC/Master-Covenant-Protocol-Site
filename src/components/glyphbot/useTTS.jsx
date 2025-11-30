@@ -1,6 +1,6 @@
 /**
- * GlyphBot TTS Hook
- * Provides text-to-speech with browser fallback
+ * GlyphBot TTS Hook - Natural Voice Edition
+ * Uses high-quality browser voices (Google, Microsoft, Apple)
  * 
  * Usage:
  * const { speak, stop, isSpeaking, ttsAvailable } = useTTS();
@@ -8,33 +8,104 @@
  */
 
 import { useState, useRef, useCallback, useEffect } from 'react';
-import { base44 } from '@/api/base44Client';
 
 export default function useTTS(options = {}) {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [ttsAvailable, setTtsAvailable] = useState(true);
+  const [ttsAvailable, setTtsAvailable] = useState(false);
   const [lastError, setLastError] = useState(null);
+  const [voices, setVoices] = useState([]);
   
-  const audioRef = useRef(null);
   const utteranceRef = useRef(null);
 
-  // Default settings - StreamElements voices: Brian, Amy, Emma, Geraint, Ivy, Joanna, Joey, Justin, Kendra, Kimberly, Matthew, Salli
+  // Default settings
   const defaultSettings = {
-    provider: options.provider || 'streamelements',
-    voice: options.voice || 'Brian', // Brian is clearer for technical content
-    speed: options.speed || 1.0,
+    speed: options.speed || 0.95,  // Slightly slower = more natural
     pitch: options.pitch || 1.0,
     volume: options.volume || 1.0,
-    useBrowserFallback: options.useBrowserFallback !== false
+    preferredVoice: options.voice || null
   };
 
-  // Check browser TTS availability
+  // Load voices (they load async in some browsers)
   useEffect(() => {
-    const browserTTSAvailable = 'speechSynthesis' in window;
-    // We consider TTS available if either browser or external works
-    setTtsAvailable(browserTTSAvailable || true);
+    if (!('speechSynthesis' in window)) {
+      setTtsAvailable(false);
+      return;
+    }
+
+    const loadVoices = () => {
+      const availableVoices = window.speechSynthesis.getVoices();
+      if (availableVoices.length > 0) {
+        setVoices(availableVoices);
+        setTtsAvailable(true);
+        console.log('[TTS] Loaded', availableVoices.length, 'voices');
+      }
+    };
+
+    loadVoices();
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+
+    return () => {
+      window.speechSynthesis.onvoiceschanged = null;
+    };
   }, []);
+
+  // Find the best natural-sounding voice
+  const getBestVoice = useCallback(() => {
+    if (voices.length === 0) return null;
+
+    // Priority order for natural voices (most natural first)
+    const preferredVoices = [
+      // Google Neural voices (best quality)
+      'Google US English',
+      'Google UK English Female',
+      'Google UK English Male',
+      // Microsoft Neural voices (very good)
+      'Microsoft Zira',
+      'Microsoft David',
+      'Microsoft Mark',
+      'Microsoft Guy Online',
+      'Microsoft Aria Online',
+      // Apple voices (macOS/iOS - excellent)
+      'Samantha',
+      'Alex',
+      'Karen',
+      'Daniel',
+      // Edge/Windows 11 neural
+      'Microsoft Jenny',
+      'Microsoft Ryan',
+      // Fallback quality voices
+      'Fiona',
+      'Moira',
+      'Tessa'
+    ];
+
+    // Try to find a preferred voice
+    for (const name of preferredVoices) {
+      const found = voices.find(v => v.name.includes(name));
+      if (found) {
+        console.log('[TTS] Using voice:', found.name);
+        return found;
+      }
+    }
+
+    // Fallback: find any English voice that's not "compact" or "enhanced" 
+    const englishVoice = voices.find(v => 
+      v.lang.startsWith('en') && 
+      !v.name.toLowerCase().includes('compact') &&
+      (v.name.includes('Google') || v.name.includes('Microsoft') || v.localService === false)
+    );
+
+    if (englishVoice) {
+      console.log('[TTS] Using fallback voice:', englishVoice.name);
+      return englishVoice;
+    }
+
+    // Last resort: first English voice
+    const anyEnglish = voices.find(v => v.lang.startsWith('en'));
+    console.log('[TTS] Using any English voice:', anyEnglish?.name);
+    return anyEnglish || voices[0];
+  }, [voices]);
 
   /**
    * Stop any currently playing audio
