@@ -82,24 +82,26 @@ ${sitemapKnowledge.commonQuestions.map(q => `Q: ${q.q}\nA: ${q.a}`).join('\n')}
         content: msg.text
       })).concat([{ role: "user", content: userMessage }]);
 
-      const response = await base44.integrations.Core.InvokeLLM({
-        prompt: `${jrPersona.system}
+      const promptText = `${jrPersona?.system || 'You are GlyphBot Junior, a friendly AI assistant for beginners. Be helpful and explain things in simple terms.'}
 
 QR Studio Knowledge Base:
-${QR_KNOWLEDGE_BASE}
+${QR_KNOWLEDGE_BASE || 'QR code generation and security features.'}
 
 Image Lab Knowledge Base:
-${JSON.stringify(IMAGE_LAB_KNOWLEDGE, null, 2)}
+${JSON.stringify(IMAGE_LAB_KNOWLEDGE || {}, null, 2)}
 
 GlyphLock FAQ Knowledge Base:
-${faqContext}
+${faqContext || ''}
 
-${sitemapContext}
+${sitemapContext || ''}
 
 Conversation history:
 ${conversationHistory.map(m => `${m.role}: ${m.content}`).join('\n')}
 
-When answering questions, use the knowledge bases to provide accurate information about GlyphLock features, pricing, navigation, and tools. Be friendly, helpful, and explain things simply!`,
+When answering questions, use the knowledge bases to provide accurate information about GlyphLock features, pricing, navigation, and tools. Be friendly, helpful, and explain things simply!`;
+
+      const response = await base44.integrations.Core.InvokeLLM({
+        prompt: promptText,
         add_context_from_internet: false
       });
 
