@@ -248,6 +248,7 @@ export default function GlyphBotPage() {
   const handleClear = () => {
     setMessages([WELCOME_MESSAGE]);
     setLastMeta(null);
+    sessionStorage.removeItem(STORAGE_KEYS.MESSAGES);
   };
 
   const handleToggleMode = (key) => {
