@@ -43,6 +43,8 @@ export default function GlyphBotPage() {
   const [persona, setPersona] = useState('GENERAL');
   const [provider, setProvider] = useState('AUTO');
   const [isSending, setIsSending] = useState(false);
+  const [chatCount, setChatCount] = useState(0);
+  const [showTrimWarning, setShowTrimWarning] = useState(false);
 
   const [modes, setModes] = useState({
     voice: false,
@@ -63,11 +65,87 @@ export default function GlyphBotPage() {
     voice: null,
     speed: 0.95,
     pitch: 1.0,
-    volume: 1.0
+    volume: 1.0,
+    bass: 0,
+    mid: 0,
+    treble: 0
   });
 
   // TTS Hook with dynamic settings
   const { speak, stop: stopTTS, isSpeaking } = useTTS(voiceSettings);
+
+  // Load saved settings and messages on mount
+  useEffect(() => {
+    try {
+      const savedSettings = localStorage.getItem(STORAGE_KEYS.SETTINGS);
+      if (savedSettings) {
+        const parsed = JSON.parse(savedSettings);
+        if (parsed.persona) setPersona(parsed.persona);
+        if (parsed.provider) setProvider(parsed.provider);
+        if (parsed.modes) setModes(prev => ({ ...prev, ...parsed.modes }));
+        if (parsed.voiceSettings) setVoiceSettings(prev => ({ ...prev, ...parsed.voiceSettings }));
+      }
+
+      const savedMessages = sessionStorage.getItem(STORAGE_KEYS.MESSAGES);
+      if (savedMessages) {
+        const parsed = JSON.parse(savedMessages);
+        if (parsed.length > 0) setMessages(parsed);
+      }
+
+      const savedCount = localStorage.getItem(STORAGE_KEYS.CHAT_COUNT);
+      if (savedCount) setChatCount(parseInt(savedCount, 10) || 0);
+    } catch (e) {
+      console.warn('Failed to load GlyphBot settings:', e);
+    }
+  }, []);
+
+  // Save messages to sessionStorage on change
+  useEffect(() => {
+    try {
+      sessionStorage.setItem(STORAGE_KEYS.MESSAGES, JSON.stringify(messages));
+    } catch (e) {
+      console.warn('Failed to save messages:', e);
+    }
+  }, [messages]);
+
+  // Auto-trim messages when exceeding MAX_MESSAGES
+  useEffect(() => {
+    if (messages.length > MAX_MESSAGES + 1) { // +1 for welcome message
+      const trimmedMessages = [
+        WELCOME_MESSAGE,
+        ...messages.slice(-MAX_MESSAGES)
+      ];
+      setMessages(trimmedMessages);
+      setShowTrimWarning(true);
+      setTimeout(() => setShowTrimWarning(false), 4000);
+    }
+  }, [messages]);
+
+  // Save settings after SAVE_SETTINGS_THRESHOLD chats
+  useEffect(() => {
+    if (chatCount > 0 && chatCount % SAVE_SETTINGS_THRESHOLD === 0) {
+      try {
+        const settingsToSave = {
+          persona,
+          provider,
+          modes: { voice: modes.voice, live: modes.live, audit: modes.audit },
+          voiceSettings: {
+            speed: voiceSettings.speed,
+            pitch: voiceSettings.pitch,
+            volume: voiceSettings.volume,
+            bass: voiceSettings.bass,
+            mid: voiceSettings.mid,
+            treble: voiceSettings.treble
+          }
+        };
+        localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settingsToSave));
+        localStorage.setItem(STORAGE_KEYS.CHAT_COUNT, chatCount.toString());
+        console.log(`[GlyphBot] Settings saved after ${chatCount} chats`);
+      } catch (e) {
+        console.warn('Failed to save settings:', e);
+      }
+    }
+  }, [chatCount, persona, provider, modes, voiceSettings]);
 
   // Auto-scroll chat
   useEffect(() => {
