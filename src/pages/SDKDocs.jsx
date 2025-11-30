@@ -424,56 +424,160 @@ interface CovenantVerifyResult {
             </Section>
 
             {/* Webhooks */}
-            <Section id="webhooks" title="Webhooks" icon={Webhook}>
+            <Section id="webhooks" title="Webhooks & Events" icon={Webhook}>
               <p className="text-slate-400 mb-6">
-                Listen for real-time events from GlyphLock including covenant decisions, chain completions, and audit trail updates.
+                Receive real-time notifications when security events occur. Webhooks are signed with HMAC for verification.
               </p>
 
               <CodeBlock
-                title="Webhook Server"
-                code={`import { GlyphLock } from "@glyphlock/sdk";
+                title="Webhook Handler"
+                code={`// Express.js webhook handler
+import { GlyphLock } from "@glyphlock/sdk";
+import express from "express";
 
+const app = express();
 const gl = new GlyphLock({ apiKey: process.env.GLYPHLOCK_API_KEY! });
 
-// Start webhook listener
-const server = gl.listenWebhooks({
-  port: 3001,
-  path: "/glyphlock/webhook",
-  secret: process.env.GLYPHLOCK_WEBHOOK_SECRET!,
-  onEvent: async (event) => {
-    console.log("Event received:", event.type, event.id);
-    
-    switch (event.type) {
-      case "covenant.verified":
-        console.log("Covenant check:", event.payload);
-        break;
-      case "chain.completed":
-        console.log("Chain finished:", event.payload.modelUsed);
-        break;
-      case "qr.decoded":
-        console.log("QR scanned:", event.payload.data);
-        break;
-      default:
-        console.log("Unknown event:", event);
-    }
-  }
-});
+app.post("/webhooks/glyphlock", express.raw({ type: "application/json" }), (req, res) => {
+  const signature = req.headers["x-glyphlock-signature"];
+  const timestamp = req.headers["x-glyphlock-timestamp"];
+  
+  // Verify webhook signature
+  const isValid = gl.webhooks.verify({
+    payload: req.body,
+    signature,
+    timestamp,
+    secret: process.env.WEBHOOK_SECRET!
+  });
 
-// Graceful shutdown
-process.on("SIGTERM", () => server.close());`}
+  if (!isValid) {
+    return res.status(401).json({ error: "Invalid signature" });
+  }
+
+  const event = JSON.parse(req.body);
+  
+  switch (event.type) {
+    // Chain Events
+    case "chain.completed":
+      console.log("Chain completed:", event.data.trace_id, "via", event.data.provider);
+      break;
+    case "chain.failed":
+      console.log("Chain FAILED:", event.data.error_message);
+      console.log("Providers attempted:", event.data.providers_attempted);
+      break;
+    
+    // QR Events  
+    case "qr.encoded":
+      console.log("QR encoded:", event.data.code_id);
+      console.log("Payload size:", event.data.payload_size_bytes, "bytes");
+      break;
+    case "qr.decoded":
+      console.log("QR decoded:", event.data.code_id);
+      console.log("Integrity verified:", event.data.integrity_verified);
+      break;
+    
+    // Covenant Events
+    case "covenant.verified":
+      console.log("Covenant verified:", event.data.covenant_id);
+      break;
+    case "covenant.denied":
+      console.log("Covenant DENIED:", event.data.denial_reason);
+      console.log("Denial code:", event.data.denial_code);
+      break;
+  }
+
+  res.json({ received: true });
+});`}
               />
 
-              <div className="mt-6 bg-slate-900/50 border border-slate-800 rounded-xl p-4">
-                <h4 className="font-semibold text-white mb-3">Available Event Types</h4>
-                <div className="grid md:grid-cols-2 gap-2 text-sm">
-                  <div className="text-slate-400"><code className="text-cyan-400">covenant.verified</code> — Access decision made</div>
-                  <div className="text-slate-400"><code className="text-cyan-400">covenant.denied</code> — Access denied</div>
-                  <div className="text-slate-400"><code className="text-cyan-400">chain.completed</code> — AI chain finished</div>
-                  <div className="text-slate-400"><code className="text-cyan-400">chain.failed</code> — All providers failed</div>
-                  <div className="text-slate-400"><code className="text-cyan-400">qr.encoded</code> — QR code generated</div>
-                  <div className="text-slate-400"><code className="text-cyan-400">qr.decoded</code> — QR code scanned</div>
+              <div className="mt-6 space-y-4">
+                <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-4">
+                  <h4 className="font-semibold text-white mb-3">Chain Events</h4>
+                  <div className="grid md:grid-cols-2 gap-2 text-sm">
+                    <div className="text-slate-400"><code className="text-green-400">chain.completed</code> — AI chain finished successfully</div>
+                    <div className="text-slate-400"><code className="text-red-400">chain.failed</code> — All providers failed</div>
+                    <div className="text-slate-400"><code className="text-amber-400">chain.fallback</code> — Fallback provider used</div>
+                    <div className="text-slate-400"><code className="text-amber-400">chain.provider_degraded</code> — Provider health degraded</div>
+                  </div>
+                </div>
+
+                <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-4">
+                  <h4 className="font-semibold text-white mb-3">QR Code Events</h4>
+                  <div className="grid md:grid-cols-2 gap-2 text-sm">
+                    <div className="text-slate-400"><code className="text-cyan-400">qr.generated</code> — QR code created</div>
+                    <div className="text-slate-400"><code className="text-cyan-400">qr.encoded</code> — Data encoded with steganography</div>
+                    <div className="text-slate-400"><code className="text-cyan-400">qr.decoded</code> — QR decoded and extracted</div>
+                    <div className="text-slate-400"><code className="text-cyan-400">qr.scanned</code> — QR code scanned by user</div>
+                    <div className="text-slate-400"><code className="text-red-400">qr.threat_detected</code> — Malicious content found</div>
+                    <div className="text-slate-400"><code className="text-red-400">qr.tamper_detected</code> — Integrity check failed</div>
+                  </div>
+                </div>
+
+                <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-4">
+                  <h4 className="font-semibold text-white mb-3">Covenant Events</h4>
+                  <div className="grid md:grid-cols-2 gap-2 text-sm">
+                    <div className="text-slate-400"><code className="text-green-400">covenant.verified</code> — Verification passed</div>
+                    <div className="text-slate-400"><code className="text-red-400">covenant.denied</code> — Verification failed, access denied</div>
+                    <div className="text-slate-400"><code className="text-amber-400">covenant.expired</code> — Covenant has expired</div>
+                    <div className="text-slate-400"><code className="text-amber-400">covenant.revoked</code> — Covenant was revoked</div>
+                  </div>
+                </div>
+
+                <div className="bg-slate-900/50 border border-slate-800 rounded-xl p-4">
+                  <h4 className="font-semibold text-white mb-3">Security Events</h4>
+                  <div className="grid md:grid-cols-2 gap-2 text-sm">
+                    <div className="text-slate-400"><code className="text-red-400">security.threat_blocked</code> — Threat blocked</div>
+                    <div className="text-slate-400"><code className="text-amber-400">security.rate_limit</code> — Rate limit exceeded</div>
+                    <div className="text-slate-400"><code className="text-cyan-400">security.audit_completed</code> — Audit finished</div>
+                  </div>
                 </div>
               </div>
+
+              <CodeBlock
+                title="Event Payload Structure"
+                code={`// Example: chain.failed event payload
+{
+  "id": "evt_7a3f9c2e1b4d6a8f0e2c4b6d",
+  "type": "chain.failed",
+  "category": "chain",
+  "severity": "error",
+  "timestamp": "2025-01-15T14:30:00Z",
+  "api_version": "2.0",
+  "data": {
+    "trace_id": "trace_abc123",
+    "error_code": "CHAIN_EXHAUSTED",
+    "error_message": "All providers failed after 3 attempts",
+    "providers_attempted": ["GEMINI", "OPENAI", "CLAUDE"],
+    "total_attempts": 3,
+    "total_latency_ms": 45200,
+    "last_provider": "CLAUDE",
+    "last_error": "Rate limit exceeded",
+    "fallback_exhausted": true
+  },
+  "metadata": {
+    "user_id": "user_123",
+    "request_id": "req_xyz789"
+  }
+}
+
+// Example: covenant.denied event payload
+{
+  "id": "evt_8b4f0d3e2c5a7b9f",
+  "type": "covenant.denied",
+  "category": "covenant", 
+  "severity": "error",
+  "data": {
+    "covenant_id": "cov_abc123",
+    "asset_id": "asset_xyz",
+    "asset_type": "ai_model",
+    "denial_reason": "Signature mismatch detected",
+    "denial_code": "SIG_MISMATCH",
+    "signature_mismatch": true,
+    "attempted_action": "model.inference",
+    "requester_id": "unauthorized_client"
+  }
+}`}
+              />
             </Section>
 
             {/* Error Handling */}
