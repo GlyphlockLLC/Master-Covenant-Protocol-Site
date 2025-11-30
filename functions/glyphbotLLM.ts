@@ -200,6 +200,8 @@ async function callOpenAI(prompt) {
   const key = Deno.env.get('OPENAI_API_KEY');
   if (!key) throw new Error('OPENAI_API_KEY not configured');
   
+  console.log('[OpenAI] Calling with key:', key.slice(0, 8) + '...');
+  
   const response = await fetchWithTimeout(
     'https://api.openai.com/v1/chat/completions',
     {
@@ -209,7 +211,7 @@ async function callOpenAI(prompt) {
         'Authorization': `Bearer ${key}`
       },
       body: JSON.stringify({
-        model: 'gpt-4o',
+        model: 'gpt-4o-mini',
         messages: [{ role: 'user', content: prompt }],
         max_tokens: 4096,
         temperature: 0.7
@@ -219,12 +221,16 @@ async function callOpenAI(prompt) {
   
   if (!response.ok) {
     const errBody = await response.text();
-    throw new Error(`OpenAI ${response.status}: ${errBody.slice(0, 200)}`);
+    console.error('[OpenAI Raw Error]:', errBody);
+    throw new Error(`OpenAI ${response.status}: ${errBody.slice(0, 300)}`);
   }
   
   const data = await response.json();
+  console.log('[OpenAI Response]:', JSON.stringify(data).slice(0, 500));
+  
   const text = data.choices?.[0]?.message?.content;
   if (!text) {
+    console.error('[OpenAI No Text]:', JSON.stringify(data));
     throw new Error('OpenAI: No content in response');
   }
   
