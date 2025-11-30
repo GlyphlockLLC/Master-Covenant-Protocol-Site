@@ -17,14 +17,28 @@ export default function useTTS(options = {}) {
   const [voices, setVoices] = useState([]);
   
   const utteranceRef = useRef(null);
+  const audioContextRef = useRef(null);
+  const eqNodesRef = useRef(null);
+  const sourceNodeRef = useRef(null);
 
   // Default settings
   const defaultSettings = {
     speed: options.speed || 0.95,  // Slightly slower = more natural
     pitch: options.pitch || 1.0,
     volume: options.volume || 1.0,
-    preferredVoice: options.voice || null
+    preferredVoice: options.voice || null,
+    bass: options.bass || 0,
+    mid: options.mid || 0,
+    treble: options.treble || 0
   };
+
+  // Setup or update EQ nodes from external audio context
+  useEffect(() => {
+    if (options.audioContext && options.eqNodes) {
+      audioContextRef.current = options.audioContext;
+      eqNodesRef.current = options.eqNodes;
+    }
+  }, [options.audioContext, options.eqNodes]);
 
   // Load voices (they load async in some browsers)
   useEffect(() => {
