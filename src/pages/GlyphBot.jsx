@@ -356,6 +356,19 @@ export default function GlyphBotPage() {
             </div>
           )}
 
+          {/* Trim Warning */}
+          {showTrimWarning && (
+            <div className="mx-4 mt-2 p-2 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-center justify-between">
+              <div className="flex items-center gap-2 text-xs text-amber-400">
+                <AlertTriangle className="w-3.5 h-3.5" />
+                <span>Older messages trimmed to optimize memory (keeping last {MAX_MESSAGES})</span>
+              </div>
+              <button onClick={() => setShowTrimWarning(false)} className="text-amber-400 hover:text-amber-300">
+                <X className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          )}
+
           {/* Chat Area */}
           <div className="flex-1 flex min-h-0 overflow-hidden">
             {/* Messages */}
