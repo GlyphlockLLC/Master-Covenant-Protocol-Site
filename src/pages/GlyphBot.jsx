@@ -391,13 +391,13 @@ export default function GlyphBotPage() {
               ))}
 
               {isSending && (
-                <div className="flex items-center gap-3 text-sm text-cyan-400/80 animate-in fade-in">
-                  <div className="flex gap-1">
-                    <span className="w-2 h-2 rounded-full bg-cyan-400 animate-bounce" style={{ animationDelay: '0ms' }} />
-                    <span className="w-2 h-2 rounded-full bg-cyan-400 animate-bounce" style={{ animationDelay: '150ms' }} />
-                    <span className="w-2 h-2 rounded-full bg-cyan-400 animate-bounce" style={{ animationDelay: '300ms' }} />
+                <div className="flex items-center gap-3 text-sm text-cyan-300 animate-in fade-in p-4 rounded-xl bg-purple-500/10 border border-purple-500/30">
+                  <div className="flex gap-1.5">
+                    <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-r from-cyan-400 to-purple-400 animate-bounce shadow-[0_0_8px_rgba(6,182,212,0.8)]" style={{ animationDelay: '0ms' }} />
+                    <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-r from-purple-400 to-blue-400 animate-bounce shadow-[0_0_8px_rgba(168,85,247,0.8)]" style={{ animationDelay: '150ms' }} />
+                    <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-r from-blue-400 to-cyan-400 animate-bounce shadow-[0_0_8px_rgba(59,130,246,0.8)]" style={{ animationDelay: '300ms' }} />
                   </div>
-                  <span>GlyphBot is thinking...</span>
+                  <span className="font-medium drop-shadow-[0_0_8px_rgba(6,182,212,0.6)]">GlyphBot is thinking...</span>
                 </div>
               )}
             </div>
