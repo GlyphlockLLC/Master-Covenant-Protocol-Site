@@ -183,10 +183,12 @@ export default function useTTS(options = {}) {
         utterance.voice = voice;
       }
 
-      // Natural speech settings
+      // Natural speech settings - pitch range is 0-2, with 1 being normal
       utterance.rate = settings.speed;
-      utterance.pitch = settings.pitch;
+      utterance.pitch = Math.max(0.1, Math.min(2, settings.pitch)); // Clamp to valid range
       utterance.volume = settings.volume;
+      
+      console.log('[TTS] Settings - Rate:', settings.speed, 'Pitch:', settings.pitch, 'Volume:', settings.volume);
 
       utterance.onstart = () => {
         setIsLoading(false);
