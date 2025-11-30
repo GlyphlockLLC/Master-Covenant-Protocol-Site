@@ -231,6 +231,34 @@ p {
   }
 }
 
+/* GlyphAudit Custom Styles */
+.glyph-navy { background-color: #020617; }
+.glyph-neon-blue { color: #00E4FF; }
+.glyph-neon-cyan { color: #06B6D4; }
+.glyph-neon-red { color: #EF4444; }
+.glyph-neon-orange { color: #F97316; }
+.glyph-neon-green { color: #10B981; }
+
+@keyframes glyphGridFade {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+}
+
+@keyframes glyphHoloSweep {
+  0% { top: 0%; }
+  50% { top: 100%; }
+  100% { top: 0%; }
+}
+
+@keyframes glyphSeverityPulse {
+  0%, 100% { box-shadow: 0 0 10px currentColor; }
+  50% { box-shadow: 0 0 30px currentColor; }
+}
+
+.animate-glyph-grid { animation: glyphGridFade 4s ease-in-out infinite; }
+.animate-glyph-holo { animation: glyphHoloSweep 6s ease-in-out infinite; }
+.animate-glyph-pulse { animation: glyphSeverityPulse 2s ease-in-out infinite; }
+
 /* GlyphLock Theme - Cosmic Dark Space with Ultraviolet Accents */
 
 :root {

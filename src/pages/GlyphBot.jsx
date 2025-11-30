@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import glyphbotClient from '@/components/glyphbot/glyphbotClient';
 import SEOHead from '@/components/SEOHead';
 import { ChevronDown, ChevronUp, Shield } from 'lucide-react';
+import GlyphAuditCard from '@/components/glyphaudit/GlyphAuditCard';
 
 const PERSONAS = [
   { id: 'GENERAL', label: 'General', desc: 'Default security assistant' },
@@ -325,50 +326,27 @@ const GlyphBotPage = () => {
 
 const ChatBubble = ({ role, content, audit }) => {
   const isUser = role === 'user';
-  const [showAuditJson, setShowAuditJson] = useState(false);
+  const hasAudit = audit && (audit.json || audit.report);
   
   return (
     <div className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}>
-      <div className="max-w-[80%] space-y-2">
-        <div
-          className={`rounded-2xl px-4 py-3 text-sm whitespace-pre-wrap leading-relaxed ${
-            isUser
-              ? 'bg-gradient-to-br from-cyan-600 to-blue-600 text-white rounded-br-sm shadow-lg'
-              : 'bg-slate-800/80 text-slate-50 rounded-bl-sm border border-slate-700'
-          }`}
-        >
-          {content}
-        </div>
-        
-        {audit && audit.json && (
-          <div className="bg-slate-900/90 border border-purple-500/30 rounded-xl overflow-hidden">
-            <button
-              onClick={() => setShowAuditJson(!showAuditJson)}
-              className="w-full px-4 py-2 flex items-center justify-between text-xs text-purple-300 hover:bg-purple-500/10 transition-colors"
-            >
-              <span className="flex items-center gap-2">
-                <Shield className="w-3 h-3" />
-                Audit JSON Payload
-                <span className={`px-2 py-0.5 rounded text-[10px] font-medium ${
-                  audit.json.severity === 'critical' ? 'bg-red-500/20 text-red-300' :
-                  audit.json.severity === 'high' ? 'bg-orange-500/20 text-orange-300' :
-                  audit.json.severity === 'moderate' ? 'bg-yellow-500/20 text-yellow-300' :
-                  'bg-green-500/20 text-green-300'
-                }`}>
-                  {audit.json.severity} / {audit.json.risk_score}
-                </span>
-              </span>
-              {showAuditJson ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-            </button>
-            
-            {showAuditJson && (
-              <div className="px-4 py-3 border-t border-purple-500/20">
-                <pre className="text-[11px] text-slate-300 overflow-x-auto whitespace-pre-wrap font-mono">
-                  {JSON.stringify(audit.json, null, 2)}
-                </pre>
-              </div>
-            )}
+      <div className={`space-y-3 ${hasAudit ? 'max-w-[95%] w-full' : 'max-w-[80%]'}`}>
+        {content && (
+          <div
+            className={`rounded-2xl px-4 py-3 text-sm whitespace-pre-wrap leading-relaxed ${
+              isUser
+                ? 'bg-gradient-to-br from-cyan-600 to-blue-600 text-white rounded-br-sm shadow-lg'
+                : hasAudit
+                  ? 'bg-slate-800/60 text-slate-200 rounded-bl-sm border border-slate-700/50'
+                  : 'bg-slate-800/80 text-slate-50 rounded-bl-sm border border-slate-700'
+            }`}
+          >
+            {content}
           </div>
+        )}
+        
+        {hasAudit && (
+          <GlyphAuditCard audit={audit} />
         )}
       </div>
     </div>
