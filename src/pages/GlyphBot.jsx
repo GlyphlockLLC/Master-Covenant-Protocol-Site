@@ -403,49 +403,55 @@ export default function GlyphBotPage() {
             </div>
 
             {/* Telemetry Sidebar - Desktop */}
-            <aside className="hidden xl:flex w-72 flex-col border-l border-slate-800/50 bg-slate-950/60 overflow-hidden">
-              <div className="px-4 py-3 border-b border-slate-800/50">
+            <aside className="hidden xl:flex w-72 flex-col border-l-2 border-purple-500/30 bg-gradient-to-b from-slate-950/90 via-purple-950/10 to-slate-950/90 overflow-hidden">
+              <div className="px-4 py-4 border-b-2 border-purple-500/30 bg-purple-500/10">
                 <div className="flex items-center gap-2 text-xs">
-                  <Zap className="w-3.5 h-3.5 text-cyan-400" />
-                  <span className="uppercase tracking-[0.2em] text-slate-500 font-medium">Telemetry</span>
+                  <Zap className="w-4 h-4 text-cyan-400 drop-shadow-[0_0_8px_rgba(6,182,212,0.8)]" />
+                  <span className="uppercase tracking-[0.3em] text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400 font-bold">Telemetry</span>
                 </div>
               </div>
 
               <div className="flex-1 chat-scroll-container p-4 space-y-3">
                 {messages.slice(-5).reverse().filter(m => m.role !== 'system').map((m) => (
-                  <div key={m.id} className="rounded-lg border border-slate-800/60 bg-slate-900/40 p-2.5">
-                    <div className="flex items-center justify-between mb-1.5">
-                      <span className={`text-[9px] uppercase tracking-wider font-semibold px-1.5 py-0.5 rounded ${
+                  <div key={m.id} className="rounded-xl border-2 border-purple-500/30 bg-slate-900/60 p-3 hover:border-cyan-400/50 transition-all duration-300 shadow-[0_0_10px_rgba(168,85,247,0.15)]">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className={`text-[9px] uppercase tracking-wider font-bold px-2 py-1 rounded-lg ${
                         m.role === 'assistant' 
-                          ? 'bg-cyan-500/15 text-cyan-400 border border-cyan-500/30' 
-                          : 'bg-slate-800 text-slate-400 border border-slate-700'
+                          ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-[0_0_8px_rgba(6,182,212,0.3)]' 
+                          : 'bg-purple-500/20 text-purple-300 border border-purple-500/40'
                       }`}>
                         {m.role === 'assistant' ? 'Bot' : 'You'}
                       </span>
                       {m.latencyMs && (
-                        <span className="text-[9px] text-slate-600">{m.latencyMs}ms</span>
+                        <span className="text-[9px] text-cyan-400/70 font-mono">{m.latencyMs}ms</span>
                       )}
                     </div>
-                    <p className="text-[11px] text-slate-400 line-clamp-2">{m.content}</p>
+                    <p className="text-[11px] text-slate-300 line-clamp-2">{m.content}</p>
                   </div>
                 ))}
 
                 {lastMeta && (
-                  <div className="mt-4 p-3 rounded-lg border border-cyan-500/20 bg-cyan-500/5">
-                    <div className="text-[9px] uppercase tracking-[0.2em] text-slate-500 mb-2">Last Response</div>
-                    <div className="space-y-1.5 text-[11px]">
+                  <div className="mt-4 p-4 rounded-xl border-2 border-cyan-500/40 bg-gradient-to-br from-cyan-500/10 to-purple-500/10 shadow-[0_0_20px_rgba(6,182,212,0.2)]">
+                    <div className="text-[9px] uppercase tracking-[0.25em] text-cyan-400 font-bold mb-3">Last Response</div>
+                    <div className="space-y-2 text-[11px]">
                       <div className="flex items-center gap-2">
-                        <Shield className="w-3 h-3 text-cyan-400" />
-                        <span className="text-cyan-300">{lastMeta.providerLabel || lastMeta.model}</span>
+                        <Shield className="w-3.5 h-3.5 text-cyan-400 drop-shadow-[0_0_6px_rgba(6,182,212,0.8)]" />
+                        <span className="text-cyan-200 font-medium">{lastMeta.providerLabel || lastMeta.model}</span>
                       </div>
                       {lastMeta.realTimeUsed && (
-                        <div className="text-emerald-400">✓ Real-time web context</div>
+                        <div className="text-emerald-400 flex items-center gap-1">
+                          <span className="drop-shadow-[0_0_4px_rgba(52,211,153,0.8)]">✓</span> Real-time web context
+                        </div>
                       )}
                       {lastMeta.shouldSpeak && (
-                        <div className="text-purple-400">✓ Voice synthesis ready</div>
+                        <div className="text-purple-400 flex items-center gap-1">
+                          <span className="drop-shadow-[0_0_4px_rgba(168,85,247,0.8)]">✓</span> Voice synthesis ready
+                        </div>
                       )}
                       {providerMeta?.jsonModeEnabled && (
-                        <div className="text-amber-400">✓ Structured JSON output</div>
+                        <div className="text-amber-400 flex items-center gap-1">
+                          <span className="drop-shadow-[0_0_4px_rgba(245,158,11,0.8)]">✓</span> Structured JSON output
+                        </div>
                       )}
                     </div>
                   </div>
