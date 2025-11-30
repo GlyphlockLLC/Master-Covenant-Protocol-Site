@@ -68,6 +68,12 @@ const PROVIDERS = {
     label: 'Gemini',
     envHints: ['GEMINI_API_KEY'],
     priority: 12
+  },
+  LOCAL_OSS: {
+    id: 'LOCAL_OSS',
+    label: 'Local OSS Engine (No Key)',
+    envHints: [],  // Always available - no API key required
+    priority: 999  // Lowest priority - absolute last fallback
   }
 };
 
