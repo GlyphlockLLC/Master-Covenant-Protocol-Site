@@ -211,8 +211,8 @@ export default function VoiceSettings({ ttsHook, onSettingsChange }) {
           {/* Speed */}
           <div className="space-y-2">
             <div className="flex justify-between">
-              <label className="text-xs text-slate-400">Speed</label>
-              <span className="text-xs text-cyan-400">{speed.toFixed(2)}x</span>
+              <label className="text-xs text-cyan-300 font-medium">Speed</label>
+              <span className="text-xs text-purple-300 font-mono">{speed.toFixed(2)}x</span>
             </div>
             <Slider
               value={[speed]}
@@ -220,11 +220,11 @@ export default function VoiceSettings({ ttsHook, onSettingsChange }) {
               min={0.5}
               max={2.0}
               step={0.05}
-              className="py-2"
+              className="py-2 [&_[role=slider]]:bg-gradient-to-r [&_[role=slider]]:from-cyan-400 [&_[role=slider]]:to-purple-400 [&_[role=slider]]:shadow-[0_0_10px_rgba(6,182,212,0.6)]"
             />
-            <div className="flex justify-between text-[10px] text-slate-500">
+            <div className="flex justify-between text-[10px] text-slate-400">
               <span>Slow</span>
-              <span>Normal</span>
+              <span className="text-cyan-400">Normal</span>
               <span>Fast</span>
             </div>
           </div>
@@ -232,8 +232,8 @@ export default function VoiceSettings({ ttsHook, onSettingsChange }) {
           {/* Pitch */}
           <div className="space-y-2">
             <div className="flex justify-between">
-              <label className="text-xs text-slate-400">Pitch</label>
-              <span className="text-xs text-cyan-400">{pitch.toFixed(2)}</span>
+              <label className="text-xs text-cyan-300 font-medium">Pitch</label>
+              <span className="text-xs text-purple-300 font-mono">{pitch.toFixed(2)}</span>
             </div>
             <Slider
               value={[pitch]}
@@ -241,11 +241,11 @@ export default function VoiceSettings({ ttsHook, onSettingsChange }) {
               min={0.5}
               max={2.0}
               step={0.05}
-              className="py-2"
+              className="py-2 [&_[role=slider]]:bg-gradient-to-r [&_[role=slider]]:from-purple-400 [&_[role=slider]]:to-blue-400 [&_[role=slider]]:shadow-[0_0_10px_rgba(168,85,247,0.6)]"
             />
-            <div className="flex justify-between text-[10px] text-slate-500">
+            <div className="flex justify-between text-[10px] text-slate-400">
               <span>Deep</span>
-              <span>Normal</span>
+              <span className="text-purple-400">Normal</span>
               <span>High</span>
             </div>
           </div>
@@ -253,8 +253,8 @@ export default function VoiceSettings({ ttsHook, onSettingsChange }) {
           {/* Volume */}
           <div className="space-y-2">
             <div className="flex justify-between">
-              <label className="text-xs text-slate-400">Volume</label>
-              <span className="text-xs text-cyan-400">{Math.round(volume * 100)}%</span>
+              <label className="text-xs text-cyan-300 font-medium">Volume</label>
+              <span className="text-xs text-purple-300 font-mono">{Math.round(volume * 100)}%</span>
             </div>
             <Slider
               value={[volume]}
@@ -262,7 +262,7 @@ export default function VoiceSettings({ ttsHook, onSettingsChange }) {
               min={0}
               max={1}
               step={0.05}
-              className="py-2"
+              className="py-2 [&_[role=slider]]:bg-gradient-to-r [&_[role=slider]]:from-blue-400 [&_[role=slider]]:to-cyan-400 [&_[role=slider]]:shadow-[0_0_10px_rgba(59,130,246,0.6)]"
             />
           </div>
 
