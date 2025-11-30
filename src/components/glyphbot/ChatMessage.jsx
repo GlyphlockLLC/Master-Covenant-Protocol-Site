@@ -72,11 +72,13 @@ export default function ChatMessage({
                   {copied ? <Check className="w-3.5 h-3.5 text-green-400" /> : <Copy className="w-3.5 h-3.5" />}
                 </button>
               )}
-              {isAssistant && ttsAvailable && (
+              {isAssistant && (
                 <button
-                  onClick={() => onPlayTTS?.(msg.id)}
-                  className="p-1 rounded-md hover:bg-slate-700/50 text-slate-500 hover:text-cyan-400 transition-colors"
-                  title="Play voice"
+                  onClick={handleTTS}
+                  className={`p-1 rounded-md hover:bg-slate-700/50 transition-colors ${
+                    isSpeaking ? 'text-cyan-400 animate-pulse' : 'text-slate-500 hover:text-cyan-400'
+                  }`}
+                  title={isSpeaking ? "Speaking..." : "Play voice"}
                 >
                   <Volume2 className="w-3.5 h-3.5" />
                 </button>
