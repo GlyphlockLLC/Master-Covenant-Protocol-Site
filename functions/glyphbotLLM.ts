@@ -919,22 +919,29 @@ async function callProvider(providerId, prompt, jsonModePayload = null) {
       }
       
       if (openrouterKey) {
-        const { OpenRouter } = await import('npm:@openrouter/sdk');
-        const openRouter = new OpenRouter({
-          apiKey: openrouterKey,
-          defaultHeaders: {
+        // Use fetch directly for OpenRouter Claude access
+        const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${openrouterKey}`,
             'HTTP-Referer': 'https://glyphlock.io',
             'X-Title': 'GlyphBot'
-          }
+          },
+          body: JSON.stringify({
+            model: 'anthropic/claude-3.5-sonnet',
+            messages: [{ role: 'user', content: prompt }],
+            max_tokens: 4096
+          })
         });
         
-        const completion = await openRouter.chat.send({
-          model: 'anthropic/claude-3.5-sonnet',
-          messages: [{ role: 'user', content: prompt }],
-          stream: false
-        });
+        if (!response.ok) {
+          const errText = await response.text();
+          throw new Error(`OpenRouter Claude error: ${response.status} - ${errText}`);
+        }
         
-        return completion.choices[0].message.content;
+        const data = await response.json();
+        return data.choices[0].message.content;
       }
       
       throw new Error('No Claude API key available');
