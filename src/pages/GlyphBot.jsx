@@ -20,13 +20,13 @@ const PERSONAS = [
 ];
 
 const MODEL_OPTIONS = [
-  { id: 'AUTO', label: 'Auto (GlyphBot chooses)' },
-  { id: 'DEEPSEEK_OSS', label: 'DeepSeek (OSS)' },
+  { id: 'AUTO', label: 'Auto (Omega Chain)' },
+  { id: 'OPENAI', label: 'OpenAI GPT-4 (Primary)' },
+  { id: 'CLAUDE', label: 'Claude Sonnet 4.5 (Chain)' },
+  { id: 'GEMINI', label: 'Gemini 2.0 Flash (Chain)' },
   { id: 'LLAMA_OSS', label: 'Llama (OSS)' },
   { id: 'MISTRAL_OSS', label: 'Mistral (OSS)' },
   { id: 'GEMMA_OSS', label: 'Gemma (OSS)' },
-  { id: 'CLAUDE', label: 'Claude Sonnet 4.5' },
-  { id: 'OPENAI', label: 'OpenAI GPT-4' },
   { id: 'LOCAL_OSS', label: 'Local Fallback (No Key)' },
 ];
 
