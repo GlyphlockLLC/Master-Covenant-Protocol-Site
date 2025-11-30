@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import glyphbotClient from '@/components/glyphbot/glyphbotClient';
 import SEOHead from '@/components/SEOHead';
-import { Activity, Zap, Shield, Bot } from 'lucide-react';
+import { Activity, Zap, Shield, Bot, AlertTriangle, X } from 'lucide-react';
 import GlyphProviderChain from '@/components/provider/GlyphProviderChain';
 import ProviderStatusPanel from '@/components/glyphbot/ProviderStatusPanel';
 import ChatMessage from '@/components/glyphbot/ChatMessage';
@@ -10,6 +10,17 @@ import ChatInput from '@/components/glyphbot/ChatInput';
 import ControlBar from '@/components/glyphbot/ControlBar';
 import useTTS from '@/components/glyphbot/useTTS';
 import { createPageUrl } from '@/utils';
+
+// Storage keys
+const STORAGE_KEYS = {
+  MESSAGES: 'glyphbot_messages',
+  SETTINGS: 'glyphbot_settings',
+  CHAT_COUNT: 'glyphbot_chat_count'
+};
+
+// Limits
+const MAX_MESSAGES = 10; // Trim messages beyond this
+const SAVE_SETTINGS_THRESHOLD = 20; // Save settings after this many chats
 
 const WELCOME_MESSAGE = {
   id: 'welcome-1',
