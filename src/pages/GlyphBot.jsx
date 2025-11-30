@@ -149,7 +149,7 @@ export default function GlyphBotPage() {
     error: p.stats?.failureCount > 0 && p.stats?.successCount === 0
   })) || [];
 
-  const currentProviderLabel = providers.find(p => p.id === (lastMeta?.providerUsed || provider))?.label || 'Auto (Omega Chain)';
+  const currentProviderLabel = providers.find(p => p.id === (lastMeta?.providerUsed || provider))?.label || 'Gemini (Primary)';
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#030712] via-slate-950 to-[#030712] text-slate-50 flex flex-col pt-16 pb-0">
