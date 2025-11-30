@@ -20,10 +20,22 @@ const JSON_MODE_SUPPORT = {
   MISTRAL_OSS: true,
   GEMMA_OSS: true,
   OPENAI: true,
-  CLAUDE: false,
+  CLAUDE: true,
   GEMINI: true,
   LOCAL_OSS: false,
   BASE44_BROKER: false
+};
+
+const PROVIDER_LABELS = {
+  'CLAUDE': 'Claude 4.5',
+  'OPENAI': 'GPT-4',
+  'DEEPSEEK_OSS': 'DeepSeek',
+  'LLAMA_OSS': 'Llama',
+  'MISTRAL_OSS': 'Mistral',
+  'GEMMA_OSS': 'Gemma',
+  'GEMINI': 'Gemini',
+  'LOCAL_OSS': 'Local',
+  'BASE44_BROKER': 'Base44'
 };
 
 function getStatusColor(provider) {

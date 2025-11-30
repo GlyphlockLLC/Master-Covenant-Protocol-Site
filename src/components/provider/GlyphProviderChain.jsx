@@ -3,16 +3,28 @@ import { motion } from 'framer-motion';
 import { Zap, AlertCircle, CheckCircle, XCircle, Clock } from 'lucide-react';
 
 const PRIORITY_ORDER = [
+  'DEEPSEEK_OSS',
   'LLAMA_OSS',
   'MISTRAL_OSS', 
   'GEMMA_OSS',
-  'DEEPSEEK_OSS',
   'CLAUDE',
   'OPENAI',
   'GEMINI',
   'BASE44_BROKER',
   'LOCAL_OSS'
 ];
+
+const PROVIDER_LABELS = {
+  'CLAUDE': 'Claude 4.5',
+  'OPENAI': 'GPT-4',
+  'DEEPSEEK_OSS': 'DeepSeek',
+  'LLAMA_OSS': 'Llama',
+  'MISTRAL_OSS': 'Mistral',
+  'GEMMA_OSS': 'Gemma',
+  'GEMINI': 'Gemini',
+  'LOCAL_OSS': 'Local',
+  'BASE44_BROKER': 'Base44'
+};
 
 function getProviderStatus(provider) {
   if (!provider.enabled) return 'disabled';
