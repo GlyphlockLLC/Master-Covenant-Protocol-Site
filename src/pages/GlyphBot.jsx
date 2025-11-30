@@ -230,11 +230,11 @@ export default function GlyphBotPage() {
           )}
 
           {/* Chat Area */}
-          <div className="flex-1 flex min-h-0">
+          <div className="flex-1 flex min-h-0 overflow-hidden">
             {/* Messages */}
             <div 
               ref={chatContainerRef}
-              className="flex-1 overflow-y-auto px-4 py-6 space-y-4 scroll-smooth"
+              className="flex-1 chat-scroll-container px-4 py-6 space-y-4"
             >
               {messages.map((msg) => (
                 <ChatMessage
@@ -262,7 +262,7 @@ export default function GlyphBotPage() {
             </div>
 
             {/* Telemetry Sidebar - Desktop */}
-            <aside className="hidden xl:flex w-72 flex-col border-l border-slate-800/50 bg-slate-950/60">
+            <aside className="hidden xl:flex w-72 flex-col border-l border-slate-800/50 bg-slate-950/60 overflow-hidden">
               <div className="px-4 py-3 border-b border-slate-800/50">
                 <div className="flex items-center gap-2 text-xs">
                   <Zap className="w-3.5 h-3.5 text-cyan-400" />
@@ -270,7 +270,7 @@ export default function GlyphBotPage() {
                 </div>
               </div>
 
-              <div className="flex-1 overflow-y-auto p-4 space-y-3">
+              <div className="flex-1 chat-scroll-container p-4 space-y-3">
                 {messages.slice(-5).reverse().filter(m => m.role !== 'system').map((m) => (
                   <div key={m.id} className="rounded-lg border border-slate-800/60 bg-slate-900/40 p-2.5">
                     <div className="flex items-center justify-between mb-1.5">
