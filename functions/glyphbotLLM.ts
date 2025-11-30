@@ -16,24 +16,44 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.4';
 // PROVIDER REGISTRY — Multi-Provider Support
 // =====================================================
 const PROVIDERS = {
-  AUTO: { id: 'AUTO', label: 'Auto (GlyphBot Omega)', priority: 0, jsonMode: false, supportsSchema: false, supportsRegex: false },
-  // PRIMARY MODEL - Gemini Free Tier
-  GEMINI: {
-    id: 'GEMINI',
-    label: 'Gemini 3 Pro (Free)',
-    envHints: ['GEMINI_API_KEY'],
+  AUTO: { id: 'AUTO', label: 'Auto (Omega Chain)', priority: 0, jsonMode: false, supportsSchema: false, supportsRegex: false },
+  // PRIMARY MODEL - OpenAI GPT-4
+  OPENAI: {
+    id: 'OPENAI',
+    label: 'OpenAI GPT-4',
+    envHints: ['OPENAI_API_KEY'],
     priority: 1,
     jsonMode: true,
-    supportsSchema: false,
+    supportsSchema: true,
     supportsRegex: false,
     isPrimary: true
   },
-  // SECONDARY - OpenRouter (multi-model gateway)
+  // FALLBACK 1 - Claude via OpenRouter
+  CLAUDE: {
+    id: 'CLAUDE',
+    label: 'Claude Sonnet',
+    envHints: ['OPENROUTER_API_KEY', 'ANTHROPIC_API_KEY'],
+    priority: 2,
+    jsonMode: true,
+    supportsSchema: false,
+    supportsRegex: false
+  },
+  // FALLBACK 2 - Gemini
+  GEMINI: {
+    id: 'GEMINI',
+    label: 'Gemini Flash',
+    envHints: ['GEMINI_API_KEY'],
+    priority: 3,
+    jsonMode: true,
+    supportsSchema: false,
+    supportsRegex: false
+  },
+  // OPENROUTER Gateway (for multi-model access)
   OPENROUTER: {
     id: 'OPENROUTER',
-    label: 'OpenRouter (Multi-Model)',
+    label: 'OpenRouter',
     envHints: ['OPENROUTER_API_KEY'],
-    priority: 2,
+    priority: 4,
     jsonMode: true,
     supportsSchema: false,
     supportsRegex: false,
@@ -42,7 +62,7 @@ const PROVIDERS = {
   // LOCAL FALLBACK - Always available
   LOCAL_OSS: {
     id: 'LOCAL_OSS',
-    label: 'Local OSS Engine (No Key)',
+    label: 'Local OSS (Fallback)',
     envHints: [],
     priority: 999,
     jsonMode: false,
@@ -231,12 +251,30 @@ function chooseProvider({ requestedProvider, autoProvider, auditMode, persona, r
   const externalProviders = enabled.filter(p => p.id !== 'LOCAL_OSS');
 
   if (autoProvider || !requestedProvider || requestedProvider === 'AUTO') {
-    // FREE TIER ONLY: Gemini is primary (free tier available)
+    // OMEGA CHAIN: OpenAI Primary → Claude Fallback → Gemini Secondary
+    const openaiProvider = externalProviders.find(p => p.id === 'OPENAI');
+    if (openaiProvider) {
+      return {
+        providerId: 'OPENAI',
+        providerLabel: 'OpenAI GPT-4',
+        error: null
+      };
+    }
+
+    const claudeProvider = externalProviders.find(p => p.id === 'CLAUDE');
+    if (claudeProvider) {
+      return {
+        providerId: 'CLAUDE',
+        providerLabel: 'Claude Sonnet',
+        error: null
+      };
+    }
+
     const geminiProvider = externalProviders.find(p => p.id === 'GEMINI');
     if (geminiProvider) {
       return {
         providerId: 'GEMINI',
-        providerLabel: 'Gemini 3 Pro (Free)',
+        providerLabel: 'Gemini Flash',
         error: null
       };
     }
@@ -803,6 +841,91 @@ ${testPrefix}${conversationText}`;
  */
 async function callProvider(providerId, prompt, jsonModePayload = null) {
   switch (providerId) {
+    case 'OPENAI': {
+      const openaiKey = Deno.env.get('OPENAI_API_KEY');
+      if (!openaiKey) throw new Error('OPENAI_API_KEY not set');
+      
+      const body = {
+        model: 'gpt-4o',
+        messages: [{ role: 'user', content: prompt }],
+        max_tokens: 4096,
+        temperature: 0.7
+      };
+      
+      // Add JSON mode if requested
+      if (jsonModePayload) {
+        body.response_format = jsonModePayload;
+      }
+      
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${openaiKey}`
+        },
+        body: JSON.stringify(body)
+      });
+      
+      if (!response.ok) {
+        const errText = await response.text();
+        throw new Error(`OpenAI error: ${response.status} - ${errText}`);
+      }
+      
+      const data = await response.json();
+      return data.choices[0].message.content;
+    }
+
+    case 'CLAUDE': {
+      // Try Anthropic direct first, then OpenRouter
+      const anthropicKey = Deno.env.get('ANTHROPIC_API_KEY');
+      const openrouterKey = Deno.env.get('OPENROUTER_API_KEY');
+      
+      if (anthropicKey) {
+        const response = await fetch('https://api.anthropic.com/v1/messages', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': anthropicKey,
+            'anthropic-version': '2023-06-01'
+          },
+          body: JSON.stringify({
+            model: 'claude-3-5-sonnet-20241022',
+            max_tokens: 4096,
+            messages: [{ role: 'user', content: prompt }]
+          })
+        });
+        
+        if (!response.ok) {
+          const errText = await response.text();
+          throw new Error(`Anthropic error: ${response.status} - ${errText}`);
+        }
+        
+        const data = await response.json();
+        return data.content[0].text;
+      }
+      
+      if (openrouterKey) {
+        const { OpenRouter } = await import('npm:@openrouter/sdk');
+        const openRouter = new OpenRouter({
+          apiKey: openrouterKey,
+          defaultHeaders: {
+            'HTTP-Referer': 'https://glyphlock.io',
+            'X-Title': 'GlyphBot'
+          }
+        });
+        
+        const completion = await openRouter.chat.send({
+          model: 'anthropic/claude-3.5-sonnet',
+          messages: [{ role: 'user', content: prompt }],
+          stream: false
+        });
+        
+        return completion.choices[0].message.content;
+      }
+      
+      throw new Error('No Claude API key available');
+    }
+
     case 'GEMINI': {
       const geminiKey = Deno.env.get('GEMINI_API_KEY');
       if (!geminiKey) throw new Error('GEMINI_API_KEY not set');

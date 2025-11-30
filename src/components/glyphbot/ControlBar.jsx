@@ -14,11 +14,11 @@ const PERSONAS = [
 
 const MODEL_OPTIONS = [
   { id: 'AUTO', label: 'Auto (Omega Chain)' },
-  { id: 'OPENAI', label: 'OpenAI GPT-4' },
-  { id: 'CLAUDE', label: 'Claude Sonnet' },
+  { id: 'OPENAI', label: 'OpenAI GPT-4 (Primary)' },
+  { id: 'CLAUDE', label: 'Claude Sonnet (Fallback)' },
   { id: 'GEMINI', label: 'Gemini Flash' },
-  { id: 'LLAMA_OSS', label: 'Llama (OSS)' },
-  { id: 'MISTRAL_OSS', label: 'Mistral (OSS)' },
+  { id: 'OPENROUTER', label: 'OpenRouter Gateway' },
+  { id: 'LOCAL_OSS', label: 'Local Fallback' },
 ];
 
 function ModeToggle({ active, icon: Icon, label, onClick, color = 'cyan' }) {
