@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle2, Shield, Lock, Fingerprint, Hash, Clock, Zap } from "lucide-react";
 
@@ -7,17 +7,22 @@ export default function DreamTeamFlipCard({ card }) {
   
   if (!card) return null;
 
-  const handleClick = () => setIsFlipped(!isFlipped);
-  const handleMouseEnter = () => {
-    if (window.matchMedia('(hover: hover)').matches) {
+  const handleClick = useCallback(() => {
+    setIsFlipped(prev => !prev);
+  }, []);
+  
+  const handleMouseEnter = useCallback(() => {
+    // Only auto-flip on desktop with hover capability
+    if (typeof window !== 'undefined' && window.matchMedia('(hover: hover)').matches) {
       setIsFlipped(true);
     }
-  };
-  const handleMouseLeave = () => {
-    if (window.matchMedia('(hover: hover)').matches) {
+  }, []);
+  
+  const handleMouseLeave = useCallback(() => {
+    if (typeof window !== 'undefined' && window.matchMedia('(hover: hover)').matches) {
       setIsFlipped(false);
     }
-  };
+  }, []);
 
   const formatDate = (dateStr) => {
     return new Date(dateStr).toLocaleDateString('en-US', { 
@@ -29,18 +34,22 @@ export default function DreamTeamFlipCard({ card }) {
 
   return (
     <div 
-      className="relative w-full cursor-pointer group"
+      className="relative w-full cursor-pointer group select-none"
       style={{ perspective: '1200px' }}
       onClick={handleClick}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => e.key === 'Enter' && handleClick()}
     >
       <div 
         className="relative w-full aspect-[3/4]"
         style={{ 
           transformStyle: 'preserve-3d',
           transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
-          transition: 'transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)'
+          transition: 'transform 0.6s ease-in-out',
+          willChange: 'transform'
         }}
       >
         {/* ═══════════════════════════════════════════════════════════════
@@ -50,6 +59,7 @@ export default function DreamTeamFlipCard({ card }) {
           className="absolute inset-0 rounded-2xl overflow-hidden border-2 border-transparent group-hover:border-cyan-400/60 transition-all duration-300"
           style={{ 
             backfaceVisibility: 'hidden',
+            WebkitBackfaceVisibility: 'hidden',
             boxShadow: `0 0 30px ${card.glowColor}`
           }}
         >
@@ -89,6 +99,7 @@ export default function DreamTeamFlipCard({ card }) {
           className="absolute inset-0 rounded-2xl overflow-hidden"
           style={{ 
             backfaceVisibility: 'hidden',
+            WebkitBackfaceVisibility: 'hidden',
             transform: 'rotateY(180deg)',
             boxShadow: `0 0 40px ${card.glowColor}`
           }}
