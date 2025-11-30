@@ -31,14 +31,14 @@ export default function ChatInput({
   };
 
   return (
-    <div className="border-t border-slate-800/80 bg-gradient-to-t from-slate-950 via-slate-950/95 to-transparent px-4 py-4">
+    <div className="border-t-2 border-purple-500/30 bg-gradient-to-t from-slate-950 via-purple-950/10 to-transparent px-4 py-5">
       <div className="max-w-4xl mx-auto">
-        <div className="relative flex items-end gap-3 bg-slate-900/80 border border-slate-700/60 rounded-2xl p-2 focus-within:border-cyan-500/50 focus-within:shadow-[0_0_20px_rgba(6,182,212,0.15)] transition-all">
+        <div className="relative flex items-end gap-3 bg-slate-900/90 border-2 border-purple-500/40 rounded-2xl p-3 focus-within:border-cyan-400 focus-within:shadow-[0_0_30px_rgba(6,182,212,0.4),inset_0_0_20px_rgba(168,85,247,0.1)] transition-all duration-300 backdrop-blur-xl shadow-[0_0_20px_rgba(168,85,247,0.2)]">
           {/* Left actions */}
           <div className="flex items-center gap-1 pb-1">
             <button
               type="button"
-              className="p-2 rounded-lg text-slate-500 hover:text-slate-300 hover:bg-slate-800/60 transition-colors"
+              className="p-2.5 rounded-xl text-purple-400 hover:text-cyan-300 hover:bg-purple-500/20 border border-purple-500/30 hover:border-cyan-400/50 transition-all duration-300 shadow-[0_0_10px_rgba(168,85,247,0.2)] hover:shadow-[0_0_15px_rgba(6,182,212,0.4)]"
               title="Attach file"
             >
               <Paperclip className="w-4 h-4" />
@@ -54,17 +54,17 @@ export default function ChatInput({
             onKeyDown={handleKeyDown}
             placeholder="Ask GlyphBot about security, code, blockchain..."
             disabled={disabled}
-            className="flex-1 resize-none bg-transparent text-slate-100 placeholder:text-slate-500 focus:outline-none text-sm leading-relaxed max-h-[150px] py-2"
+            className="flex-1 resize-none bg-transparent text-cyan-100 placeholder:text-purple-400/60 focus:outline-none text-sm leading-relaxed max-h-[150px] py-2"
             style={{ fontSize: '16px' }}
           />
 
           {/* Right actions */}
-          <div className="flex items-center gap-1 pb-1">
+          <div className="flex items-center gap-2 pb-1">
             {!isSending && (
               <button
                 type="button"
                 onClick={onRegenerate}
-                className="p-2 rounded-lg text-slate-500 hover:text-slate-300 hover:bg-slate-800/60 transition-colors"
+                className="p-2.5 rounded-xl text-purple-400 hover:text-cyan-300 hover:bg-purple-500/20 border border-purple-500/30 hover:border-cyan-400/50 transition-all duration-300 shadow-[0_0_10px_rgba(168,85,247,0.2)] hover:shadow-[0_0_15px_rgba(6,182,212,0.4)]"
                 title="Regenerate last response"
               >
                 <RotateCcw className="w-4 h-4" />
@@ -75,30 +75,30 @@ export default function ChatInput({
               <button
                 type="button"
                 onClick={onStop}
-                className="p-2.5 rounded-xl bg-rose-500/20 border border-rose-500/50 text-rose-400 hover:bg-rose-500/30 transition-all shadow-[0_0_15px_rgba(244,63,94,0.3)]"
+                className="p-3 rounded-xl bg-rose-500/30 border-2 border-rose-400 text-rose-300 hover:bg-rose-500/40 transition-all duration-300 shadow-[0_0_25px_rgba(244,63,94,0.5),inset_0_0_10px_rgba(244,63,94,0.2)]"
                 title="Stop generation"
               >
-                <Square className="w-4 h-4 fill-current" />
+                <Square className="w-4 h-4 fill-current drop-shadow-[0_0_6px_rgba(244,63,94,0.8)]" />
               </button>
             ) : (
               <button
                 type="button"
                 onClick={onSend}
                 disabled={!value.trim()}
-                className="p-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 text-white hover:from-cyan-400 hover:to-blue-400 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-[0_0_20px_rgba(6,182,212,0.4)] disabled:shadow-none"
+                className="p-3 rounded-xl bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 text-white font-bold hover:from-cyan-400 hover:via-blue-400 hover:to-purple-400 disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-300 shadow-[0_0_25px_rgba(6,182,212,0.6),0_0_50px_rgba(168,85,247,0.3)] disabled:shadow-none hover:shadow-[0_0_35px_rgba(6,182,212,0.8),0_0_60px_rgba(168,85,247,0.5)]"
                 title="Send message"
               >
-                <Send className="w-4 h-4" />
+                <Send className="w-4 h-4 drop-shadow-[0_0_6px_rgba(255,255,255,0.8)]" />
               </button>
             )}
           </div>
         </div>
 
         {/* Hints */}
-        <div className="flex items-center justify-between mt-2 px-2 text-[10px] text-slate-600">
-          <span>Enter to send · Shift+Enter for new line</span>
+        <div className="flex items-center justify-between mt-3 px-3 text-[11px]">
+          <span className="text-purple-400/70">Enter to send · Shift+Enter for new line</span>
           {isSending && (
-            <span className="text-cyan-500 animate-pulse">Processing chain response...</span>
+            <span className="text-cyan-400 font-medium animate-pulse drop-shadow-[0_0_8px_rgba(6,182,212,0.8)]">Processing chain response...</span>
           )}
         </div>
       </div>
