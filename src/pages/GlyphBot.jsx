@@ -107,6 +107,11 @@ export default function GlyphBotPage() {
         shouldSpeak: response.shouldSpeak
       });
 
+      // Auto-speak if voice mode is on
+      if (modes.voice && botText) {
+        speak(botText);
+      }
+
       if (response.meta) {
         setProviderMeta(response.meta);
         sessionStorage.setItem('glyphbot_provider_meta', JSON.stringify(response.meta));
