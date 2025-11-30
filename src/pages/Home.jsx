@@ -7,6 +7,7 @@ import ServicesGrid from '@/components/home/ServicesGrid';
 import DreamTeamHero from '@/components/home/DreamTeamHero';
 import NebulaBackground from '@/components/home/NebulaBackground';
 import CTASection from '@/components/home/CTASection';
+import TechnologyMarquee from '@/components/TechnologyMarquee';
 import SEOHead from '@/components/SEOHead';
 
 const useScrollEffect = (sectionRef) => {
@@ -110,6 +111,11 @@ export default function Home() {
         {/* Services Grid */}
         <ScrollSection>
           <ServicesGrid />
+        </ScrollSection>
+
+        {/* Technology Partners Marquee */}
+        <ScrollSection>
+          <TechnologyMarquee />
         </ScrollSection>
 
         {/* Final CTA */}
