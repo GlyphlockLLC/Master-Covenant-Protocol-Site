@@ -78,11 +78,19 @@ const PROVIDERS = {
 };
 
 // Get list of enabled providers based on env var presence
+// LOCAL_OSS is ALWAYS included as final fallback (no API key required)
 function getEnabledProviders() {
   const result = [];
   for (const key of Object.keys(PROVIDERS)) {
     const provider = PROVIDERS[key];
     if (key === 'AUTO') continue;
+    
+    // LOCAL_OSS is always available (no envHints required)
+    if (key === 'LOCAL_OSS') {
+      result.push(provider);
+      continue;
+    }
+    
     if (!provider.envHints || provider.envHints.length === 0) {
       result.push(provider);
       continue;
