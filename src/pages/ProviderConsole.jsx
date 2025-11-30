@@ -1,37 +1,47 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { Activity, ArrowLeft, Cpu, Shield, Zap, RefreshCw } from 'lucide-react';
 import { createPageUrl } from '@/utils';
 import SEOHead from '@/components/SEOHead';
-import ProviderStatsCard from '@/components/provider/ProviderStatsCard';
-import GlyphProviderChain from '@/components/provider/GlyphProviderChain';
-import AutoSelectorExplainer from '@/components/provider/AutoSelectorExplainer';
+import { 
+  Activity, Zap, CheckCircle, XCircle, AlertCircle, Clock,
+  ArrowLeft, RefreshCw, Shield, Cpu, TrendingUp
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
-// OMEGA CHAIN PATCH: OpenAI Primary → Claude/Gemini Chain → OSS Fallback
-const PRIORITY_ORDER_AUDIT = [
-  'OPENAI',       // PRIMARY (always entry/exit)
-  'CLAUDE',       // Chain Module
-  'GEMINI',       // Chain Module
-  'LLAMA_OSS',    // Secondary OSS
-  'MISTRAL_OSS',  // Secondary OSS
-  'GEMMA_OSS',    // Secondary OSS
-  'BASE44_BROKER',
-  'LOCAL_OSS'
-  // DeepSeek REMOVED
-];
+// OMEGA CHAIN V2: OpenAI Primary → Claude Fallback → Gemini Secondary
+const PRIORITY_ORDER_AUDIT = ['OPENAI', 'CLAUDE', 'GEMINI', 'OPENROUTER', 'LOCAL_OSS'];
+const PRIORITY_ORDER_GENERAL = ['OPENAI', 'CLAUDE', 'GEMINI', 'OPENROUTER', 'LOCAL_OSS'];
 
-const PRIORITY_ORDER_GENERAL = [
-  'OPENAI',       // PRIMARY (always entry/exit)
-  'CLAUDE',       // Chain fallback
-  'GEMINI',       // Chain fallback
-  'LLAMA_OSS',    // Secondary OSS
-  'MISTRAL_OSS',  // Secondary OSS
-  'GEMMA_OSS',    // Secondary OSS
-  'BASE44_BROKER',
-  'LOCAL_OSS'
-  // DeepSeek REMOVED
-];
+const PROVIDER_LABELS = {
+  'OPENAI': 'OpenAI GPT-4',
+  'CLAUDE': 'Claude Sonnet',
+  'GEMINI': 'Gemini Flash',
+  'OPENROUTER': 'OpenRouter',
+  'LOCAL_OSS': 'Local Fallback',
+  'BASE44_BROKER': 'Base44 Broker'
+};
+
+function getStatusColor(provider) {
+  if (!provider?.enabled) return 'border-slate-700 bg-slate-800/50 text-slate-600';
+  if (!provider?.stats) return 'border-slate-600 bg-slate-800/30 text-slate-400';
+  
+  const { successCount, failureCount } = provider.stats;
+  if (successCount > 0 && failureCount === 0) return 'border-emerald-500 bg-emerald-500/10 text-emerald-400';
+  if (successCount > 0 && failureCount > 0) return 'border-yellow-500 bg-yellow-500/10 text-yellow-400';
+  if (failureCount > 0 && successCount === 0) return 'border-red-500 bg-red-500/10 text-red-400';
+  return 'border-slate-600 bg-slate-800/30 text-slate-400';
+}
+
+function getStatusIcon(provider) {
+  if (!provider?.enabled) return <XCircle className="w-4 h-4 text-slate-500" />;
+  if (!provider?.stats) return <Clock className="w-4 h-4 text-slate-400" />;
+  
+  const { successCount, failureCount } = provider.stats;
+  if (successCount > 0 && failureCount === 0) return <CheckCircle className="w-4 h-4 text-emerald-400" />;
+  if (successCount > 0 && failureCount > 0) return <AlertCircle className="w-4 h-4 text-yellow-400" />;
+  if (failureCount > 0 && successCount === 0) return <XCircle className="w-4 h-4 text-red-400" />;
+  return <Clock className="w-4 h-4 text-slate-400" />;
+}
 
 export default function ProviderConsole() {
   const [providerMeta, setProviderMeta] = useState(null);
@@ -49,199 +59,226 @@ export default function ProviderConsole() {
     setLoading(false);
   }, []);
 
-  const availableProviders = providerMeta?.availableProviders || [];
-  const providerStats = providerMeta?.providerStats || {};
-  const providerUsed = providerMeta?.providerUsed || null;
-
-  const enabledCount = availableProviders.filter(p => p.enabled).length;
-  const totalCalls = Object.values(providerStats).reduce((sum, s) => sum + (s?.totalCalls || 0), 0);
-  const totalSuccess = Object.values(providerStats).reduce((sum, s) => sum + (s?.successCount || 0), 0);
-  const totalFail = Object.values(providerStats).reduce((sum, s) => sum + (s?.failureCount || 0), 0);
+  const providers = providerMeta?.availableProviders || [];
+  const stats = providerMeta?.providerStats || {};
+  const totalCalls = Object.values(stats).reduce((sum, s) => sum + (s?.totalCalls || 0), 0);
+  const totalSuccess = Object.values(stats).reduce((sum, s) => sum + (s?.successCount || 0), 0);
+  const totalFailure = Object.values(stats).reduce((sum, s) => sum + (s?.failureCount || 0), 0);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-slate-50">
+    <div className="min-h-screen bg-gradient-to-b from-[#030712] via-slate-950 to-[#030712] text-slate-50 pt-20 pb-16">
       <SEOHead 
-        title="Provider Console | GlyphBot Intelligence Dashboard"
-        description="Monitor GlyphBot's multi-provider LLM routing, analytics, and fallback chain status."
+        title="Provider Console | GlyphBot Chain Analytics"
+        description="Real-time LLM provider monitoring and chain orchestration for GlyphBot."
       />
-      
-      <div className="max-w-6xl mx-auto px-4 py-8 pt-24">
+
+      <div className="max-w-6xl mx-auto px-4">
+        {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
-            <Link
-              to={createPageUrl('GlyphBot')}
-              className="p-2 rounded-lg bg-slate-800 border border-slate-700 hover:border-cyan-500/50 transition-colors"
-            >
-              <ArrowLeft className="w-5 h-5 text-slate-400" />
+            <Link to={createPageUrl('GlyphBot')}>
+              <Button variant="ghost" size="sm" className="text-slate-400 hover:text-white">
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back to Console
+              </Button>
             </Link>
-            
-            <div>
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
-                Provider Intelligence Console
-              </h1>
-              <p className="text-sm text-slate-500">
-                GlyphBot Multi-Provider Routing System
-              </p>
-            </div>
+            <div className="h-6 w-px bg-slate-700" />
+            <h1 className="text-2xl font-bold flex items-center gap-3">
+              <Activity className="w-6 h-6 text-cyan-400" />
+              Provider Chain Console
+            </h1>
           </div>
-          
-          <div className="flex items-center gap-2">
-            <motion.div
-              className="w-2 h-2 rounded-full bg-emerald-400"
-              animate={{ opacity: [1, 0.3, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            />
-            <span className="text-[10px] text-slate-500 font-mono uppercase tracking-wider">
-              Live Status
-            </span>
-          </div>
+          <Button 
+            variant="outline" 
+            size="sm"
+            onClick={() => window.location.reload()}
+            className="border-slate-700 text-slate-400 hover:text-white"
+          >
+            <RefreshCw className="w-4 h-4 mr-2" />
+            Refresh
+          </Button>
         </div>
 
         {loading ? (
           <div className="flex items-center justify-center py-20">
-            <RefreshCw className="w-8 h-8 text-cyan-400 animate-spin" />
+            <div className="animate-spin w-8 h-8 border-2 border-cyan-400 border-t-transparent rounded-full" />
           </div>
         ) : !providerMeta ? (
           <div className="text-center py-20">
-            <Cpu className="w-16 h-16 mx-auto text-slate-700 mb-4" />
-            <h2 className="text-xl font-bold text-slate-400 mb-2">No Provider Data Available</h2>
-            <p className="text-sm text-slate-600 mb-6">
-              Send a message to GlyphBot to populate provider analytics.
-            </p>
-            <Link
-              to={createPageUrl('GlyphBot')}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white transition-colors"
-            >
-              <Zap className="w-4 h-4" />
-              Open GlyphBot
+            <Cpu className="w-16 h-16 text-slate-600 mx-auto mb-4" />
+            <h2 className="text-xl font-semibold text-slate-400 mb-2">No Provider Data</h2>
+            <p className="text-slate-500 mb-6">Send a message in GlyphBot to initialize the provider chain.</p>
+            <Link to={createPageUrl('GlyphBot')}>
+              <Button className="bg-cyan-600 hover:bg-cyan-500">
+                Open GlyphBot
+              </Button>
             </Link>
           </div>
         ) : (
-          <>
-            <div className="mb-6 p-4 rounded-xl bg-slate-900/50 border border-slate-800">
-              <GlyphProviderChain
-                availableProviders={availableProviders}
-                providerStats={providerStats}
-                providerUsed={providerUsed}
-              />
-            </div>
-
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="p-4 rounded-xl bg-slate-900/80 border border-slate-800"
-              >
-                <div className="flex items-center gap-2 text-slate-500 mb-2">
-                  <Cpu className="w-4 h-4" />
-                  <span className="text-[10px] uppercase tracking-wider">Providers</span>
+          <div className="space-y-8">
+            {/* Stats Overview */}
+            <div className="grid grid-cols-4 gap-4">
+              <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-4">
+                <div className="text-xs text-slate-500 uppercase tracking-wider mb-1">Enabled Providers</div>
+                <div className="text-3xl font-bold text-white">{providers.filter(p => p.enabled).length}</div>
+              </div>
+              <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-4">
+                <div className="text-xs text-slate-500 uppercase tracking-wider mb-1">Total Calls</div>
+                <div className="text-3xl font-bold text-cyan-400">{totalCalls}</div>
+              </div>
+              <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-4">
+                <div className="text-xs text-slate-500 uppercase tracking-wider mb-1">Success Rate</div>
+                <div className="text-3xl font-bold text-emerald-400">
+                  {totalCalls > 0 ? Math.round((totalSuccess / totalCalls) * 100) : 0}%
                 </div>
-                <div className="text-2xl font-bold text-slate-200">{enabledCount}</div>
-                <div className="text-[10px] text-slate-600">Enabled</div>
-              </motion.div>
-              
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className="p-4 rounded-xl bg-slate-900/80 border border-slate-800"
-              >
-                <div className="flex items-center gap-2 text-slate-500 mb-2">
-                  <Activity className="w-4 h-4" />
-                  <span className="text-[10px] uppercase tracking-wider">Total Calls</span>
-                </div>
-                <div className="text-2xl font-bold text-slate-200">{totalCalls}</div>
-                <div className="text-[10px] text-slate-600">This Session</div>
-              </motion.div>
-              
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                className="p-4 rounded-xl bg-emerald-900/30 border border-emerald-500/30"
-              >
-                <div className="flex items-center gap-2 text-emerald-400 mb-2">
-                  <Shield className="w-4 h-4" />
-                  <span className="text-[10px] uppercase tracking-wider">Success</span>
-                </div>
-                <div className="text-2xl font-bold text-emerald-400">{totalSuccess}</div>
-                <div className="text-[10px] text-slate-600">Calls</div>
-              </motion.div>
-              
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-                className="p-4 rounded-xl bg-red-900/30 border border-red-500/30"
-              >
-                <div className="flex items-center gap-2 text-red-400 mb-2">
-                  <Zap className="w-4 h-4" />
-                  <span className="text-[10px] uppercase tracking-wider">Failed</span>
-                </div>
-                <div className="text-2xl font-bold text-red-400">{totalFail}</div>
-                <div className="text-[10px] text-slate-600">Calls</div>
-              </motion.div>
-            </div>
-
-            <div className="mb-8">
-              <h2 className="text-lg font-bold text-slate-300 mb-4 flex items-center gap-2">
-                <Activity className="w-5 h-5 text-cyan-400" />
-                Provider Analytics
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {availableProviders.map((provider, idx) => (
-                  <motion.div
-                    key={provider.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: idx * 0.05 }}
-                  >
-                    <ProviderStatsCard provider={provider} />
-                  </motion.div>
-                ))}
+              </div>
+              <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-4">
+                <div className="text-xs text-slate-500 uppercase tracking-wider mb-1">Failures</div>
+                <div className="text-3xl font-bold text-red-400">{totalFailure}</div>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-              <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-4">
-                <h3 className="text-sm font-bold text-slate-300 mb-3 flex items-center gap-2">
-                  <Shield className="w-4 h-4 text-purple-400" />
-                  Audit Mode Priority Chain
+            {/* Provider Chain Visualization */}
+            <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-6">
+              <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                <Zap className="w-5 h-5 text-cyan-400" />
+                Active Provider Chain
+              </h2>
+              
+              <div className="flex items-center gap-3 overflow-x-auto pb-2">
+                {PRIORITY_ORDER_GENERAL.map((providerId, idx) => {
+                  const provider = providers.find(p => p.id === providerId);
+                  const providerStats = stats[providerId];
+                  const isUsed = providerMeta?.providerUsed === providerId;
+                  
+                  return (
+                    <React.Fragment key={providerId}>
+                      {idx > 0 && (
+                        <div className="text-slate-600 text-lg">→</div>
+                      )}
+                      <div className={`
+                        flex items-center gap-2 px-4 py-3 rounded-lg border transition-all
+                        ${provider ? getStatusColor(provider) : 'border-slate-700 bg-slate-800/30 text-slate-600'}
+                        ${isUsed ? 'ring-2 ring-cyan-400/60 shadow-lg shadow-cyan-500/20' : ''}
+                      `}>
+                        {provider ? getStatusIcon(provider) : <XCircle className="w-4 h-4 text-slate-600" />}
+                        <div>
+                          <div className="text-sm font-medium whitespace-nowrap">
+                            {PROVIDER_LABELS[providerId] || providerId}
+                          </div>
+                          {providerStats && (
+                            <div className="text-[10px] text-slate-500">
+                              {providerStats.totalCalls} calls • {providerStats.lastLatencyMs || 0}ms
+                            </div>
+                          )}
+                        </div>
+                        {isUsed && (
+                          <span className="ml-2 px-1.5 py-0.5 bg-cyan-500/20 text-cyan-300 text-[9px] rounded uppercase">Active</span>
+                        )}
+                      </div>
+                    </React.Fragment>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Individual Provider Stats */}
+            <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-6">
+              <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                <TrendingUp className="w-5 h-5 text-cyan-400" />
+                Provider Statistics
+              </h2>
+              
+              <div className="grid gap-3">
+                {providers.map(provider => {
+                  const providerStats = stats[provider.id];
+                  return (
+                    <div 
+                      key={provider.id}
+                      className={`flex items-center justify-between p-4 rounded-lg border ${getStatusColor(provider)}`}
+                    >
+                      <div className="flex items-center gap-3">
+                        {getStatusIcon(provider)}
+                        <div>
+                          <div className="font-medium">{provider.label}</div>
+                          <div className="text-xs text-slate-500">
+                            Priority: {provider.priority} • JSON Mode: {provider.jsonMode ? 'Yes' : 'No'}
+                          </div>
+                        </div>
+                      </div>
+                      
+                      {providerStats && (
+                        <div className="flex items-center gap-6 text-sm">
+                          <div className="text-center">
+                            <div className="text-slate-400">Calls</div>
+                            <div className="font-bold">{providerStats.totalCalls}</div>
+                          </div>
+                          <div className="text-center">
+                            <div className="text-emerald-400">Success</div>
+                            <div className="font-bold text-emerald-400">{providerStats.successCount}</div>
+                          </div>
+                          <div className="text-center">
+                            <div className="text-red-400">Fail</div>
+                            <div className="font-bold text-red-400">{providerStats.failureCount}</div>
+                          </div>
+                          <div className="text-center">
+                            <div className="text-slate-400">Latency</div>
+                            <div className="font-bold">{providerStats.lastLatencyMs || 0}ms</div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Chain Priority Info */}
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-6">
+                <h3 className="text-sm font-semibold text-cyan-400 uppercase tracking-wider mb-3">
+                  Audit Mode Chain
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {PRIORITY_ORDER_AUDIT.map((id, idx) => (
-                    <div
-                      key={id}
-                      className="flex items-center gap-1 px-2 py-1 rounded bg-slate-800 border border-slate-700 text-[10px] font-mono text-slate-400"
-                    >
-                      <span className="text-purple-400">{idx + 1}.</span>
-                      {id}
-                    </div>
+                    <span key={id} className="px-2 py-1 bg-slate-800 border border-slate-700 rounded text-xs">
+                      {idx + 1}. {PROVIDER_LABELS[id] || id}
+                    </span>
                   ))}
                 </div>
               </div>
               
-              <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-4">
-                <h3 className="text-sm font-bold text-slate-300 mb-3 flex items-center gap-2">
-                  <Zap className="w-4 h-4 text-cyan-400" />
-                  General Chat Priority Chain
+              <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-6">
+                <h3 className="text-sm font-semibold text-purple-400 uppercase tracking-wider mb-3">
+                  General Chat Chain
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {PRIORITY_ORDER_GENERAL.map((id, idx) => (
-                    <div
-                      key={id}
-                      className="flex items-center gap-1 px-2 py-1 rounded bg-slate-800 border border-slate-700 text-[10px] font-mono text-slate-400"
-                    >
-                      <span className="text-cyan-400">{idx + 1}.</span>
-                      {id}
-                    </div>
+                    <span key={id} className="px-2 py-1 bg-slate-800 border border-slate-700 rounded text-xs">
+                      {idx + 1}. {PROVIDER_LABELS[id] || id}
+                    </span>
                   ))}
                 </div>
               </div>
             </div>
 
-            <AutoSelectorExplainer />
-          </>
+            {/* Auto-Selector Info */}
+            <div className="bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border border-cyan-500/30 rounded-xl p-6">
+              <div className="flex items-start gap-4">
+                <Shield className="w-8 h-8 text-cyan-400 flex-shrink-0" />
+                <div>
+                  <h3 className="text-lg font-semibold text-white mb-2">Omega Chain Auto-Selector</h3>
+                  <p className="text-slate-400 text-sm leading-relaxed">
+                    The Omega Chain automatically routes requests through the optimal provider path. 
+                    <strong className="text-cyan-300"> OpenAI GPT-4 is the primary provider</strong>, with 
+                    <strong className="text-purple-300"> Claude as the first fallback</strong> and 
+                    <strong className="text-blue-300"> Gemini as the secondary fallback</strong>. 
+                    DeepSeek has been permanently disabled from the chain.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         )}
       </div>
     </div>
