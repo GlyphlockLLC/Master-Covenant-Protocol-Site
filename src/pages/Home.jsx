@@ -4,7 +4,8 @@ import { createPageUrl } from "@/utils";
 import HeroSection from '@/components/home/HeroSection';
 import HeroContent from '@/components/home/HeroContent';
 import ServicesGrid from '@/components/home/ServicesGrid';
-import DreamTeamCards from '@/components/home/DreamTeamCards';
+import DreamTeamHero from '@/components/home/DreamTeamHero';
+import NebulaBackground from '@/components/home/NebulaBackground';
 import CTASection from '@/components/home/CTASection';
 import SEOHead from '@/components/SEOHead';
 
@@ -89,7 +90,10 @@ export default function Home() {
         <p>Enterprise-grade security solutions including quantum-resistant encryption, AI-powered threat detection, visual cryptography, blockchain security, and comprehensive security operations.</p>
       </div>
 
-      <div className="w-full">
+      <div className="w-full relative">
+        {/* Nebula Background */}
+        <NebulaBackground className="opacity-60" />
+
         {/* Hero Video */}
         <ScrollSection>
           <HeroSection />
@@ -100,14 +104,12 @@ export default function Home() {
           <HeroContent />
         </ScrollSection>
 
+        {/* Dream Team Hero - Premium Holographic Cards */}
+        <DreamTeamHero />
+
         {/* Services Grid */}
         <ScrollSection>
           <ServicesGrid />
-        </ScrollSection>
-
-        {/* Dream Team - Flip Cards with Crypto Signatures */}
-        <ScrollSection>
-          <DreamTeamCards />
         </ScrollSection>
 
         {/* Final CTA */}
