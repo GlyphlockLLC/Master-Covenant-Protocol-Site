@@ -61,6 +61,7 @@ export const FOOTER_LINKS = {
   ],
   resources: [
     { label: "Documentation", page: "SecurityDocs" },
+    { label: "SDK Docs", page: "SDKDocs" },
     { label: "Dream Team", page: "DreamTeam" },
     { label: "Command Center", page: "CommandCenter" },
     { label: "GlyphBot Junior", page: "GlyphBotJunior" },
