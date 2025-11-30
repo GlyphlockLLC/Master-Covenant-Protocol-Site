@@ -2,11 +2,11 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Zap, AlertCircle, CheckCircle, XCircle, Clock } from 'lucide-react';
 
-// OMEGA CHAIN V2: OpenAI Primary → Claude Fallback → Gemini Secondary → OSS
+// OMEGA CHAIN V3: Gemini Primary (FREE) → OpenAI → Claude → OpenRouter → OSS
 const PRIORITY_ORDER = [
-  'OPENAI',       // PRIMARY (always loads first)
-  'CLAUDE',       // Fallback 1
-  'GEMINI',       // Fallback 2
+  'GEMINI',       // PRIMARY (FREE - always loads first)
+  'OPENAI',       // Fallback 1
+  'CLAUDE',       // Fallback 2
   'OPENROUTER',   // Gateway
   'LOCAL_OSS',    // Final Fallback
   'BASE44_BROKER'
@@ -14,9 +14,9 @@ const PRIORITY_ORDER = [
 ];
 
 const PROVIDER_LABELS = {
-  'OPENAI': 'GPT-4 (Primary)',
-  'CLAUDE': 'Claude (Fallback)',
-  'GEMINI': 'Gemini',
+  'GEMINI': 'Gemini (Primary)',
+  'OPENAI': 'GPT-4',
+  'CLAUDE': 'Claude',
   'OPENROUTER': 'OpenRouter',
   'LOCAL_OSS': 'Local OSS',
   'BASE44_BROKER': 'Base44'
