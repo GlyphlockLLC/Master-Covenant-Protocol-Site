@@ -177,13 +177,13 @@ export default function GlyphBotPage() {
 
             <div className="flex items-center gap-4">
               <div className="hidden md:flex items-center gap-2 text-xs">
-                <span className="flex items-center gap-1.5 text-slate-400">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_6px_rgba(52,211,153,0.8)]" />
-                  Online
-                </span>
-                <span className="text-slate-600">|</span>
-                <span className="text-slate-300">{currentProviderLabel}</span>
-              </div>
+                    <span className="flex items-center gap-1.5 text-slate-400">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_6px_rgba(52,211,153,0.8)]" />
+                      Online
+                    </span>
+                    <span className="text-slate-600">|</span>
+                    <span className="text-slate-300">{currentProviderLabel || 'Gemini (Primary)'}</span>
+                  </div>
               <Link
                 to={createPageUrl('ProviderConsole')}
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-900/80 border border-slate-700/60 text-slate-400 hover:border-cyan-500/50 hover:text-cyan-300 transition-all"
