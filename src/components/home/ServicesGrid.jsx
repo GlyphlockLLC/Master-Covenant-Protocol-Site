@@ -52,8 +52,8 @@ export default function ServicesGrid() {
   return (
     <div className="w-full max-w-7xl mx-auto px-4 pt-8 pb-16">
       <div className="text-center mb-12">
-        <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
-          Complete Security Ecosystem
+        <h2 className="text-3xl md:text-5xl font-black text-white mb-4 drop-shadow-[0_0_25px_rgba(255,255,255,0.3)]">
+          Complete Security <span className="bg-gradient-to-r from-[#1E40AF] via-[#3B82F6] to-[#60A5FA] bg-clip-text text-transparent">Ecosystem</span>
         </h2>
         <p className="text-lg text-white/70">
           Integrated tools designed for enterprise-level protection
@@ -63,7 +63,7 @@ export default function ServicesGrid() {
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {services.map((service, idx) => (
           <Link key={idx} to={createPageUrl(service.link)}>
-            <div className="glass-card-dark border-cyan-500/30 rounded-xl overflow-hidden group cursor-pointer hover:scale-105 transition-all duration-300 h-full">
+            <div className="bg-slate-900/80 border-2 border-[#3B82F6]/40 rounded-xl overflow-hidden group cursor-pointer hover:scale-105 transition-all duration-300 h-full shadow-[0_0_25px_rgba(59,130,246,0.2)] hover:shadow-[0_0_40px_rgba(59,130,246,0.4)] hover:border-[#3B82F6]/60">
               <div className="relative h-48 overflow-hidden">
                 <img 
                   src={service.image} 
@@ -73,7 +73,7 @@ export default function ServicesGrid() {
               </div>
               <div className="p-6">
                 <div className="flex items-center gap-3 mb-3">
-                  <service.icon className="w-6 h-6 text-cyan-400" />
+                  <service.icon className="w-6 h-6 text-[#3B82F6] drop-shadow-[0_0_8px_rgba(59,130,246,0.8)]" />
                   <h3 className="text-xl font-bold text-white">{service.title}</h3>
                 </div>
                 <p className="text-white/70">{service.description}</p>

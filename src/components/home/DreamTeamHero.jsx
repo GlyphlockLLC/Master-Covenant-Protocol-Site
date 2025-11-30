@@ -116,8 +116,8 @@ const DREAM_TEAM = [
       verified: true
     },
     stats: { logic: 90, security: 89, creativity: 94, speed: 96 },
-    borderColor: 'from-fuchsia-500 via-pink-400 to-cyan-400',
-    glowColor: 'rgba(244,114,182,0.6)'
+    borderColor: 'from-blue-500 via-indigo-400 to-cyan-400',
+    glowColor: 'rgba(59,130,246,0.6)'
   },
   {
     id: 'alfred',
@@ -154,7 +154,7 @@ export default function DreamTeamHero() {
     <section className="relative py-20 md:py-32 overflow-hidden">
       {/* Background effects */}
       <div className="absolute inset-0 bg-gradient-to-b from-black via-slate-950/50 to-black" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_30%,rgba(244,114,182,0.15),transparent_50%),radial-gradient(ellipse_at_80%_70%,rgba(6,182,212,0.15),transparent_50%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_30%,rgba(59,130,246,0.15),transparent_50%),radial-gradient(ellipse_at_80%_70%,rgba(30,64,175,0.15),transparent_50%)]" />
       
       {/* Animated grid overlay */}
       <div 
@@ -171,13 +171,13 @@ export default function DreamTeamHero() {
       <div className="container mx-auto px-4 relative z-10">
         {/* Header */}
         <div className="text-center mb-12 md:mb-16">
-          <Badge className="mb-6 bg-gradient-to-r from-fuchsia-500/20 to-cyan-500/20 text-white border-fuchsia-500/50 px-6 py-2 text-sm backdrop-blur-md shadow-[0_0_20px_rgba(244,114,182,0.3)]">
+          <Badge className="mb-6 bg-gradient-to-r from-[#1E40AF]/30 to-[#3B82F6]/30 text-white border-[#3B82F6]/50 px-6 py-2 text-sm backdrop-blur-md shadow-[0_0_20px_rgba(59,130,246,0.3)]">
             <Trophy className="w-4 h-4 mr-2 text-amber-400" />
             GlyphLock Dream Team
           </Badge>
           
           <h2 className="text-5xl md:text-7xl lg:text-8xl font-black mb-8 tracking-tight">
-            <span className="bg-gradient-to-r from-fuchsia-400 via-pink-400 to-cyan-300 bg-clip-text text-transparent drop-shadow-[0_0_40px_rgba(244,114,182,0.6)]">
+            <span className="bg-gradient-to-r from-[#1E40AF] via-[#3B82F6] to-[#60A5FA] bg-clip-text text-transparent drop-shadow-[0_0_40px_rgba(59,130,246,0.6)]">
               AI Dream Team
             </span>
           </h2>
@@ -222,7 +222,7 @@ export default function DreamTeamHero() {
         <div className="text-center">
           <Link
             to={createPageUrl('DreamTeam')}
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-fuchsia-600 to-cyan-600 text-white font-bold text-lg hover:from-fuchsia-500 hover:to-cyan-500 transition-all hover:scale-105 shadow-[0_0_40px_rgba(244,114,182,0.4),0_0_80px_rgba(6,182,212,0.2)]"
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-[#1E40AF] to-[#3B82F6] text-white font-bold text-lg hover:from-[#2563EB] hover:to-[#60A5FA] transition-all hover:scale-105 shadow-[0_0_40px_rgba(59,130,246,0.4),0_0_80px_rgba(30,64,175,0.2)]"
           >
             View Full Roster & Stats
             <ChevronRight className="w-5 h-5" />
