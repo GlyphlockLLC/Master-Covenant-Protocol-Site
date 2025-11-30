@@ -22,6 +22,7 @@ const MODEL_OPTIONS = [
   { id: 'DEEPSEEK_OSS', label: 'DeepSeek (OSS)' },
   { id: 'CLAUDE', label: 'Claude' },
   { id: 'OPENAI', label: 'OpenAI' },
+  { id: 'LOCAL_OSS', label: 'Local Fallback (No Key)' },
 ];
 
 const GlyphBotPage = () => {
