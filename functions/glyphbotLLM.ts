@@ -1,19 +1,19 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.4';
 
 /**
- * GlyphBot LLM Engine v8.0 — Omega Chain
+ * GlyphBot LLM Engine v9.0 — Omega Chain (Gemini Primary)
  * 
- * PRIMARY: OpenAI GPT-4 (highest quality)
- * FALLBACK 1: Claude Sonnet (via Anthropic or OpenRouter)
- * FALLBACK 2: Gemini Flash (Google)
+ * PRIMARY: Gemini Flash (FREE, always available)
+ * FALLBACK 1: OpenAI GPT-4o
+ * FALLBACK 2: Claude Sonnet (via Anthropic or OpenRouter)
  * FALLBACK 3: OpenRouter Gateway
  * FINAL: Local OSS Engine (always available)
  * 
  * Environment Variables:
- * - OPENAI_API_KEY: OpenAI (Primary)
+ * - GEMINI_API_KEY: Google Gemini (Primary - FREE)
+ * - OPENAI_API_KEY: OpenAI
  * - ANTHROPIC_API_KEY: Claude direct
  * - OPENROUTER_API_KEY: OpenRouter gateway
- * - GEMINI_API_KEY: Google Gemini
  */
 
 // =====================================================
@@ -979,27 +979,29 @@ async function callProvider(providerId, prompt, jsonModePayload = null) {
       const openrouterKey = Deno.env.get('OPENROUTER_API_KEY');
       if (!openrouterKey) throw new Error('OPENROUTER_API_KEY not set');
       
-      const { OpenRouter } = await import('npm:@openrouter/sdk');
-      
-      const openRouter = new OpenRouter({
-        apiKey: openrouterKey,
-        defaultHeaders: {
+      // Use fetch directly for more reliable OpenRouter calls
+      const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${openrouterKey}`,
           'HTTP-Referer': 'https://glyphlock.io',
           'X-Title': 'GlyphBot'
-        }
+        },
+        body: JSON.stringify({
+          model: 'anthropic/claude-3.5-sonnet',
+          messages: [{ role: 'user', content: prompt }],
+          max_tokens: 4096
+        })
       });
       
-      const model = PROVIDERS.OPENROUTER.defaultModel;
+      if (!response.ok) {
+        const errText = await response.text();
+        throw new Error(`OpenRouter error: ${response.status} - ${errText}`);
+      }
       
-      const completion = await openRouter.chat.send({
-        model,
-        messages: [
-          { role: 'user', content: prompt }
-        ],
-        stream: false
-      });
-      
-      return completion.choices[0].message.content;
+      const data = await response.json();
+      return data.choices[0].message.content;
     }
     
     case 'LOCAL_OSS': {
