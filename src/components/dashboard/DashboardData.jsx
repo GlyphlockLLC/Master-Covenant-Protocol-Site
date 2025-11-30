@@ -1,6 +1,7 @@
 import { 
   ShoppingCart, Users, Package, TrendingUp, Map, AlertTriangle, 
-  QrCode, Shield, Bed, UserCheck, DollarSign, BarChart3, Key
+  QrCode, Shield, Bed, UserCheck, DollarSign, BarChart3, Key,
+  Hash, Code, Lock, Fingerprint, Zap
 } from "lucide-react";
 
 export const navItems = [
@@ -10,6 +11,14 @@ export const navItems = [
       { id: "security-overview", label: "Security Overview", entity: null, icon: Shield },
       { id: "consultations", label: "Consultations", entity: "Consultation", icon: Users },
       { id: "products", label: "Products", entity: "Product", icon: Package },
+    ]
+  },
+  {
+    category: "Key Tools",
+    items: [
+      { id: "key-generator", label: "Key Generator", entity: null, icon: Key },
+      { id: "hash-generator", label: "Hash Generator", entity: null, icon: Hash },
+      { id: "encoder-decoder", label: "Encoder/Decoder", entity: null, icon: Code },
     ]
   },
   {
@@ -58,7 +67,7 @@ export const navItems = [
   {
     category: "Developer",
     items: [
-      { id: "api-keys", label: "API Keys & Secrets", entity: "APIKey", icon: Key },
+      { id: "api-keys", label: "API Keys & Secrets", entity: "APIKey", icon: Lock },
     ]
   }
 ];

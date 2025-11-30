@@ -4,6 +4,9 @@ import DashboardSidebar from "@/components/dashboard/DashboardSidebar";
 import DataTable from "@/components/dashboard/DataTable";
 import DeveloperKeys from "@/components/dashboard/DeveloperKeys";
 import SecurityOverview from "@/components/dashboard/SecurityOverview";
+import KeyGenerator from "@/components/dashboard/KeyGenerator";
+import HashGenerator from "@/components/dashboard/HashGenerator";
+import EncoderDecoder from "@/components/dashboard/EncoderDecoder";
 import GlyphLoader from "@/components/GlyphLoader";
 
 export default function Dashboard() {
@@ -36,6 +39,27 @@ export default function Dashboard() {
     return <GlyphLoader text="Loading Dashboard..." />;
   }
 
+  const renderContent = () => {
+    if (!selectedModel) {
+      return <SecurityOverview />;
+    }
+
+    switch (selectedModel.id) {
+      case 'security-overview':
+        return <SecurityOverview />;
+      case 'api-keys':
+        return <DeveloperKeys />;
+      case 'key-generator':
+        return <KeyGenerator />;
+      case 'hash-generator':
+        return <HashGenerator />;
+      case 'encoder-decoder':
+        return <EncoderDecoder />;
+      default:
+        return <DataTable selectedModel={selectedModel} />;
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-purple-950/20 to-black flex overflow-hidden relative">
       {/* Cosmic Background */}
@@ -65,13 +89,7 @@ export default function Dashboard() {
 
         {/* Dashboard Content */}
         <div className="flex-1 overflow-y-auto p-6 scrollbar-hide">
-          {selectedModel?.id === 'api-keys' ? (
-            <DeveloperKeys />
-          ) : selectedModel?.id === 'security-overview' ? (
-            <SecurityOverview />
-          ) : (
-            <DataTable selectedModel={selectedModel} />
-          )}
+          {renderContent()}
         </div>
       </div>
     </div>
