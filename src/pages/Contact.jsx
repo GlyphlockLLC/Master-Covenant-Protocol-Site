@@ -1,14 +1,12 @@
 import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
 import { useMutation } from "@tanstack/react-query";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { Mail, Phone, MapPin, Send, CheckCircle2, Globe } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import SEOHead from "@/components/SEOHead";
+import { GlyphInput, GlyphButton, GlyphFormPanel } from "@/components/ui/GlyphForm";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -49,15 +47,15 @@ export default function Contact() {
       />
       <div className="min-h-screen bg-black text-white pt-32 pb-24 relative overflow-hidden">
         {/* Background Elements */}
-        <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-[#00E4FF]/5 rounded-full blur-[120px] pointer-events-none"></div>
-        <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-[#8C4BFF]/5 rounded-full blur-[120px] pointer-events-none"></div>
+        <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-[#3B82F6]/5 rounded-full blur-[120px] pointer-events-none"></div>
+        <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-[#7C3AED]/5 rounded-full blur-[120px] pointer-events-none"></div>
 
         <div className="container mx-auto px-6 max-w-6xl relative z-10">
           
           {/* Hero */}
           <div className="text-center mb-20">
-            <h1 className="text-5xl md:text-7xl font-black mb-6 tracking-tighter font-space">
-              GET IN <span className="text-transparent bg-gradient-to-r from-[#00E4FF] to-[#8C4BFF] bg-clip-text">TOUCH</span>
+            <h1 className="text-5xl md:text-7xl font-black mb-6 tracking-tighter">
+              GET IN <span className="text-transparent bg-gradient-to-r from-[#7C3AED] to-[#3B82F6] bg-clip-text drop-shadow-[0_0_30px_rgba(124,58,237,0.5)]">TOUCH</span>
             </h1>
             <p className="text-xl text-gray-400 max-w-2xl mx-auto">
               Secure your digital sovereignty. Initiate a secure channel with GlyphLock.
@@ -66,17 +64,17 @@ export default function Contact() {
 
           <div className="grid md:grid-cols-3 gap-8 mb-16">
             {[
-              { icon: Mail, title: "Email", content: "glyphlock@gmail.com", href: "mailto:glyphlock@gmail.com", color: "text-[#00E4FF]" },
-              { icon: Phone, title: "Phone", content: "(424) 246-6499", href: "tel:+14242466499", color: "text-[#8C4BFF]" },
+              { icon: Mail, title: "Email", content: "glyphlock@gmail.com", href: "mailto:glyphlock@gmail.com", color: "text-[#3B82F6]" },
+              { icon: Phone, title: "Phone", content: "(424) 246-6499", href: "tel:+14242466499", color: "text-[#8B5CF6]" },
               { icon: MapPin, title: "Location", content: "El Mirage, Arizona", color: "text-white" }
             ].map((item, idx) => (
-              <div key={idx} className="glass-card rounded-xl p-8 border border-white/10 text-center hover:border-[#00E4FF]/30 transition-all group">
-                <div className={`w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-white/10 group-hover:bg-[#00E4FF]/10 group-hover:border-[#00E4FF]/30 transition-all`}>
-                  <item.icon className={`w-8 h-8 ${item.color}`} />
+              <div key={idx} className="bg-slate-900/80 rounded-xl p-8 border-2 border-[#3B82F6]/30 text-center hover:border-[#3B82F6]/60 transition-all group shadow-[0_0_25px_rgba(59,130,246,0.2)] hover:shadow-[0_0_40px_rgba(59,130,246,0.4)]">
+                <div className={`w-16 h-16 bg-slate-800/80 rounded-2xl flex items-center justify-center mx-auto mb-6 border-2 border-[#3B82F6]/40 group-hover:bg-[#3B82F6]/20 group-hover:border-[#3B82F6]/60 transition-all shadow-[0_0_15px_rgba(59,130,246,0.3)]`}>
+                  <item.icon className={`w-8 h-8 ${item.color} drop-shadow-[0_0_8px_rgba(59,130,246,0.8)]`} />
                 </div>
-                <h3 className="text-xl font-bold text-white mb-2 font-space">{item.title}</h3>
+                <h3 className="text-xl font-bold text-white mb-2">{item.title}</h3>
                 {item.href ? (
-                  <a href={item.href} className="text-gray-400 hover:text-[#00E4FF] transition-colors text-lg">
+                  <a href={item.href} className="text-gray-400 hover:text-[#3B82F6] transition-colors text-lg">
                     {item.content}
                   </a>
                 ) : (
@@ -88,116 +86,110 @@ export default function Contact() {
 
           <div className="grid lg:grid-cols-[1fr_1fr] gap-12">
             {/* Contact Form */}
-            <div className="glass-card rounded-2xl p-8 md:p-10 border border-[#00E4FF]/20 relative overflow-hidden">
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#00E4FF] to-[#8C4BFF]"></div>
-              
-              <h2 className="text-3xl font-bold text-white mb-8 flex items-center gap-3 font-space">
-                <Send className="w-6 h-6 text-[#00E4FF]" />
-                Secure Messaging
-              </h2>
+            <GlyphFormPanel title="" className="w-full">
+              <div className="w-full">
+                <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                  <Send className="w-6 h-6 text-[#3B82F6] drop-shadow-[0_0_8px_rgba(59,130,246,0.8)]" />
+                  Secure Messaging
+                </h2>
 
-              {submitted ? (
-                <Alert className="bg-green-500/10 border-green-500/30 neon-border-cyan mb-8">
-                  <CheckCircle2 className="h-5 w-5 text-green-400" />
-                  <AlertDescription className="text-green-100 ml-2">
-                    Transmission received. We will respond within 24 hours.
-                  </AlertDescription>
-                </Alert>
-              ) : null}
+                {submitted ? (
+                  <Alert className="bg-green-500/10 border-green-500/30 mb-6">
+                    <CheckCircle2 className="h-5 w-5 text-green-400" />
+                    <AlertDescription className="text-green-100 ml-2">
+                      Transmission received. We will respond within 24 hours.
+                    </AlertDescription>
+                  </Alert>
+                ) : null}
 
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-6">
+                <form onSubmit={handleSubmit} className="space-y-5">
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="name" className="text-white/80 text-xs uppercase tracking-wider font-bold">Identity</Label>
+                      <GlyphInput
+                        type="text"
+                        placeholder="Your Name"
+                        value={formData.name}
+                        onChange={(e) => setFormData({...formData, name: e.target.value})}
+                        className="w-full"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="email" className="text-white/80 text-xs uppercase tracking-wider font-bold">Contact Point</Label>
+                      <GlyphInput
+                        type="email"
+                        placeholder="name@company.com"
+                        value={formData.email}
+                        onChange={(e) => setFormData({...formData, email: e.target.value})}
+                        className="w-full"
+                      />
+                    </div>
+                  </div>
+
                   <div className="space-y-2">
-                    <Label htmlFor="name" className="text-gray-300 text-sm uppercase tracking-wider font-bold">Identity</Label>
-                    <Input
-                      id="name"
-                      required
-                      value={formData.name}
-                      onChange={(e) => setFormData({...formData, name: e.target.value})}
-                      className="bg-black/40 border-white/10 text-white focus:border-[#00E4FF] h-12"
-                      placeholder="Your Name"
+                    <Label htmlFor="subject" className="text-white/80 text-xs uppercase tracking-wider font-bold">Subject Protocol</Label>
+                    <GlyphInput
+                      type="text"
+                      placeholder="Consultation / Partnership / Support"
+                      value={formData.subject}
+                      onChange={(e) => setFormData({...formData, subject: e.target.value})}
+                      className="w-full"
                     />
                   </div>
+
                   <div className="space-y-2">
-                    <Label htmlFor="email" className="text-gray-300 text-sm uppercase tracking-wider font-bold">Contact Point</Label>
-                    <Input
-                      id="email"
-                      type="email"
+                    <Label htmlFor="message" className="text-white/80 text-xs uppercase tracking-wider font-bold">Transmission</Label>
+                    <Textarea
+                      id="message"
                       required
-                      value={formData.email}
-                      onChange={(e) => setFormData({...formData, email: e.target.value})}
-                      className="bg-black/40 border-white/10 text-white focus:border-[#00E4FF] h-12"
-                      placeholder="name@company.com"
+                      value={formData.message}
+                      onChange={(e) => setFormData({...formData, message: e.target.value})}
+                      rows={5}
+                      className="w-full bg-slate-900 border-2 border-slate-800 text-white focus:border-[#3B82F6]/60 resize-none rounded-lg px-4 py-3 placeholder:text-slate-500"
+                      style={{
+                        boxShadow: '6px 6px 10px rgba(0,0,0,0.8), 1px 1px 10px rgba(59, 130, 246, 0.2)'
+                      }}
+                      placeholder="Describe your security requirements..."
                     />
                   </div>
-                </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="subject" className="text-gray-300 text-sm uppercase tracking-wider font-bold">Subject Protocol</Label>
-                  <Input
-                    id="subject"
-                    required
-                    value={formData.subject}
-                    onChange={(e) => setFormData({...formData, subject: e.target.value})}
-                    className="bg-black/40 border-white/10 text-white focus:border-[#00E4FF] h-12"
-                    placeholder="Consultation / Partnership / Support"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="message" className="text-gray-300 text-sm uppercase tracking-wider font-bold">Transmission</Label>
-                  <Textarea
-                    id="message"
-                    required
-                    value={formData.message}
-                    onChange={(e) => setFormData({...formData, message: e.target.value})}
-                    rows={6}
-                    className="bg-black/40 border-white/10 text-white focus:border-[#00E4FF] resize-none"
-                    placeholder="Describe your security requirements..."
-                  />
-                </div>
-
-                <Button
-                  type="submit"
-                  size="lg"
-                  disabled={sendEmail.isPending}
-                  className="w-full bg-gradient-to-r from-[#00E4FF] to-[#0099FF] hover:to-[#00E4FF] text-black font-bold uppercase tracking-wide h-14 text-lg shadow-[0_0_20px_rgba(0,228,255,0.3)] border-none transition-all"
-                >
-                  {sendEmail.isPending ? "Encrypting & Sending..." : "Initiate Transmission"}
-                </Button>
-              </form>
-            </div>
+                  <GlyphButton type="submit" variant="mixed" className="w-full">
+                    {sendEmail.isPending ? "Encrypting & Sending..." : "Initiate Transmission"}
+                  </GlyphButton>
+                </form>
+              </div>
+            </GlyphFormPanel>
 
             {/* Side Info */}
             <div className="space-y-8">
-              <div className="glass-card rounded-2xl p-8 border border-[#8C4BFF]/20">
-                <h3 className="text-2xl font-bold text-white mb-4 font-space">Global Operations</h3>
+              <div className="bg-slate-900/80 rounded-2xl p-8 border-2 border-[#8B5CF6]/30 shadow-[0_0_25px_rgba(139,92,246,0.2)]">
+                <h3 className="text-2xl font-bold text-white mb-4">Global Operations</h3>
                 <p className="text-gray-400 leading-relaxed mb-6">
                   GlyphLock operates globally with Arizona as our primary jurisdiction and legal enforcement zone. 
                   Our systems are deployed across enterprise networks, hospitality venues, and secure facilities worldwide.
                 </p>
-                <div className="flex items-center gap-3 text-[#8C4BFF] font-bold uppercase tracking-wide text-sm">
-                  <Globe className="w-5 h-5" />
+                <div className="flex items-center gap-3 text-[#8B5CF6] font-bold uppercase tracking-wide text-sm">
+                  <Globe className="w-5 h-5 drop-shadow-[0_0_6px_rgba(139,92,246,0.8)]" />
                   <span>Operating in 12 Time Zones</span>
                 </div>
               </div>
 
-              <div className="glass-card rounded-2xl p-8 border border-white/10 bg-gradient-to-br from-white/5 to-transparent">
-                <h3 className="text-2xl font-bold text-white mb-4 font-space">Partnership Inquiries</h3>
+              <div className="bg-slate-900/80 rounded-2xl p-8 border-2 border-[#3B82F6]/30 shadow-[0_0_25px_rgba(59,130,246,0.2)]">
+                <h3 className="text-2xl font-bold text-white mb-4">Partnership Inquiries</h3>
                 <p className="text-gray-400 leading-relaxed mb-6">
                   For enterprise licensing, white-label solutions, or strategic integration requests, please use the contact form with subject "Partnership".
                 </p>
                 <ul className="space-y-3 text-sm text-gray-300">
                   <li className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-[#00E4FF]" />
+                    <CheckCircle2 className="w-4 h-4 text-[#3B82F6] drop-shadow-[0_0_6px_rgba(59,130,246,0.8)]" />
                     <span>Enterprise volume licensing</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-[#00E4FF]" />
+                    <CheckCircle2 className="w-4 h-4 text-[#3B82F6] drop-shadow-[0_0_6px_rgba(59,130,246,0.8)]" />
                     <span>Custom API integration</span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-[#00E4FF]" />
+                    <CheckCircle2 className="w-4 h-4 text-[#3B82F6] drop-shadow-[0_0_6px_rgba(59,130,246,0.8)]" />
                     <span>Dedicated support channels</span>
                   </li>
                 </ul>

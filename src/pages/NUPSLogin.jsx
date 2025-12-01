@@ -1,12 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Shield, Lock, User } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { GlyphInput, GlyphButton, GlyphFormPanel } from "@/components/ui/GlyphForm";
 
 export default function NUPSLogin() {
   const navigate = useNavigate();
@@ -21,20 +18,16 @@ export default function NUPSLogin() {
     setError("");
 
     try {
-      // Check if user is authenticated
       const isAuthenticated = await base44.auth.isAuthenticated();
       
       if (isAuthenticated) {
         const user = await base44.auth.me();
-        
-        // Route based on role
         if (user.role === 'admin') {
           navigate('/nups-owner');
         } else {
           navigate('/nups-staff');
         }
       } else {
-        // Redirect to login
         base44.auth.redirectToLogin('/nups-login');
       }
     } catch (err) {
@@ -45,94 +38,77 @@ export default function NUPSLogin() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-blue-600/10 to-purple-600/10" />
+    <div className="min-h-screen bg-black text-white flex items-center justify-center p-4 relative">
+      {/* Background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#1E40AF]/20 via-[#7C3AED]/10 to-[#3B82F6]/20" />
       
-      <Card className="w-full max-w-md bg-gray-900 border-cyan-500/30 relative z-10">
-        <CardHeader className="text-center">
-          <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center mx-auto mb-4">
-            <Shield className="w-8 h-8 text-white" />
+      <div className="relative z-10">
+        <GlyphFormPanel title="">
+          <div className="text-center mb-6">
+            <div className="w-16 h-16 bg-gradient-to-br from-[#7C3AED] to-[#3B82F6] rounded-xl flex items-center justify-center mx-auto mb-4 shadow-[0_0_30px_rgba(124,58,237,0.5)]">
+              <Shield className="w-8 h-8 text-white" />
+            </div>
+            <h1 className="text-3xl font-black">
+              <span className="bg-gradient-to-r from-[#7C3AED] to-[#3B82F6] bg-clip-text text-transparent">
+                N.U.P.S.
+              </span>{" "}
+              <span className="text-white">POS</span>
+            </h1>
+            <p className="text-white/60 mt-1 text-sm">Nexus Universal Point-of-Sale</p>
           </div>
-          <CardTitle className="text-3xl">
-            <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
-              N.U.P.S.
-            </span>{" "}
-            POS System
-          </CardTitle>
-          <p className="text-gray-400 mt-2">Nexus Universal Point-of-Sale</p>
-        </CardHeader>
-        
-        <CardContent>
+
           {error && (
-            <Alert variant="destructive" className="mb-6">
-              <AlertDescription>{error}</AlertDescription>
+            <Alert variant="destructive" className="mb-4 bg-red-500/20 border-red-500/50">
+              <AlertDescription className="text-red-200">{error}</AlertDescription>
             </Alert>
           )}
 
-          <form onSubmit={handleLogin} className="space-y-6">
-            <div>
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="staff@glyphlock.com"
-                className="bg-gray-800 border-gray-700"
-                required
-              />
-            </div>
-
-            <div>
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
-                className="bg-gray-800 border-gray-700"
-                required
-              />
-            </div>
-
-            <Button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700"
-            >
+          <form onSubmit={handleLogin} className="flex flex-col gap-4">
+            <GlyphInput
+              type="email"
+              placeholder="staff@glyphlock.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <GlyphInput
+              type="password"
+              placeholder="••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <GlyphButton type="submit" variant="mixed" className="w-full mt-2">
               {loading ? (
-                <>
-                  <Lock className="w-4 h-4 mr-2 animate-spin" />
+                <span className="flex items-center gap-2">
+                  <Lock className="w-4 h-4 animate-spin" />
                   Authenticating...
-                </>
+                </span>
               ) : (
-                <>
-                  <User className="w-4 h-4 mr-2" />
+                <span className="flex items-center gap-2">
+                  <User className="w-4 h-4" />
                   Sign In
-                </>
+                </span>
               )}
-            </Button>
+            </GlyphButton>
           </form>
 
-          <div className="mt-8 pt-6 border-t border-gray-800">
-            <div className="text-sm text-gray-400 space-y-2">
+          <div className="mt-6 pt-4 border-t border-[#3B82F6]/30 w-full">
+            <div className="text-xs text-white/60 space-y-2">
               <div className="flex items-center justify-between">
                 <span>Staff Access:</span>
-                <span className="text-cyan-400">Basic Operations</span>
+                <span className="text-[#3B82F6]">Basic Operations</span>
               </div>
               <div className="flex items-center justify-between">
                 <span>Manager Access:</span>
-                <span className="text-blue-400">Reports & Inventory</span>
+                <span className="text-[#60A5FA]">Reports & Inventory</span>
               </div>
               <div className="flex items-center justify-between">
                 <span>Owner Access:</span>
-                <span className="text-purple-400">Full Administration</span>
+                <span className="text-[#8B5CF6]">Full Administration</span>
               </div>
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </GlyphFormPanel>
+      </div>
     </div>
   );
 }
