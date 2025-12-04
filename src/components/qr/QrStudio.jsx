@@ -21,7 +21,7 @@ import {
   GlyphShadows,
   GlyphGradients 
 } from './design/GlyphQrDesignSystem';
-import { PAYLOAD_TYPES } from './config/PayloadTypesCatalog';
+import { PAYLOAD_TYPES, PAYLOAD_CATEGORIES } from './config/PayloadTypesCatalog';
 import PayloadTypeSelector from './PayloadTypeSelector';
 import QrSecurityBadge from './QrSecurityBadge';
 import QrPreviewCanvas from './QrPreviewCanvas';
@@ -33,7 +33,6 @@ import SecurityStatus from './SecurityStatus';
 import SteganographicQR from './SteganographicQR';
 import QRTypeSelector from '@/components/crypto/QRTypeSelector';
 import QRTypeForm from '@/components/crypto/QRTypeForm';
-import { PAYLOAD_TYPES, PAYLOAD_CATEGORIES } from './config/PayloadTypesCatalog';
 import { generateSHA256, performStaticURLChecks } from '@/components/utils/securityUtils';
 
 export default function QrStudio({ initialTab = 'create' }) {
