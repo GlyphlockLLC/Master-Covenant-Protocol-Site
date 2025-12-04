@@ -8,7 +8,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Slider } from '@/components/ui/slider';
-import { Loader2, Wand2, Layers, Shield, Sparkles, Zap, Lock, Eye, EyeOff, Upload, Download, Image as ImageIcon, Info } from 'lucide-react';
+import { Loader2, Wand2, Layers, Shield, Sparkles, Zap, Lock, Eye, EyeOff, Upload, Download, Image as ImageIcon, Info, BarChart3 } from 'lucide-react';
 import { toast } from 'sonner';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { Alert, AlertDescription } from '@/components/ui/alert';
