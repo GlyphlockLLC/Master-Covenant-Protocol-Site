@@ -581,69 +581,60 @@ export default function QrStudio({ initialTab = 'create' }) {
                                       <div className="w-full lg:w-[620px]">
                                         <div className="relative w-full rounded-xl bg-[#0d0f1a]/70 p-5 overflow-hidden shadow-lg" style={{ minHeight: '480px' }}>
 
-                                          {/* Top Left: Customize Dropdown */}
-                                          <div className="absolute top-3 left-3 z-20 group">
-                                            <button 
-                                              onClick={() => setActiveTab('customize')}
-                                              className="flex items-center gap-1 px-3 py-1.5 bg-gradient-to-r from-purple-600/80 to-blue-600/80 backdrop-blur-sm rounded-lg border border-purple-500/50 hover:border-purple-400 transition-all group-hover:shadow-lg group-hover:shadow-purple-500/30"
-                                            >
-                                              <Layers className="w-3 h-3 text-purple-300" />
-                                              <span className="text-xs font-semibold text-purple-200">Cus</span>
-                                              <svg className="w-3 h-3 text-purple-300 transition-transform group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                                              </svg>
-                                            </button>
-                                            <div className="absolute top-full left-0 mt-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all bg-slate-900/95 backdrop-blur-sm rounded-lg border border-purple-500/30 p-2 min-w-[120px] shadow-xl">
-                                              <p className="text-xs text-gray-300 px-2 py-1">Preview Image</p>
-                                              <button 
-                                                onClick={() => setActiveTab('customize')}
-                                                className="w-full text-left text-xs text-purple-300 hover:text-purple-200 hover:bg-purple-500/20 px-2 py-1 rounded transition-colors"
-                                              >
-                                                Customize
-                                              </button>
-                                              <button 
-                                                onClick={() => setActiveTab('preview')}
-                                                className="w-full text-left text-xs text-blue-300 hover:text-blue-200 hover:bg-blue-500/20 px-2 py-1 rounded transition-colors"
-                                              >
-                                                Preview
-                                              </button>
-                                            </div>
-                                          </div>
+                                          {/* Top Right: Arrow Dropdown for Customize/Preview */}
+                                                                    <div className="absolute top-6 right-6 z-20 group">
+                                                                      <button className="p-2 bg-slate-800/80 backdrop-blur-sm rounded-full border border-purple-500/50 hover:border-cyan-400 transition-all group-hover:shadow-lg group-hover:shadow-purple-500/30">
+                                                                        <svg className="w-4 h-4 text-cyan-400 transition-transform group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                                                        </svg>
+                                                                      </button>
+                                                                      <div className="absolute top-full right-0 mt-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all bg-slate-900/95 backdrop-blur-sm rounded-lg border border-purple-500/30 p-2 min-w-[120px] shadow-xl">
+                                                                        <button 
+                                                                          onClick={() => setActiveTab('customize')}
+                                                                          className="w-full text-left text-xs text-purple-300 hover:text-purple-200 hover:bg-purple-500/20 px-2 py-1.5 rounded transition-colors flex items-center gap-2"
+                                                                        >
+                                                                          <Layers className="w-3 h-3" />
+                                                                          Customize
+                                                                        </button>
+                                                                        <button 
+                                                                          onClick={() => setActiveTab('preview')}
+                                                                          className="w-full text-left text-xs text-cyan-300 hover:text-cyan-200 hover:bg-cyan-500/20 px-2 py-1.5 rounded transition-colors flex items-center gap-2"
+                                                                        >
+                                                                          <Eye className="w-3 h-3" />
+                                                                          Preview
+                                                                        </button>
+                                                                      </div>
+                                                                    </div>
 
-                                          {/* Top Right: Risk Indicator */}
-                                          <div className="absolute top-3 right-3 z-20">
-                                            {securityResult ? (
-                                              <div className={`flex items-center gap-1.5 px-3 py-1.5 backdrop-blur-sm rounded-lg border transition-all ${
-                                                securityResult.final_score >= 80 
-                                                  ? 'bg-green-600/30 border-green-500/50 shadow-green-500/20' 
-                                                  : securityResult.final_score >= 65 
-                                                    ? 'bg-yellow-600/30 border-yellow-500/50 shadow-yellow-500/20' 
-                                                    : 'bg-red-600/30 border-red-500/50 shadow-red-500/20'
-                                              } shadow-lg`}>
-                                                <div className={`w-2 h-2 rounded-full animate-pulse ${
-                                                  securityResult.final_score >= 80 
-                                                    ? 'bg-green-400' 
-                                                    : securityResult.final_score >= 65 
-                                                      ? 'bg-yellow-400' 
-                                                      : 'bg-red-400'
-                                                }`} />
-                                                <span className={`text-xs font-bold ${
-                                                  securityResult.final_score >= 80 
-                                                    ? 'text-green-300' 
-                                                    : securityResult.final_score >= 65 
-                                                      ? 'text-yellow-300' 
-                                                      : 'text-red-300'
-                                                }`}>
-                                                  {securityResult.final_score >= 80 ? 'Safe' : securityResult.final_score >= 65 ? 'Caution' : 'Risk'}
-                                                </span>
-                                              </div>
-                                            ) : (
-                                              <div className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-700/50 backdrop-blur-sm rounded-lg border border-slate-600/50">
-                                                <div className="w-2 h-2 rounded-full bg-slate-400" />
-                                                <span className="text-xs font-medium text-slate-400">Ready</span>
-                                              </div>
-                                            )}
-                                          </div>
+                                                                    {/* Risk Indicator - Lower Position */}
+                                                                    {securityResult && (
+                                                                      <div className="absolute top-16 right-6 z-20">
+                                                                        <div className={`flex items-center gap-1.5 px-2 py-1 backdrop-blur-sm rounded-md border transition-all ${
+                                                                          securityResult.final_score >= 80 
+                                                                            ? 'bg-green-600/30 border-green-500/50' 
+                                                                            : securityResult.final_score >= 65 
+                                                                              ? 'bg-yellow-600/30 border-yellow-500/50' 
+                                                                              : 'bg-red-600/30 border-red-500/50'
+                                                                        }`}>
+                                                                          <div className={`w-2 h-2 rounded-full animate-pulse ${
+                                                                            securityResult.final_score >= 80 
+                                                                              ? 'bg-green-400' 
+                                                                              : securityResult.final_score >= 65 
+                                                                                ? 'bg-yellow-400' 
+                                                                                : 'bg-red-400'
+                                                                          }`} />
+                                                                          <span className={`text-xs font-bold ${
+                                                                            securityResult.final_score >= 80 
+                                                                              ? 'text-green-300' 
+                                                                              : securityResult.final_score >= 65 
+                                                                                ? 'text-yellow-300' 
+                                                                                : 'text-red-300'
+                                                                          }`}>
+                                                                            {securityResult.final_score >= 80 ? 'Safe' : securityResult.final_score >= 65 ? 'Caution' : 'Risk'}
+                                                                          </span>
+                                                                        </div>
+                                                                      </div>
+                                                                    )}
 
                                           <img
                                             src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/382879216_qrgl.png"
@@ -659,59 +650,7 @@ export default function QrStudio({ initialTab = 'create' }) {
                                             style={{ imageRendering: 'pixelated' }}
                                           />
 
-                    {/* Security & Status Info - Inside GL Preview */}
-                    <div className="absolute bottom-4 left-4 right-4 space-y-3">
-                      {securityResult && (
-                        <div className="bg-black/60 backdrop-blur-sm rounded-lg p-3 border border-cyan-500/30">
-                          <div className="flex items-center gap-2 mb-2">
-                            <Shield className="w-4 h-4 text-cyan-400" />
-                            <span className="text-white text-xs font-semibold">Security Scan Result</span>
-                          </div>
-                          <QrSecurityBadge
-                            riskScore={securityResult.final_score}
-                            riskFlags={securityResult.phishing_indicators || []}
-                          />
-                        </div>
-                      )}
 
-                      {qrGenerated && (
-                        <div className="bg-black/60 backdrop-blur-sm rounded-lg p-3 border border-green-500/30">
-                          <div className="flex items-center gap-2 mb-2">
-                            <Shield className="w-4 h-4 text-green-400" />
-                            <span className="text-white text-xs font-semibold">QR Generated Successfully</span>
-                          </div>
-                          <p className="text-xs text-gray-400 mb-2">Customize or download your QR.</p>
-                          <div className="flex gap-2">
-                            <Button
-                              onClick={() => setActiveTab('customize')}
-                              variant="outline"
-                              size="sm"
-                              className="flex-1 border-cyan-500/50 text-white text-xs h-8"
-                            >
-                              <Layers className="w-3 h-3 mr-1" />
-                              Customize
-                            </Button>
-                            <Button
-                              onClick={() => setActiveTab('preview')}
-                              variant="outline"
-                              size="sm"
-                              className="flex-1 border-purple-500/50 text-white text-xs h-8"
-                            >
-                              <Eye className="w-3 h-3 mr-1" />
-                              Preview
-                            </Button>
-                          </div>
-                        </div>
-                      )}
-
-                      {securityResult?.final_score < 65 && (
-                        <div className="bg-red-500/20 backdrop-blur-sm rounded-lg p-3 border border-red-500/50 text-center">
-                          <span className="text-2xl">🚫</span>
-                          <h4 className="text-red-400 font-bold text-xs mt-1">Generation Blocked</h4>
-                          <p className="text-xs text-white">Score: {securityResult.final_score}/100</p>
-                        </div>
-                      )}
-                    </div>
                   </div>
                 </div>
                 </div>
