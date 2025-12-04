@@ -1,33 +1,40 @@
-import React from 'react';
+import React, { useRef, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Download, Eye, Shield, Clock, FileImage, FileCode, FileText, RefreshCw } from 'lucide-react';
 import { toast } from 'sonner';
 import QrSecurityBadge from './QrSecurityBadge';
+import StyledQRRenderer from './StyledQRRenderer';
 
 /**
  * QrPreviewPanel - Final Preview Tab Component
- * This is the SINGLE SOURCE OF TRUTH for displaying the final QR code
- * with all customizations applied.
- * 
- * NO customization tools appear here.
- * NO payload forms appear here.
- * This is a CLEAN final stage.
+ * Uses StyledQRRenderer for local QR generation with full styling support
  */
 export default function QrPreviewPanel({
   qrAssetDraft,
   customization,
-  qrImageUrl,
+  qrDataUrl,
+  qrPayload,
   securityResult,
   size,
   errorCorrectionLevel,
   qrType,
   codeId,
   logoPreviewUrl,
-  onRegenerate
+  onRegenerate,
+  onDataUrlReady
 }) {
-  if (!qrAssetDraft && !qrImageUrl) {
+  const qrDataUrlRef = useRef(null);
+
+  const handleDataUrlReady = useCallback((dataUrl) => {
+    qrDataUrlRef.current = dataUrl;
+    if (onDataUrlReady) {
+      onDataUrlReady(dataUrl);
+    }
+  }, [onDataUrlReady]);
+
+  if (!qrAssetDraft && !qrPayload) {
     return (
       <Card className="bg-gray-900/80 border-purple-500/30 p-12 text-center">
         <Eye className="w-16 h-16 mx-auto mb-4 text-gray-600" />
@@ -39,24 +46,38 @@ export default function QrPreviewPanel({
     );
   }
 
-  const displayUrl = qrAssetDraft?.safeQrImageUrl || qrImageUrl;
   const riskScore = qrAssetDraft?.riskScore || securityResult?.final_score || 100;
   const riskFlags = qrAssetDraft?.riskFlags || securityResult?.phishing_indicators || [];
+  const displayPayload = qrPayload || qrAssetDraft?.payload || 'https://glyphlock.io';
 
-  const handleDownload = (format) => {
-    if (!displayUrl) {
+  const handleDownload = async (format) => {
+    const dataUrl = qrDataUrlRef.current || qrDataUrl;
+    if (!dataUrl) {
       toast.error('No QR code to download');
       return;
     }
-    
-    const link = document.createElement('a');
-    link.href = displayUrl;
-    link.download = `glyphlock-qr-${qrType || 'code'}-${codeId || Date.now()}.${format}`;
-    link.click();
-    toast.success(`QR code downloaded as ${format.toUpperCase()}`);
-  };
 
-  const timestamp = new Date().toISOString();
+    try {
+      if (format === 'png' || format === 'svg') {
+        const link = document.createElement('a');
+        link.href = dataUrl;
+        link.download = `glyphlock-qr-${qrType || 'code'}-${codeId || Date.now()}.${format}`;
+        link.click();
+        toast.success(`QR code downloaded as ${format.toUpperCase()}`);
+      } else if (format === 'pdf') {
+        // For PDF, we create a simple PDF with the image
+        const { jsPDF } = await import('jspdf');
+        const pdf = new jsPDF();
+        const imgData = dataUrl;
+        pdf.addImage(imgData, 'PNG', 20, 20, 170, 170);
+        pdf.save(`glyphlock-qr-${qrType || 'code'}-${codeId || Date.now()}.pdf`);
+        toast.success('QR code downloaded as PDF');
+      }
+    } catch (err) {
+      console.error('Download error:', err);
+      toast.error('Download failed');
+    }
+  };
 
   return (
     <div className="space-y-6 relative z-10">
@@ -83,7 +104,7 @@ export default function QrPreviewPanel({
         </CardHeader>
         <CardContent className="pt-6">
           <div className="grid lg:grid-cols-2 gap-8">
-            {/* Left: QR Display */}
+            {/* Left: QR Display using StyledQRRenderer */}
             <div className="space-y-4">
               <div 
                 className="p-8 rounded-xl flex items-center justify-center relative shadow-inner"
@@ -95,46 +116,19 @@ export default function QrPreviewPanel({
                       : customization?.background?.color || '#FFFFFF'
                 }}
               >
-                {displayUrl ? (
-                  <>
-                    <img 
-                      src={displayUrl} 
-                      alt="Final QR Code" 
-                      className="max-w-full max-h-[400px]"
-                      style={{
-                        filter: customization?.gradient?.enabled 
-                          ? `hue-rotate(${customization.gradient.angle || 0}deg)` 
-                          : 'none'
-                      }}
-                    />
-                    {(logoPreviewUrl || customization?.logo?.url) && (
-                      <div 
-                        className="absolute inset-0 flex items-center justify-center pointer-events-none"
-                        style={{ opacity: (customization?.logo?.opacity || 100) / 100 }}
-                      >
-                        <img 
-                          src={logoPreviewUrl || customization?.logo?.url} 
-                          alt="Logo" 
-                          className={`bg-white p-1 ${
-                            customization?.logo?.shape === 'circle' ? 'rounded-full' :
-                            customization?.logo?.shape === 'rounded' ? 'rounded-xl' : 'rounded-lg'
-                          } ${customization?.logo?.border ? 'border-2 border-gray-300' : ''} ${
-                            customization?.logo?.dropShadow ? 'shadow-lg' : ''
-                          }`}
-                          style={{ 
-                            width: `${customization?.logo?.size || 20}%`,
-                            height: 'auto',
-                            transform: `rotate(${customization?.logo?.rotation || 0}deg)`
-                          }}
-                        />
-                      </div>
-                    )}
-                  </>
-                ) : (
-                  <div className="w-64 h-64 bg-gray-200 rounded flex items-center justify-center">
-                    <span className="text-gray-500">No QR Available</span>
-                  </div>
-                )}
+                <StyledQRRenderer
+                  text={displayPayload}
+                  size={size || 300}
+                  customization={{
+                    ...customization,
+                    logo: {
+                      ...customization?.logo,
+                      url: logoPreviewUrl || customization?.logo?.url
+                    }
+                  }}
+                  onDataUrlReady={handleDataUrlReady}
+                  className="relative"
+                />
               </div>
             </div>
 

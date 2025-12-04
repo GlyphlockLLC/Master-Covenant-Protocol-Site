@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { base44 } from '@/api/base44Client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
@@ -25,6 +25,7 @@ import AnalyticsPanel from './AnalyticsPanel';
 import QrBatchUploader from './QrBatchUploader';
 import SecurityStatus from './SecurityStatus';
 import SteganographicQR from './SteganographicQR';
+import StyledQRRenderer from './StyledQRRenderer';
 import QRTypeForm from '@/components/crypto/QRTypeForm';
 import { generateSHA256, performStaticURLChecks } from '@/components/utils/securityUtils';
 
@@ -131,6 +132,7 @@ export default function QrStudio({ initialTab = 'create' }) {
   const [scanningStage, setScanningStage] = useState("");
   const [logoPreviewUrl, setLogoPreviewUrl] = useState(null);
   const [logoFile, setLogoFile] = useState(null);
+  const [qrDataUrl, setQrDataUrl] = useState(null);
 
   // QR Types with security flags
   const qrTypes = [
@@ -148,12 +150,14 @@ export default function QrStudio({ initialTab = 'create' }) {
   const selectedPayloadType = PAYLOAD_TYPES.find(t => t.id === payloadType);
   const currentTypeConfig = qrTypes.find(t => t.id === qrType);
 
-  // ========== RAW QR URL (unmodified, no customization) ==========
-  const getRawQRUrl = () => {
-    const payload = buildQRPayload();
-    if (!payload) return null;
-    return `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(payload)}&ecc=${errorCorrectionLevel}&color=000000&bgcolor=FFFFFF`;
-  };
+  // ========== QR DATA URL HANDLER ==========
+  const handleQrDataUrlReady = useCallback((dataUrl) => {
+    setQrDataUrl(dataUrl);
+    // Update qrAssetDraft with new dataUrl
+    if (qrGenerated) {
+      setQrAssetDraft(prev => prev ? { ...prev, safeQrImageUrl: dataUrl } : prev);
+    }
+  }, [qrGenerated]);
 
   // ========== BUILD PAYLOAD ==========
   const buildQRPayload = () => {
@@ -205,27 +209,10 @@ export default function QrStudio({ initialTab = 'create' }) {
     }
   };
 
-  // ========== GET QR URL (with real-time customization) ==========
-  const getQRUrl = () => {
-    const payload = buildQRPayload();
-    if (!payload) return defaultQrUrl;
-    
-    // Get foreground color - use gradient color1 if gradient enabled, otherwise foregroundColor
-    const fgColor = customization.gradient?.enabled 
-      ? (customization.gradient.color1 || '#000000').replace('#', '')
-      : (customization.foregroundColor || '#000000').replace('#', '');
-    
-    // Get background color based on background type
-    let bgColor = 'FFFFFF';
-    if (customization.background?.type === 'solid') {
-      bgColor = (customization.background?.color || '#FFFFFF').replace('#', '');
-    } else if (customization.background?.type === 'gradient') {
-      // For gradient backgrounds, use first gradient color
-      bgColor = (customization.background?.gradientColor1 || '#FFFFFF').replace('#', '');
-    }
-    
-    return `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(payload)}&ecc=${errorCorrectionLevel}&color=${fgColor}&bgcolor=${bgColor}`;
-  };
+  // ========== GET CURRENT PAYLOAD ==========
+  const getCurrentPayload = useCallback(() => {
+    return buildQRPayload() || 'https://glyphlock.io';
+  }, [qrData, qrType]);
 
   // ========== GENERATE QR ==========
   const generateQR = async () => {
@@ -319,12 +306,14 @@ export default function QrStudio({ initialTab = 'create' }) {
       setQrAssetDraft({
         id: newCodeId,
         title: qrType,
-        safeQrImageUrl: getQRUrl(),
+        payload: payload,
+        safeQrImageUrl: qrDataUrl,
         artQrImageUrl: null,
         immutableHash: await generateSHA256(payload),
         riskScore: combinedResult?.final_score || 100,
         riskFlags: combinedResult?.phishing_indicators || [],
         errorCorrectionLevel,
+        customization: { ...customization },
         artStyle: null
       });
 
@@ -344,14 +333,14 @@ export default function QrStudio({ initialTab = 'create' }) {
       setQrAssetDraft(prev => ({
         ...prev,
         customization: { ...customization },
-        safeQrImageUrl: getQRUrl()
+        safeQrImageUrl: qrDataUrl
       }));
     }
-  }, [customization, qrGenerated, size, errorCorrectionLevel]);
+  }, [customization, qrGenerated, size, errorCorrectionLevel, qrDataUrl]);
 
-  // Navigate to preview (no longer needed for applying - changes are real-time)
+  // Navigate to preview
   const goToPreview = () => {
-    if (qrGenerated) {
+    if (qrGenerated || buildQRPayload()) {
       setActiveTab('preview');
     } else {
       toast.info('Generate a QR code first');
@@ -660,12 +649,15 @@ export default function QrStudio({ initialTab = 'create' }) {
                                             style={{ transform: 'scale(1.15)', transformOrigin: 'top left' }}
                                           />
 
-                                          <img
-                                            src={qrGenerated && getRawQRUrl() ? getRawQRUrl() : defaultQrUrl}
-                                            alt={qrGenerated ? "Generated QR" : "Default QR"}
-                                            className="absolute top-[40%] left-[76%] w-[22%] -translate-x-1/2 -translate-y-1/2 object-contain select-none pointer-events-none"
-                                            style={{ imageRendering: 'pixelated' }}
-                                          />
+                                          {/* Local QR Renderer */}
+                                          <div className="absolute top-[40%] left-[76%] w-[22%] -translate-x-1/2 -translate-y-1/2">
+                                            <StyledQRRenderer
+                                              text={qrGenerated ? buildQRPayload() : 'https://glyphlock.io'}
+                                              size={150}
+                                              customization={customization}
+                                              onDataUrlReady={handleQrDataUrlReady}
+                                            />
+                                          </div>
 
 
                   </div>
@@ -729,49 +721,20 @@ export default function QrStudio({ initialTab = 'create' }) {
                                             />
                                           )}
 
-                                          <img 
-                                            src={getQRUrl()} 
-                                            alt="QR Code" 
-                                            className="max-w-full relative z-10 transition-all duration-300"
-                                            style={{
-                                              filter: customization.gradient?.enabled 
-                                                ? `hue-rotate(${customization.gradient.angle}deg)` 
-                                                : 'none',
-                                              borderRadius: customization.qrShape?.type === 'circle-qr' ? '50%' 
-                                                : customization.qrShape?.type === 'squircle' ? '20%' 
-                                                : customization.qrShape?.type === 'round-frame' ? '12px' : '0'
+                                          {/* Local StyledQRRenderer - Real-time updates */}
+                                          <StyledQRRenderer
+                                            text={(qrGenerated || buildQRPayload()) ? buildQRPayload() : 'https://glyphlock.io'}
+                                            size={280}
+                                            customization={{
+                                              ...customization,
+                                              logo: {
+                                                ...customization.logo,
+                                                url: logoPreviewUrl || customization.logo?.url
+                                              }
                                             }}
+                                            onDataUrlReady={handleQrDataUrlReady}
+                                            className="relative z-10"
                                           />
-
-                                          {/* Logo Overlay */}
-                                          {(logoPreviewUrl || customization.logo?.url) && (
-                                            <div 
-                                              className="absolute z-20 transition-all duration-300"
-                                              style={{ 
-                                                opacity: (customization.logo?.opacity || 100) / 100,
-                                                top: customization.logo?.position === 'top' ? '15%' 
-                                                  : customization.logo?.position === 'bottom' ? '75%' : '50%',
-                                                left: customization.logo?.position === 'left' ? '15%' 
-                                                  : customization.logo?.position === 'right' ? '75%' : '50%',
-                                                transform: `translate(-50%, -50%) rotate(${customization.logo?.rotation || 0}deg)`
-                                              }}
-                                            >
-                                              <img 
-                                                src={logoPreviewUrl || customization.logo?.url} 
-                                                alt="Logo" 
-                                                className={`bg-white p-1 transition-all duration-300 ${
-                                                  customization.logo?.shape === 'circle' ? 'rounded-full' :
-                                                  customization.logo?.shape === 'rounded' ? 'rounded-xl' : 'rounded-lg'
-                                                } ${customization.logo?.border ? 'border-2 border-gray-300' : ''} ${
-                                                  customization.logo?.dropShadow ? 'shadow-lg' : ''
-                                                }`}
-                                                style={{ 
-                                                  width: `${customization.logo?.size || 20}%`,
-                                                  height: 'auto'
-                                                }}
-                                              />
-                                            </div>
-                                          )}
                                         </div>
 
                                         {/* Live Stats */}
@@ -840,7 +803,8 @@ export default function QrStudio({ initialTab = 'create' }) {
             <QrPreviewPanel
               qrAssetDraft={qrAssetDraft}
               customization={customization}
-              qrImageUrl={qrGenerated ? getQRUrl() : null}
+              qrDataUrl={qrDataUrl}
+              qrPayload={buildQRPayload()}
               securityResult={securityResult}
               size={size}
               errorCorrectionLevel={errorCorrectionLevel}
@@ -848,6 +812,7 @@ export default function QrStudio({ initialTab = 'create' }) {
               codeId={codeId}
               logoPreviewUrl={logoPreviewUrl}
               onRegenerate={generateQR}
+              onDataUrlReady={handleQrDataUrlReady}
             />
           </TabsContent>
 
