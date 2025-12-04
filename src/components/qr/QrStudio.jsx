@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
-import { Loader2, Wand2, Layers, Shield, Sparkles, Zap, Lock, Eye, Download, Info, BarChart3, Upload, ChevronDown } from 'lucide-react';
+import { Loader2, Wand2, Layers, Shield, Sparkles, Zap, Lock, Eye, Download, Info, BarChart3, Upload } from 'lucide-react';
 import { toast } from 'sonner';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -27,7 +27,7 @@ import SecurityStatus from './SecurityStatus';
 import SteganographicQR from './SteganographicQR';
 import QRTypeForm from '@/components/crypto/QRTypeForm';
 import { generateSHA256, performStaticURLChecks } from '@/components/utils/securityUtils';
-
+import GlPreviewBlock from './GlPreviewBlock';
 
 export default function QrStudio({ initialTab = 'create' }) {
   const [activeTab, setActiveTab] = useState(initialTab);
@@ -467,16 +467,13 @@ export default function QrStudio({ initialTab = 'create' }) {
                       Payload Type ({PAYLOAD_TYPES.length}+ Available)
                     </span>
                     <Button
-                                                variant="ghost"
-                                                size="sm"
-                                                onClick={() => setShowPayloadSelector(!showPayloadSelector)}
-                                                className="text-cyan-400 flex items-center gap-1"
-                                              >
-                                                {showPayloadSelector ? 'Collapse' : 'Expand'}
-                                                <ChevronDown 
-                                                  className={`w-4 h-4 text-purple-400 transition-all duration-300 hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.8)] ${showPayloadSelector ? 'rotate-180' : ''}`} 
-                                                />
-                                              </Button>
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setShowPayloadSelector(!showPayloadSelector)}
+                      className="text-cyan-400"
+                    >
+                      {showPayloadSelector ? 'Collapse' : 'Expand'}
+                    </Button>
                   </CardTitle>
                 </CardHeader>
                 {showPayloadSelector ? (
@@ -647,22 +644,7 @@ export default function QrStudio({ initialTab = 'create' }) {
               </div>
             {/* GL Preview Block - Inside Right Column */}
             <div className="hidden lg:block">
-              <div className="relative w-full rounded-xl bg-[#0d0f1a]/70 p-4 overflow-hidden shadow-lg border border-blue-500/20">
-                <img
-                  src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/382879216_qrgl.png"
-                  alt="GlyphLock Frame"
-                  className="w-full h-auto object-contain select-none pointer-events-none"
-                />
-
-                {/* QR injected INTO the hollow square */}
-                {qrGenerated && (
-                  <img
-                    src={getRawQRUrl()}
-                    alt="Generated QR"
-                    className="absolute top-[50%] left-[63%] w-[32%] -translate-x-1/2 -translate-y-1/2 object-contain select-none pointer-events-none"
-                  />
-                )}
-              </div>
+              <GlPreviewBlock qrData={qrGenerated ? buildQRPayload() : null} />
             </div>
             </div>
             </TabsContent>
