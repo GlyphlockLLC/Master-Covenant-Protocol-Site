@@ -27,6 +27,7 @@ import SecurityStatus from './SecurityStatus';
 import SteganographicQR from './SteganographicQR';
 import QRTypeForm from '@/components/crypto/QRTypeForm';
 import { generateSHA256, performStaticURLChecks } from '@/components/utils/securityUtils';
+import GlPreviewBlock from './GlPreviewBlock';
 
 export default function QrStudio({ initialTab = 'create' }) {
   const [activeTab, setActiveTab] = useState(initialTab);
@@ -656,57 +657,10 @@ export default function QrStudio({ initialTab = 'create' }) {
               </div>
             </div>
 
-            {/* GL Logo Container - Matches Left Card Dimensions Exactly */}
-            {leftCardDimensions.width > 0 && (
-              <div 
-                className="hidden lg:block xl:block pointer-events-none"
-                style={{
-                  position: 'fixed',
-                  right: '28px',
-                  bottom: '100px', /* Above assistant button */
-                  width: `${leftCardDimensions.width}px`,
-                  height: `${leftCardDimensions.height}px`,
-                  zIndex: 5,
-                  opacity: 1
-                }}
-              >
-                <div className="relative w-full h-full">
-                  {/* GL Logo Image - Full Size */}
-                  <img 
-                    src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/382879216_qrgl.png"
-                    alt="GlyphLock"
-                    className="w-full h-full object-contain"
-                    style={{ 
-                      pointerEvents: 'none',
-                      userSelect: 'none'
-                    }}
-                  />
-                  {/* Raw QR Preview inside hollow square */}
-                  {qrGenerated && (
-                    <div 
-                      className="absolute transition-opacity duration-500"
-                      style={{
-                        top: '18%',
-                        right: '12%',
-                        width: '32%',
-                        height: '52%',
-                        opacity: qrGenerated ? 1 : 0
-                      }}
-                    >
-                      <img 
-                        src={getRawQRUrl()}
-                        alt="Raw QR"
-                        className="w-full h-full object-contain"
-                        style={{ 
-                          imageRendering: 'pixelated',
-                          pointerEvents: 'none'
-                        }}
-                      />
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
+            {/* GL Preview Block - Right Side */}
+            <div className="hidden lg:block mt-6">
+              <GlPreviewBlock previewSrc={qrGenerated ? getRawQRUrl() : null} />
+            </div>
           </TabsContent>
 
           {/* ========== 02_CUSTOMIZE TAB ========== */}

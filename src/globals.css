@@ -435,6 +435,47 @@ p {
   }
 }
 
+/* GL Preview Block - QR Studio */
+.gl-preview-block {
+  width: 100%;
+  max-width: 540px;
+  margin-left: auto;
+  margin-right: 24px;
+  margin-top: 12px;
+}
+
+.gl-preview-inner {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1.6;
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 14px;
+  padding: 16px;
+  overflow: hidden;
+}
+
+.gl-logo-frame {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  opacity: 1;
+}
+
+.qr-preview-inside {
+  position: absolute;
+  top: 50%;
+  left: 63%;
+  transform: translate(-50%, -50%);
+  width: 38%;
+  height: auto;
+  object-fit: contain;
+  pointer-events: none;
+  image-rendering: pixelated;
+  transition: opacity 0.5s ease;
+}
+
 /* Vertical Slider Support */
 [data-orientation="vertical"] {
   flex-direction: column;
