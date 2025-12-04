@@ -124,6 +124,7 @@ export default function QrStudio({ initialTab = 'create' }) {
   const [size, setSize] = useState(512);
   const [errorCorrectionLevel, setErrorCorrectionLevel] = useState('H');
   const [qrGenerated, setQrGenerated] = useState(false);
+  const defaultQrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent('https://glyphlock.io')}&ecc=H&color=000000&bgcolor=FFFFFF`;
   const [isScanning, setIsScanning] = useState(false);
   const [securityResult, setSecurityResult] = useState(null);
   const [codeId, setCodeId] = useState(null);
@@ -586,14 +587,12 @@ export default function QrStudio({ initialTab = 'create' }) {
                       style={{ transform: 'scale(1.15)', transformOrigin: 'top left' }}
                     />
 
-                    {qrGenerated && getRawQRUrl() && (
-                      <img
-                        src={getRawQRUrl()}
-                        alt="Generated QR"
-                        className="absolute top-[40%] left-[76%] w-[22%] -translate-x-1/2 -translate-y-1/2 object-contain select-none pointer-events-none"
-                        style={{ imageRendering: 'pixelated' }}
-                      />
-                    )}
+                    <img
+                                                src={qrGenerated && getRawQRUrl() ? getRawQRUrl() : defaultQrUrl}
+                                                alt={qrGenerated ? "Generated QR" : "Default QR"}
+                                                className="absolute top-[40%] left-[76%] w-[22%] -translate-x-1/2 -translate-y-1/2 object-contain select-none pointer-events-none"
+                                                style={{ imageRendering: 'pixelated' }}
+                                              />
                   </div>
                 </div>
               </div>
