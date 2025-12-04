@@ -2,9 +2,8 @@ import React, { useRef, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Download, Eye, Shield, Clock, FileImage, FileCode, FileText, RefreshCw } from 'lucide-react';
+import { Download, Eye, Shield, Clock, FileImage, FileCode, RefreshCw } from 'lucide-react';
 import { toast } from 'sonner';
-import { jsPDF } from 'jspdf';
 import QrSecurityBadge from './QrSecurityBadge';
 import StyledQRRenderer from './StyledQRRenderer';
 
@@ -59,20 +58,11 @@ export default function QrPreviewPanel({
     }
 
     try {
-      if (format === 'png' || format === 'svg') {
-        const link = document.createElement('a');
-        link.href = dataUrl;
-        link.download = `glyphlock-qr-${qrType || 'code'}-${codeId || Date.now()}.${format}`;
-        link.click();
-        toast.success(`QR code downloaded as ${format.toUpperCase()}`);
-      } else if (format === 'pdf') {
-        // For PDF, we create a simple PDF with the image
-        const pdf = new jsPDF();
-        const imgData = dataUrl;
-        pdf.addImage(imgData, 'PNG', 20, 20, 170, 170);
-        pdf.save(`glyphlock-qr-${qrType || 'code'}-${codeId || Date.now()}.pdf`);
-        toast.success('QR code downloaded as PDF');
-      }
+      const link = document.createElement('a');
+      link.href = dataUrl;
+      link.download = `glyphlock-qr-${qrType || 'code'}-${codeId || Date.now()}.${format}`;
+      link.click();
+      toast.success(`QR code downloaded as ${format.toUpperCase()}`);
     } catch (err) {
       console.error('Download error:', err);
       toast.error('Download failed');
@@ -198,7 +188,7 @@ export default function QrPreviewPanel({
               {/* Download Buttons */}
               <div>
                 <h4 className="text-sm font-semibold text-gray-400 mb-3">Download</h4>
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-2 gap-3">
                   <Button
                     onClick={() => handleDownload('png')}
                     className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white"
@@ -213,14 +203,6 @@ export default function QrPreviewPanel({
                   >
                     <FileCode className="w-4 h-4 mr-1" />
                     SVG
-                  </Button>
-                  <Button
-                    onClick={() => handleDownload('pdf')}
-                    variant="outline"
-                    className="border-gray-600 text-gray-300 hover:bg-gray-800"
-                  >
-                    <FileText className="w-4 h-4 mr-1" />
-                    PDF
                   </Button>
                 </div>
               </div>
