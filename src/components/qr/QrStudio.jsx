@@ -31,8 +31,6 @@ import GlPreviewBlock from './GlPreviewBlock';
 
 export default function QrStudio({ initialTab = 'create' }) {
   const [activeTab, setActiveTab] = useState(initialTab);
-  const leftCardRef = useRef(null);
-  const [leftCardDimensions, setLeftCardDimensions] = useState({ width: 0, height: 0 });
 
   // Sync activeTab with initialTab prop
   useEffect(() => {
@@ -56,18 +54,7 @@ export default function QrStudio({ initialTab = 'create' }) {
     }
   }, [activeTab]);
 
-  // Measure left card dimensions for GL logo matching
-  useEffect(() => {
-    const measureCard = () => {
-      if (leftCardRef.current && activeTab === 'create') {
-        const rect = leftCardRef.current.getBoundingClientRect();
-        setLeftCardDimensions({ width: rect.width, height: rect.height });
-      }
-    };
-    measureCard();
-    window.addEventListener('resize', measureCard);
-    return () => window.removeEventListener('resize', measureCard);
-  }, [activeTab]);
+
 
   // ========== PAYLOAD STATE ==========
   const [payloadType, setPayloadType] = useState('url');
@@ -530,7 +517,7 @@ export default function QrStudio({ initialTab = 'create' }) {
               {/* Form + Controls */}
               <div className="grid lg:grid-cols-2 gap-6">
                 {/* Left: Payload Form */}
-                <Card ref={leftCardRef} className={`${GlyphCard.premium} ${GlyphShadows.depth.lg}`}>
+                <Card className={`${GlyphCard.premium} ${GlyphShadows.depth.lg}`}>
                   <CardHeader className="border-b border-purple-500/20">
                     <CardTitle className="text-white">{currentTypeConfig?.name || 'QR Configuration'}</CardTitle>
                   </CardHeader>
