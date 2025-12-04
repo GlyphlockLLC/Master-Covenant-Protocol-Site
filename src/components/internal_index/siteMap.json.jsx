@@ -38,7 +38,8 @@
     {"route": "Pricing", "file": "pages/Pricing.jsx", "navigationPresence": true, "productionReady": true, "archived": false},
     {"route": "Privacy", "file": "pages/Privacy.jsx", "navigationPresence": true, "productionReady": true, "archived": false},
     {"route": "ProviderConsole", "file": "pages/ProviderConsole.jsx", "navigationPresence": false, "productionReady": true, "archived": false},
-    {"route": "QrGenerator", "file": "pages/QrGenerator.jsx", "navigationPresence": true, "productionReady": true, "archived": false},
+    {"route": "Qr", "file": "pages/Qr.jsx", "navigationPresence": true, "productionReady": true, "archived": false},
+    {"route": "QrGenerator", "file": "pages/QrGenerator.jsx", "navigationPresence": false, "productionReady": true, "archived": true},
     {"route": "QrGeneratorAnalytics", "file": "pages/QrGeneratorAnalytics.jsx", "navigationPresence": false, "productionReady": true, "archived": false},
     {"route": "QrGeneratorBulk", "file": "pages/QrGeneratorBulk.jsx", "navigationPresence": false, "productionReady": true, "archived": false},
     {"route": "QrGeneratorCreate", "file": "pages/QrGeneratorCreate.jsx", "navigationPresence": false, "productionReady": true, "archived": false},
@@ -62,10 +63,10 @@
     {"route": "SitemapQr", "file": "pages/SitemapQr.jsx", "navigationPresence": false, "productionReady": true, "archived": false},
     {"route": "SitemapXml", "file": "pages/SitemapXml.jsx", "navigationPresence": false, "productionReady": true, "archived": false},
     {"route": "Solutions", "file": "pages/Solutions.jsx", "navigationPresence": false, "productionReady": true, "archived": false},
-    {"route": "Steganography", "file": "pages/Steganography.jsx", "navigationPresence": true, "productionReady": true, "archived": false},
+    {"route": "Steganography", "file": "pages/Steganography.jsx", "navigationPresence": false, "productionReady": true, "archived": true},
     {"route": "Terms", "file": "pages/Terms.jsx", "navigationPresence": true, "productionReady": true, "archived": false},
     {"route": "VIPContract", "file": "pages/VIPContract.jsx", "navigationPresence": false, "productionReady": true, "archived": false},
-    {"route": "VisualCryptography", "file": "pages/VisualCryptography.jsx", "navigationPresence": true, "productionReady": true, "archived": false}
+    {"route": "VisualCryptography", "file": "pages/VisualCryptography.jsx", "navigationPresence": false, "productionReady": true, "archived": true}
   ],
   "routingIntegrity": {
     "totalPages": 64,
