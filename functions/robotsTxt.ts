@@ -15,8 +15,8 @@ User-agent: *
 Allow: /
 
 # Public Tools
-Allow: /qr-generator
-Allow: /qr-generator/*
+Allow: /qr
+Allow: /qr/*
 Allow: /image-lab
 Allow: /steganography
 Allow: /blockchain
