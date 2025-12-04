@@ -1,7 +1,6 @@
 import Home from './pages/Home';
 import MasterCovenant from './pages/MasterCovenant';
 import Consultation from './pages/Consultation';
-import Steganography from './pages/Steganography';
 import Blockchain from './pages/Blockchain';
 import SecurityTools from './pages/SecurityTools';
 import Pricing from './pages/Pricing';
@@ -20,7 +19,6 @@ import SecurityDocs from './pages/SecurityDocs';
 import PaymentSuccess from './pages/PaymentSuccess';
 import Dashboard from './pages/Dashboard';
 import DreamTeam from './pages/DreamTeam';
-import VisualCryptography from './pages/VisualCryptography';
 import SecurityOperationsCenter from './pages/SecurityOperationsCenter';
 import GovernanceHub from './pages/GovernanceHub';
 import EntertainerCheckIn from './pages/EntertainerCheckIn';
@@ -50,15 +48,6 @@ import SitemapDynamic from './pages/SitemapDynamic';
 import GlyphBotJunior from './pages/GlyphBotJunior';
 import Cookies from './pages/Cookies';
 import Accessibility from './pages/Accessibility';
-import QrGenerator from './pages/QrGenerator';
-import QrGeneratorCreate from './pages/QrGeneratorCreate';
-import QrGeneratorPreview from './pages/QrGeneratorPreview';
-import QrGeneratorCustomize from './pages/QrGeneratorCustomize';
-import QrGeneratorHotzones from './pages/QrGeneratorHotzones';
-import QrGeneratorStego from './pages/QrGeneratorStego';
-import QrGeneratorSecurity from './pages/QrGeneratorSecurity';
-import QrGeneratorAnalytics from './pages/QrGeneratorAnalytics';
-import QrGeneratorBulk from './pages/QrGeneratorBulk';
 import ProviderConsole from './pages/ProviderConsole';
 import SDKDocs from './pages/SDKDocs';
 import HotzoneMapper from './pages/HotzoneMapper';
@@ -70,7 +59,6 @@ export const PAGES = {
     "Home": Home,
     "MasterCovenant": MasterCovenant,
     "Consultation": Consultation,
-    "Steganography": Steganography,
     "Blockchain": Blockchain,
     "SecurityTools": SecurityTools,
     "Pricing": Pricing,
@@ -89,7 +77,6 @@ export const PAGES = {
     "PaymentSuccess": PaymentSuccess,
     "Dashboard": Dashboard,
     "DreamTeam": DreamTeam,
-    "VisualCryptography": VisualCryptography,
     "SecurityOperationsCenter": SecurityOperationsCenter,
     "GovernanceHub": GovernanceHub,
     "EntertainerCheckIn": EntertainerCheckIn,
@@ -119,15 +106,6 @@ export const PAGES = {
     "GlyphBotJunior": GlyphBotJunior,
     "Cookies": Cookies,
     "Accessibility": Accessibility,
-    "QrGenerator": QrGenerator,
-    "QrGeneratorCreate": QrGeneratorCreate,
-    "QrGeneratorPreview": QrGeneratorPreview,
-    "QrGeneratorCustomize": QrGeneratorCustomize,
-    "QrGeneratorHotzones": QrGeneratorHotzones,
-    "QrGeneratorStego": QrGeneratorStego,
-    "QrGeneratorSecurity": QrGeneratorSecurity,
-    "QrGeneratorAnalytics": QrGeneratorAnalytics,
-    "QrGeneratorBulk": QrGeneratorBulk,
     "ProviderConsole": ProviderConsole,
     "SDKDocs": SDKDocs,
     "HotzoneMapper": HotzoneMapper,
