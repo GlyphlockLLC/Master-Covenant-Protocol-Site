@@ -27,7 +27,7 @@ import SecurityStatus from './SecurityStatus';
 import SteganographicQR from './SteganographicQR';
 import QRTypeForm from '@/components/crypto/QRTypeForm';
 import { generateSHA256, performStaticURLChecks } from '@/components/utils/securityUtils';
-import GlPreviewBlock from './GlPreviewBlock';
+
 
 export default function QrStudio({ initialTab = 'create' }) {
   const [activeTab, setActiveTab] = useState(initialTab);
@@ -516,63 +516,82 @@ export default function QrStudio({ initialTab = 'create' }) {
 
               {/* Form + Controls - Side by Side Layout */}
               <div className="w-full flex flex-col lg:flex-row justify-center lg:justify-between gap-6 lg:gap-10">
-                {/* Left: Payload Form Card */}
-                <Card className={`${GlyphCard.premium} ${GlyphShadows.depth.lg} w-full lg:w-[540px] lg:min-h-[340px]`}>
-                  <CardHeader className="border-b border-purple-500/20">
-                    <CardTitle className="text-white">{currentTypeConfig?.name || 'QR Configuration'}</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-6 pt-6">
-                    <QRTypeForm qrType={qrType} qrData={qrData} setQrData={setQrData} />
+                {/* Left: Payload Form Card + GL Preview */}
+                <div className="w-full lg:w-[540px] space-y-6">
+                  <Card className={`${GlyphCard.premium} ${GlyphShadows.depth.lg}`}>
+                    <CardHeader className="border-b border-purple-500/20">
+                      <CardTitle className="text-white">{currentTypeConfig?.name || 'QR Configuration'}</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-6 pt-6">
+                      <QRTypeForm qrType={qrType} qrData={qrData} setQrData={setQrData} />
 
-                    {/* Size */}
-                    <div>
-                      <Label className="text-white">Size: {size}px</Label>
-                      <Slider
-                        value={[size]}
-                        onValueChange={(value) => setSize(value[0])}
-                        min={256}
-                        max={1024}
-                        step={64}
-                        className="mt-2"
+                      {/* Size */}
+                      <div>
+                        <Label className="text-white">Size: {size}px</Label>
+                        <Slider
+                          value={[size]}
+                          onValueChange={(value) => setSize(value[0])}
+                          min={256}
+                          max={1024}
+                          step={64}
+                          className="mt-2"
+                        />
+                      </div>
+
+                      {/* Error Correction */}
+                      <div>
+                        <Label className="text-white">Error Correction</Label>
+                        <Select value={errorCorrectionLevel} onValueChange={setErrorCorrectionLevel}>
+                          <SelectTrigger className="bg-gray-800 border-gray-700 text-white mt-2">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent className="bg-gray-800 border-gray-700">
+                            <SelectItem value="L">Low (7%)</SelectItem>
+                            <SelectItem value="M">Medium (15%)</SelectItem>
+                            <SelectItem value="Q">Quartile (25%)</SelectItem>
+                            <SelectItem value="H">High (30%)</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      {/* Generate Button */}
+                      <Button
+                        onClick={generateQR}
+                        disabled={isScanning}
+                        className={`${GlyphButton.primary} w-full ${GlyphShadows.neonCyan}`}
+                      >
+                        {isScanning ? (
+                          <>
+                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                            {scanningStage || 'Processing...'}
+                          </>
+                        ) : (
+                          <>
+                            <Shield className="w-4 h-4 mr-2" />
+                            Generate Secure QR
+                          </>
+                        )}
+                      </Button>
+                    </CardContent>
+                  </Card>
+
+                  {/* GL Preview Block - INSIDE left container */}
+                  <div className="relative w-full rounded-xl bg-[#0d0f1a]/70 p-4 overflow-hidden shadow-lg">
+                    <img
+                      src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/382879216_qrgl.png"
+                      alt="GL Frame"
+                      className="w-full h-auto object-contain select-none pointer-events-none"
+                    />
+
+                    {qrGenerated && getRawQRUrl() && (
+                      <img
+                        src={getRawQRUrl()}
+                        alt="Generated QR"
+                        className="absolute top-[50%] left-[63%] w-[32%] -translate-x-1/2 -translate-y-1/2 object-contain select-none pointer-events-none"
                       />
-                    </div>
-
-                    {/* Error Correction */}
-                    <div>
-                      <Label className="text-white">Error Correction</Label>
-                      <Select value={errorCorrectionLevel} onValueChange={setErrorCorrectionLevel}>
-                        <SelectTrigger className="bg-gray-800 border-gray-700 text-white mt-2">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent className="bg-gray-800 border-gray-700">
-                          <SelectItem value="L">Low (7%)</SelectItem>
-                          <SelectItem value="M">Medium (15%)</SelectItem>
-                          <SelectItem value="Q">Quartile (25%)</SelectItem>
-                          <SelectItem value="H">High (30%)</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    {/* Generate Button */}
-                    <Button
-                      onClick={generateQR}
-                      disabled={isScanning}
-                      className={`${GlyphButton.primary} w-full ${GlyphShadows.neonCyan}`}
-                    >
-                      {isScanning ? (
-                        <>
-                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                          {scanningStage || 'Processing...'}
-                        </>
-                      ) : (
-                        <>
-                          <Shield className="w-4 h-4 mr-2" />
-                          Generate Secure QR
-                        </>
-                      )}
-                    </Button>
-                  </CardContent>
-                </Card>
+                    )}
+                  </div>
+                </div>
 
                 {/* Right: Risk Badge + Status */}
                 <div className="w-full lg:w-[540px] space-y-6">
@@ -642,12 +661,8 @@ export default function QrStudio({ initialTab = 'create' }) {
                   )}
                 </div>
               </div>
-            {/* GL Preview Block - Inside Right Column */}
-            <div className="hidden lg:block">
-              <GlPreviewBlock qrData={qrGenerated ? buildQRPayload() : null} />
             </div>
-            </div>
-            </TabsContent>
+          </TabsContent>
 
           {/* ========== 02_CUSTOMIZE TAB ========== */}
           <TabsContent value="customize">
