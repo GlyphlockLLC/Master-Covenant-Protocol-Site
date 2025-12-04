@@ -683,7 +683,7 @@ export default function QrStudio({ initialTab = 'create' }) {
                                   setCustomization={setCustomization}
                                   errorCorrectionLevel={errorCorrectionLevel}
                                   setErrorCorrectionLevel={setErrorCorrectionLevel}
-                                  onApply={applyCustomization}
+                                  onApply={goToPreview}
                                 />
                               </div>
 
