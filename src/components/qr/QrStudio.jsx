@@ -581,14 +581,14 @@ export default function QrStudio({ initialTab = 'create' }) {
                                       <div className="w-full lg:w-[620px]">
                                         <div className="relative w-full rounded-xl bg-[#0d0f1a]/70 p-5 overflow-hidden shadow-lg" style={{ minHeight: '480px' }}>
 
-                                          {/* Top Right: Arrow Dropdown for Customize/Preview */}
-                                                                    <div className="absolute top-6 right-6 z-20 group">
+                                          {/* Top Left: Arrow Dropdown for Customize/Preview */}
+                                                                    <div className="absolute top-6 left-6 z-20 group">
                                                                       <button className="p-2 bg-slate-800/80 backdrop-blur-sm rounded-full border border-purple-500/50 hover:border-cyan-400 transition-all group-hover:shadow-lg group-hover:shadow-purple-500/30">
                                                                         <svg className="w-4 h-4 text-cyan-400 transition-transform group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                                                                         </svg>
                                                                       </button>
-                                                                      <div className="absolute top-full right-0 mt-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all bg-slate-900/95 backdrop-blur-sm rounded-lg border border-purple-500/30 p-2 min-w-[120px] shadow-xl">
+                                                                      <div className="absolute top-full left-0 mt-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all bg-slate-900/95 backdrop-blur-sm rounded-lg border border-purple-500/30 p-2 min-w-[120px] shadow-xl">
                                                                         <button 
                                                                           onClick={() => setActiveTab('customize')}
                                                                           className="w-full text-left text-xs text-purple-300 hover:text-purple-200 hover:bg-purple-500/20 px-2 py-1.5 rounded transition-colors flex items-center gap-2"
@@ -606,9 +606,9 @@ export default function QrStudio({ initialTab = 'create' }) {
                                                                       </div>
                                                                     </div>
 
-                                                                    {/* Risk Indicator - Lower Position */}
+                                                                    {/* Risk Indicator - Top Right */}
                                                                     {securityResult && (
-                                                                      <div className="absolute top-16 right-6 z-20">
+                                                                      <div className="absolute top-6 right-6 z-20">
                                                                         <div className={`flex items-center gap-1.5 px-2 py-1 backdrop-blur-sm rounded-md border transition-all ${
                                                                           securityResult.final_score >= 80 
                                                                             ? 'bg-green-600/30 border-green-500/50' 
