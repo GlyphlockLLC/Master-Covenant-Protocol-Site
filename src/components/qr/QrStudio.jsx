@@ -609,8 +609,62 @@ export default function QrStudio({ initialTab = 'create' }) {
               </Alert>
             )}
 
-            {/* QR Type Selector - OG Engine */}
-            <QRTypeSelector qrType={qrType} setQrType={setQrType} qrTypes={qrTypes} />
+            {/* 90+ Payload Type Selector */}
+            <Card className={`${GlyphCard.premium}`}>
+              <CardHeader className="border-b border-purple-500/20 pb-4">
+                <CardTitle className="text-white flex items-center justify-between">
+                  <span className="flex items-center gap-2">
+                    <Sparkles className="w-5 h-5 text-cyan-400" />
+                    Payload Type ({PAYLOAD_TYPES.length}+ Available)
+                  </span>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setShowPayloadSelector(!showPayloadSelector)}
+                    className="text-cyan-400"
+                  >
+                    {showPayloadSelector ? 'Collapse' : 'Expand'}
+                  </Button>
+                </CardTitle>
+              </CardHeader>
+              {showPayloadSelector ? (
+                <CardContent className="pt-4">
+                  <PayloadTypeSelector
+                    value={payloadType}
+                    onChange={(newType) => {
+                      setPayloadType(newType);
+                      // Map advanced type to OG type for compatibility
+                      const typeMapping = {
+                        'url': 'url', 'url_dynamic': 'url', 'url_timelock': 'url', 'url_geolock': 'url',
+                        'vcard': 'vcard', 'mecard': 'vcard', 'digital_card': 'vcard',
+                        'tap_call': 'phone', 'tap_text': 'sms', 'email_template': 'email',
+                        'wifi_config': 'wifi', 'data_json': 'text', 'data_base64': 'text'
+                      };
+                      if (typeMapping[newType]) setQrType(typeMapping[newType]);
+                    }}
+                  />
+                </CardContent>
+              ) : (
+                <CardContent className="pt-4">
+                  <div className="flex items-center gap-4 p-4 bg-gray-800/50 rounded-lg border border-gray-700">
+                    {selectedPayloadType && (
+                      <>
+                        <div className="p-2 bg-cyan-500/20 rounded-lg">
+                          <selectedPayloadType.icon className="w-6 h-6 text-cyan-400" />
+                        </div>
+                        <div>
+                          <h4 className="font-semibold text-white">{selectedPayloadType.label}</h4>
+                          <p className="text-xs text-gray-400">{selectedPayloadType.description}</p>
+                        </div>
+                        {selectedPayloadType.premium && (
+                          <span className="ml-auto px-2 py-1 text-xs bg-purple-500/20 text-purple-400 rounded border border-purple-500/50">Premium</span>
+                        )}
+                      </>
+                    )}
+                  </div>
+                </CardContent>
+              )}
+            </Card>
 
             <div className="grid lg:grid-cols-3 gap-8">
               {/* Left Column - Form */}
