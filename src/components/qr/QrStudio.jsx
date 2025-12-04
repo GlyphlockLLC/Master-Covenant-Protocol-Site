@@ -33,7 +33,7 @@ import SecurityStatus from './SecurityStatus';
 import SteganographicQR from './SteganographicQR';
 import QRTypeSelector from '@/components/crypto/QRTypeSelector';
 import QRTypeForm from '@/components/crypto/QRTypeForm';
-import ColorPaletteSelector from '@/components/crypto/ColorPaletteSelector';
+import { PAYLOAD_TYPES, PAYLOAD_CATEGORIES } from './config/PayloadTypesCatalog';
 import { generateSHA256, performStaticURLChecks } from '@/components/utils/securityUtils';
 
 export default function QrStudio({ initialTab = 'create' }) {
@@ -78,7 +78,7 @@ export default function QrStudio({ initialTab = 'create' }) {
   const [isGenerating, setIsGenerating] = useState(false);
   const [showPayloadSelector, setShowPayloadSelector] = useState(false);
 
-  // ========== CUSTOMIZATION STATE ==========
+  // ========== CUSTOMIZATION STATE (Extended) ==========
   const [customization, setCustomization] = useState({
     dotStyle: 'square',
     eyeStyle: 'square',
@@ -90,7 +90,9 @@ export default function QrStudio({ initialTab = 'create' }) {
       angle: 0,
       color1: '#000000',
       color2: '#3B82F6',
-      color3: null
+      color3: '#8B5CF6',
+      color4: null,
+      color5: null
     },
     eyeColors: {
       topLeft: { inner: '#000000', outer: '#000000' },
@@ -103,14 +105,26 @@ export default function QrStudio({ initialTab = 'create' }) {
       opacity: 100,
       size: 20,
       border: false,
-      shape: 'square'
+      shape: 'square',
+      position: 'center',
+      rotation: 0,
+      dropShadow: false,
+      autoContrast: true
     },
     background: {
       type: 'solid',
       color: '#FFFFFF',
       gradientColor1: '#FFFFFF',
       gradientColor2: '#E5E7EB',
-      imageUrl: null
+      imageUrl: null,
+      blur: 0,
+      pattern: 'none',
+      transparency: 100
+    },
+    qrShape: {
+      type: 'standard',
+      margin: 'medium',
+      cornerRadius: 0
     }
   });
 
