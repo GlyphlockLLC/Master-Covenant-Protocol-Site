@@ -498,7 +498,7 @@ export default function QrStudio({ initialTab = 'create' }) {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8 max-w-7xl">
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        {/* Desktop Tabs - Technical Flow */}
+        {/* Desktop Tabs - Technical Flow (7 tabs - NO HOTZONES) */}
         <TabsList className="hidden lg:flex w-full mb-6 bg-black/40 backdrop-blur-md border-t-2 border-b-2 border-cyan-500/20 p-0 h-auto rounded-none">
           <TabsTrigger 
             value="create" 
@@ -521,24 +521,16 @@ export default function QrStudio({ initialTab = 'create' }) {
             value="customize" 
             className="flex-1 min-h-[52px] relative group border-r border-cyan-500/10 data-[state=active]:bg-gradient-to-b data-[state=active]:from-blue-500/20 data-[state=active]:to-transparent data-[state=active]:border-t-2 data-[state=active]:border-t-blue-400 data-[state=active]:text-blue-300 text-gray-500 hover:text-gray-300 transition-all font-mono text-xs uppercase tracking-widest rounded-none"
           >
+            <Layers className="w-3 h-3 mr-2" />
             <span>03_Customize</span>
             <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-blue-400 to-transparent opacity-0 group-data-[state=active]:opacity-100"></div>
-          </TabsTrigger>
-          
-          <TabsTrigger 
-            value="hotzones" 
-            className="flex-1 min-h-[52px] relative group border-r border-cyan-500/10 data-[state=active]:bg-gradient-to-b data-[state=active]:from-cyan-500/20 data-[state=active]:to-transparent data-[state=active]:border-t-2 data-[state=active]:border-t-cyan-400 data-[state=active]:text-cyan-300 text-gray-500 hover:text-gray-300 transition-all font-mono text-xs uppercase tracking-widest rounded-none"
-          >
-            <Layers className="w-3 h-3 mr-2" />
-            <span>04_HotZones</span>
-            <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-0 group-data-[state=active]:opacity-100 glyph-glow"></div>
           </TabsTrigger>
           
           <TabsTrigger 
             value="stego" 
             className="flex-1 min-h-[52px] relative group border-r border-cyan-500/10 data-[state=active]:bg-gradient-to-b data-[state=active]:from-purple-500/20 data-[state=active]:to-transparent data-[state=active]:border-t-2 data-[state=active]:border-t-purple-400 data-[state=active]:text-purple-300 text-gray-500 hover:text-gray-300 transition-all font-mono text-xs uppercase tracking-widest rounded-none"
           >
-            <span>05_Stego</span>
+            <span>04_Stego</span>
             <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-purple-400 to-transparent opacity-0 group-data-[state=active]:opacity-100"></div>
           </TabsTrigger>
           
@@ -547,7 +539,7 @@ export default function QrStudio({ initialTab = 'create' }) {
             className="flex-1 min-h-[52px] relative group border-r border-cyan-500/10 data-[state=active]:bg-gradient-to-b data-[state=active]:from-green-500/20 data-[state=active]:to-transparent data-[state=active]:border-t-2 data-[state=active]:border-t-green-400 data-[state=active]:text-green-300 text-gray-500 hover:text-gray-300 transition-all font-mono text-xs uppercase tracking-widest rounded-none"
           >
             <Shield className="w-3 h-3 mr-2" />
-            <span>06_Security</span>
+            <span>05_Security</span>
             <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-green-400 to-transparent opacity-0 group-data-[state=active]:opacity-100"></div>
           </TabsTrigger>
           
@@ -555,7 +547,7 @@ export default function QrStudio({ initialTab = 'create' }) {
             value="analytics" 
             className="flex-1 min-h-[52px] relative group border-r border-cyan-500/10 data-[state=active]:bg-gradient-to-b data-[state=active]:from-blue-500/20 data-[state=active]:to-transparent data-[state=active]:border-t-2 data-[state=active]:border-t-blue-400 data-[state=active]:text-blue-300 text-gray-500 hover:text-gray-300 transition-all font-mono text-xs uppercase tracking-widest rounded-none"
           >
-            <span>07_Analytics</span>
+            <span>06_Analytics</span>
             <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-blue-400 to-transparent opacity-0 group-data-[state=active]:opacity-100"></div>
           </TabsTrigger>
           
@@ -563,23 +555,22 @@ export default function QrStudio({ initialTab = 'create' }) {
             value="bulk" 
             className="flex-1 min-h-[52px] relative group data-[state=active]:bg-gradient-to-b data-[state=active]:from-purple-500/20 data-[state=active]:to-transparent data-[state=active]:border-t-2 data-[state=active]:border-t-purple-400 data-[state=active]:text-purple-300 text-gray-500 hover:text-gray-300 transition-all font-mono text-xs uppercase tracking-widest rounded-none"
           >
-            <span>08_Bulk</span>
+            <span>07_Bulk</span>
             <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-purple-400 to-transparent opacity-0 group-data-[state=active]:opacity-100"></div>
           </TabsTrigger>
         </TabsList>
 
-        {/* Mobile Tabs - Technical Segmented */}
+        {/* Mobile Tabs - Technical Segmented (7 tabs - NO HOTZONES) */}
         <div className="lg:hidden mb-6 -mx-4 px-4">
           <div className="flex gap-1 overflow-x-auto pb-2 scrollbar-hide bg-black/60 backdrop-blur-sm border border-cyan-500/20 p-1">
             {[
               { value: 'create', icon: Wand2, label: 'Create', num: '01' },
               { value: 'preview', icon: null, label: 'Preview', num: '02' },
-              { value: 'customize', icon: null, label: 'Customize', num: '03' },
-              { value: 'hotzones', icon: Layers, label: 'HotZones', num: '04' },
-              { value: 'stego', icon: null, label: 'Stego', num: '05' },
-              { value: 'security', icon: Shield, label: 'Security', num: '06' },
-              { value: 'analytics', icon: null, label: 'Analytics', num: '07' },
-              { value: 'bulk', icon: null, label: 'Bulk', num: '08' },
+              { value: 'customize', icon: Layers, label: 'Customize', num: '03' },
+              { value: 'stego', icon: null, label: 'Stego', num: '04' },
+              { value: 'security', icon: Shield, label: 'Security', num: '05' },
+              { value: 'analytics', icon: null, label: 'Analytics', num: '06' },
+              { value: 'bulk', icon: null, label: 'Bulk', num: '07' },
             ].map((tab) => {
               const Icon = tab.icon;
               return (
@@ -817,81 +808,102 @@ export default function QrStudio({ initialTab = 'create' }) {
           )}
         </TabsContent>
 
-        {/* Customize Tab */}
+        {/* Customize Tab - FULL CUSTOMIZATION PANEL */}
         <TabsContent value="customize">
-          <Card className={`${GlyphCard.premium} ${GlyphShadows.depth.lg} relative z-10`}>
-            <CardHeader className="border-b border-purple-500/20">
-              <CardTitle className={`${GlyphTypography.heading.lg} text-white flex items-center gap-2`}>
-                <Layers className="w-5 h-5 text-cyan-400" />
-                Customize Appearance
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4 pt-6">
-              <div className="space-y-2">
-                <Label htmlFor="artStyle" className="text-gray-300">Art Style (Optional)</Label>
-                <Input
-                  id="artStyle"
-                  value={artStyle}
-                  onChange={(e) => setArtStyle(e.target.value)}
-                  placeholder="e.g., cyberpunk, watercolor, neon"
-                  className="min-h-[44px]"
-                />
-              </div>
+          <div className="grid lg:grid-cols-2 gap-8 relative z-10">
+            {/* Left: Customization Controls */}
+            <div>
+              <QrCustomizationPanel
+                customization={customization}
+                setCustomization={setCustomization}
+                errorCorrectionLevel={errorCorrectionLevel}
+                setErrorCorrectionLevel={setErrorCorrectionLevel}
+                onApply={applyCustomization}
+              />
+            </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="colorTheme" className="text-gray-300">Color Theme</Label>
-                <Input
-                  id="colorTheme"
-                  type="color"
-                  value={colorTheme}
-                  onChange={(e) => setColorTheme(e.target.value)}
-                  className="min-h-[44px]"
-                />
-              </div>
+            {/* Right: Live Preview */}
+            <div>
+              <Card className={`${GlyphCard.premium} ${GlyphShadows.depth.lg} sticky top-24`}>
+                <CardHeader className="border-b border-purple-500/20">
+                  <CardTitle className="text-white flex items-center gap-2">
+                    <Eye className="w-5 h-5 text-cyan-400" />
+                    Live Preview
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="pt-6">
+                  {qrGenerated ? (
+                    <div className="space-y-4">
+                      <div 
+                        className="p-8 rounded-lg flex items-center justify-center relative"
+                        style={{
+                          background: customization.background?.type === 'gradient'
+                            ? `linear-gradient(135deg, ${customization.background?.gradientColor1}, ${customization.background?.gradientColor2})`
+                            : customization.background?.type === 'image' && customization.background?.imageUrl
+                              ? `url(${customization.background.imageUrl}) center/cover`
+                              : customization.background?.color || '#FFFFFF'
+                        }}
+                      >
+                        <img 
+                          src={getQRUrl()} 
+                          alt="QR Code" 
+                          className="max-w-full"
+                          style={{
+                            filter: customization.gradient?.enabled 
+                              ? `hue-rotate(${customization.gradient.angle}deg)` 
+                              : 'none'
+                          }}
+                        />
+                        {(logoPreviewUrl || customization.logo?.url) && (
+                          <div 
+                            className="absolute inset-0 flex items-center justify-center"
+                            style={{ opacity: (customization.logo?.opacity || 100) / 100 }}
+                          >
+                            <img 
+                              src={logoPreviewUrl || customization.logo?.url} 
+                              alt="Logo" 
+                              className={`bg-white p-1 ${
+                                customization.logo?.shape === 'circle' ? 'rounded-full' :
+                                customization.logo?.shape === 'rounded' ? 'rounded-xl' : 'rounded-lg'
+                              } ${customization.logo?.border ? 'border-2 border-gray-300' : ''}`}
+                              style={{ 
+                                width: `${customization.logo?.size || 20}%`,
+                                height: 'auto'
+                              }}
+                            />
+                          </div>
+                        )}
+                      </div>
+                      
+                      <div className="text-center text-xs text-gray-400 space-y-1">
+                        <p>Dot: {customization.dotStyle} | Eye: {customization.eyeStyle}</p>
+                        <p>ECC: {errorCorrectionLevel} | Size: {size}px</p>
+                        {customization.gradient?.enabled && (
+                          <p className="text-cyan-400">Gradient: {customization.gradient.type} @ {customization.gradient.angle}°</p>
+                        )}
+                      </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="logoUrl" className="text-gray-300">Logo URL (Optional)</Label>
-                <Input
-                  id="logoUrl"
-                  value={logoUrl}
-                  onChange={(e) => setLogoUrl(e.target.value)}
-                  placeholder="https://example.com/logo.png"
-                  className="min-h-[44px]"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="ecc" className="text-gray-300">Error Correction Level</Label>
-                <Select value={errorCorrectionLevel} onValueChange={setErrorCorrectionLevel}>
-                  <SelectTrigger id="ecc" className="min-h-[44px]">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="L">L - Low (7%)</SelectItem>
-                    <SelectItem value="M">M - Medium (15%)</SelectItem>
-                    <SelectItem value="Q">Q - Quartile (25%)</SelectItem>
-                    <SelectItem value="H">H - High (30%)</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        {/* Hot Zones Tab */}
-        <TabsContent value="hotzones">
-          {qrAssetDraft && qrAssetDraft.safeQrImageUrl ? (
-            <QrHotZoneEditor
-              qrImageUrl={qrAssetDraft.safeQrImageUrl}
-              hotZones={hotZones}
-              onHotZonesChange={setHotZones}
-            />
-          ) : (
-            <Card className={`${GlyphCard.glass} p-12 text-center relative z-10`}>
-              <Layers className="w-16 h-16 mx-auto mb-4 text-gray-600" />
-              <p className="text-gray-400 text-lg">Generate a QR code first to add hot zones</p>
-            </Card>
-          )}
+                      <Button
+                        onClick={downloadQR}
+                        variant="outline"
+                        className="w-full border-cyan-500/50 hover:bg-cyan-500/10 text-white"
+                      >
+                        <Download className="w-4 h-4 mr-2" />
+                        Download Customized QR
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="h-80 flex items-center justify-center border-2 border-dashed border-gray-700 rounded-lg">
+                      <div className="text-center">
+                        <Wand2 className="w-12 h-12 mx-auto mb-4 text-gray-600" />
+                        <p className="text-gray-500">Generate a QR code in the Create tab first</p>
+                      </div>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
+          </div>
         </TabsContent>
 
         {/* Stego Art Tab - DUAL ENGINE: QrStegoArtBuilder + SteganographicQR */}
