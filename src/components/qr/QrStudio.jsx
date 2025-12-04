@@ -588,84 +588,68 @@ export default function QrStudio({ initialTab = 'create' }) {
                     />
 
                     <img
-                                                src={qrGenerated && getRawQRUrl() ? getRawQRUrl() : defaultQrUrl}
-                                                alt={qrGenerated ? "Generated QR" : "Default QR"}
-                                                className="absolute top-[40%] left-[76%] w-[22%] -translate-x-1/2 -translate-y-1/2 object-contain select-none pointer-events-none"
-                                                style={{ imageRendering: 'pixelated' }}
-                                              />
-                  </div>
-                </div>
-              </div>
+                      src={qrGenerated && getRawQRUrl() ? getRawQRUrl() : defaultQrUrl}
+                      alt={qrGenerated ? "Generated QR" : "Default QR"}
+                      className="absolute top-[40%] left-[76%] w-[22%] -translate-x-1/2 -translate-y-1/2 object-contain select-none pointer-events-none"
+                      style={{ imageRendering: 'pixelated' }}
+                    />
 
-              {/* Security Results Row */}
-              <div className="w-full flex flex-col lg:flex-row gap-6">
-                <div className="w-full lg:w-[540px] space-y-6">
-                  {/* Risk Badge */}
-                  {securityResult && (
-                    <Card className={GlyphCard.glass}>
-                      <CardHeader>
-                        <CardTitle className="text-white text-sm flex items-center gap-2">
-                          <Shield className="w-4 h-4 text-cyan-400" />
-                          Security Scan Result
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <QrSecurityBadge
-                          riskScore={securityResult.final_score}
-                          riskFlags={securityResult.phishing_indicators || []}
-                        />
-                      </CardContent>
-                    </Card>
-                  )}
-
-                  {/* Generation Status */}
-                  {qrGenerated && (
-                    <Card className={GlyphCard.glass}>
-                      <CardContent className="pt-6">
-                        <div className="text-center">
-                          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-green-500/20 flex items-center justify-center">
-                            <Shield className="w-8 h-8 text-green-400" />
+                    {/* Security & Status Info - Inside GL Preview */}
+                    <div className="absolute bottom-4 left-4 right-4 space-y-3">
+                      {securityResult && (
+                        <div className="bg-black/60 backdrop-blur-sm rounded-lg p-3 border border-cyan-500/30">
+                          <div className="flex items-center gap-2 mb-2">
+                            <Shield className="w-4 h-4 text-cyan-400" />
+                            <span className="text-white text-xs font-semibold">Security Scan Result</span>
                           </div>
-                          <h4 className="text-white font-bold mb-2">QR Generated Successfully</h4>
-                          <p className="text-sm text-gray-400 mb-4">
-                            Go to Customize tab to style your QR, then Preview to download.
-                          </p>
+                          <QrSecurityBadge
+                            riskScore={securityResult.final_score}
+                            riskFlags={securityResult.phishing_indicators || []}
+                          />
+                        </div>
+                      )}
+
+                      {qrGenerated && (
+                        <div className="bg-black/60 backdrop-blur-sm rounded-lg p-3 border border-green-500/30">
+                          <div className="flex items-center gap-2 mb-2">
+                            <Shield className="w-4 h-4 text-green-400" />
+                            <span className="text-white text-xs font-semibold">QR Generated Successfully</span>
+                          </div>
+                          <p className="text-xs text-gray-400 mb-2">Customize or download your QR.</p>
                           <div className="flex gap-2">
                             <Button
                               onClick={() => setActiveTab('customize')}
                               variant="outline"
-                              className="flex-1 border-cyan-500/50 text-white"
+                              size="sm"
+                              className="flex-1 border-cyan-500/50 text-white text-xs h-8"
                             >
-                              <Layers className="w-4 h-4 mr-2" />
+                              <Layers className="w-3 h-3 mr-1" />
                               Customize
                             </Button>
                             <Button
                               onClick={() => setActiveTab('preview')}
                               variant="outline"
-                              className="flex-1 border-purple-500/50 text-white"
+                              size="sm"
+                              className="flex-1 border-purple-500/50 text-white text-xs h-8"
                             >
-                              <Eye className="w-4 h-4 mr-2" />
+                              <Eye className="w-3 h-3 mr-1" />
                               Preview
                             </Button>
                           </div>
                         </div>
-                      </CardContent>
-                    </Card>
-                  )}
+                      )}
 
-                  {/* Blocked Notice */}
-                  {securityResult?.final_score < 65 && (
-                    <Card className="bg-red-500/10 border-red-500/30">
-                      <CardContent className="pt-6 text-center">
-                        <div className="text-5xl mb-4">🚫</div>
-                        <h4 className="text-red-400 font-bold">Generation Blocked</h4>
-                        <p className="text-sm text-white">Security score: {securityResult.final_score}/100</p>
-                        <p className="text-xs text-gray-400 mt-2">This URL/payload failed security checks.</p>
-                      </CardContent>
-                    </Card>
-                  )}
+                      {securityResult?.final_score < 65 && (
+                        <div className="bg-red-500/20 backdrop-blur-sm rounded-lg p-3 border border-red-500/50 text-center">
+                          <span className="text-2xl">🚫</span>
+                          <h4 className="text-red-400 font-bold text-xs mt-1">Generation Blocked</h4>
+                          <p className="text-xs text-white">Score: {securityResult.final_score}/100</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </div>
-              </div>
+                </div>
             </div>
           </TabsContent>
 
