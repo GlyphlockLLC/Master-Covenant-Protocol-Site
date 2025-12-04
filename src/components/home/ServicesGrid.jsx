@@ -1,7 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
-import { Shield, Zap, Eye, Brain, Lock, FileCode, MapPin, Image } from "lucide-react";
+import { Shield, Zap, Eye, Brain, Lock, FileCode, Image } from "lucide-react";
+
+/**
+ * PHASE 3B SERVICES GRID
+ * QR Studio is the ONLY QR link - points to /Qr
+ * Hotzone Mapper REMOVED (it's an Image Suite tool, not a security product)
+ */
 
 const services = [
   {
@@ -33,11 +39,11 @@ const services = [
     icon: Lock
   },
   {
-    title: "Hotzone Mapper",
-    description: "Security threat visualization and mapping",
-    link: "HotzoneMapper",
+    title: "Image Lab",
+    description: "Advanced image processing and steganography tools",
+    link: "ImageLab",
     image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/9167e5df2_08f33231-115f-4c95-9719-682f4e9679cc.jpg",
-    icon: MapPin
+    icon: Image
   },
   {
     title: "GlyphBot AI Assistant",
