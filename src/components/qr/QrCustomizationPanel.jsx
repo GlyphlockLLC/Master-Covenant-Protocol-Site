@@ -13,7 +13,7 @@ import {
   Move, RotateCw, Sun, Droplets, Layers, Frame
 } from 'lucide-react';
 
-// Extended Dot style options
+// Extended Dot style options (12 including Heart)
 const DOT_STYLES = [
   { id: 'square', name: 'Square', icon: Square },
   { id: 'rounded', name: 'Rounded', icon: Square },
@@ -25,7 +25,8 @@ const DOT_STYLES = [
   { id: 'star', name: 'Star', icon: Star },
   { id: 'hex', name: 'Hexagon', icon: Hexagon },
   { id: 'bevel', name: 'Bevel', icon: Layers },
-  { id: 'liquid', name: 'Liquid', icon: Droplets }
+  { id: 'liquid', name: 'Liquid', icon: Droplets },
+  { id: 'heart', name: 'Heart', icon: Sparkles }
 ];
 
 // Extended Eye (finder pattern) styles
@@ -83,12 +84,12 @@ const BG_PATTERNS = [
 
 // Preset color palettes
 const COLOR_PRESETS = [
-  { id: 'classic', name: 'Classic', fg: '#000000', bg: '#FFFFFF' },
-  { id: 'royal', name: 'Royal Blue', fg: '#1E40AF', bg: '#FFFFFF' },
+  { id: 'classic', name: 'Classic', fg: '#000000', bg: '#ffffff' },
+  { id: 'royal', name: 'Royal Blue', fg: '#1E40AF', bg: '#ffffff' },
   { id: 'cyber', name: 'Cyber', fg: '#0EA5E9', bg: '#0F172A' },
-  { id: 'emerald', name: 'Emerald', fg: '#059669', bg: '#FFFFFF' },
+  { id: 'emerald', name: 'Emerald', fg: '#059669', bg: '#ffffff' },
   { id: 'sunset', name: 'Sunset', fg: '#DC2626', bg: '#FEF2F2' },
-  { id: 'grape', name: 'Grape', fg: '#7C3AED', bg: '#FFFFFF' },
+  { id: 'grape', name: 'Grape', fg: '#7C3AED', bg: '#ffffff' },
   { id: 'gold', name: 'Gold', fg: '#B45309', bg: '#FFFBEB' },
   { id: 'ocean', name: 'Ocean', fg: '#0369A1', bg: '#E0F2FE' },
   { id: 'midnight', name: 'Midnight', fg: '#FFFFFF', bg: '#0F172A' },
@@ -151,7 +152,7 @@ export default function QrCustomizationPanel({
       dotStyle: 'square',
       eyeStyle: 'square',
       foregroundColor: '#000000',
-      backgroundColor: '#FFFFFF',
+      backgroundColor: '#ffffff',
       gradient: {
         enabled: false,
         type: 'linear',
@@ -181,9 +182,9 @@ export default function QrCustomizationPanel({
       },
       background: {
         type: 'solid',
-        color: '#FFFFFF',
-        gradientColor1: '#FFFFFF',
-        gradientColor2: '#E5E7EB',
+        color: '#ffffff',
+        gradientColor1: '#ffffff',
+        gradientColor2: '#e5e7eb',
         imageUrl: null,
         blur: 0,
         pattern: 'none',
@@ -217,7 +218,7 @@ export default function QrCustomizationPanel({
             <CardHeader className="pb-3">
               <CardTitle className="text-white text-sm flex items-center gap-2">
                 <Grid3X3 className="w-4 h-4 text-cyan-400" />
-                Dot Style (11 Options)
+                Dot Style (12 Options)
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -359,13 +360,13 @@ export default function QrCustomizationPanel({
                   <div className="flex gap-2">
                     <Input
                       type="color"
-                      value={customization.backgroundColor || '#FFFFFF'}
+                      value={customization.backgroundColor || '#ffffff'}
                       onChange={(e) => updateCustomization('backgroundColor', e.target.value)}
                       className="w-12 h-10 p-1 bg-gray-800 border-gray-700"
                     />
                     <Input
                       type="text"
-                      value={customization.backgroundColor || '#FFFFFF'}
+                      value={customization.backgroundColor || '#ffffff'}
                       onChange={(e) => updateCustomization('backgroundColor', e.target.value)}
                       className="flex-1 h-10 bg-gray-800 border-gray-700 text-white font-mono text-xs"
                     />
@@ -491,13 +492,13 @@ export default function QrCustomizationPanel({
                   <div className="flex gap-2">
                     <Input
                       type="color"
-                      value={customization.background?.color || '#FFFFFF'}
+                      value={customization.background?.color || '#ffffff'}
                       onChange={(e) => updateBackground('color', e.target.value)}
                       className="w-12 h-10 p-1 bg-gray-800 border-gray-700"
                     />
                     <Input
                       type="text"
-                      value={customization.background?.color || '#FFFFFF'}
+                      value={customization.background?.color || '#ffffff'}
                       onChange={(e) => updateBackground('color', e.target.value)}
                       className="flex-1 h-10 bg-gray-800 border-gray-700 text-white font-mono text-xs"
                     />
@@ -511,7 +512,7 @@ export default function QrCustomizationPanel({
                     <Label className="text-white text-[10px] mb-1 block">Color 1</Label>
                     <Input
                       type="color"
-                      value={customization.background?.gradientColor1 || '#FFFFFF'}
+                      value={customization.background?.gradientColor1 || '#ffffff'}
                       onChange={(e) => updateBackground('gradientColor1', e.target.value)}
                       className="w-full h-10 p-1 bg-gray-800 border-gray-700"
                     />
@@ -520,7 +521,7 @@ export default function QrCustomizationPanel({
                     <Label className="text-white text-[10px] mb-1 block">Color 2</Label>
                     <Input
                       type="color"
-                      value={customization.background?.gradientColor2 || '#E5E7EB'}
+                      value={customization.background?.gradientColor2 || '#e5e7eb'}
                       onChange={(e) => updateBackground('gradientColor2', e.target.value)}
                       className="w-full h-10 p-1 bg-gray-800 border-gray-700"
                     />
