@@ -19,19 +19,20 @@ export default function StyledQRRenderer({
   const [isRendering, setIsRendering] = useState(false);
 
   // Map our dot styles to qr-code-styling dot types
+  // qr-code-styling supports: 'square', 'dots', 'rounded', 'extra-rounded', 'classy', 'classy-rounded'
   const getDotType = (style) => {
     const mapping = {
       'square': 'square',
       'rounded': 'rounded',
       'circle': 'dots',
-      'diamond': 'diamond',  // Note: qr-code-styling doesn't have diamond, fallback to square
+      'diamond': 'classy',
       'pixel': 'square',
-      'mosaic': 'square',
+      'mosaic': 'classy',
       'microdots': 'dots',
-      'star': 'square',
-      'hex': 'square',
-      'bevel': 'rounded',
-      'liquid': 'rounded'
+      'star': 'classy-rounded',
+      'hex': 'classy',
+      'bevel': 'extra-rounded',
+      'liquid': 'extra-rounded'
     };
     return mapping[style] || 'square';
   };
@@ -84,7 +85,7 @@ export default function StyledQRRenderer({
       dotStyle = 'square',
       eyeStyle = 'square',
       foregroundColor = '#000000',
-      backgroundColor = '#FFFFFF',
+      backgroundColor = '#ffffff',
       gradient = {},
       eyeColors = {},
       logo = {},
