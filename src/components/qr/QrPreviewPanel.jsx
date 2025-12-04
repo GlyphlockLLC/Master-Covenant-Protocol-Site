@@ -100,10 +100,10 @@ export default function QrPreviewPanel({
                 className="p-8 rounded-xl flex items-center justify-center relative shadow-inner"
                 style={{
                   background: customization?.background?.type === 'gradient'
-                    ? `linear-gradient(135deg, ${customization.background?.gradientColor1 || '#FFFFFF'}, ${customization.background?.gradientColor2 || '#E5E7EB'})`
+                    ? `linear-gradient(135deg, ${customization.background?.gradientColor1 || '#ffffff'}, ${customization.background?.gradientColor2 || '#e5e7eb'})`
                     : customization?.background?.type === 'image' && customization?.background?.imageUrl
                       ? `url(${customization.background.imageUrl}) center/cover`
-                      : customization?.background?.color || '#FFFFFF'
+                      : customization?.background?.color || '#ffffff'
                 }}
               >
                 <StyledQRRenderer
