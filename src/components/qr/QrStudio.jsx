@@ -205,16 +205,26 @@ export default function QrStudio({ initialTab = 'create' }) {
     }
   };
 
-  // ========== GET QR URL ==========
+  // ========== GET QR URL (with real-time customization) ==========
   const getQRUrl = () => {
     const payload = buildQRPayload();
+    if (!payload) return defaultQrUrl;
+    
+    // Get foreground color - use gradient color1 if gradient enabled, otherwise foregroundColor
     const fgColor = customization.gradient?.enabled 
-      ? customization.gradient.color1.replace('#', '')
+      ? (customization.gradient.color1 || '#000000').replace('#', '')
       : (customization.foregroundColor || '#000000').replace('#', '');
-    const bgColor = customization.background?.type === 'solid'
-      ? (customization.background?.color || '#FFFFFF').replace('#', '')
-      : 'FFFFFF';
-    return `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(payload)}&ecc=${errorCorrectionLevel}&color=${encodeURIComponent(fgColor)}&bgcolor=${encodeURIComponent(bgColor)}`;
+    
+    // Get background color based on background type
+    let bgColor = 'FFFFFF';
+    if (customization.background?.type === 'solid') {
+      bgColor = (customization.background?.color || '#FFFFFF').replace('#', '');
+    } else if (customization.background?.type === 'gradient') {
+      // For gradient backgrounds, use first gradient color
+      bgColor = (customization.background?.gradientColor1 || '#FFFFFF').replace('#', '');
+    }
+    
+    return `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(payload)}&ecc=${errorCorrectionLevel}&color=${fgColor}&bgcolor=${bgColor}`;
   };
 
   // ========== GENERATE QR ==========
