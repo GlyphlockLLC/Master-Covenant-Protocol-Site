@@ -106,9 +106,10 @@ export default function QrPreviewPanel({
                       : customization?.background?.color || '#ffffff'
                 }}
               >
-                <StyledQRRenderer
+                <CanvasQrRenderer
                   text={displayPayload}
                   size={size || 300}
+                  errorCorrectionLevel={errorCorrectionLevel || 'H'}
                   customization={{
                     ...customization,
                     logo: {
