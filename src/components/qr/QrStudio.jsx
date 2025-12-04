@@ -27,7 +27,7 @@ import SecurityStatus from './SecurityStatus';
 import SteganographicQR from './SteganographicQR';
 import QRTypeForm from '@/components/crypto/QRTypeForm';
 import { generateSHA256, performStaticURLChecks } from '@/components/utils/securityUtils';
-import GlPreviewBlock from './GlPreviewBlock';
+
 
 export default function QrStudio({ initialTab = 'create' }) {
   const [activeTab, setActiveTab] = useState(initialTab);
@@ -647,7 +647,22 @@ export default function QrStudio({ initialTab = 'create' }) {
               </div>
             {/* GL Preview Block - Inside Right Column */}
             <div className="hidden lg:block">
-              <GlPreviewBlock qrData={qrGenerated ? buildQRPayload() : null} />
+              <div className="relative w-full rounded-xl bg-[#0d0f1a]/70 p-4 overflow-hidden shadow-lg border border-blue-500/20">
+                <img
+                  src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/382879216_qrgl.png"
+                  alt="GlyphLock Frame"
+                  className="w-full h-auto object-contain select-none pointer-events-none"
+                />
+
+                {/* QR injected INTO the hollow square */}
+                {qrGenerated && (
+                  <img
+                    src={getRawQRUrl()}
+                    alt="Generated QR"
+                    className="absolute top-[50%] left-[63%] w-[32%] -translate-x-1/2 -translate-y-1/2 object-contain select-none pointer-events-none"
+                  />
+                )}
+              </div>
             </div>
             </div>
             </TabsContent>
