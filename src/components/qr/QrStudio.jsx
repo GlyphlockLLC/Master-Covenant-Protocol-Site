@@ -644,7 +644,7 @@ export default function QrStudio({ initialTab = 'create' }) {
               </div>
             {/* GL Preview Block - Inside Right Column */}
             <div className="hidden lg:block">
-              <GlPreviewBlock previewSrc={qrGenerated ? getRawQRUrl() : null} />
+              <GlPreviewBlock qrData={qrGenerated ? buildQRPayload() : null} />
             </div>
             </div>
             </TabsContent>
