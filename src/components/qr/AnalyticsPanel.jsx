@@ -8,13 +8,19 @@ import { Download, TrendingUp, AlertCircle, MapPin, Activity } from 'lucide-reac
 import { toast } from 'sonner';
 
 export default function AnalyticsPanel({ qrAssetId }) {
-  const { data: scanEvents = [], isLoading } = useQuery({
+  const { data: scanEvents = [], isLoading, refetch } = useQuery({
     queryKey: ['qrScanEvents', qrAssetId],
     queryFn: async () => {
       if (!qrAssetId) return [];
-      return await base44.entities.QrScanEvent.filter({ qrAssetId }, '-scannedAt', 500);
+      try {
+        return await base44.entities.QrScanEvent.filter({ qrAssetId }, '-scannedAt', 500);
+      } catch (err) {
+        console.error('Failed to fetch scan events:', err);
+        return [];
+      }
     },
-    enabled: !!qrAssetId
+    enabled: !!qrAssetId,
+    refetchInterval: 30000 // Auto-refresh every 30 seconds
   });
 
   const metrics = useMemo(() => {
