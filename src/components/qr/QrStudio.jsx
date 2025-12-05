@@ -458,6 +458,64 @@ export default function QrStudio({ initialTab = 'create' }) {
     toast.success("Steganographic image created!");
   };
 
+  // Load preview from sidebar
+  const handleSelectPreview = useCallback((preview) => {
+    if (!preview) return;
+    
+    // Restore QR state from preview
+    setQrData(prev => ({ ...prev, url: preview.payload || '' }));
+    setQrType(preview.payload_type || 'url');
+    setSize(preview.size || 512);
+    setErrorCorrectionLevel(preview.error_correction || 'H');
+    
+    if (preview.customization) {
+      setCustomization(preview.customization);
+    }
+    
+    setQrAssetDraft({
+      id: preview.code_id,
+      title: preview.payload_type || 'url',
+      payload: preview.payload,
+      safeQrImageUrl: preview.image_data_url,
+      artQrImageUrl: null,
+      immutableHash: preview.immutable_hash,
+      riskScore: preview.risk_score || 0,
+      riskFlags: preview.risk_flags || [],
+      errorCorrectionLevel: preview.error_correction || 'H',
+      customization: preview.customization || customization,
+      artStyle: null,
+      stegoConfig: { enabled: false }
+    });
+    
+    setQrGenerated(true);
+    setCodeId(preview.code_id);
+    setQrDataUrl(preview.image_data_url);
+    
+    toast.success('Preview loaded');
+  }, [customization]);
+
+  // Handle vault save from sidebar
+  const handleSaveToVault = async (previewId) => {
+    const success = await saveToVault(previewId);
+    if (success) {
+      await refreshVault();
+    }
+    return success;
+  };
+
+  // Handle delete from vault
+  const handleDeleteVaultItem = async (itemId) => {
+    try {
+      await base44.entities.QrPreview.delete(itemId);
+      await refreshVault();
+      toast.success('Removed from vault');
+      return true;
+    } catch (err) {
+      toast.error('Failed to delete');
+      return false;
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-purple-950/20 to-black">
       {/* Background */}
