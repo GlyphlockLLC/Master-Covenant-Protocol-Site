@@ -73,6 +73,10 @@ export function useGlyphBotPersistence(currentUser) {
 
   // Track full history (called on every message add)
   const trackMessage = useCallback((message) => {
+    if (!message?.role) {
+      console.warn('[GlyphBot Persistence] Ignoring malformed message:', message);
+      return;
+    }
     setFullHistory(prev => {
       const updated = [...prev, message];
       try {
@@ -86,6 +90,10 @@ export function useGlyphBotPersistence(currentUser) {
 
   // Initialize full history from trimmed messages (on first load)
   const initializeHistory = useCallback((messages) => {
+    if (!Array.isArray(messages)) {
+      console.warn('[GlyphBot Persistence] initializeHistory received invalid messages:', messages);
+      return;
+    }
     if (fullHistory.length === 0 && messages.length > 0) {
       setFullHistory(messages);
       try {
@@ -141,13 +149,14 @@ export function useGlyphBotPersistence(currentUser) {
       if (currentChatId) {
         // Update existing chat
         savedChat = await base44.entities.GlyphBotChat.update(currentChatId, chatData);
-        console.log('[GlyphBot Persistence] Chat updated:', currentChatId);
+        console.log('[GlyphBot Persistence] Chat updated successfully:', currentChatId, chatData);
       } else {
         // Create new chat
         savedChat = await base44.entities.GlyphBotChat.create(chatData);
-        setCurrentChatId(savedChat.id);
-        localStorage.setItem(STORAGE_KEYS.CURRENT_CHAT_ID, savedChat.id);
-        console.log('[GlyphBot Persistence] New chat created:', savedChat.id);
+        const newChatId = savedChat.id || savedChat._id || savedChat.entity_id;
+        console.log('[GlyphBot Persistence] New chat created:', newChatId, savedChat);
+        setCurrentChatId(newChatId);
+        localStorage.setItem(STORAGE_KEYS.CURRENT_CHAT_ID, newChatId);
       }
 
       // Refresh saved chats list
@@ -167,9 +176,11 @@ export function useGlyphBotPersistence(currentUser) {
       return false;
     }
 
+    console.log('[GlyphBot Persistence] Archive action:', chatId);
+
     try {
       await base44.entities.GlyphBotChat.update(chatId, { isArchived: true });
-      console.log('[GlyphBot Persistence] Chat archived:', chatId);
+      console.log('[GlyphBot Persistence] Chat archived successfully:', chatId);
       
       // Clear current chat if archiving active chat
       if (chatId === currentChatId) {
@@ -201,23 +212,32 @@ export function useGlyphBotPersistence(currentUser) {
         1
       );
       const chat = chats?.[0];
+      console.log('[GlyphBot Persistence] Loaded chat:', chat);
       
       if (chat) {
-        setCurrentChatId(chat.id);
-        localStorage.setItem(STORAGE_KEYS.CURRENT_CHAT_ID, chat.id);
+        const resolvedId = chat.id || chat._id || chat.entity_id;
+        setCurrentChatId(resolvedId);
+        localStorage.setItem(STORAGE_KEYS.CURRENT_CHAT_ID, resolvedId);
         
         // Parse and set full history
         const history = JSON.parse(chat.fullHistory || '[]');
         setFullHistory(history);
         localStorage.setItem(STORAGE_KEYS.FULL_HISTORY, JSON.stringify(history));
         
-        console.log('[GlyphBot Persistence] Chat loaded:', chatId);
-        return { ...chat, messages: history };
+        // Rebuild UI-friendly trimmed messages
+        const visibleMessages = history.slice(-10);
+        const filtered = visibleMessages.filter(m => m.id !== 'welcome-1');
+        
+        return { 
+          ...chat, 
+          messages: history, // Full history for persistence tracking
+          visibleMessages: filtered // UI display
+        };
       }
       
       return null;
     } catch (e) {
-      console.error('[GlyphBot Persistence] Failed to load chat:', e);
+      console.error('[GlyphBot Persistence] Failed to load chat:', chatId, e);
       return null;
     }
   }, [currentUser?.email]);
@@ -255,9 +275,11 @@ export function useGlyphBotPersistence(currentUser) {
   const unarchiveChat = useCallback(async (chatId) => {
     if (!chatId) return false;
 
+    console.log('[GlyphBot Persistence] Unarchive action:', chatId);
+
     try {
       await base44.entities.GlyphBotChat.update(chatId, { isArchived: false });
-      console.log('[GlyphBot Persistence] Chat unarchived:', chatId);
+      console.log('[GlyphBot Persistence] Chat unarchived successfully:', chatId);
       await loadSavedChats();
       return true;
     } catch (e) {
