@@ -649,30 +649,30 @@ export default function QrStudio({ initialTab = 'create' }) {
                                                                     </div>
 
                                                                     {/* Risk Indicator - Top Right */}
-                                                                    {securityResult && (
+                                                                    {qrGenerated && (
                                                                       <div className="absolute top-6 right-6 z-20">
                                                                         <div className={`flex items-center gap-1.5 px-2 py-1 backdrop-blur-sm rounded-md border transition-all ${
-                                                                          securityResult.final_score >= 80 
+                                                                          !securityResult || securityResult.final_score <= 20 
                                                                             ? 'bg-green-600/30 border-green-500/50' 
-                                                                            : securityResult.final_score >= 65 
+                                                                            : securityResult.final_score <= 50 
                                                                               ? 'bg-yellow-600/30 border-yellow-500/50' 
                                                                               : 'bg-red-600/30 border-red-500/50'
                                                                         }`}>
                                                                           <div className={`w-2 h-2 rounded-full animate-pulse ${
-                                                                            securityResult.final_score >= 80 
+                                                                            !securityResult || securityResult.final_score <= 20 
                                                                               ? 'bg-green-400' 
-                                                                              : securityResult.final_score >= 65 
+                                                                              : securityResult.final_score <= 50 
                                                                                 ? 'bg-yellow-400' 
                                                                                 : 'bg-red-400'
                                                                           }`} />
                                                                           <span className={`text-xs font-bold ${
-                                                                            securityResult.final_score >= 80 
+                                                                            !securityResult || securityResult.final_score <= 20 
                                                                               ? 'text-green-300' 
-                                                                              : securityResult.final_score >= 65 
+                                                                              : securityResult.final_score <= 50 
                                                                                 ? 'text-yellow-300' 
                                                                                 : 'text-red-300'
                                                                           }`}>
-                                                                            {securityResult.final_score >= 80 ? 'Safe' : securityResult.final_score >= 65 ? 'Caution' : 'Risk'}
+                                                                            {!securityResult || securityResult.final_score <= 20 ? 'Safe' : securityResult.final_score <= 50 ? 'Caution' : 'Risk'}
                                                                           </span>
                                                                         </div>
                                                                       </div>
