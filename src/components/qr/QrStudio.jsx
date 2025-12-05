@@ -745,8 +745,8 @@ export default function QrStudio({ initialTab = 'create' }) {
                 </div>
 
                 {/* Right: GL Preview Block */}
-                <div className="w-full lg:w-[480px] hidden lg:block">
-                  <div className="relative w-full rounded-xl bg-[#0d0f1a]/70 p-4 overflow-hidden shadow-lg border border-purple-500/20" style={{ maxHeight: '320px' }}>
+                <div className="w-full lg:w-[520px] hidden lg:block">
+                  <div className="relative w-full rounded-xl bg-[#0d0f1a]/70 p-4 overflow-hidden shadow-lg border border-purple-500/20">
 
                     {/* Top Left: Quick Nav Dropdown */}
                     <div className="absolute top-3 left-3 z-20 group">
@@ -796,13 +796,17 @@ export default function QrStudio({ initialTab = 'create' }) {
                       src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/382879216_qrgl.png"
                       alt="GL Frame"
                       className="w-full h-auto object-contain select-none pointer-events-none"
-                      style={{ maxHeight: '280px' }}
                     />
 
-                    {/* QR Code - Positioned in GL logo square area */}
+                    {/* QR Code - Positioned exactly in the LEFT GL logo square */}
                     <div 
-                      className="absolute top-[32%] left-[42%] -translate-x-1/2 -translate-y-1/2 pointer-events-none"
-                      style={{ width: '22%', maxWidth: '120px' }}
+                      className="absolute pointer-events-none"
+                      style={{ 
+                        top: '24%', 
+                        left: '18.5%', 
+                        width: '19%',
+                        aspectRatio: '1'
+                      }}
                     >
                                             <CanvasQrRenderer
                                               text={getCurrentPayload()}
