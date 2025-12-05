@@ -35,6 +35,50 @@ import QrVaultPanel from './QrVaultPanel';
 
 export default function QrStudio({ initialTab = 'create' }) {
   const [activeTab, setActiveTab] = useState(initialTab);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [vaultedItems, setVaultedItems] = useState([]);
+  const [vaultLoading, setVaultLoading] = useState(false);
+
+  // Load current user
+  useEffect(() => {
+    (async () => {
+      try {
+        const isAuth = await base44.auth.isAuthenticated();
+        if (isAuth) {
+          const user = await base44.auth.me();
+          setCurrentUser(user);
+        }
+      } catch (err) {
+        console.error('Auth check failed:', err);
+      }
+    })();
+  }, []);
+
+  // Preview storage hook
+  const {
+    previews,
+    loading: previewsLoading,
+    savePreview,
+    saveToVault,
+    deletePreview,
+    loadPreviews,
+    loadVaultedItems,
+    previewCount,
+    maxPreviews
+  } = useQrPreviewStorage(currentUser?.email);
+
+  // Load vault items
+  const refreshVault = useCallback(async () => {
+    if (!currentUser?.email) return;
+    setVaultLoading(true);
+    const items = await loadVaultedItems();
+    setVaultedItems(items);
+    setVaultLoading(false);
+  }, [currentUser?.email, loadVaultedItems]);
+
+  useEffect(() => {
+    refreshVault();
+  }, [refreshVault]);
 
   // Sync activeTab with initialTab prop
   useEffect(() => {
