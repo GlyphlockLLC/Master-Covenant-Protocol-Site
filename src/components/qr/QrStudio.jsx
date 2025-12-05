@@ -799,9 +799,9 @@ export default function QrStudio({ initialTab = 'create' }) {
                       style={{ maxHeight: '280px' }}
                     />
 
-                    {/* QR Code - Centered in GL logo square area */}
+                    {/* QR Code - Positioned in GL logo square area */}
                     <div 
-                      className="absolute top-[38%] left-[50%] -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+                      className="absolute top-[32%] left-[42%] -translate-x-1/2 -translate-y-1/2 pointer-events-none"
                       style={{ width: '22%', maxWidth: '120px' }}
                     >
                                             <CanvasQrRenderer
