@@ -2,12 +2,15 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import glyphbotClient from '@/components/glyphbot/glyphbotClient';
 import SEOHead from '@/components/SEOHead';
-import { Activity, Zap, Shield, Bot, AlertTriangle, X } from 'lucide-react';
+import { base44 } from '@/api/base44Client';
+import { Activity, Zap, Shield, Bot, AlertTriangle, X, PanelRightOpen, PanelRightClose } from 'lucide-react';
 import GlyphProviderChain from '@/components/provider/GlyphProviderChain';
 import ProviderStatusPanel from '@/components/glyphbot/ProviderStatusPanel';
 import ChatMessage from '@/components/glyphbot/ChatMessage';
 import ChatInput from '@/components/glyphbot/ChatInput';
 import ControlBar from '@/components/glyphbot/ControlBar';
+import ChatHistoryPanel from '@/components/glyphbot/ChatHistoryPanel';
+import { useGlyphBotPersistence } from '@/components/glyphbot/useGlyphBotPersistence';
 import useTTS from '@/components/glyphbot/useTTS';
 import { createPageUrl } from '@/utils';
 
@@ -45,6 +48,8 @@ export default function GlyphBotPage() {
   const [isSending, setIsSending] = useState(false);
   const [chatCount, setChatCount] = useState(0);
   const [showTrimWarning, setShowTrimWarning] = useState(false);
+  const [showHistoryPanel, setShowHistoryPanel] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
 
   const [modes, setModes] = useState({
     voice: false,
@@ -74,6 +79,39 @@ export default function GlyphBotPage() {
   // TTS Hook with dynamic settings
   const { speak, stop: stopTTS, isSpeaking } = useTTS(voiceSettings);
 
+  // Persistence hook - Phase 5
+  const {
+    currentChatId,
+    savedChats,
+    isLoading: persistenceLoading,
+    fullHistory,
+    trackMessage,
+    initializeHistory,
+    saveChat,
+    archiveChat,
+    loadChat,
+    startNewChat,
+    loadSavedChats,
+    getArchivedChats,
+    unarchiveChat,
+    deleteChat
+  } = useGlyphBotPersistence(currentUser);
+
+  // Load current user
+  useEffect(() => {
+    (async () => {
+      try {
+        const isAuth = await base44.auth.isAuthenticated();
+        if (isAuth) {
+          const user = await base44.auth.me();
+          setCurrentUser(user);
+        }
+      } catch (e) {
+        console.warn('[GlyphBot] Auth check failed:', e);
+      }
+    })();
+  }, []);
+
   // Load saved settings and messages on mount
   useEffect(() => {
     try {
@@ -89,7 +127,11 @@ export default function GlyphBotPage() {
       const savedMessages = sessionStorage.getItem(STORAGE_KEYS.MESSAGES);
       if (savedMessages) {
         const parsed = JSON.parse(savedMessages);
-        if (parsed.length > 0) setMessages(parsed);
+        if (parsed.length > 0) {
+          setMessages(parsed);
+          // Initialize full history for persistence
+          initializeHistory(parsed);
+        }
       }
 
       const savedCount = localStorage.getItem(STORAGE_KEYS.CHAT_COUNT);
@@ -97,7 +139,7 @@ export default function GlyphBotPage() {
     } catch (e) {
       console.warn('Failed to load GlyphBot settings:', e);
     }
-  }, []);
+  }, [initializeHistory]);
 
   // Save messages to sessionStorage on change
   useEffect(() => {
@@ -165,6 +207,9 @@ export default function GlyphBotPage() {
     setMessages(prev => [...prev, newUserMsg]);
     setInput('');
     setIsSending(true);
+    
+    // Track user message for full history persistence
+    trackMessage(newUserMsg);
 
     try {
       const response = await glyphbotClient.sendMessage([...messages, newUserMsg], {
@@ -184,17 +229,19 @@ export default function GlyphBotPage() {
 
       const botText = response.text || '[No response received]';
 
-      setMessages(prev => [
-        ...prev,
-        { 
-          id: `bot-${Date.now()}`,
-          role: 'assistant', 
-          content: botText,
-          audit: response.audit || null,
-          providerId: response.providerUsed,
-          latencyMs: response.meta?.providerStats?.[response.providerUsed]?.lastLatencyMs
-        }
-      ]);
+      const botMsg = { 
+        id: `bot-${Date.now()}`,
+        role: 'assistant', 
+        content: botText,
+        audit: response.audit || null,
+        providerId: response.providerUsed,
+        latencyMs: response.meta?.providerStats?.[response.providerUsed]?.lastLatencyMs
+      };
+      
+      setMessages(prev => [...prev, botMsg]);
+      
+      // Track for full history persistence
+      trackMessage(botMsg);
 
       // Increment chat count
       setChatCount(prev => {
@@ -249,7 +296,28 @@ export default function GlyphBotPage() {
     setMessages([WELCOME_MESSAGE]);
     setLastMeta(null);
     sessionStorage.removeItem(STORAGE_KEYS.MESSAGES);
+    startNewChat(); // Clear persistence state
   };
+
+  // Handle save chat
+  const handleSaveChat = useCallback(async () => {
+    return await saveChat(messages, { provider, persona });
+  }, [messages, saveChat, provider, persona]);
+
+  // Handle load chat from history
+  const handleLoadChat = useCallback(async (chatId) => {
+    const result = await loadChat(chatId);
+    if (result?.messages) {
+      setMessages([WELCOME_MESSAGE, ...result.messages.filter(m => m.id !== 'welcome-1')]);
+      if (result.persona) setPersona(result.persona);
+      if (result.provider) setProvider(result.provider);
+    }
+  }, [loadChat]);
+
+  // Handle new chat
+  const handleNewChat = useCallback(() => {
+    handleClear();
+  }, []);
 
   const handleToggleMode = (key) => {
     setModes(prev => ({ ...prev, [key]: !prev[key] }));
@@ -310,6 +378,16 @@ export default function GlyphBotPage() {
                     <span className="text-purple-500/60">|</span>
                     <span className="text-purple-300 font-medium">{currentProviderLabel || 'Gemini (Primary)'}</span>
                   </div>
+              {currentUser && (
+                <button
+                  onClick={() => setShowHistoryPanel(!showHistoryPanel)}
+                  className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold bg-emerald-500/20 border-2 border-emerald-500/50 text-emerald-300 hover:border-cyan-400 hover:text-cyan-300 hover:bg-cyan-500/20 transition-all duration-300"
+                  title={showHistoryPanel ? 'Hide History' : 'Show History'}
+                >
+                  {showHistoryPanel ? <PanelRightClose className="w-3.5 h-3.5" /> : <PanelRightOpen className="w-3.5 h-3.5" />}
+                  <span className="hidden sm:inline">History</span>
+                </button>
+              )}
               <Link
                 to={createPageUrl('ProviderConsole')}
                 className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-purple-500/20 border-2 border-purple-500/50 text-purple-300 hover:border-cyan-400 hover:text-cyan-300 hover:bg-cyan-500/20 transition-all duration-300 shadow-[0_0_15px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(6,182,212,0.5)]"
@@ -401,6 +479,25 @@ export default function GlyphBotPage() {
                 </div>
               )}
             </div>
+
+            {/* Chat History Panel - Phase 5 */}
+            {showHistoryPanel && currentUser && (
+              <aside className="w-64 flex-col border-l-2 border-purple-500/30 bg-gradient-to-b from-slate-950/90 via-purple-950/10 to-slate-950/90 overflow-hidden hidden md:flex">
+                <ChatHistoryPanel
+                  currentChatId={currentChatId}
+                  savedChats={savedChats}
+                  isLoading={persistenceLoading}
+                  onSave={handleSaveChat}
+                  onArchive={archiveChat}
+                  onLoadChat={handleLoadChat}
+                  onNewChat={handleNewChat}
+                  onGetArchived={getArchivedChats}
+                  onUnarchive={unarchiveChat}
+                  onDelete={deleteChat}
+                  hasMessages={messages.length > 1}
+                />
+              </aside>
+            )}
 
             {/* Telemetry Sidebar - Desktop */}
             <aside className="hidden xl:flex w-72 flex-col border-l-2 border-purple-500/30 bg-gradient-to-b from-slate-950/90 via-purple-950/10 to-slate-950/90 overflow-hidden">
