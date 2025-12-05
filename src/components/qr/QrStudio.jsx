@@ -745,85 +745,83 @@ export default function QrStudio({ initialTab = 'create' }) {
                 </div>
 
                 {/* Right: GL Preview Block */}
-                <div className="w-full lg:flex-1 lg:max-w-[500px] hidden lg:block">
-                  <div className="relative w-full rounded-xl bg-[#0d0f1a]/70 p-4 overflow-hidden shadow-lg border border-purple-500/20">
+                <div className="hidden lg:flex w-[520px] h-[330px] bg-white rounded-2xl shadow-2xl p-6 items-center justify-center relative overflow-hidden border border-gray-200">
+                  
+                  {/* GL WATERMARK / FRAME IMAGE */}
+                  <img
+                    src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/382879216_qrgl.png"
+                    alt="GlyphLock Frame"
+                    className="absolute inset-0 w-full h-full object-contain pointer-events-none select-none"
+                  />
 
-                    {/* Top Left: Quick Nav Dropdown */}
-                    <div className="absolute top-3 left-3 z-20 group">
-                      <button className="p-1.5 bg-slate-800/80 backdrop-blur-sm rounded-full border border-purple-500/50 hover:border-cyan-400 transition-all">
-                        <svg className="w-3 h-3 text-cyan-400 transition-transform group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                        </svg>
-                      </button>
-                      <div className="absolute top-full left-0 mt-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all bg-slate-900/95 backdrop-blur-sm rounded-lg border border-purple-500/30 p-2 min-w-[100px] shadow-xl">
-                        <button 
-                          onClick={() => setActiveTab('customize')}
-                          className="w-full text-left text-xs text-purple-300 hover:bg-purple-500/20 px-2 py-1 rounded flex items-center gap-2"
-                        >
-                          <Layers className="w-3 h-3" />
-                          Customize
-                        </button>
-                        <button 
-                          onClick={() => setActiveTab('preview')}
-                          className="w-full text-left text-xs text-cyan-300 hover:bg-cyan-500/20 px-2 py-1 rounded flex items-center gap-2"
-                        >
-                          <Eye className="w-3 h-3" />
-                          Preview
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* Risk Indicator - Top Right */}
-                    {qrGenerated && (
-                      <div className="absolute top-3 right-3 z-20">
-                        <div className={`flex items-center gap-1 px-2 py-0.5 backdrop-blur-sm rounded-md border text-[10px] ${
-                          !securityResult || securityResult.final_score <= 20 
-                            ? 'bg-green-600/30 border-green-500/50 text-green-300' 
-                            : securityResult.final_score <= 50 
-                              ? 'bg-yellow-600/30 border-yellow-500/50 text-yellow-300' 
-                              : 'bg-red-600/30 border-red-500/50 text-red-300'
-                        }`}>
-                          <div className={`w-1.5 h-1.5 rounded-full animate-pulse ${
-                            !securityResult || securityResult.final_score <= 20 ? 'bg-green-400' 
-                              : securityResult.final_score <= 50 ? 'bg-yellow-400' : 'bg-red-400'
-                          }`} />
-                          {!securityResult || securityResult.final_score <= 20 ? 'Safe' : securityResult.final_score <= 50 ? 'Caution' : 'Risk'}
-                        </div>
-                      </div>
-                    )}
-
-                    <img
-                      src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/382879216_qrgl.png"
-                      alt="GL Frame"
-                      className="w-full h-auto object-contain select-none pointer-events-none"
-                    />
-
-                    {/* QR Code - Positioned in the lock mechanism square on the RIGHT side */}
-                    <div 
-                      className="absolute pointer-events-none"
-                      style={{ 
-                        top: '17.5%', 
-                        left: '56.5%', 
-                        width: '17%',
-                        aspectRatio: '1'
+                  {/* QR CODE - Large and centered in lock area */}
+                  <div 
+                    className="absolute z-10 pointer-events-none"
+                    style={{ 
+                      top: '50%', 
+                      left: '68%', 
+                      transform: 'translate(-50%, -50%)',
+                      width: '120px',
+                      height: '120px'
+                    }}
+                  >
+                    <CanvasQrRenderer
+                      text={getCurrentPayload()}
+                      size={380}
+                      errorCorrectionLevel={errorCorrectionLevel}
+                      customization={customization}
+                      onDataUrlReady={(url) => {
+                        if (qrGenerated) {
+                          handleQrDataUrlReady(url);
+                        }
                       }}
-                    >
-                      <CanvasQrRenderer
-                        text={getCurrentPayload()}
-                        size={420}
-                        errorCorrectionLevel={errorCorrectionLevel}
-                        customization={customization}
-                        onDataUrlReady={(url) => {
-                          if (qrGenerated) {
-                            handleQrDataUrlReady(url);
-                          }
-                        }}
-                        className="w-full h-auto"
-                      />
-                    </div>
-
-
+                      className="w-full h-full"
+                    />
                   </div>
+
+                  {/* Quick Nav Dropdown */}
+                  <div className="absolute top-3 left-3 z-20 group">
+                    <button className="p-1.5 bg-slate-800/80 backdrop-blur-sm rounded-full border border-purple-500/50 hover:border-cyan-400 transition-all">
+                      <svg className="w-3 h-3 text-cyan-400 transition-transform group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+                    <div className="absolute top-full left-0 mt-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all bg-slate-900/95 backdrop-blur-sm rounded-lg border border-purple-500/30 p-2 min-w-[100px] shadow-xl">
+                      <button 
+                        onClick={() => setActiveTab('customize')}
+                        className="w-full text-left text-xs text-purple-300 hover:bg-purple-500/20 px-2 py-1 rounded flex items-center gap-2"
+                      >
+                        <Layers className="w-3 h-3" />
+                        Customize
+                      </button>
+                      <button 
+                        onClick={() => setActiveTab('preview')}
+                        className="w-full text-left text-xs text-cyan-300 hover:bg-cyan-500/20 px-2 py-1 rounded flex items-center gap-2"
+                      >
+                        <Eye className="w-3 h-3" />
+                        Preview
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Risk Indicator - Top Right */}
+                  {qrGenerated && (
+                    <div className="absolute top-3 right-3 z-20">
+                      <div className={`flex items-center gap-1 px-2 py-0.5 backdrop-blur-sm rounded-md border text-[10px] ${
+                        !securityResult || securityResult.final_score <= 20 
+                          ? 'bg-green-600/30 border-green-500/50 text-green-300' 
+                          : securityResult.final_score <= 50 
+                            ? 'bg-yellow-600/30 border-yellow-500/50 text-yellow-300' 
+                            : 'bg-red-600/30 border-red-500/50 text-red-300'
+                      }`}>
+                        <div className={`w-1.5 h-1.5 rounded-full animate-pulse ${
+                          !securityResult || securityResult.final_score <= 20 ? 'bg-green-400' 
+                            : securityResult.final_score <= 50 ? 'bg-yellow-400' : 'bg-red-400'
+                        }`} />
+                        {!securityResult || securityResult.final_score <= 20 ? 'Safe' : securityResult.final_score <= 50 ? 'Caution' : 'Risk'}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
               </div>
