@@ -744,9 +744,9 @@ export default function QrStudio({ initialTab = 'create' }) {
                   </Card>
                 </div>
 
-                {/* Right: GL Preview Block */}
-                <div className="w-full lg:w-[540px]">
-                  <div className="relative w-full rounded-xl bg-[#0d0f1a]/70 p-5 overflow-hidden shadow-lg border border-purple-500/20" style={{ minHeight: '400px' }}>
+                {/* Right: GL Preview Block - ENLARGED 3x per Phase 4 */}
+                <div className="w-full lg:w-[540px] hidden lg:block">
+                  <div className="relative w-full rounded-xl bg-[#0d0f1a]/70 p-5 overflow-hidden shadow-lg border border-purple-500/20" style={{ minHeight: '480px' }}>
 
                                           {/* Top Left: Quick Nav Dropdown */}
                                                                     <div className="absolute top-6 left-6 z-20 group">
