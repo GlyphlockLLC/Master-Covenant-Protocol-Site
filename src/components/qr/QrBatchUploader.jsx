@@ -5,8 +5,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, Upload, FileSpreadsheet, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Loader2, Upload, FileSpreadsheet, CheckCircle2, AlertCircle, Info } from 'lucide-react';
 import { toast } from 'sonner';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { generateSHA256 } from '@/components/utils/securityUtils';
 
 export default function QrBatchUploader() {
   const [csvData, setCsvData] = useState([]);
@@ -38,7 +40,6 @@ export default function QrBatchUploader() {
       if (extracted.status === 'success' && extracted.output) {
         const data = Array.isArray(extracted.output) ? extracted.output : [extracted.output];
         
-        // Limit to 100 rows
         const limitedData = data.slice(0, 100);
         setCsvData(limitedData);
         toast.success(`Loaded ${limitedData.length} rows from CSV`);
@@ -52,93 +53,78 @@ export default function QrBatchUploader() {
     }
   };
 
-  const handleCreateDrafts = async () => {
+  const handleGenerateAll = async () => {
     if (csvData.length === 0) {
       toast.error('No data to process');
       return;
     }
 
     setIsProcessing(true);
+    setProgress(0);
     const newDrafts = [];
 
-    try {
-      for (const row of csvData) {
-        const draft = await base44.entities.QrAsset.create({
-          title: row.title || `QR ${Date.now()}`,
-          mode: 'static',
-          payloadType: row.payloadType || 'url',
-          payloadValue: row.payloadValue,
-          errorCorrectionLevel: 'H',
-          hotZones: [],
-          stegoConfig: { enabled: false },
-          riskScore: 0,
-          riskFlags: [],
-          status: 'draft'
+    const total = csvData.length;
+    for (let i = 0; i < total; i++) {
+      const row = csvData[i];
+      
+      try {
+        const payload = row.payloadValue;
+        const payloadType = row.payloadType || 'url';
+        const newCodeId = `qr_bulk_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+
+        // Create QRGenHistory record directly
+        await base44.entities.QRGenHistory.create({
+          code_id: newCodeId,
+          payload,
+          payload_sha256: await generateSHA256(payload),
+          size: 512,
+          creator_id: "guest",
+          status: "safe",
+          type: payloadType,
+          image_format: "png",
+          error_correction: "H",
+          foreground_color: "#000000",
+          background_color: "#ffffff",
+          has_logo: false,
+          logo_url: null
         });
 
         newDrafts.push({
-          ...draft,
-          generationStatus: 'pending'
-        });
-      }
-
-      setDrafts(newDrafts);
-      toast.success(`Created ${newDrafts.length} draft assets`);
-    } catch (error) {
-      toast.error('Draft creation failed');
-    } finally {
-      setIsProcessing(false);
-    }
-  };
-
-  const handleGenerateAll = async () => {
-    if (drafts.length === 0) return;
-
-    setIsProcessing(true);
-    setProgress(0);
-
-    const total = drafts.length;
-    for (let i = 0; i < total; i++) {
-      const draft = drafts[i];
-      
-      try {
-        const result = await base44.functions.invoke('generateQrAsset', {
-          title: draft.title,
-          mode: draft.mode,
-          payloadType: draft.payloadType,
-          payloadValue: draft.payloadValue,
-          errorCorrectionLevel: draft.errorCorrectionLevel,
-          hotZones: draft.hotZones,
-          stegoConfig: draft.stegoConfig
+          title: row.title || `QR ${i + 1}`,
+          payloadValue: payload,
+          payloadType,
+          code_id: newCodeId,
+          generationStatus: 'success'
         });
 
-        setDrafts(prev => prev.map((d, idx) => 
-          idx === i 
-            ? { 
-                ...d, 
-                generationStatus: 'success',
-                safeQrImageUrl: result.data.safeQrImageUrl,
-                immutableHash: result.data.immutableHash
-              }
-            : d
-        ));
       } catch (error) {
-        setDrafts(prev => prev.map((d, idx) => 
-          idx === i 
-            ? { ...d, generationStatus: 'error', error: error.message }
-            : d
-        ));
+        newDrafts.push({
+          title: row.title || `QR ${i + 1}`,
+          payloadValue: row.payloadValue,
+          payloadType: row.payloadType || 'url',
+          generationStatus: 'error',
+          error: error.message
+        });
       }
 
       setProgress(((i + 1) / total) * 100);
+      setDrafts([...newDrafts]);
     }
 
     setIsProcessing(false);
-    toast.success('Batch generation complete');
+    toast.success(`Batch generation complete: ${newDrafts.filter(d => d.generationStatus === 'success').length}/${total} successful`);
   };
 
   return (
     <div className="space-y-6">
+      {/* Info Alert */}
+      <Alert className="bg-blue-500/10 border-blue-500/30">
+        <Info className="h-4 w-4 text-blue-400" />
+        <AlertDescription className="text-white">
+          <strong>Bulk Generation:</strong> Upload a CSV with columns: <code className="text-cyan-400">title, payloadValue, payloadType</code> (payloadType defaults to 'url' if not specified)
+        </AlertDescription>
+      </Alert>
+
       <Card className="bg-gray-900/50 border-gray-800 shadow-xl">
         <CardHeader className="border-b border-gray-800">
           <CardTitle className="text-white flex items-center gap-2 text-lg lg:text-xl">
@@ -157,7 +143,7 @@ export default function QrBatchUploader() {
               accept=".csv"
               onChange={handleCsvUpload}
               disabled={isProcessing}
-              className="min-h-[48px] text-base bg-gray-800 border-gray-700"
+              className="min-h-[48px] text-base bg-gray-800 border-gray-700 text-white"
             />
             <p className="text-xs lg:text-sm text-gray-500">
               CSV should have columns: <span className="font-mono text-cyan-400">title, payloadValue, payloadType</span> (optional)
@@ -172,41 +158,22 @@ export default function QrBatchUploader() {
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <Button
-                  onClick={handleCreateDrafts}
-                  disabled={isProcessing || drafts.length > 0}
-                  className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 min-h-[52px] text-base font-semibold shadow-lg shadow-blue-500/30"
-                >
-                  {isProcessing ? (
-                    <>
-                      <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                      Creating Drafts...
-                    </>
-                  ) : (
-                    'Create Drafts'
-                  )}
-                </Button>
-
-                {drafts.length > 0 && (
-                  <Button
-                    onClick={handleGenerateAll}
-                    disabled={isProcessing}
-                    className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 min-h-[52px] text-base font-semibold shadow-lg shadow-purple-500/30"
-                  >
-                    {isProcessing ? (
-                      <>
-                        <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                        Generating {Math.round(progress)}%
-                      </>
-                    ) : (
-                      'Generate All'
-                    )}
-                  </Button>
+              <Button
+                onClick={handleGenerateAll}
+                disabled={isProcessing}
+                className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 min-h-[52px] text-base font-semibold shadow-lg shadow-purple-500/30"
+              >
+                {isProcessing ? (
+                  <>
+                    <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                    Generating {Math.round(progress)}%
+                  </>
+                ) : (
+                  'Generate All QR Codes'
                 )}
-              </div>
+              </Button>
 
-              {isProcessing && drafts.length > 0 && (
+              {isProcessing && (
                 <Progress value={progress} className="h-2" />
               )}
             </>
@@ -218,7 +185,7 @@ export default function QrBatchUploader() {
       {drafts.length > 0 && (
         <Card className="bg-gray-900/50 border-gray-800 shadow-xl">
           <CardHeader className="border-b border-gray-800">
-            <CardTitle className="text-white text-lg lg:text-xl">Draft Assets ({drafts.length})</CardTitle>
+            <CardTitle className="text-white text-lg lg:text-xl">Generated QR Codes ({drafts.length})</CardTitle>
           </CardHeader>
           <CardContent className="pt-6">
             <div className="space-y-3">
@@ -230,13 +197,11 @@ export default function QrBatchUploader() {
                   <div className="flex-1 w-full sm:w-auto">
                     <p className="text-sm lg:text-base font-semibold text-white mb-1">{draft.title}</p>
                     <p className="text-xs lg:text-sm text-gray-400 truncate">{draft.payloadValue}</p>
+                    {draft.code_id && (
+                      <p className="text-xs text-gray-500 font-mono mt-1">ID: {draft.code_id}</p>
+                    )}
                   </div>
                   <div className="w-full sm:w-auto">
-                    {draft.generationStatus === 'pending' && (
-                      <Badge variant="outline" className="bg-gray-700/50">
-                        Pending
-                      </Badge>
-                    )}
                     {draft.generationStatus === 'success' && (
                       <Badge className="bg-green-500/20 text-green-400 border-green-500/50">
                         <CheckCircle2 className="w-3 h-3 mr-1" />
@@ -246,7 +211,7 @@ export default function QrBatchUploader() {
                     {draft.generationStatus === 'error' && (
                       <Badge className="bg-red-500/20 text-red-400 border-red-500/50">
                         <AlertCircle className="w-3 h-3 mr-1" />
-                        Error
+                        Error: {draft.error}
                       </Badge>
                     )}
                   </div>

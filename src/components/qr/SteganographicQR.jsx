@@ -5,8 +5,9 @@ import { Upload, Download, Eye, EyeOff, Image as ImageIcon, Scan, AlertCircle } 
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { toast } from 'sonner';
 
-export default function SteganographicQR({ qrPayload, qrGenerated }) {
+export default function SteganographicQR({ qrPayload, qrGenerated, onEmbedded }) {
   const [coverImage, setCoverImage] = useState(null);
   const [coverImageUrl, setCoverImageUrl] = useState(null);
   const [coverImageLoaded, setCoverImageLoaded] = useState(false);
@@ -26,6 +27,7 @@ export default function SteganographicQR({ qrPayload, qrGenerated }) {
 
     if (!file.type.startsWith('image/')) {
       setError('Please upload an image file (PNG, JPG, etc.)');
+      toast.error('Invalid file type');
       return;
     }
 
@@ -39,6 +41,7 @@ export default function SteganographicQR({ qrPayload, qrGenerated }) {
     };
     reader.onerror = () => {
       setError('Failed to read image file. Please try again.');
+      toast.error('Failed to read image');
     };
     reader.readAsDataURL(file);
   };
@@ -51,6 +54,7 @@ export default function SteganographicQR({ qrPayload, qrGenerated }) {
   const handleImageError = () => {
     setError('Failed to load image. Please try a different image.');
     setCoverImageLoaded(false);
+    toast.error('Image load failed');
   };
 
   const stringToBinary = (str) => {
@@ -68,6 +72,7 @@ export default function SteganographicQR({ qrPayload, qrGenerated }) {
   const encodeQRInImage = async () => {
     if (!coverImage || !qrPayload || !coverImageUrl || !coverImageLoaded) {
       setError('Please wait for the image to fully load before encoding');
+      toast.error('Image not ready');
       return;
     }
 
@@ -75,7 +80,6 @@ export default function SteganographicQR({ qrPayload, qrGenerated }) {
     setError(null);
 
     try {
-      // Use the already loaded image from the DOM
       const img = coverImgRef.current;
       if (!img || !img.complete) {
         throw new Error('Image not properly loaded');
@@ -94,54 +98,49 @@ export default function SteganographicQR({ qrPayload, qrGenerated }) {
         throw new Error('Could not get canvas context');
       }
       
-      // Draw the image
       ctx.drawImage(img, 0, 0);
 
-      // Get pixel data
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const pixels = imageData.data;
 
-      // Prepare data: QR payload + delimiter
       const delimiter = '<<<END>>>';
       const dataToHide = qrPayload + delimiter;
       const binaryData = stringToBinary(dataToHide);
       
-      // Check if image has enough capacity
-      const maxCapacity = (pixels.length / 4) * 3; // 3 bits per pixel (RGB only)
+      const maxCapacity = (pixels.length / 4) * 3;
       if (binaryData.length > maxCapacity) {
         throw new Error(`Image is too small. Need ${Math.ceil(binaryData.length / 3)} pixels but only have ${Math.floor(maxCapacity / 3)}`);
       }
 
-      // Encode binary data into LSB of RGB channels
       let dataIndex = 0;
       for (let i = 0; i < pixels.length && dataIndex < binaryData.length; i += 4) {
-        // Red channel
         if (dataIndex < binaryData.length) {
           pixels[i] = (pixels[i] & 0xFE) | parseInt(binaryData[dataIndex]);
           dataIndex++;
         }
-        // Green channel
         if (dataIndex < binaryData.length) {
           pixels[i + 1] = (pixels[i + 1] & 0xFE) | parseInt(binaryData[dataIndex]);
           dataIndex++;
         }
-        // Blue channel
         if (dataIndex < binaryData.length) {
           pixels[i + 2] = (pixels[i + 2] & 0xFE) | parseInt(binaryData[dataIndex]);
           dataIndex++;
         }
-        // Skip alpha channel (i + 3)
       }
 
       ctx.putImageData(imageData, 0, 0);
       
-      // Convert to blob and create download URL
       canvas.toBlob((blob) => {
         if (blob) {
           const url = URL.createObjectURL(blob);
           setStegoImage(url);
+          if (onEmbedded) {
+            onEmbedded(url, 'lsb');
+          }
+          toast.success('QR data hidden in image successfully!');
         } else {
           setError('Failed to create steganographic image');
+          toast.error('Encoding failed');
         }
         setIsEncoding(false);
       }, 'image/png');
@@ -149,6 +148,7 @@ export default function SteganographicQR({ qrPayload, qrGenerated }) {
     } catch (err) {
       console.error('Encoding error:', err);
       setError(err.message || 'Failed to encode QR code into image');
+      toast.error(err.message || 'Encoding failed');
       setIsEncoding(false);
     }
   };
@@ -189,7 +189,6 @@ export default function SteganographicQR({ qrPayload, qrGenerated }) {
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const pixels = imageData.data;
 
-      // Extract binary data from LSB
       let binaryData = '';
       for (let i = 0; i < pixels.length; i += 4) {
         binaryData += (pixels[i] & 1).toString();
@@ -197,10 +196,8 @@ export default function SteganographicQR({ qrPayload, qrGenerated }) {
         binaryData += (pixels[i + 2] & 1).toString();
       }
 
-      // Convert binary to string
       const extractedText = binaryToString(binaryData);
       
-      // Find delimiter
       const delimiter = '<<<END>>>';
       const delimiterIndex = extractedText.indexOf(delimiter);
       
@@ -212,10 +209,12 @@ export default function SteganographicQR({ qrPayload, qrGenerated }) {
       setDecodedData(hiddenData);
       setExtractedImage(dataUrl);
       setIsDecoding(false);
+      toast.success('Hidden data extracted successfully!');
       
     } catch (err) {
       console.error('Decoding error:', err);
       setError(err.message || 'Failed to decode image');
+      toast.error(err.message || 'Decoding failed');
       setIsDecoding(false);
     }
   };
@@ -226,6 +225,7 @@ export default function SteganographicQR({ qrPayload, qrGenerated }) {
 
     if (!file.type.startsWith('image/')) {
       setError('Please upload an image file');
+      toast.error('Invalid file type');
       return;
     }
 
@@ -239,9 +239,9 @@ export default function SteganographicQR({ qrPayload, qrGenerated }) {
     link.href = stegoImage;
     link.download = 'steganographic-qr.png';
     link.click();
+    toast.success('Steganographic image downloaded');
   };
 
-  // Cleanup blob URLs on unmount
   useEffect(() => {
     return () => {
       if (stegoImage) URL.revokeObjectURL(stegoImage);
@@ -466,14 +466,6 @@ export default function SteganographicQR({ qrPayload, qrGenerated }) {
                   <div className="bg-gray-900 p-3 rounded border border-gray-700">
                     <p className="text-white text-sm font-mono break-all">{decodedData}</p>
                   </div>
-                </div>
-
-                <div className="bg-white p-6 rounded-lg flex items-center justify-center">
-                  <img
-                    src={`https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(decodedData)}`}
-                    alt="Extracted QR"
-                    className="max-w-full"
-                  />
                 </div>
               </div>
             )}
