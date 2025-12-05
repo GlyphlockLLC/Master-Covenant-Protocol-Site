@@ -112,34 +112,48 @@ export default function GlyphBotPage() {
     })();
   }, []);
 
-  // Load saved settings and messages on mount
+  // Load saved settings and messages on mount + auto-resume last session
   useEffect(() => {
-    try {
-      const savedSettings = localStorage.getItem(STORAGE_KEYS.SETTINGS);
-      if (savedSettings) {
-        const parsed = JSON.parse(savedSettings);
-        if (parsed.persona) setPersona(parsed.persona);
-        if (parsed.provider) setProvider(parsed.provider);
-        if (parsed.modes) setModes(prev => ({ ...prev, ...parsed.modes }));
-        if (parsed.voiceSettings) setVoiceSettings(prev => ({ ...prev, ...parsed.voiceSettings }));
-      }
-
-      const savedMessages = sessionStorage.getItem(STORAGE_KEYS.MESSAGES);
-      if (savedMessages) {
-        const parsed = JSON.parse(savedMessages);
-        if (parsed.length > 0) {
-          setMessages(parsed);
-          // Initialize full history for persistence
-          initializeHistory(parsed);
+    (async () => {
+      try {
+        const savedSettings = localStorage.getItem(STORAGE_KEYS.SETTINGS);
+        if (savedSettings) {
+          const parsed = JSON.parse(savedSettings);
+          if (parsed.persona) setPersona(parsed.persona);
+          if (parsed.provider) setProvider(parsed.provider);
+          if (parsed.modes) setModes(prev => ({ ...prev, ...parsed.modes }));
+          if (parsed.voiceSettings) setVoiceSettings(prev => ({ ...prev, ...parsed.voiceSettings }));
         }
-      }
 
-      const savedCount = localStorage.getItem(STORAGE_KEYS.CHAT_COUNT);
-      if (savedCount) setChatCount(parseInt(savedCount, 10) || 0);
-    } catch (e) {
-      console.warn('Failed to load GlyphBot settings:', e);
-    }
-  }, [initializeHistory]);
+        const savedCount = localStorage.getItem(STORAGE_KEYS.CHAT_COUNT);
+        if (savedCount) setChatCount(parseInt(savedCount, 10) || 0);
+
+        // Auto-resume: check if currentChatId exists and load that chat
+        if (currentChatId && currentUser?.email) {
+          console.log('[GlyphBot] Auto-resuming chat:', currentChatId);
+          const result = await loadChat(currentChatId);
+          if (result?.messages) {
+            setMessages([WELCOME_MESSAGE, ...result.messages.filter(m => m.id !== 'welcome-1')]);
+            if (result.persona) setPersona(result.persona);
+            if (result.provider) setProvider(result.provider);
+            return; // Skip session storage load if we loaded from entity
+          }
+        }
+
+        // Fallback: load from session storage if no auto-resume
+        const savedMessages = sessionStorage.getItem(STORAGE_KEYS.MESSAGES);
+        if (savedMessages) {
+          const parsed = JSON.parse(savedMessages);
+          if (parsed.length > 0) {
+            setMessages(parsed);
+            initializeHistory(parsed);
+          }
+        }
+      } catch (e) {
+        console.warn('[GlyphBot] Failed to load settings or auto-resume:', e);
+      }
+    })();
+  }, [currentChatId, currentUser?.email, loadChat, initializeHistory]);
 
   // Save messages to sessionStorage on change
   useEffect(() => {
