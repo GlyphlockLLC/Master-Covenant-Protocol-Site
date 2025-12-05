@@ -344,7 +344,7 @@ export default function QrStudio({ initialTab = 'create' }) {
         safeQrImageUrl: qrDataUrl,
         artQrImageUrl: null,
         immutableHash: await generateSHA256(payload),
-        riskScore: combinedResult?.final_score || 100,
+        riskScore: combinedResult?.final_score ?? 0,
         riskFlags: combinedResult?.phishing_indicators || [],
         errorCorrectionLevel,
         customization: { ...customization },
