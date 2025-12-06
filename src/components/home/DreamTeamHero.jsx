@@ -152,10 +152,6 @@ const DREAM_TEAM = [
 export default function DreamTeamHero() {
   return (
     <section className="relative py-20 md:py-32 overflow-hidden">
-      {/* Background effects */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black via-slate-950/50 to-black" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_20%_30%,rgba(59,130,246,0.15),transparent_50%),radial-gradient(ellipse_at_80%_70%,rgba(30,64,175,0.15),transparent_50%)]" />
-      
       {/* Animated grid overlay */}
       <div 
         className="absolute inset-0 opacity-[0.03]"
