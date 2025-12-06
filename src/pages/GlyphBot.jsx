@@ -371,20 +371,19 @@ export default function GlyphBotPage() {
       }
 
     } catch (err) {
-      console.error('GlyphBot error:', err);
-      setMessages(prev => [
-        ...prev,
-        { 
-          id: `err-${Date.now()}`, 
-          role: 'assistant', 
-          content: 'I encountered an error processing your request. Please try again.',
-          audit: null 
-        }
-      ]);
+      console.error('[GlyphBot] FULL ERROR:', err);
+      const errorMsg = { 
+        id: `err-${Date.now()}`, 
+        role: 'assistant', 
+        content: `Error: ${err?.message || 'Connection failed'}`,
+        audit: null 
+      };
+      setMessages(prev => [...prev, errorMsg]);
+      trackMessage(errorMsg);
     } finally {
       setIsSending(false);
     }
-  }, [input, isSending, messages, persona, provider, modes, playText, trackMessage]);
+  }, [input, isSending, messages, persona, provider, modes, playText, trackMessage, voiceSettings]);
 
   const handleStop = () => setIsSending(false);
 
