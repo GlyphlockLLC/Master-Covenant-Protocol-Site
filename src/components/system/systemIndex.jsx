@@ -8,16 +8,22 @@
  * - Support future WYT (Watch Your Tone) integration
  */
 
-// GlyphBot Persistence Exports
+// GlyphBot Persistence Exports (Phase 5)
 export { useGlyphBotPersistence } from '@/components/glyphbot/useGlyphBotPersistence';
 export { default as ChatHistoryPanel } from '@/components/glyphbot/ChatHistoryPanel';
 
+// GlyphBot Audit Exports (Phase 6)
+export { useGlyphBotAudit } from '@/components/glyphbot/useGlyphBotAudit';
+export { default as AuditPanel } from '@/components/glyphbot/AuditPanel';
+export { default as AuditHistoryPanel } from '@/components/glyphbot/AuditHistoryPanel';
+export { default as AuditReportView } from '@/components/glyphbot/AuditReportView';
+
 // System Status Helper
 export const WYT = () => ({
-  glyphbot_version: 'phase_5',
+  glyphbot_version: 'phase_6',
   persistence: 'active',
   status: 'stable',
-  message: 'GlyphBot Persistence Engine Online',
+  message: 'GlyphBot Enterprise Audit Engine Online',
   features: {
     save: true,
     load: true,
@@ -27,19 +33,24 @@ export const WYT = () => ({
     auto_resume: true,
     full_history: true,
     user_scoped: true,
-    retry_logic: true
+    retry_logic: true,
+    security_audits: true,
+    audit_history: true,
+    audit_reports: true,
+    voice_summaries: true
   },
-  entity: 'GlyphBotChat',
+  entities: ['GlyphBotChat', 'GlyphBotAudit'],
   timestamp: new Date().toISOString()
 });
 
 // Module Status Registry
 export const SYSTEM_STATUS = {
   glyphbot: {
-    version: '5.0',
+    version: '6.0',
     status: 'active',
     persistence: true,
-    entity: 'GlyphBotChat'
+    entities: ['GlyphBotChat', 'GlyphBotAudit'],
+    features: ['chat', 'persistence', 'security_audits', 'enterprise_reports']
   },
   qr_studio: {
     version: '4.0',
