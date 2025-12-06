@@ -30,10 +30,10 @@ export default function NebulaLayer({ intensity = 0.5 }) {
 
     const resize = () => {
       canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      canvas.height = document.documentElement.scrollHeight;
       starsCanvas.width = window.innerWidth;
-      starsCanvas.height = window.innerHeight;
-      
+      starsCanvas.height = document.documentElement.scrollHeight;
+
       initNodes();
       renderStarfield();
     };
@@ -249,21 +249,25 @@ export default function NebulaLayer({ intensity = 0.5 }) {
     <>
       <canvas
         ref={starsCanvasRef}
-        className="fixed inset-0 pointer-events-none"
+        className="absolute top-0 left-0 pointer-events-none"
         style={{ 
           zIndex: 0,
           mixBlendMode: 'screen',
-          opacity: 1
+          opacity: 1,
+          width: '100vw',
+          height: '100%'
         }}
       />
       
       <canvas
         ref={canvasRef}
-        className="fixed inset-0 pointer-events-none"
+        className="absolute top-0 left-0 pointer-events-none"
         style={{ 
           zIndex: 1,
           mixBlendMode: 'screen',
-          opacity: 1
+          opacity: 1,
+          width: '100vw',
+          height: '100%'
         }}
       />
     </>

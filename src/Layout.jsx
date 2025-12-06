@@ -62,18 +62,16 @@ export default function Layout({ children, currentPageName }) {
   };
 
   return (
-    <div className="min-h-screen text-white flex flex-col relative overflow-x-hidden selection:bg-[#00E4FF] selection:text-black" style={{ transform: 'translateZ(0)', willChange: 'auto', background: '#000000' }}>
+    <div className="min-h-screen text-white flex flex-col relative overflow-x-hidden selection:bg-[#00E4FF] selection:text-black" style={{ background: '#000000' }}>
       <SecurityMonitor />
 
       {/* SITE-WIDE COSMIC SYSTEM */}
       <NebulaLayer intensity={1.0} />
       <CursorOrb />
 
-      <div className="fixed inset-0 z-[2] bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 pointer-events-none mix-blend-overlay" style={{ transform: 'translateZ(0)' }}></div>
-
       <Navbar user={user} onLogin={handleLogin} onLogout={handleLogout} />
 
-      <main className="flex-1 relative z-20 pt-4" style={{ contain: 'layout style', transform: 'translateZ(0)', background: 'transparent' }}>
+      <main className="flex-1 relative z-20 pt-4" style={{ background: 'transparent' }}>
         {children}
       </main>
 

@@ -20,19 +20,19 @@ export default function CursorOrb() {
     
     const resize = () => {
       canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      canvas.height = document.documentElement.scrollHeight;
       mouseRef.current.x = canvas.width / 2;
       mouseRef.current.y = canvas.height / 2;
       mouseRef.current.targetX = canvas.width / 2;
-      mouseRef.current.targetY = canvas.height / 2;
+      mouseRef.current.targetY = window.scrollY + canvas.height / 2;
     };
 
     const handlePointerMove = (e) => {
       const x = e.clientX || (e.touches && e.touches[0]?.clientX);
-      const y = e.clientY || (e.touches && e.touches[0]?.clientY);
+      const y = (e.clientY || (e.touches && e.touches[0]?.clientY));
       if (x !== undefined && y !== undefined) {
         mouseRef.current.targetX = x;
-        mouseRef.current.targetY = y;
+        mouseRef.current.targetY = y + window.scrollY;
       }
     };
 
@@ -109,11 +109,13 @@ export default function CursorOrb() {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 pointer-events-none"
+      className="absolute top-0 left-0 pointer-events-none"
       style={{ 
         zIndex: 9999999,
         mixBlendMode: 'screen',
-        cursor: 'none'
+        cursor: 'none',
+        width: '100vw',
+        height: '100%'
       }}
     />
   );
