@@ -113,7 +113,11 @@ export default function GlyphBotPage() {
     updateAudit,
     getAudit,
     deleteAudit,
-    loadAudits
+    archiveAudit,
+    unarchiveAudit,
+    runAudit,
+    loadAudits,
+    loadArchivedAudits
   } = useGlyphBotAudit(currentUser);
 
   // Load current user
@@ -385,11 +389,18 @@ export default function GlyphBotPage() {
 
       const auditId = audit.id || audit._id || audit.entity_id;
 
+      // Channel-specific message
+      const channelLabel = auditData.targetType === 'business' 
+        ? 'Business Security' 
+        : auditData.targetType === 'person' 
+          ? 'People Background' 
+          : 'Government Agency';
+
       // Add initial message to chat
       const startMsg = {
         id: `audit-start-${Date.now()}`,
         role: 'assistant',
-        content: `🔍 Starting ${auditData.auditType} security audit for **${auditData.targetUrl}**...\n\nAudit ID: ${auditId}\n\nAnalyzing security posture, please wait...`,
+        content: `🔍 Starting ${auditData.auditMode} ${channelLabel} Audit for **${auditData.targetIdentifier}**...\n\nAudit ID: ${auditId}\n${auditData.notes ? `\nFocus: ${auditData.notes}\n` : ''}\nAnalyzing ${auditData.targetType} profile, please wait...`,
         audit: null
       };
       setMessages(prev => [...prev, startMsg]);
@@ -398,24 +409,24 @@ export default function GlyphBotPage() {
       // Update audit status
       await updateAudit(auditId, { status: 'IN_PROGRESS' });
 
-      // Build audit prompt
-      const auditPrompt = `Conduct a comprehensive ${auditData.auditType} security audit for: ${auditData.targetUrl}
+      // Build channel-specific audit prompt
+      const auditPrompt = await runAudit(auditId, auditData, glyphbotClient, messages);
+      
+      if (!auditPrompt) {
+        throw new Error('Failed to build audit prompt');
+      }
 
-${auditData.notes ? `Focus areas: ${auditData.notes}` : ''}
+      // Send placeholder message and prepare for structured JSON response
+      const auditRequestMsg = {
+        id: `audit-req-${Date.now()}`,
+        role: 'user',
+        content: auditPrompt
+      };
 
-Provide a structured security assessment with:
-1. Overall security grade (A-F)
-2. Severity score (0-100, where 100 is most severe)
-3. Technical findings (specific vulnerabilities)
-4. Business risks (real-world impact)
-5. Prioritized fix plan
-
-Return ONLY valid JSON in this exact format:
-{
-  "target": "${auditData.targetUrl}",
-  "auditType": "${auditData.auditType}",
+      // Send to LLM (already formatted by runAudit)
+      const response = await glyphbotClient.sendMessage([...messages, startMsg, auditRequestMsg], {
   "overallGrade": "B-",
-  "severityScore": 68,
+  "riskScore": 68,
   "summary": "Brief executive summary of key findings and overall security posture.",
   "technicalFindings": [
     {
@@ -446,14 +457,8 @@ Return ONLY valid JSON in this exact format:
       "owner": "Team/role responsible"
     }
   ]
-}`;
-
-      // Send to LLM
-      const response = await glyphbotClient.sendMessage([...messages, startMsg, {
-        id: `audit-req-${Date.now()}`,
-        role: 'user',
-        content: auditPrompt
-      }], {
+      // Send to LLM (already formatted by runAudit)
+      const response = await glyphbotClient.sendMessage([...messages, startMsg, auditRequestMsg], {
         persona: 'SECURITY',
         auditMode: true,
         jsonModeForced: true,
@@ -468,10 +473,11 @@ Return ONLY valid JSON in this exact format:
           : response.text;
       } catch {
         auditResults = {
-          target: auditData.targetUrl,
-          auditType: auditData.auditType,
+          target: auditData.targetIdentifier,
+          targetType: auditData.targetType,
+          auditMode: auditData.auditMode,
           overallGrade: 'N/A',
-          severityScore: 0,
+          riskScore: 0,
           summary: response.text || 'Audit completed but results format was unexpected.',
           technicalFindings: [],
           businessRisks: [],
@@ -484,7 +490,7 @@ Return ONLY valid JSON in this exact format:
         status: 'COMPLETE',
         findings: JSON.stringify(auditResults),
         summary: auditResults.summary || 'Audit completed',
-        severityScore: auditResults.severityScore || 0,
+        riskScore: auditResults.riskScore || auditResults.severityScore || 0,
         overallGrade: auditResults.overallGrade || 'N/A'
       });
 
@@ -492,7 +498,7 @@ Return ONLY valid JSON in this exact format:
       const completeMsg = {
         id: `audit-complete-${Date.now()}`,
         role: 'assistant',
-        content: `✅ **Security Audit Complete**\n\n**Target:** ${auditData.targetUrl}\n**Grade:** ${auditResults.overallGrade}\n**Severity Score:** ${auditResults.severityScore}/100\n\n**Summary:** ${auditResults.summary}\n\n**Findings:** ${auditResults.technicalFindings?.length || 0} technical issues identified\n**Business Risks:** ${auditResults.businessRisks?.length || 0} risks flagged\n**Fix Plan:** ${auditResults.fixPlan?.length || 0} action items\n\n_View full report in Audit History panel._`,
+        content: `✅ **${channelLabel} Audit Complete**\n\n**Target:** ${auditData.targetIdentifier}\n**Channel:** ${auditData.targetType.toUpperCase()}\n**Mode:** ${auditData.auditMode}\n**Grade:** ${auditResults.overallGrade}\n**Risk Score:** ${auditResults.riskScore || 0}/100\n\n**Summary:** ${auditResults.summary}\n\n**Findings:** ${auditResults.technicalFindings?.length || 0} issues identified\n**Business Risks:** ${auditResults.businessRisks?.length || 0} risks flagged\n**Fix Plan:** ${auditResults.fixPlan?.length || 0} action items\n\n_View full report in Audit History panel._`,
         audit: null
       };
       setMessages(prev => [...prev, completeMsg]);
@@ -500,7 +506,7 @@ Return ONLY valid JSON in this exact format:
 
       // Auto-speak if voice mode is on
       if (modes.voice) {
-        const voiceSummary = `Audit complete for ${auditData.targetUrl}. Overall grade ${auditResults.overallGrade}. Severity score ${auditResults.severityScore} out of 100. ${auditResults.summary}`;
+        const voiceSummary = `${channelLabel} audit complete for ${auditData.targetIdentifier}. Overall grade ${auditResults.overallGrade}. Risk score ${auditResults.riskScore || 0} out of 100. ${auditResults.summary}`;
         speak(voiceSummary);
       }
 
@@ -532,10 +538,39 @@ Return ONLY valid JSON in this exact format:
   // Phase 6: Play audit summary via TTS
   const handlePlayAuditSummary = useCallback(() => {
     if (selectedAuditView?.summary) {
-      const voiceText = `Security audit for ${selectedAuditView.targetUrl}. Overall grade ${selectedAuditView.overallGrade}. ${selectedAuditView.summary}`;
+      const channelLabel = selectedAuditView.targetType === 'business' 
+        ? 'Business security' 
+        : selectedAuditView.targetType === 'person' 
+          ? 'People background' 
+          : 'Government agency';
+      const voiceText = `${channelLabel} audit for ${selectedAuditView.targetIdentifier || selectedAuditView.targetUrl}. Overall grade ${selectedAuditView.overallGrade}. ${selectedAuditView.summary}`;
       speak(voiceText);
     }
   }, [selectedAuditView, speak]);
+
+  // Phase 6: Archive audit from report view
+  const handleArchiveAudit = useCallback(async (auditId) => {
+    const success = await archiveAudit(auditId);
+    if (success) {
+      toast.success('Audit archived');
+      setSelectedAuditView(null);
+    } else {
+      toast.error('Failed to archive audit');
+    }
+  }, [archiveAudit]);
+
+  // Phase 6: Download audit report
+  const handleDownloadAudit = useCallback((audit) => {
+    const dataStr = JSON.stringify(audit, null, 2);
+    const blob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `glyphbot_audit_${audit.targetIdentifier?.replace(/[^a-z0-9]/gi, '_')}_${Date.now()}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast.success('Audit report downloaded');
+  }, []);
 
   const handleToggleMode = (key) => {
     setModes(prev => ({ ...prev, [key]: !prev[key] }));
@@ -712,6 +747,8 @@ Return ONLY valid JSON in this exact format:
                       isLoading={auditsLoading}
                       onViewAudit={handleViewAudit}
                       onDeleteAudit={deleteAudit}
+                      onArchiveAudit={archiveAudit}
+                      onLoadArchivedAudits={loadArchivedAudits}
                     />
                   </div>
                 ) : (
@@ -851,6 +888,8 @@ Return ONLY valid JSON in this exact format:
           audit={selectedAuditView}
           onClose={() => setSelectedAuditView(null)}
           onPlaySummary={handlePlayAuditSummary}
+          onArchive={handleArchiveAudit}
+          onDownload={handleDownloadAudit}
         />
       )}
     </div>

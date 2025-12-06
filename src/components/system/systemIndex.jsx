@@ -12,18 +12,36 @@
 export { useGlyphBotPersistence } from '@/components/glyphbot/useGlyphBotPersistence';
 export { default as ChatHistoryPanel } from '@/components/glyphbot/ChatHistoryPanel';
 
-// GlyphBot Audit Exports (Phase 6)
+// GlyphBot Audit Exports (Phase 6 - Universal Audit Engine)
 export { useGlyphBotAudit } from '@/components/glyphbot/useGlyphBotAudit';
 export { default as AuditPanel } from '@/components/glyphbot/AuditPanel';
 export { default as AuditHistoryPanel } from '@/components/glyphbot/AuditHistoryPanel';
 export { default as AuditReportView } from '@/components/glyphbot/AuditReportView';
 
+// Phase 6 Audit Channels
+export const AUDIT_CHANNELS = {
+  BUSINESS: 'business',
+  PEOPLE: 'person',
+  AGENCY: 'agency'
+};
+
+// Phase 6 Audit Modes
+export const AUDIT_MODES = {
+  SURFACE: 'SURFACE',
+  CONCISE: 'CONCISE',
+  MEDIUM: 'MEDIUM',
+  DEEP: 'DEEP',
+  ENTERPRISE_A: 'ENTERPRISE_A',
+  ENTERPRISE_B: 'ENTERPRISE_B'
+};
+
 // System Status Helper
 export const WYT = () => ({
   glyphbot_version: 'phase_6',
+  audit_engine: 'active',
   persistence: 'active',
   status: 'stable',
-  message: 'GlyphBot Enterprise Audit Engine Online',
+  message: 'GlyphBot Universal Audit Engine Online',
   features: {
     save: true,
     load: true,
@@ -37,8 +55,16 @@ export const WYT = () => ({
     security_audits: true,
     audit_history: true,
     audit_reports: true,
-    voice_summaries: true
+    voice_summaries: true,
+    business_audits: true,
+    people_audits: true,
+    agency_audits: true,
+    six_audit_modes: true,
+    file_upload_analysis: true,
+    foia_generation: true
   },
+  audit_channels: ['business', 'person', 'agency'],
+  audit_modes: ['SURFACE', 'CONCISE', 'MEDIUM', 'DEEP', 'ENTERPRISE_A', 'ENTERPRISE_B'],
   entities: ['GlyphBotChat', 'GlyphBotAudit'],
   timestamp: new Date().toISOString()
 });
@@ -49,8 +75,20 @@ export const SYSTEM_STATUS = {
     version: '6.0',
     status: 'active',
     persistence: true,
+    audit_engine: 'active',
     entities: ['GlyphBotChat', 'GlyphBotAudit'],
-    features: ['chat', 'persistence', 'security_audits', 'enterprise_reports']
+    features: [
+      'chat', 
+      'persistence', 
+      'security_audits', 
+      'enterprise_reports',
+      'business_channel',
+      'people_channel',
+      'agency_channel',
+      'six_audit_modes',
+      'voice_summaries',
+      'archive_system'
+    ]
   },
   qr_studio: {
     version: '4.0',
