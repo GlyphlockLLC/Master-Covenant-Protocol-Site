@@ -32,6 +32,14 @@ body {
   background: #000000 !important;
 }
 
+*, *::before, *::after {
+  background-color: transparent !important;
+}
+
+body, #root, #__next, main, section, div {
+  background: transparent !important;
+}
+
 #root, #__next {
   background: transparent !important;
 }
