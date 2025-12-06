@@ -54,7 +54,7 @@ export default function HeroContent() {
         ].map((stat, idx) => {
           const Icon = stat.icon;
           return (
-            <div key={idx} className="bg-black/60 border-2 border-[#3B82F6]/40 p-6 rounded-xl text-center shadow-[0_0_25px_rgba(59,130,246,0.2)] hover:shadow-[0_0_40px_rgba(30,64,175,0.4)] hover:border-[#3B82F6]/60 transition-all duration-300 group backdrop-blur-sm">
+            <div key={idx} className="bg-black/20 border-2 border-[#3B82F6]/40 p-6 rounded-xl text-center shadow-[0_0_25px_rgba(59,130,246,0.2)] hover:shadow-[0_0_40px_rgba(30,64,175,0.4)] hover:border-[#3B82F6]/60 transition-all duration-300 group backdrop-blur-md">
               <Icon className="w-8 h-8 text-[#3B82F6] mx-auto mb-3 drop-shadow-[0_0_12px_rgba(59,130,246,0.8)] group-hover:animate-pulse" />
               <div className="text-3xl font-black text-white mb-2 tracking-tight drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]">{stat.value}</div>
               <div className="text-sm text-white/80 font-bold tracking-wider">{stat.label}</div>
