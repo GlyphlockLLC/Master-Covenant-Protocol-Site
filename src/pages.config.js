@@ -52,6 +52,7 @@ import ProviderConsole from './pages/ProviderConsole';
 import SDKDocs from './pages/SDKDocs';
 import HotzoneMapper from './pages/HotzoneMapper';
 import Qr from './pages/Qr';
+import VideoUpload from './pages/VideoUpload';
 import __Layout from './Layout.jsx';
 
 
@@ -110,6 +111,7 @@ export const PAGES = {
     "SDKDocs": SDKDocs,
     "HotzoneMapper": HotzoneMapper,
     "Qr": Qr,
+    "VideoUpload": VideoUpload,
 }
 
 export const pagesConfig = {
