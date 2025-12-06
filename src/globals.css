@@ -865,6 +865,9 @@ p {
   padding: 16px;
   border-top: 1px solid rgba(6, 182, 212, 0.2);
   background: rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 50;
+  isolation: isolate;
 }
 
 .dino-input {
@@ -873,9 +876,11 @@ p {
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(6, 182, 212, 0.3);
-  color: white;
+  color: #39ff14;
   outline: none;
   transition: all 0.2s;
+  position: relative;
+  z-index: 50;
 }
 
 .dino-input:focus {
