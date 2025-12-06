@@ -261,7 +261,6 @@ export default function ControlBar({
             </Popover>
           )}
           
-          <VoiceSettings onSettingsChange={onVoiceSettingsChange} />
           <ModeToggle 
             active={modes.live} 
             icon={Wifi} 
