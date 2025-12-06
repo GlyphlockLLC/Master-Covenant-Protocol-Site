@@ -300,7 +300,17 @@ export default function GlyphBotPage() {
         structuredMode: modes.struct
       });
 
-      const botText = response.text || '[No response received]';
+      // Extract text from response (handle both data object and direct string)
+      let botText = '[No response received]';
+      if (response.data?.text) {
+        botText = response.data.text;
+      } else if (response.text) {
+        botText = response.text;
+      } else if (typeof response.data === 'string') {
+        botText = response.data;
+      }
+      
+      console.log('[GlyphBot] Response received:', { botText, response });
 
       const botMsg = { 
         id: `bot-${Date.now()}`,
