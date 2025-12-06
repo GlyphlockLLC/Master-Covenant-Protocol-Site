@@ -570,6 +570,21 @@ p {
 .animate-glyph-holo { animation: glyphHoloSweep 6s ease-in-out infinite; }
 .animate-glyph-pulse { animation: glyphSeverityPulse 2s ease-in-out infinite; }
 
+/* Glowing Chat Animation */
+@keyframes shimmer {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-gradient {
+  animation: shimmer 6s ease infinite;
+}
+
+.neon-green {
+  color: #39ff14;
+}
+
 /* GlyphLock Theme - Cosmic Dark Space with Ultraviolet Accents */
 
 :root {

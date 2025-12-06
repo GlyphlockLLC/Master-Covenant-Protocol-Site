@@ -227,7 +227,7 @@ export default function GlyphBotPage() {
 
   // Auto-trim messages when exceeding MAX_MESSAGES
   useEffect(() => {
-    if (messages.length > MAX_MESSAGES + 1) { // +1 for welcome message
+    if (messages.length > MAX_MESSAGES + 1 && !isSending) { // +1 for welcome message
       const trimmedMessages = [
         WELCOME_MESSAGE,
         ...messages.slice(-MAX_MESSAGES)
@@ -236,7 +236,7 @@ export default function GlyphBotPage() {
       setShowTrimWarning(true);
       setTimeout(() => setShowTrimWarning(false), 4000);
     }
-  }, [messages]);
+  }, [messages, isSending]);
 
   // Save settings after SAVE_SETTINGS_THRESHOLD chats
   useEffect(() => {
@@ -626,7 +626,7 @@ export default function GlyphBotPage() {
   const currentProviderLabel = providers.find(p => p.id === (lastMeta?.providerUsed || provider))?.label || 'Gemini (Primary)';
 
   return (
-    <div className="min-h-screen text-white flex flex-col pt-16 pb-0 relative z-30" style={{ color: '#ffffff' }}>
+    <div className="min-h-screen text-white flex flex-col pt-16 pb-0 relative z-[1]" style={{ color: '#ffffff' }}>
       <SEOHead 
         title="GlyphBot - Elite AI Security Assistant | GlyphLock"
         description="Chat with GlyphBot, your elite AI security assistant for code auditing, blockchain analysis, threat detection, and debugging."
@@ -748,7 +748,7 @@ export default function GlyphBotPage() {
           <div className="flex-1 flex min-h-0 overflow-hidden">
             {/* Phase 6: Audit Panel (Left Side) */}
             {showAuditPanel && currentUser && (
-              <aside className="w-80 flex flex-col border-r-2 border-purple-500/30 bg-gradient-to-b from-slate-950/90 via-purple-950/10 to-slate-950/90 overflow-hidden hidden lg:flex">
+              <aside className="w-80 flex flex-col border-r-2 border-purple-500/30 bg-gradient-to-b from-slate-950/90 via-purple-950/10 to-slate-950/90 overflow-hidden hidden lg:flex relative z-[40]">
                 <div className="p-4 border-b-2 border-purple-500/30 bg-purple-500/10">
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-2 text-xs">
@@ -795,23 +795,14 @@ export default function GlyphBotPage() {
             {/* Messages */}
             <div 
               ref={chatContainerRef}
-              className="flex-1 chat-scroll-container px-4 py-6 space-y-4"
-              style={{ position: 'relative', zIndex: 200 }}
+              className="flex-1 min-h-0 overflow-y-auto px-4 py-6 space-y-4 relative z-[50]"
             >
               {messages.map((msg) => (
-                <div key={msg.id} style={{ color: '#ffffff !important' }}>
-                  <ChatMessage
-                    msg={msg}
-                    isAssistant={msg.role === 'assistant'}
-                    providerLabel={msg.providerId ? providers.find(p => p.id === msg.providerId)?.label : undefined}
-                    ttsAvailable={true}
-                    isSpeaking={isSpeaking}
-                    onPlayTTS={handlePlayTTS}
-                    onReplayWithSettings={handleReplayWithSettings}
-                    showFeedback={msg.role === 'assistant' && msg.id !== 'welcome-1'}
-                    persona={persona}
-                  />
-                </div>
+                <ChatMessage
+                  key={msg.id}
+                  msg={msg}
+                  isAssistant={msg.role === 'assistant'}
+                />
               ))}
 
               {isSending && (
@@ -828,7 +819,7 @@ export default function GlyphBotPage() {
 
             {/* Chat History Panel - Phase 5 */}
             {showHistoryPanel && currentUser && (
-              <aside className="w-64 flex-col border-l-2 border-purple-500/30 bg-gradient-to-b from-slate-950/90 via-purple-950/10 to-slate-950/90 overflow-hidden hidden md:flex">
+              <aside className="w-64 flex-col border-l-2 border-purple-500/30 bg-gradient-to-b from-slate-950/90 via-purple-950/10 to-slate-950/90 overflow-hidden hidden md:flex relative z-[40]">
                 <ChatHistoryPanel
                   currentChatId={currentChatId}
                   savedChats={savedChats}
