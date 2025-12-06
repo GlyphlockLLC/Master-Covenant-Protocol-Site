@@ -88,11 +88,11 @@ export default function NebulaBackground({ className = '', intensity = 0.15 }) {
         const dy = mouseY - this.baseY;
         const dist = Math.sqrt(dx * dx + dy * dy);
         
-        if (dist < 500) {
-          const force = (500 - dist) / 500;
-          const smoothForce = force * force * 0.5; // INCREASED attraction
-          this.x += (this.baseX + dx * smoothForce - this.x) * 0.15; // FASTER response
-          this.y += (this.baseY + dy * smoothForce - this.y) * 0.15;
+        if (dist < 400) {
+          const force = (400 - dist) / 400;
+          const smoothForce = force * force * 0.8; // STRONGER attraction
+          this.x += (this.baseX + dx * smoothForce - this.x) * 0.25; // FASTER response
+          this.y += (this.baseY + dy * smoothForce - this.y) * 0.25;
         } else {
           this.x += (this.baseX - this.x) * 0.08;
           this.y += (this.baseY - this.y) * 0.08;
@@ -256,8 +256,8 @@ export default function NebulaBackground({ className = '', intensity = 0.15 }) {
           const dy = nodes[i].y - nodes[j].y;
           const distance = Math.sqrt(dx * dx + dy * dy);
 
-          if (distance < (isLowPower ? 100 : 130)) {
-            const opacity = (1 - distance / (isLowPower ? 100 : 130)) * 0.2 * intensity;
+          if (distance < (isLowPower ? 120 : 160)) {
+            const opacity = (1 - distance / (isLowPower ? 120 : 160)) * 0.4 * intensity;
             
             const gradient = ctx.createLinearGradient(
               nodes[i].x, nodes[i].y,
@@ -268,7 +268,7 @@ export default function NebulaBackground({ className = '', intensity = 0.15 }) {
             gradient.addColorStop(1, `rgba(59, 130, 246, ${opacity})`);
 
             ctx.strokeStyle = gradient;
-            ctx.lineWidth = 0.8;
+            ctx.lineWidth = 1.2;
             ctx.beginPath();
             ctx.moveTo(nodes[i].x, nodes[i].y);
             ctx.lineTo(nodes[j].x, nodes[j].y);
