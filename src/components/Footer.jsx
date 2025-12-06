@@ -39,10 +39,21 @@ export default function Footer() {
                 GLYPH<span className="text-[#00E4FF]">LOCK</span>
               </span>
             </div>
-            <p className="text-gray-400 leading-relaxed max-w-sm">
-              The world's first quantum-resistant security platform for the AI era. 
-              Protecting your digital sovereignty with military-grade encryption and autonomous governance.
-            </p>
+            <div className="space-y-4 max-w-md">
+              <p className="text-white text-lg font-black leading-tight">
+                IF THEY CAN BREAK IT, IT WASN'T GLYPHLOCK.
+              </p>
+              <p className="text-gray-400 leading-relaxed text-sm">
+                Quantum-immune keys, visual authentication that can't be forged, and an autonomous defense engine that analyzes, predicts, and shuts down threats before humans even see them.
+              </p>
+              <div className="flex flex-wrap gap-2 pt-2">
+                <span className="text-[#3B82F6] text-xs font-bold uppercase tracking-wider">POST-QUANTUM SECURITY</span>
+                <span className="text-gray-600">•</span>
+                <span className="text-[#3B82F6] text-xs font-bold uppercase tracking-wider">AI PREDICTIVE DEFENSE</span>
+                <span className="text-gray-600">•</span>
+                <span className="text-[#3B82F6] text-xs font-bold uppercase tracking-wider">UNMATCHED VERIFICATION</span>
+              </div>
+            </div>
             <div className="flex items-center gap-4 pt-4">
               <a href="https://twitter.com/glyphlock" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:bg-[#00E4FF] hover:text-black transition-all duration-300">
                 <Twitter size={18} />
