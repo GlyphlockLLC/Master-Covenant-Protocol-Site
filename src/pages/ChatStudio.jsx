@@ -21,8 +21,10 @@ export default function ChatStudio() {
   const speechSynthRef = useRef(null);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+    if (!isLoading) {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages, isLoading]);
 
   const speak = (text) => {
     if (!voiceEnabled || !('speechSynthesis' in window)) return;
@@ -49,6 +51,10 @@ export default function ChatStudio() {
     setMessages(prev => [...prev, userMessage]);
     setInput('');
     setIsLoading(true);
+    
+    // Prevent auto-scroll on send
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView = () => {};
 
     try {
       const conversationContext = messages.map(m => ({
@@ -104,8 +110,8 @@ export default function ChatStudio() {
   };
 
   return (
-    <div className="fixed inset-0 bg-gradient-to-br from-slate-950 via-blue-950/20 to-slate-950 text-white overflow-hidden">
-      <div className="max-w-5xl mx-auto h-full flex flex-col px-4 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950/20 to-slate-950 text-white">
+      <div className="max-w-5xl mx-auto h-screen flex flex-col px-4 py-8">
         
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
