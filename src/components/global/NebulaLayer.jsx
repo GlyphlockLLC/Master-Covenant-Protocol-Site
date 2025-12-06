@@ -252,14 +252,19 @@ export default function NebulaLayer({ intensity = 0.5 }) {
         className="fixed inset-0 pointer-events-none"
         style={{ 
           zIndex: 0,
-          background: '#000000'
+          mixBlendMode: 'screen',
+          opacity: 1
         }}
       />
       
       <canvas
         ref={canvasRef}
         className="fixed inset-0 pointer-events-none"
-        style={{ zIndex: 1 }}
+        style={{ 
+          zIndex: 1,
+          mixBlendMode: 'screen',
+          opacity: 1
+        }}
       />
     </>
   );

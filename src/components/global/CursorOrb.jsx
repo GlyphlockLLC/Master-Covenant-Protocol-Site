@@ -35,13 +35,6 @@ export default function CursorOrb() {
         mouseRef.current.targetY = y;
       }
     };
-    
-    const handleScroll = () => {
-      // Force update on scroll to maintain position
-      if (animationRef.current) {
-        // Position already updated in animate loop
-      }
-    };
 
     function animate() {
       timeRef.current += 0.005;
@@ -100,7 +93,6 @@ export default function CursorOrb() {
     window.addEventListener('resize', resize);
     window.addEventListener('mousemove', handlePointerMove, { passive: true });
     window.addEventListener('touchmove', handlePointerMove, { passive: true });
-    window.addEventListener('scroll', handleScroll, { passive: true });
 
     animate();
 
@@ -108,7 +100,6 @@ export default function CursorOrb() {
       window.removeEventListener('resize', resize);
       window.removeEventListener('mousemove', handlePointerMove);
       window.removeEventListener('touchmove', handlePointerMove);
-      window.removeEventListener('scroll', handleScroll);
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
       }
