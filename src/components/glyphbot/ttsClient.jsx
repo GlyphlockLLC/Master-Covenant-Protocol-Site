@@ -17,47 +17,43 @@ export async function synthesizeTTS(text, settings = {}) {
   }
 
   // Extract settings
-  const voice = settings.voice || 'nova';
+  const voice = settings.voice || 'alloy';
   const speed = Math.max(0.25, Math.min(4.0, settings.speed || 1.0));
   const emotion = settings.emotion || 'neutral';
 
   console.log('[TTS Client] Synthesizing:', { voice, speed, emotion, textLength: text.length });
 
   try {
-    // Call backend function that proxies OpenAI TTS
+    // Call backend function that uses OpenAI TTS
     const response = await base44.functions.invoke('textToSpeechAdvanced', {
       text,
+      provider: 'openai',
       voice,
-      speed,
-      emotion,
-      model: 'tts-1' // Use faster tts-1 model
+      speed
     });
 
-    if (!response?.data) {
-      throw new Error('No audio data received from TTS service');
+    if (!response?.data?.success) {
+      throw new Error(response?.data?.error || 'TTS service failed');
     }
 
-    // Response.data should be base64 audio or direct ArrayBuffer
-    if (typeof response.data === 'string') {
-      // If base64 string, convert to ArrayBuffer
-      const binaryString = atob(response.data);
-      const bytes = new Uint8Array(binaryString.length);
-      for (let i = 0; i < binaryString.length; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
-      }
-      return bytes.buffer;
+    // Backend returns audioUrl, fetch it and return as ArrayBuffer
+    const audioUrl = response.data.audioUrl;
+    if (!audioUrl) {
+      throw new Error('No audio URL received from TTS service');
     }
 
-    // If already ArrayBuffer or Blob
-    if (response.data instanceof ArrayBuffer) {
-      return response.data;
+    console.log('[TTS Client] Fetching audio from:', audioUrl);
+
+    // Fetch the audio file
+    const audioResponse = await fetch(audioUrl);
+    if (!audioResponse.ok) {
+      throw new Error(`Failed to fetch audio: ${audioResponse.status}`);
     }
 
-    if (response.data instanceof Blob) {
-      return await response.data.arrayBuffer();
-    }
-
-    throw new Error('Unexpected audio data format from TTS service');
+    const audioData = await audioResponse.arrayBuffer();
+    console.log('[TTS Client] Audio fetched successfully:', audioData.byteLength, 'bytes');
+    
+    return audioData;
 
   } catch (error) {
     console.error('[TTS Client] Synthesis failed:', error);
