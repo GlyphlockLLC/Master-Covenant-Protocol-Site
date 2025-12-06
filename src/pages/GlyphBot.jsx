@@ -1,49 +1,28 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import glyphbotClient from '@/components/glyphbot/glyphbotClient';
+import { Logic, Config } from '@/glyphlock/bot';
 import SEOHead from '@/components/SEOHead';
 import { base44 } from '@/api/base44Client';
 import { Activity, Zap, Shield, Bot, AlertTriangle, X, PanelRightOpen, PanelRightClose } from 'lucide-react';
-import GlyphProviderChain from '@/components/provider/GlyphProviderChain';
-import ProviderStatusPanel from '@/components/glyphbot/ProviderStatusPanel';
-import ChatMessage from '@/components/glyphbot/ChatMessage';
-import ChatInput from '@/components/glyphbot/ChatInput';
-import ControlBar from '@/components/glyphbot/ControlBar';
-import ChatHistoryPanel from '@/components/glyphbot/ChatHistoryPanel';
-import { useGlyphBotPersistence } from '@/components/glyphbot/useGlyphBotPersistence';
-import { useGlyphBotAudit } from '@/components/glyphbot/useGlyphBotAudit';
-import AuditPanel from '@/components/glyphbot/AuditPanel';
-import AuditHistoryPanel from '@/components/glyphbot/AuditHistoryPanel';
-import AuditReportView from '@/components/glyphbot/AuditReportView';
-import useTTS from '@/components/glyphbot/useTTS';
 import { createPageUrl } from '@/utils';
 import { toast } from 'sonner';
 
-// Storage keys
-const STORAGE_KEYS = {
-  MESSAGES: 'glyphbot_messages',
-  SETTINGS: 'glyphbot_settings',
-  CHAT_COUNT: 'glyphbot_chat_count'
-};
+const { 
+  useGlyphBotPersistence, 
+  useGlyphBotAudit, 
+  useTTS, 
+  glyphbotClient, 
+  GlyphProviderChain 
+} = Logic;
 
-// Limits
-const MAX_MESSAGES = 10; // Trim messages beyond this
-const SAVE_SETTINGS_THRESHOLD = 20; // Save settings after this many chats
+const { 
+  STORAGE_KEYS, 
+  LIMITS, 
+  WELCOME_MESSAGE 
+} = Config;
 
-const WELCOME_MESSAGE = {
-  id: 'welcome-1',
-  role: 'assistant',
-  content: `Welcome to GlyphBot — your elite AI security assistant.
-
-I can help you with:
-• **Security audits** — analyze code, URLs, and systems for vulnerabilities
-• **Blockchain analysis** — smart contract review and DeFi security
-• **Threat detection** — identify and mitigate potential risks
-• **Code debugging** — find and fix issues with precision
-
-What would you like to explore today?`,
-  audit: null
-};
+const MAX_MESSAGES = LIMITS.MAX_MESSAGES;
+const SAVE_SETTINGS_THRESHOLD = LIMITS.SAVE_SETTINGS_THRESHOLD;
 
 export default function GlyphBotPage() {
   const [messages, setMessages] = useState([WELCOME_MESSAGE]);
