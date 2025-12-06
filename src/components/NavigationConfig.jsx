@@ -32,7 +32,7 @@ export const NAV_SECTIONS = [
       { label: "GlyphBot AI", page: "GlyphBot" },
       { label: "NUPS POS", page: "NUPSLogin" },
       { label: "Security Tools", page: "SecurityTools" },
-      { label: "Video Upload", page: "VideoUpload" }
+      { label: "Media Upload Hub", page: "VideoUpload" }
     ]
   },
   {
