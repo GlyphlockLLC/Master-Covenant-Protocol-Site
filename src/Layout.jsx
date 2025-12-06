@@ -66,7 +66,7 @@ export default function Layout({ children, currentPageName }) {
       <SecurityMonitor />
 
       {/* SITE-WIDE COSMIC SYSTEM */}
-      <NebulaLayer intensity={0.5} />
+      <NebulaLayer intensity={1.0} />
       <CursorOrb />
 
       <div className="fixed inset-0 z-[2] bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 pointer-events-none mix-blend-overlay" style={{ transform: 'translateZ(0)' }}></div>

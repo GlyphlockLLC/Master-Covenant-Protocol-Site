@@ -97,8 +97,8 @@ export default function NebulaLayer({ intensity = 0.5 }) {
           this.x, this.y, 0,
           this.x, this.y, currentRadius * 4
         );
-        glowGradient.addColorStop(0, this.color + (0.6 * intensity) + ')');
-        glowGradient.addColorStop(0.4, this.color + (0.3 * intensity) + ')');
+        glowGradient.addColorStop(0, this.color + (0.9 * intensity) + ')');
+        glowGradient.addColorStop(0.4, this.color + (0.6 * intensity) + ')');
         glowGradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
 
         ctx.fillStyle = glowGradient;
@@ -106,7 +106,7 @@ export default function NebulaLayer({ intensity = 0.5 }) {
         ctx.arc(this.x, this.y, currentRadius * 4, 0, Math.PI * 2);
         ctx.fill();
 
-        ctx.fillStyle = this.color + (0.8 * intensity) + ')';
+        ctx.fillStyle = this.color + (1.0 * intensity) + ')';
         ctx.beginPath();
         ctx.arc(this.x, this.y, currentRadius, 0, Math.PI * 2);
         ctx.fill();
@@ -170,8 +170,8 @@ export default function NebulaLayer({ intensity = 0.5 }) {
         canvas.height * 0.3,
         canvas.width * 0.6
       );
-      nebula1.addColorStop(0, `rgba(30, 58, 138, ${0.12 * intensity})`);
-      nebula1.addColorStop(0.4, `rgba(59, 130, 246, ${0.08 * intensity})`);
+      nebula1.addColorStop(0, `rgba(139, 0, 255, ${0.25 * intensity})`);
+      nebula1.addColorStop(0.4, `rgba(59, 130, 246, ${0.18 * intensity})`);
       nebula1.addColorStop(1, 'rgba(0, 0, 0, 0)');
       ctx.fillStyle = nebula1;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -184,8 +184,8 @@ export default function NebulaLayer({ intensity = 0.5 }) {
         canvas.height * 0.65,
         canvas.width * 0.5
       );
-      nebula2.addColorStop(0, `rgba(6, 182, 212, ${0.1 * intensity})`);
-      nebula2.addColorStop(0.5, `rgba(59, 130, 246, ${0.06 * intensity})`);
+      nebula2.addColorStop(0, `rgba(0, 191, 255, ${0.22 * intensity})`);
+      nebula2.addColorStop(0.5, `rgba(139, 0, 255, ${0.15 * intensity})`);
       nebula2.addColorStop(1, 'rgba(0, 0, 0, 0)');
       ctx.fillStyle = nebula2;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
