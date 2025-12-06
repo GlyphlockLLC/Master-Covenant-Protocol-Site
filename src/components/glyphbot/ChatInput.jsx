@@ -122,8 +122,8 @@ export default function ChatInput({
             onKeyDown={handleKeyDown}
             placeholder="Ask GlyphBot about security, code, blockchain..."
             disabled={disabled}
-            className="flex-1 resize-none bg-transparent text-cyan-100 placeholder:text-purple-400/60 focus:outline-none text-sm leading-relaxed max-h-[150px] py-2"
-            style={{ fontSize: '16px' }}
+            className="flex-1 resize-none bg-transparent text-white placeholder:text-purple-400/60 focus:outline-none text-sm leading-relaxed max-h-[150px] py-2"
+            style={{ fontSize: '16px', color: '#ffffff' }}
           />
 
           {/* Right actions */}
