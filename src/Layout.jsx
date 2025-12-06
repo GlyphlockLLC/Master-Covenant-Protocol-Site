@@ -74,7 +74,7 @@ export default function Layout({ children, currentPageName }) {
 
       <Navbar user={user} onLogin={handleLogin} onLogout={handleLogout} />
 
-      <main className="flex-1 relative z-20 pt-4" style={{ contain: 'layout style', transform: 'translateZ(0)' }}>
+      <main className="flex-1 relative z-20 pt-4" style={{ contain: 'layout style', transform: 'translateZ(0)', background: 'transparent' }}>
         {children}
       </main>
 
