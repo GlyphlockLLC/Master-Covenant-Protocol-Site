@@ -33,8 +33,6 @@ export default function CursorOrb() {
       if (x !== undefined && y !== undefined) {
         mouseRef.current.targetX = x;
         mouseRef.current.targetY = y;
-        mouseRef.current.x = x; // INSTANT - no delay
-        mouseRef.current.y = y;
       }
     };
     
@@ -47,7 +45,12 @@ export default function CursorOrb() {
 
     function animate() {
       timeRef.current += 0.005;
-      
+
+      // Smooth easing to follow cursor
+      const easeFactor = 0.2;
+      mouseRef.current.x += (mouseRef.current.targetX - mouseRef.current.x) * easeFactor;
+      mouseRef.current.y += (mouseRef.current.targetY - mouseRef.current.y) * easeFactor;
+
       const x = mouseRef.current.x;
       const y = mouseRef.current.y;
 
