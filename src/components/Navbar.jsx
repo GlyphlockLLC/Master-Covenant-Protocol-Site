@@ -22,7 +22,7 @@ export default function Navbar({ user, onLogin, onLogout }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <nav className="w-full bg-black/80 border-b border-[#00E4FF]/20 shadow-[0_2px_20px_rgba(0,228,255,0.1)] text-white z-50 sticky top-0 backdrop-blur-xl">
+    <nav className="w-full bg-black/15 border-b border-[#00E4FF]/20 shadow-[0_2px_20px_rgba(0,228,255,0.1)] text-white z-50 sticky top-0 backdrop-blur-2xl">
       <div className="max-w-[1400px] mx-auto px-6 md:px-12 py-4 flex items-center justify-between">
         {/* Logo Area */}
         <Link to={createPageUrl("Home")} className="flex items-center gap-3 group">
@@ -208,7 +208,7 @@ export default function Navbar({ user, onLogin, onLogout }) {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden border-t border-white/10 bg-[#020617] overflow-hidden"
+            className="lg:hidden border-t border-white/10 bg-black/15 overflow-hidden backdrop-blur-2xl"
           >
             <div className="p-6 space-y-6 max-h-[80vh] overflow-y-auto">
               <div className="space-y-3">

@@ -20,7 +20,7 @@ const certifications = [
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-[#000000] border-t border-[#8C4BFF]/20 text-gray-400 pt-24 pb-12 relative overflow-hidden">
+    <footer className="w-full bg-black/15 border-t border-[#8C4BFF]/20 text-gray-400 pt-24 pb-12 relative overflow-hidden backdrop-blur-2xl">
       {/* Decorative Glows */}
       <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#00E4FF]/5 rounded-full blur-[120px] pointer-events-none"></div>
       <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#8C4BFF]/5 rounded-full blur-[120px] pointer-events-none"></div>
