@@ -4,18 +4,20 @@
  * Single import point for entire bot system
  * 
  * Usage:
- * import { Logic, Services, Config, Types } from '@/glyphlock/bot';
+ * import { UI, Logic, Services, Config, Types } from '@/glyphlock/bot';
  * 
+ * const { ChatMessage, ChatInput, ControlBar } = UI;
  * const { useGlyphBotPersistence, useTTS, glyphbotClient } = Logic;
  * const { llm, tts, search, upload, audit } = Services;
  * const { PERSONAS, VOICE_PROFILES, MODEL_OPTIONS } = Config;
  */
 
 // Layer exports
+export * as UI from './ui';
+export * as Logic from './logic';
+export * as Services from './services';
 export * as Config from './config';
 export * as Types from './types';
-export * as Services from './services';
-export * as Logic from './logic';
 
 // Convenience re-exports for common items
 export { 

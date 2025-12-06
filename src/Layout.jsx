@@ -2,13 +2,15 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import SecurityMonitor from "@/components/SecurityMonitor";
-import GlyphBotJr from "@/components/GlyphBotJr";
+import { UI } from "@/glyphlock/bot";
 import NebulaLayer from "@/components/global/NebulaLayer";
 import CursorOrb from "@/components/global/CursorOrb";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import GlyphLoader from "@/components/GlyphLoader";
 import MobileScalingSystem from "@/components/mobile/mobile-utils";
+
+const { GlyphBotJr } = UI;
 
 export default function Layout({ children, currentPageName }) {
   const [user, setUser] = useState(null);

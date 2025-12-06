@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { Logic, Config } from '@/glyphlock/bot';
+import { UI, Logic, Config } from '@/glyphlock/bot';
 import SEOHead from '@/components/SEOHead';
 import { base44 } from '@/api/base44Client';
 import { Activity, Zap, Shield, Bot, AlertTriangle, X, PanelRightOpen, PanelRightClose } from 'lucide-react';
@@ -672,7 +672,7 @@ export default function GlyphBotPage() {
           </header>
 
           {/* Control Bar */}
-          <ControlBar
+          <UI.ControlBar
             persona={persona}
             setPersona={setPersona}
             provider={provider}
@@ -689,7 +689,7 @@ export default function GlyphBotPage() {
           {/* Provider Chain */}
           {providerMeta && (
             <div className="px-4 py-2 border-b border-slate-800/50 bg-slate-950/40">
-              <GlyphProviderChain
+              <Logic.GlyphProviderChain
                 availableProviders={providerMeta.availableProviders}
                 providerStats={providerMeta.providerStats}
                 providerUsed={providerMeta.providerUsed}
@@ -700,7 +700,7 @@ export default function GlyphBotPage() {
           {/* Provider Panel (expandable) */}
           {modes.panel && providerMeta && (
             <div className="px-4 py-3 border-b border-slate-800/50 bg-slate-900/40">
-              <ProviderStatusPanel
+              <UI.ProviderStatusPanel
                 availableProviders={providerMeta.availableProviders}
                 providerStats={providerMeta.providerStats}
                 providerUsed={providerMeta.providerUsed}
@@ -762,7 +762,7 @@ export default function GlyphBotPage() {
                   </div>
                 ) : (
                   <div className="flex-1 overflow-y-auto p-4">
-                    <AuditPanel
+                    <UI.AuditPanel
                       onStartAudit={handleStartAudit}
                       isProcessing={isProcessingAudit}
                     />
@@ -812,7 +812,7 @@ export default function GlyphBotPage() {
             {/* Chat History Panel - Phase 5 */}
             {showHistoryPanel && currentUser && (
               <aside className="w-64 flex-col border-l-2 border-purple-500/30 bg-gradient-to-b from-slate-950/90 via-purple-950/10 to-slate-950/90 overflow-hidden hidden md:flex relative z-[40]">
-                <ChatHistoryPanel
+                <UI.ChatHistoryPanel
                   currentChatId={currentChatId}
                   savedChats={savedChats}
                   isLoading={persistenceLoading}
@@ -887,7 +887,7 @@ export default function GlyphBotPage() {
           </div>
 
           {/* Input Bar */}
-          <ChatInput
+          <UI.ChatInput
             value={input}
             onChange={setInput}
             onSend={handleSend}
@@ -900,7 +900,7 @@ export default function GlyphBotPage() {
 
       {/* Phase 6: Audit Report Modal */}
       {selectedAuditView && (
-        <AuditReportView
+        <UI.AuditReportView
           audit={selectedAuditView}
           onClose={() => setSelectedAuditView(null)}
           onPlaySummary={handlePlayAuditSummary}
