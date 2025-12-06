@@ -151,7 +151,7 @@ const DREAM_TEAM = [
 
 export default function DreamTeamHero() {
   return (
-    <section className="relative py-20 md:py-32 overflow-hidden">
+    <section className="relative py-20 md:py-32 overflow-hidden" style={{ background: 'transparent' }}>
       {/* Animated grid overlay */}
       <div 
         className="absolute inset-0 opacity-[0.03]"

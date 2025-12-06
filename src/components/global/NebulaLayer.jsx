@@ -55,11 +55,11 @@ export default function NebulaLayer({ intensity = 0.5 }) {
         
         const colorIndex = Math.random();
         if (colorIndex > 0.7) {
-          this.color = 'rgba(6, 182, 212, ';
+          this.color = 'rgba(139, 0, 255, '; // Purple
         } else if (colorIndex > 0.4) {
-          this.color = 'rgba(59, 130, 246, ';
+          this.color = 'rgba(0, 191, 255, '; // Blue
         } else {
-          this.color = 'rgba(30, 64, 175, ';
+          this.color = 'rgba(178, 123, 255, '; // Light Purple
         }
       }
 
@@ -130,14 +130,15 @@ export default function NebulaLayer({ intensity = 0.5 }) {
         const radius = Math.random() * 1.2;
         const opacity = Math.random() * 0.4 + 0.1;
 
-        starsCtx.fillStyle = `rgba(255, 255, 255, ${opacity * intensity})`;
+        starsCtx.fillStyle = `rgba(255, 255, 255, ${opacity * intensity * 1.5})`;
         starsCtx.beginPath();
         starsCtx.arc(x, y, radius, 0, Math.PI * 2);
         starsCtx.fill();
 
         if (Math.random() > 0.95) {
           const glowGradient = starsCtx.createRadialGradient(x, y, 0, x, y, radius * 3);
-          glowGradient.addColorStop(0, `rgba(6, 182, 212, ${opacity * 0.6 * intensity})`);
+          glowGradient.addColorStop(0, `rgba(139, 0, 255, ${opacity * 0.8 * intensity})`);
+          glowGradient.addColorStop(0.5, `rgba(0, 191, 255, ${opacity * 0.6 * intensity})`);
           glowGradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
           starsCtx.fillStyle = glowGradient;
           starsCtx.beginPath();
@@ -210,9 +211,9 @@ export default function NebulaLayer({ intensity = 0.5 }) {
               nodes[i].x, nodes[i].y,
               nodes[j].x, nodes[j].y
             );
-            gradient.addColorStop(0, `rgba(59, 130, 246, ${opacity})`);
-            gradient.addColorStop(0.5, `rgba(6, 182, 212, ${opacity * 0.8})`);
-            gradient.addColorStop(1, `rgba(59, 130, 246, ${opacity})`);
+            gradient.addColorStop(0, `rgba(139, 0, 255, ${opacity})`);
+            gradient.addColorStop(0.5, `rgba(0, 191, 255, ${opacity * 0.9})`);
+            gradient.addColorStop(1, `rgba(178, 123, 255, ${opacity})`);
 
             ctx.strokeStyle = gradient;
             ctx.lineWidth = 1.2;
