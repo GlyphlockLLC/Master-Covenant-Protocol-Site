@@ -795,25 +795,37 @@ export default function GlyphBotPage() {
             {/* Messages */}
             <div 
               ref={chatContainerRef}
-              className="flex-1 min-h-0 overflow-y-auto px-4 py-6 space-y-4 chat-scroll-container"
-              style={{ position: 'relative', zIndex: 99999, background: 'transparent', isolation: 'isolate' }}
+              className="flex-1 min-h-0 overflow-y-auto px-4 py-6 space-y-4"
             >
               {messages.map((msg) => (
-                <ChatMessage
+                <div
                   key={msg.id}
-                  msg={msg}
-                  isAssistant={msg.role === 'assistant'}
-                />
+                  className={`max-w-[80%] p-5 rounded-2xl mb-4 font-semibold shadow-lg ${
+                    msg.role === 'assistant' ? 'mr-auto text-left' : 'ml-auto text-right'
+                  }`}
+                  style={{
+                    background: 'linear-gradient(270deg, #4a00e0, #8e2de2, #4a00e0)',
+                    backgroundSize: '600% 600%',
+                    animation: 'shimmer 6s ease infinite',
+                    color: '#39ff14',
+                    fontSize: '16px',
+                    lineHeight: '1.6',
+                    whiteSpace: 'pre-wrap',
+                    wordBreak: 'break-word'
+                  }}
+                >
+                  {msg.content}
+                </div>
               ))}
 
               {isSending && (
-                <div className="flex items-center gap-3 text-sm animate-in fade-in p-4 rounded-xl bg-purple-500/10 border border-purple-500/30" style={{ position: 'relative', zIndex: 9999 }}>
+                <div className="flex items-center gap-3 text-sm animate-in fade-in p-4 rounded-xl bg-purple-500/10 border border-purple-500/30">
                   <div className="flex gap-1.5">
                     <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-r from-cyan-400 to-purple-400 animate-bounce shadow-[0_0_8px_rgba(6,182,212,0.8)]" style={{ animationDelay: '0ms' }} />
                     <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-r from-purple-400 to-blue-400 animate-bounce shadow-[0_0_8px_rgba(168,85,247,0.8)]" style={{ animationDelay: '150ms' }} />
                     <span className="w-2.5 h-2.5 rounded-full bg-gradient-to-r from-blue-400 to-cyan-400 animate-bounce shadow-[0_0_8px_rgba(59,130,246,0.8)]" style={{ animationDelay: '300ms' }} />
                   </div>
-                  <span className="font-bold drop-shadow-[0_0_8px_rgba(6,182,212,0.8)]" style={{ color: '#39ff14 !important', position: 'relative', zIndex: 10000, textShadow: '0 0 10px rgba(57, 255, 20, 0.8)' }}>GlyphBot is thinking...</span>
+                  <span className="font-bold drop-shadow-[0_0_8px_rgba(6,182,212,0.8)]" style={{ color: '#39ff14' }}>GlyphBot is thinking...</span>
                 </div>
               )}
             </div>
