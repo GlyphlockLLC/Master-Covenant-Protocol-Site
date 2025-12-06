@@ -56,14 +56,6 @@ export default function useTTS(options = {}) {
     if (options.emotion !== undefined) defaultSettings.current.emotion = options.emotion;
   }, [options.speed, options.pitch, options.volume, options.voiceProfile, options.emotion]);
 
-  // Setup or update EQ nodes from external audio context
-  useEffect(() => {
-    if (options.audioContext && options.eqNodes) {
-      audioContextRef.current = options.audioContext;
-      eqNodesRef.current = options.eqNodes;
-    }
-  }, [options.audioContext, options.eqNodes]);
-
   // Load voices (they load async in some browsers)
   useEffect(() => {
     if (!('speechSynthesis' in window)) {
@@ -93,8 +85,8 @@ export default function useTTS(options = {}) {
     if (voices.length === 0) return null;
 
     // If user selected a specific voice, use that
-    if (defaultSettings.preferredVoice) {
-      const userVoice = voices.find(v => v.name === defaultSettings.preferredVoice);
+    if (defaultSettings.current.voiceProfile) {
+      const userVoice = voices.find(v => v.name === defaultSettings.current.voiceProfile);
       if (userVoice) {
         return userVoice;
       }
@@ -148,7 +140,7 @@ export default function useTTS(options = {}) {
     // Last resort: first English voice
     const anyEnglish = voices.find(v => v.lang.startsWith('en'));
     return anyEnglish || voices[0];
-  }, [voices, defaultSettings.preferredVoice]);
+  }, [voices]);
 
   /**
    * Stop any currently playing speech
