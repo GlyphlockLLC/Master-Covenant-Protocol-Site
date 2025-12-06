@@ -637,7 +637,7 @@ export default function GlyphBotPage() {
         <div className="flex-1 flex flex-col bg-transparent border-x-2 border-purple-500/30 shadow-[0_0_60px_rgba(168,85,247,0.15)] overflow-hidden">
           
           {/* Header */}
-          <header className="flex items-center justify-between px-5 py-4 border-b-2 border-purple-500/40 bg-gradient-to-r from-slate-950 via-purple-950/30 to-slate-950 backdrop-blur-xl shadow-[0_4px_30px_rgba(168,85,247,0.2)]">
+          <header className="flex items-center justify-between px-5 py-4 border-b-2 border-purple-500/40 bg-transparent backdrop-blur-xl shadow-[0_4px_30px_rgba(168,85,247,0.2)]">
             <div className="flex items-center gap-4">
               <div className="relative w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500/30 to-purple-500/30 border-2 border-cyan-400/60 flex items-center justify-center shadow-[0_0_30px_rgba(6,182,212,0.5),inset_0_0_15px_rgba(168,85,247,0.3)]">
                 <Bot className="w-6 h-6 text-cyan-300 drop-shadow-[0_0_8px_rgba(6,182,212,0.8)]" />
