@@ -1,13 +1,55 @@
 import React from 'react';
-import { X, Shield, AlertTriangle, CheckCircle, FileText, Volume2 } from 'lucide-react';
+import { X, Shield, AlertTriangle, CheckCircle, FileText, Volume2, Download, Archive, Globe, User, Building2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
 
 /**
  * Phase 6: Audit Report Viewer
- * Displays full security audit report
+ * Displays full security audit report for Business/People/Agency audits
  */
-export default function AuditReportView({ audit, onClose, onPlaySummary }) {
+export default function AuditReportView({ audit, onClose, onPlaySummary, onArchive, onDownload }) {
   if (!audit) return null;
+
+  const getTargetTypeIcon = (type) => {
+    switch (type) {
+      case 'business': return <Globe className="w-5 h-5 text-cyan-400" />;
+      case 'person': return <User className="w-5 h-5 text-purple-400" />;
+      case 'agency': return <Building2 className="w-5 h-5 text-amber-400" />;
+      default: return <Shield className="w-5 h-5 text-cyan-400" />;
+    }
+  };
+
+  const getTargetTypeLabel = (type) => {
+    switch (type) {
+      case 'business': return 'Business Security Audit';
+      case 'person': return 'People Background Audit';
+      case 'agency': return 'Government Agency Audit';
+      default: return 'Security Audit';
+    }
+  };
+
+  const handleDownload = () => {
+    if (onDownload) {
+      onDownload(audit);
+    } else {
+      // Fallback: download findings as JSON
+      const dataStr = JSON.stringify(audit, null, 2);
+      const blob = new Blob([dataStr], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `audit_${audit.targetIdentifier?.replace(/[^a-z0-9]/gi, '_')}_${Date.now()}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      toast.success('Audit report downloaded');
+    }
+  };
+
+  const handleArchive = () => {
+    if (onArchive) {
+      onArchive(audit.id || audit._id || audit.entity_id);
+    }
+  };
 
   let findings = {};
   try {
@@ -43,19 +85,39 @@ export default function AuditReportView({ audit, onClose, onPlaySummary }) {
         <div className="px-6 py-4 border-b-2 border-purple-500/30 bg-gradient-to-r from-slate-950 via-purple-950/30 to-slate-950 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="p-2 rounded-lg bg-cyan-500/20 border border-cyan-500/50">
-              <Shield className="w-5 h-5 text-cyan-400" />
+              {getTargetTypeIcon(audit.targetType)}
             </div>
             <div>
-              <h2 className="text-lg font-bold text-white">Security Audit Report</h2>
-              <p className="text-xs text-slate-400">{audit.targetUrl}</p>
+              <h2 className="text-lg font-bold text-white">{getTargetTypeLabel(audit.targetType)}</h2>
+              <p className="text-xs text-slate-400">{audit.targetIdentifier || audit.targetUrl}</p>
             </div>
           </div>
-          <button
-            onClick={onClose}
-            className="p-2 rounded-lg hover:bg-slate-800 transition-colors text-slate-400 hover:text-white"
-          >
-            <X className="w-5 h-5" />
-          </button>
+          <div className="flex items-center gap-2">
+            <Button
+              onClick={handleDownload}
+              size="sm"
+              variant="outline"
+              className="border-emerald-500/50 text-emerald-300 hover:bg-emerald-500/20"
+            >
+              <Download className="w-4 h-4 mr-1" />
+              Export
+            </Button>
+            <Button
+              onClick={handleArchive}
+              size="sm"
+              variant="outline"
+              className="border-amber-500/50 text-amber-300 hover:bg-amber-500/20"
+            >
+              <Archive className="w-4 h-4 mr-1" />
+              Archive
+            </Button>
+            <button
+              onClick={onClose}
+              className="p-2 rounded-lg hover:bg-slate-800 transition-colors text-slate-400 hover:text-white"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
         </div>
 
         {/* Content */}
@@ -70,13 +132,13 @@ export default function AuditReportView({ audit, onClose, onPlaySummary }) {
                 </div>
               </div>
               <div className="text-right">
-                <div className="text-xs text-slate-400 uppercase tracking-wider mb-1">Severity Score</div>
-                <div className="text-3xl font-bold text-white">{audit.severityScore || 0}/100</div>
+                <div className="text-xs text-slate-400 uppercase tracking-wider mb-1">Risk Score</div>
+                <div className="text-3xl font-bold text-white">{audit.riskScore || audit.severityScore || 0}/100</div>
               </div>
               <div className="text-right">
-                <div className="text-xs text-slate-400 uppercase tracking-wider mb-1">Audit Type</div>
+                <div className="text-xs text-slate-400 uppercase tracking-wider mb-1">Audit Mode</div>
                 <div className="px-3 py-1 rounded-lg bg-purple-500/20 border border-purple-500/50 text-purple-300 text-sm font-semibold">
-                  {audit.auditType}
+                  {audit.auditMode || audit.auditType}
                 </div>
               </div>
             </div>
