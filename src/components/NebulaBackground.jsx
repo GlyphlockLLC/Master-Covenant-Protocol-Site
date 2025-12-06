@@ -27,9 +27,8 @@ export default function NebulaBackground({ className = '', intensity = 0.15 }) {
     
     let mouseX = canvas.width / 2;
     let mouseY = canvas.height / 2;
-    let targetMouseX = mouseX;
-    let targetMouseY = mouseY;
     let time = 0;
+    let cursorHue = 190; // Starting color
 
     // Resize handler
     const resize = () => {
@@ -84,19 +83,19 @@ export default function NebulaBackground({ className = '', intensity = 0.15 }) {
         if (this.baseY < -50) this.baseY = canvas.height + 50;
         if (this.baseY > canvas.height + 50) this.baseY = -50;
 
-        // Gentle parallax toward mouse (reduced intensity)
-        const dx = targetMouseX - this.baseX;
-        const dy = targetMouseY - this.baseY;
+        // Strong parallax toward mouse (LIGHT SPEED ATTRACTION)
+        const dx = mouseX - this.baseX;
+        const dy = mouseY - this.baseY;
         const dist = Math.sqrt(dx * dx + dy * dy);
         
-        if (dist < 400) {
-          const force = (400 - dist) / 400;
-          const smoothForce = force * force * 0.15; // Reduced from 0.25
-          this.x += (this.baseX + dx * smoothForce - this.x) * 0.06;
-          this.y += (this.baseY + dy * smoothForce - this.y) * 0.06;
+        if (dist < 500) {
+          const force = (500 - dist) / 500;
+          const smoothForce = force * force * 0.5; // INCREASED attraction
+          this.x += (this.baseX + dx * smoothForce - this.x) * 0.15; // FASTER response
+          this.y += (this.baseY + dy * smoothForce - this.y) * 0.15;
         } else {
-          this.x += (this.baseX - this.x) * 0.04;
-          this.y += (this.baseY - this.y) * 0.04;
+          this.x += (this.baseX - this.x) * 0.08;
+          this.y += (this.baseY - this.y) * 0.08;
         }
 
         // Pulse animation
@@ -166,26 +165,22 @@ export default function NebulaBackground({ className = '', intensity = 0.15 }) {
       }
     }
 
-    // Mouse/touch tracking
+    // Mouse/touch tracking (LIGHT SPEED - INSTANT)
     const handlePointerMove = (e) => {
       const x = e.clientX || (e.touches && e.touches[0]?.clientX);
       const y = e.clientY || (e.touches && e.touches[0]?.clientY);
       if (x !== undefined && y !== undefined) {
-        targetMouseX = x;
-        targetMouseY = y;
+        mouseX = x; // INSTANT tracking
+        mouseY = y;
       }
     };
-
-    // Smooth mouse following
-    function updateMouse() {
-      mouseX += (targetMouseX - mouseX) * 0.05;
-      mouseY += (targetMouseY - mouseY) * 0.05;
-    }
 
     // Main animation loop
     function animate() {
       time += 0.005;
-      updateMouse();
+      
+      // Animate cursor color (cycling through cyan/blue/purple spectrum)
+      cursorHue = 190 + Math.sin(time * 2) * 60; // 130-250 range
 
       // Clear main canvas
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -218,6 +213,35 @@ export default function NebulaBackground({ className = '', intensity = 0.15 }) {
       nebula2.addColorStop(1, 'rgba(0, 0, 0, 0)');
       ctx.fillStyle = nebula2;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Draw CURSOR GLOW BALL (BIG AND NOTICEABLE)
+      const cursorGlow = ctx.createRadialGradient(
+        mouseX, mouseY, 0,
+        mouseX, mouseY, 120
+      );
+      cursorGlow.addColorStop(0, `hsla(${cursorHue}, 100%, 65%, ${0.6 * intensity})`);
+      cursorGlow.addColorStop(0.3, `hsla(${cursorHue}, 90%, 60%, ${0.4 * intensity})`);
+      cursorGlow.addColorStop(0.6, `hsla(${cursorHue + 30}, 85%, 55%, ${0.2 * intensity})`);
+      cursorGlow.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      
+      ctx.fillStyle = cursorGlow;
+      ctx.beginPath();
+      ctx.arc(mouseX, mouseY, 120, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Core bright center
+      const cursorCore = ctx.createRadialGradient(
+        mouseX, mouseY, 0,
+        mouseX, mouseY, 30
+      );
+      cursorCore.addColorStop(0, `hsla(${cursorHue}, 100%, 80%, ${0.8 * intensity})`);
+      cursorCore.addColorStop(0.5, `hsla(${cursorHue}, 100%, 70%, ${0.5 * intensity})`);
+      cursorCore.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      
+      ctx.fillStyle = cursorCore;
+      ctx.beginPath();
+      ctx.arc(mouseX, mouseY, 30, 0, Math.PI * 2);
+      ctx.fill();
 
       // Update and draw nodes
       nodes.forEach((node) => {
