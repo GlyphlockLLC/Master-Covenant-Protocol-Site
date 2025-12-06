@@ -1,5 +1,5 @@
-import React, { useRef, useEffect } from 'react';
-import { Send, Square, RotateCcw, Mic, Paperclip } from 'lucide-react';
+import React, { useRef, useEffect, useState } from 'react';
+import { Send, Square, RotateCcw, Mic, MicOff, Paperclip } from 'lucide-react';
 
 export default function ChatInput({ 
   value, 
@@ -11,6 +11,8 @@ export default function ChatInput({
   disabled 
 }) {
   const textareaRef = useRef(null);
+  const [isListening, setIsListening] = useState(false);
+  const recognitionRef = useRef(null);
 
   // Auto-resize textarea
   useEffect(() => {
@@ -20,6 +22,60 @@ export default function ChatInput({
       textarea.style.height = Math.min(textarea.scrollHeight, 150) + 'px';
     }
   }, [value]);
+
+  // Initialize speech recognition
+  useEffect(() => {
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      recognitionRef.current = new SpeechRecognition();
+      recognitionRef.current.continuous = true;
+      recognitionRef.current.interimResults = true;
+      
+      recognitionRef.current.onresult = (event) => {
+        let finalTranscript = '';
+        
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          if (event.results[i].isFinal) {
+            finalTranscript += event.results[i][0].transcript + ' ';
+          }
+        }
+        
+        if (finalTranscript) {
+          onChange(value + finalTranscript);
+        }
+      };
+      
+      recognitionRef.current.onerror = (event) => {
+        console.error('Speech recognition error:', event.error);
+        setIsListening(false);
+      };
+      
+      recognitionRef.current.onend = () => {
+        setIsListening(false);
+      };
+    }
+    
+    return () => {
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
+    };
+  }, [value, onChange]);
+
+  const toggleVoiceInput = () => {
+    if (!recognitionRef.current) {
+      alert('Speech recognition not supported in this browser');
+      return;
+    }
+    
+    if (isListening) {
+      recognitionRef.current.stop();
+      setIsListening(false);
+    } else {
+      recognitionRef.current.start();
+      setIsListening(true);
+    }
+  };
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -42,6 +98,18 @@ export default function ChatInput({
               title="Attach file"
             >
               <Paperclip className="w-4 h-4" />
+            </button>
+            <button
+              type="button"
+              onClick={toggleVoiceInput}
+              className={`p-2.5 rounded-xl border transition-all duration-300 ${
+                isListening 
+                  ? 'text-red-400 bg-red-500/20 border-red-400 animate-pulse shadow-[0_0_20px_rgba(239,68,68,0.6)]' 
+                  : 'text-purple-400 hover:text-cyan-300 hover:bg-purple-500/20 border-purple-500/30 hover:border-cyan-400/50 shadow-[0_0_10px_rgba(168,85,247,0.2)] hover:shadow-[0_0_15px_rgba(6,182,212,0.4)]'
+              }`}
+              title={isListening ? 'Stop voice input' : 'Start voice input'}
+            >
+              {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
             </button>
           </div>
 
