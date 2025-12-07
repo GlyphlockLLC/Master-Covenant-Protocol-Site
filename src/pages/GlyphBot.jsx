@@ -832,7 +832,7 @@ export default function GlyphBotPage() {
                   savedChats={savedChats}
                   isLoading={persistenceLoading}
                   onSave={handleSaveChat}
-                  onArchive={archiveChat}
+                  onArchive={() => archiveChat(currentChatId)}
                   onLoadChat={handleLoadChat}
                   onNewChat={handleNewChat}
                   onGetArchived={getArchivedChats}
