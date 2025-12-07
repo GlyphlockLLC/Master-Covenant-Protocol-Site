@@ -143,7 +143,7 @@ export default function ControlBar({
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="bg-slate-800 border-slate-700">
-                        {Array.isArray(voiceProfiles) && voiceProfiles.length > 0 ? voiceProfiles.map(v => v && (
+                        {Array.isArray(voiceProfiles) && voiceProfiles.length > 0 ? voiceProfiles.filter(v => v && v.id).map(v => (
                           <SelectItem key={v.id} value={v.id} className="text-white">
                             {v.label}
                           </SelectItem>
