@@ -21,22 +21,29 @@ export function useGlyphBotPersistence(currentUser) {
   }, []);
 
   const loadSavedChats = useCallback(async () => {
-    if (!currentUser?.email) return;
+    if (!currentUser?.email) {
+      console.warn('[Persistence] Cannot load chats - no user email');
+      return;
+    }
 
+    console.log('[Persistence] Loading chats for user:', currentUser.email);
     setIsLoading(true);
+    
     try {
-      const chats = await base44.entities.GlyphBotChat.filter(
-        { userId: currentUser.email, isArchived: false },
-        '-updated_date',
-        50
-      );
+      const response = await base44.functions.invoke('loadGlyphBotChats', {
+        includeArchived: false
+      });
 
-      const normalized = (chats || []).map(c => ({
-        ...c,
-        id: c.id || c._id || c.entity_id
-      }));
+      console.log('[Persistence] Load response:', response.data);
 
-      setSavedChats(normalized);
+      if (!response.data?.success) {
+        throw new Error(response.data?.error || 'Load failed');
+      }
+
+      const chats = response.data.chats || [];
+      console.log('[Persistence] Loaded chats:', chats.length);
+      
+      setSavedChats(chats);
     } catch (e) {
       console.error('[Persistence] Failed to load chats:', e);
       setSavedChats([]);
@@ -221,18 +228,16 @@ export function useGlyphBotPersistence(currentUser) {
     if (!currentUser?.email) return [];
 
     try {
-      const chats = await base44.entities.GlyphBotChat.filter(
-        { userId: currentUser.email, isArchived: true },
-        '-updated_date',
-        50
-      );
+      const response = await base44.functions.invoke('loadGlyphBotChats', {
+        includeArchived: true
+      });
 
-      const normalized = (chats || []).map(c => ({
-        ...c,
-        id: c.id || c._id || c.entity_id
-      }));
+      if (!response.data?.success) {
+        throw new Error(response.data?.error || 'Load failed');
+      }
 
-      return normalized;
+      const allChats = response.data.chats || [];
+      return allChats.filter(c => c.isArchived === true);
     } catch (e) {
       console.error('[Persistence] Failed to load archived chats:', e);
       return [];
