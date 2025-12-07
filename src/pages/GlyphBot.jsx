@@ -626,7 +626,7 @@ export default function GlyphBotPage() {
   const currentProviderLabel = providers.find(p => p.id === (lastMeta?.providerUsed || provider))?.label || 'Gemini (Primary)';
 
   return (
-    <div className="min-h-screen text-white flex flex-col pt-16 pb-0 relative z-[1]" style={{ color: '#ffffff', background: 'transparent' }}>
+    <div className="min-h-screen text-white flex flex-col pt-16 pb-0 relative" style={{ color: '#ffffff', background: 'transparent', zIndex: 20 }}>
       <SEOHead 
         title="GlyphBot - Elite AI Security Assistant | GlyphLock"
         description="Chat with GlyphBot, your elite AI security assistant for code auditing, blockchain analysis, threat detection, and debugging."
@@ -634,7 +634,7 @@ export default function GlyphBotPage() {
       
       <div className="flex-1 flex flex-col max-w-7xl mx-auto w-full">
         {/* Main Console Container */}
-        <div className="flex-1 flex flex-col bg-transparent border-x-2 border-purple-500/30 shadow-[0_0_60px_rgba(168,85,247,0.15)] overflow-hidden" style={{ position: 'relative', zIndex: 1000 }}>
+        <div className="flex-1 flex flex-col bg-transparent border-x-2 border-purple-500/30 shadow-[0_0_60px_rgba(168,85,247,0.15)] overflow-hidden" style={{ position: 'relative', zIndex: 50 }}>
           
           {/* Header */}
           <header className="flex items-center justify-between px-5 py-4 border-b-2 border-purple-500/40 bg-transparent backdrop-blur-xl shadow-[0_4px_30px_rgba(168,85,247,0.2)]">
@@ -751,7 +751,7 @@ export default function GlyphBotPage() {
           <div className="flex-1 flex min-h-0 overflow-hidden">
             {/* Phase 6: Audit Panel (Left Side) */}
             {showAuditPanel && currentUser && (
-              <aside className="w-80 flex flex-col border-r-2 border-purple-500/30 bg-gradient-to-b from-slate-950/90 via-purple-950/10 to-slate-950/90 overflow-hidden hidden lg:flex relative z-[40]">
+              <aside className="w-80 flex flex-col border-r-2 border-purple-500/30 bg-gradient-to-b from-slate-950/90 via-purple-950/10 to-slate-950/90 overflow-hidden hidden lg:flex relative" style={{ zIndex: 30 }}>
                 <div className="p-4 border-b-2 border-purple-500/30 bg-purple-500/10">
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-2 text-xs">
@@ -826,7 +826,7 @@ export default function GlyphBotPage() {
 
             {/* Chat History Panel - Phase 5 */}
             {showHistoryPanel && currentUser && (
-              <aside className="w-64 flex-col border-l-2 border-purple-500/30 bg-gradient-to-b from-slate-950/90 via-purple-950/10 to-slate-950/90 overflow-hidden hidden md:flex relative z-[40]">
+              <aside className="w-64 flex-col border-l-2 border-purple-500/30 bg-gradient-to-b from-slate-950/90 via-purple-950/10 to-slate-950/90 overflow-hidden hidden md:flex relative" style={{ zIndex: 30 }}>
                 <UI.ChatHistoryPanel
                   currentChatId={currentChatId}
                   savedChats={savedChats}

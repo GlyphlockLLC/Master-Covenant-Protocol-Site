@@ -110,7 +110,7 @@ export default function ControlBar({
                   <ChevronDown className="w-3 h-3" />
                 </button>
               </PopoverTrigger>
-              <PopoverContent className="w-80 bg-slate-900 border-purple-500/50 p-4 space-y-4">
+              <PopoverContent className="w-80 bg-slate-900 border-purple-500/50 p-4 space-y-4" style={{ zIndex: 10000 }}>
                 <div className="space-y-3">
                   <div className="text-xs font-bold text-cyan-300 uppercase tracking-wider">Voice Controls</div>
                   

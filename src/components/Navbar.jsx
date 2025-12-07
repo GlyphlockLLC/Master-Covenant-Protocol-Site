@@ -22,7 +22,7 @@ export default function Navbar({ user, onLogin, onLogout }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <nav className="w-full bg-black/15 border-b border-[#00E4FF]/20 shadow-[0_2px_20px_rgba(0,228,255,0.1)] text-white z-50 sticky top-0 backdrop-blur-2xl">
+    <nav className="w-full bg-black/15 border-b border-[#00E4FF]/20 shadow-[0_2px_20px_rgba(0,228,255,0.1)] text-white sticky top-0 backdrop-blur-2xl" style={{ zIndex: 10000 }}>
       <div className="max-w-[1400px] mx-auto px-6 md:px-12 py-4 flex items-center justify-between">
         {/* Logo Area */}
         <Link to={createPageUrl("Home")} className="flex items-center gap-3 group">
@@ -61,11 +61,12 @@ export default function Navbar({ user, onLogin, onLogout }) {
               <AnimatePresence>
                 {open === section.label && (
                   <motion.div
-                   initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                   animate={{ opacity: 1, y: 0, scale: 1 }}
-                   exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                   transition={{ duration: 0.15, ease: "easeOut" }}
-                   className="absolute left-1/2 -translate-x-1/2 top-full pt-4 w-72 z-50"
+                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                  transition={{ duration: 0.15, ease: "easeOut" }}
+                  className="absolute left-1/2 -translate-x-1/2 top-full pt-4 w-72"
+                  style={{ zIndex: 10001 }}
                   >
                    <div className="relative bg-[#0A0F24]/85 border border-[#00E4FF]/40 rounded-2xl shadow-[0_0_40px_rgba(0,228,255,0.3),inset_0_1px_0_rgba(255,255,255,0.1)] backdrop-blur-2xl overflow-hidden">
                      {/* Top glow bar */}

@@ -67,21 +67,31 @@ export default function Layout({ children, currentPageName }) {
     <div className="min-h-screen text-white flex flex-col relative overflow-x-hidden selection:bg-[#00E4FF] selection:text-black" style={{ background: 'transparent' }}>
       <SecurityMonitor />
 
-      {/* SITE-WIDE COSMIC SYSTEM */}
+      {/* SITE-WIDE COSMIC SYSTEM - Lowest layer */}
       <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 0, pointerEvents: 'none' }}>
         <NebulaLayer intensity={1.0} />
       </div>
-      <CursorOrb />
+      <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 1, pointerEvents: 'none' }}>
+        <CursorOrb />
+      </div>
 
-      <Navbar user={user} onLogin={handleLogin} onLogout={handleLogout} />
+      {/* Navbar - Highest priority */}
+      <div style={{ position: 'relative', zIndex: 9999 }}>
+        <Navbar user={user} onLogin={handleLogin} onLogout={handleLogout} />
+      </div>
 
-      <main className="flex-1 relative pt-4" style={{ background: 'transparent' }}>
+      {/* Main content */}
+      <main className="flex-1 relative pt-4" style={{ background: 'transparent', zIndex: 10 }}>
         {children}
       </main>
 
-      <GlyphBotJr />
+      {/* GlyphBot Jr - High priority */}
+      <div style={{ position: 'fixed', bottom: 0, right: 0, zIndex: 9000 }}>
+        <GlyphBotJr />
+      </div>
 
-      <div className="relative z-30">
+      {/* Footer */}
+      <div className="relative" style={{ zIndex: 100 }}>
         <Footer />
       </div>
     </div>
