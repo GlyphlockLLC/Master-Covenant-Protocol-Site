@@ -166,20 +166,25 @@ p {
   @apply px-4 sm:px-6 lg:px-8 py-12 md:py-16 lg:py-20;
 }
 
-/* Card depth system */
+/* UNIFIED CARD SYSTEM - NO WHITE ANYWHERE */
 .card-elevated {
-  @apply bg-slate-900/80 border-2 border-[#3B82F6]/30 shadow-xl backdrop-blur-sm;
-  box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
+  background: linear-gradient(135deg, rgba(10, 10, 20, 0.8) 0%, rgba(15, 15, 31, 0.7) 100%);
+  border: 2px solid rgba(59, 130, 246, 0.3);
+  border-radius: 20px;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 0 25px rgba(59, 130, 246, 0.2);
   transform: translateZ(0);
   will-change: transform;
 }
 
 .card-elevated-hover {
-  @apply hover:border-[#3B82F6]/50 transition-all duration-300;
+  transition: all 0.3s ease;
 }
 
 .card-elevated-hover:hover {
-  box-shadow: 0 0 35px rgba(59, 130, 246, 0.3), 0 0 60px rgba(30, 64, 175, 0.15);
+  border-color: rgba(59, 130, 246, 0.5);
+  box-shadow: 0 0 40px rgba(59, 130, 246, 0.35), 0 0 70px rgba(140, 75, 255, 0.2);
+  transform: translateY(-2px);
 }
 
 /* Unified font stack */
@@ -581,36 +586,47 @@ p {
   color: #39ff14;
 }
 
-/* GlyphLock Theme - Cosmic Dark Space with Ultraviolet Accents */
+/* GlyphLock Theme - UNIFIED DARK BLUISH-BLACK & PURPLE COSMOS */
 
 :root {
-  --uv: #6a00ff;
-  --uv-light: #b27dff;
-  --uv-dark: #3d0099;
-  --blue-glyph: #00caff;
-  --blue-light-glyph: #66e2ff;
-  --blue-dark-glyph: #006a88;
-  --white-soft: rgba(255, 255, 255, 0.1);
-  --white-glass: rgba(255, 255, 255, 0.18);
-  --blur-glyph: blur(14px);
-  --cosmic-bg: linear-gradient(135deg, #0a0a0f 0%, #0f0f1a 50%, #000000 100%);
+  --glyph-space: #000000;
+  --glyph-navy: #0a0a14;
+  --glyph-deep-blue: #0f0f1f;
+  --glyph-purple: #1a0a28;
+  --glyph-blue-accent: #3B82F6;
+  --glyph-purple-accent: #8C4BFF;
+  --glyph-cyan: #00E4FF;
+  --glass-light: rgba(255, 255, 255, 0.05);
+  --glass-medium: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(59, 130, 246, 0.2);
+  --glass-border-purple: rgba(140, 75, 255, 0.2);
+  --glyph-blur: blur(16px);
 }
 
-/* Frosted Glass Effect */
+/* UNIVERSAL GLASSMORPHISM - NEVER WHITE */
 .glyph-glass {
-  background: var(--white-soft);
-  backdrop-filter: var(--blur-glyph);
-  -webkit-backdrop-filter: var(--blur-glyph);
-  border: 1px solid var(--white-glass);
+  background: rgba(10, 10, 20, 0.6);
+  backdrop-filter: var(--glyph-blur);
+  -webkit-backdrop-filter: var(--glyph-blur);
+  border: 1px solid rgba(59, 130, 246, 0.2);
   border-radius: 20px;
 }
 
 .glyph-glass-dark {
-  background: rgba(10, 10, 15, 0.85);
-  backdrop-filter: var(--blur-glyph);
-  -webkit-backdrop-filter: var(--blur-glyph);
-  border: 1px solid rgba(106, 0, 255, 0.3);
+  background: rgba(10, 10, 20, 0.85);
+  backdrop-filter: var(--glyph-blur);
+  -webkit-backdrop-filter: var(--glyph-blur);
+  border: 1px solid rgba(140, 75, 255, 0.3);
   border-radius: 20px;
+}
+
+.glyph-glass-card {
+  background: linear-gradient(135deg, rgba(15, 15, 31, 0.7) 0%, rgba(26, 10, 40, 0.6) 100%);
+  backdrop-filter: var(--glyph-blur);
+  -webkit-backdrop-filter: var(--glyph-blur);
+  border: 2px solid rgba(59, 130, 246, 0.3);
+  border-radius: 20px;
+  box-shadow: 0 0 25px rgba(59, 130, 246, 0.15);
 }
 
 /* Neon Glow Effect */

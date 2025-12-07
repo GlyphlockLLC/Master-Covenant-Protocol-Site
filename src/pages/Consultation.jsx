@@ -101,7 +101,7 @@ export default function Consultation() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-black text-white pt-20 pb-16">
+    <div className="min-h-screen text-white pt-20 pb-16" style={{ background: 'transparent' }}>
       <SEOHead 
         title="Book Security Consultation - $200 | GlyphLock"
         description="Schedule a tactical cybersecurity assessment with GlyphLock specialists. 60-minute expert analysis, threat overview, and custom solution roadmap."
@@ -111,7 +111,7 @@ export default function Consultation() {
         <div className="max-w-7xl mx-auto">
           {/* Hero Header */}
           <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 bg-slate-900/60 border-2 border-[#3B82F6]/40 rounded-full px-6 py-2 mb-6">
+            <div className="inline-flex items-center gap-2 glyph-glass border-2 border-[#3B82F6]/40 rounded-full px-6 py-2 mb-6 shadow-[0_0_20px_rgba(59,130,246,0.2)]">
               <Shield className="w-5 h-5 text-[#3B82F6]" />
               <span className="text-sm font-bold text-white uppercase tracking-wider">Tactical Security Assessment</span>
             </div>
@@ -133,7 +133,7 @@ export default function Consultation() {
           <div className="grid lg:grid-cols-3 gap-8 mb-16">
             {/* Form Section */}
             <div className="lg:col-span-2">
-              <Card className="bg-slate-900/60 border-2 border-[#3B82F6]/30 shadow-[0_0_40px_rgba(59,130,246,0.15)]">
+              <Card className="glyph-glass-card card-elevated-hover">
                 <CardHeader>
                   <CardTitle className="text-2xl font-bold text-white">Consultation Request Form</CardTitle>
                 </CardHeader>
@@ -147,7 +147,7 @@ export default function Consultation() {
                           required
                           value={formData.full_name}
                           onChange={(e) => setFormData({...formData, full_name: e.target.value})}
-                          className="bg-slate-950/60 border-2 border-slate-700/50 text-white focus:border-[#3B82F6] transition-colors"
+                          className="input-glow-blue"
                           placeholder="John Smith"
                         />
                       </div>
@@ -159,7 +159,7 @@ export default function Consultation() {
                           required
                           value={formData.email}
                           onChange={(e) => setFormData({...formData, email: e.target.value})}
-                          className="bg-slate-950/60 border-2 border-slate-700/50 text-white focus:border-[#3B82F6] transition-colors"
+                          className="input-glow-blue"
                           placeholder="john@company.com"
                         />
                       </div>
@@ -172,7 +172,7 @@ export default function Consultation() {
                           id="company"
                           value={formData.company}
                           onChange={(e) => setFormData({...formData, company: e.target.value})}
-                          className="bg-slate-950/60 border-2 border-slate-700/50 text-white focus:border-[#3B82F6] transition-colors"
+                          className="input-glow-blue"
                           placeholder="Acme Corp"
                         />
                       </div>
@@ -184,7 +184,7 @@ export default function Consultation() {
                           required
                           value={formData.phone}
                           onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                          className="bg-slate-950/60 border-2 border-slate-700/50 text-white focus:border-[#3B82F6] transition-colors"
+                          className="input-glow-blue"
                           placeholder="+1 (555) 123-4567"
                         />
                       </div>
@@ -218,7 +218,7 @@ export default function Consultation() {
                           required
                           value={formData.preferred_date}
                           onChange={(e) => setFormData({...formData, preferred_date: e.target.value})}
-                          className="bg-slate-950/60 border-2 border-slate-700/50 text-white focus:border-[#3B82F6] transition-colors"
+                          className="input-glow-blue"
                           min={new Date().toISOString().slice(0, 16)}
                         />
                       </div>
@@ -252,7 +252,7 @@ export default function Consultation() {
             {/* Sidebar */}
             <div className="space-y-6">
               {/* What You Receive */}
-              <Card className="bg-slate-900/60 border-2 border-[#3B82F6]/30 shadow-[0_0_25px_rgba(59,130,246,0.15)]">
+              <Card className="glyph-glass-card card-elevated-hover">
                 <CardHeader>
                   <CardTitle className="text-xl font-bold text-white flex items-center gap-2">
                     <Zap className="w-5 h-5 text-[#3B82F6]" />
@@ -275,7 +275,7 @@ export default function Consultation() {
               </Card>
 
               {/* Consultation Details */}
-              <Card className="bg-slate-900/60 border-2 border-[#3B82F6]/30 shadow-[0_0_25px_rgba(59,130,246,0.15)]">
+              <Card className="glyph-glass-card card-elevated-hover">
                 <CardHeader>
                   <CardTitle className="text-xl font-bold text-white flex items-center gap-2">
                     <Clock className="w-5 h-5 text-[#3B82F6]" />
@@ -309,7 +309,7 @@ export default function Consultation() {
               </Card>
 
               {/* Satisfaction Guarantee */}
-              <Card className="bg-gradient-to-br from-emerald-900/20 to-emerald-950/40 border-2 border-emerald-500/40 shadow-[0_0_25px_rgba(16,185,129,0.15)]">
+              <Card className="glyph-glass-card border-emerald-500/40 shadow-[0_0_25px_rgba(16,185,129,0.15)]">
                 <CardContent className="p-6 text-center">
                   <Shield className="w-12 h-12 text-emerald-400 mx-auto mb-4 drop-shadow-[0_0_8px_rgba(16,185,129,0.6)]" />
                   <h3 className="font-black text-white text-lg mb-3">Satisfaction Guarantee</h3>
@@ -322,7 +322,7 @@ export default function Consultation() {
           </div>
 
           {/* Why GlyphLock Section */}
-          <Card className="bg-gradient-to-br from-slate-900/60 to-slate-950/60 border-2 border-[#3B82F6]/30 shadow-[0_0_40px_rgba(59,130,246,0.15)] mb-16">
+          <Card className="glyph-glass-card card-elevated-hover mb-16">
             <CardHeader>
               <CardTitle className="text-3xl font-black text-white flex items-center gap-3">
                 <Lock className="w-8 h-8 text-[#3B82F6]" />
@@ -356,7 +356,7 @@ export default function Consultation() {
           </Card>
 
           {/* Optional Add-Ons Notice */}
-          <Card className="bg-gradient-to-r from-purple-900/20 to-blue-900/20 border-2 border-purple-500/30">
+          <Card className="glyph-glass-card border-purple-500/30">
             <CardContent className="p-6">
               <div className="flex items-start gap-4">
                 <AlertTriangle className="w-6 h-6 text-purple-400 flex-shrink-0 mt-1" />
