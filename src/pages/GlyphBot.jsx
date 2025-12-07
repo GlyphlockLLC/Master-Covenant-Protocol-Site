@@ -701,9 +701,9 @@ export default function GlyphBotPage() {
               modes={modes}
               onToggleMode={handleToggleMode}
               onClear={handleClear}
-              onVoiceSettingsChange={{
-                ...setVoiceSettings,
-                testVoice: (text, settings) => playText(text, settings)
+              onVoiceSettingsChange={(text, settings) => {
+                console.log('[GlyphBot] Voice test triggered:', { text, settings });
+                playText(text, settings);
               }}
               voiceSettings={voiceSettings}
               voiceProfiles={voiceProfiles}
