@@ -136,7 +136,7 @@ export default function useTTS(options = {}) {
 
       const audioData = await synthesizeTTS(text, {
         voice: voiceId,
-        speed: settings.speed
+        speed: normalizeSpeed(settings.speed)
       });
 
       let audioBuffer = await audioContext.decodeAudioData(audioData);
@@ -190,14 +190,34 @@ export default function useTTS(options = {}) {
       const utterance = new SpeechSynthesisUtterance(text);
       utteranceRef.current = utterance;
       
-      const voice = getBestVoice();
+      // Select voice based on profile and emotion
+      let voice = getBestVoice();
+      
+      // If bass/clarity/emotion affect voice selection, do it here
+      if (settings.bass > 0.5 || settings.emotion === 'aggressive' || settings.emotion === 'intense') {
+        // Prefer deeper/male voices for bass/aggressive
+        const deepVoice = voices.find(v => 
+          v.lang.startsWith('en') && 
+          (v.name.toLowerCase().includes('male') || v.name.toLowerCase().includes('david') || v.name.toLowerCase().includes('alex'))
+        );
+        if (deepVoice) voice = deepVoice;
+      } else if (settings.clarity > 0.5 || settings.emotion === 'calm' || settings.emotion === 'whisper') {
+        // Prefer clearer/female voices for clarity/calm
+        const clearVoice = voices.find(v => 
+          v.lang.startsWith('en') && 
+          (v.name.toLowerCase().includes('female') || v.name.toLowerCase().includes('zira') || v.name.toLowerCase().includes('samantha'))
+        );
+        if (clearVoice) voice = clearVoice;
+      }
+      
       if (voice) {
         utterance.voice = voice;
       }
 
-      utterance.rate = Math.max(0.5, Math.min(2.0, settings.speed));
-      utterance.pitch = Math.max(0.5, Math.min(2.0, settings.pitch));
-      utterance.volume = settings.volume;
+      // Apply normalized settings - CRITICAL FIX
+      utterance.rate = normalizeSpeed(settings.speed);
+      utterance.pitch = normalizePitch(settings.pitch);
+      utterance.volume = Math.max(0, Math.min(1, settings.volume));
 
       utterance.onstart = () => {
         setIsLoading(false);
@@ -261,16 +281,27 @@ export default function useTTS(options = {}) {
     setIsLoading(true);
     setLastError(null);
 
+    // Merge settings: customSettings override currentSettings, emotion presets apply ONLY if not explicitly overridden
     let settings = { ...currentSettings, ...customSettings };
+    
+    // Apply emotion preset BEFORE custom overrides (so custom always wins)
     if (settings.emotion && EMOTION_PRESETS[settings.emotion]) {
       const emotionPreset = EMOTION_PRESETS[settings.emotion];
       settings = {
         ...settings,
-        pitch: customSettings.pitch !== undefined ? customSettings.pitch : emotionPreset.pitch,
-        speed: customSettings.speed !== undefined ? customSettings.speed : emotionPreset.speed,
-        volume: customSettings.volume !== undefined ? customSettings.volume : emotionPreset.volume
+        // Apply emotion preset values if they exist and weren't explicitly set in customSettings
+        ...(customSettings.pitch === undefined && emotionPreset.pitch !== undefined && { pitch: emotionPreset.pitch }),
+        ...(customSettings.speed === undefined && emotionPreset.speed !== undefined && { speed: emotionPreset.speed }),
+        ...(customSettings.volume === undefined && emotionPreset.volume !== undefined && { volume: emotionPreset.volume })
       };
     }
+    
+    // Normalize all values for safety
+    settings.speed = normalizeSpeed(settings.speed);
+    settings.pitch = normalizePitch(settings.pitch);
+    settings.volume = Math.max(0, Math.min(1, settings.volume || 1.0));
+    settings.bass = Math.max(-1, Math.min(1, settings.bass || 0));
+    settings.clarity = Math.max(-1, Math.min(1, settings.clarity || 0));
 
     const voiceProfile = VOICE_PROFILES[settings.voiceProfile] || VOICE_PROFILES.neutral_female;
     const voiceId = voiceProfile.id;
