@@ -90,11 +90,13 @@ export default function GlyphBotPage() {
   useEffect(() => {
     if (getVoiceProfiles) {
       const profiles = getVoiceProfiles();
-      setVoiceProfiles(Array.isArray(profiles) ? profiles : []);
+      const validProfiles = Array.isArray(profiles) ? profiles.filter(p => p && p.id && p.label) : [];
+      setVoiceProfiles(validProfiles);
     }
     if (getEmotionPresets) {
       const presets = getEmotionPresets();
-      setEmotionPresets(Array.isArray(presets) ? presets : []);
+      const validPresets = Array.isArray(presets) ? presets.filter(p => p && p.id && p.label) : [];
+      setEmotionPresets(validPresets);
     }
   }, [getVoiceProfiles, getEmotionPresets]);
 
