@@ -70,6 +70,7 @@ export function useGlyphBotPersistence(currentUser) {
 
   const saveChat = useCallback(async (messages, options = {}) => {
     if (!currentUser?.email) {
+      console.warn('[Persistence] No user - retrying save in 300ms');
       setTimeout(() => saveChat(messages, options), 300);
       return null;
     }
@@ -93,23 +94,35 @@ export function useGlyphBotPersistence(currentUser) {
       persona: persona || 'GENERAL'
     };
 
+    console.log('[Persistence] Saving chat:', {
+      chatId: currentChatId,
+      title: chatTitle,
+      messageCount: historyToSave.length,
+      isUpdate: !!currentChatId
+    });
+
     try {
       let savedChat;
 
       if (currentChatId) {
+        console.log('[Persistence] Updating existing chat:', currentChatId);
         savedChat = await base44.entities.GlyphBotChat.update(currentChatId, chatData);
       } else {
+        console.log('[Persistence] Creating new chat');
         savedChat = await base44.entities.GlyphBotChat.create(chatData);
         const newId = savedChat.id || savedChat._id || savedChat.entity_id;
+        console.log('[Persistence] New chat created with ID:', newId);
         setCurrentChatId(newId);
         localStorage.setItem(STORAGE_KEYS.CURRENT_CHAT_ID, newId);
       }
 
+      console.log('[Persistence] Chat saved successfully, refreshing list');
       await loadSavedChats();
       return savedChat;
     } catch (e) {
       console.error('[Persistence] Failed to save chat:', e);
-      return null;
+      console.error('[Persistence] Chat data:', chatData);
+      throw e; // Re-throw to let caller handle
     }
   }, [currentUser?.email, currentChatId, fullHistory, loadSavedChats]);
 

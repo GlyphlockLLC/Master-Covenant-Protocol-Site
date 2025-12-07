@@ -389,7 +389,20 @@ export default function GlyphBotPage() {
 
   // Handle save chat
   const handleSaveChat = useCallback(async () => {
-    return await saveChat(messages, { provider, persona });
+    try {
+      const result = await saveChat(messages, { provider, persona });
+      if (result) {
+        toast.success('Chat saved successfully');
+        return result;
+      } else {
+        toast.error('Failed to save chat');
+        return null;
+      }
+    } catch (err) {
+      console.error('[GlyphBot] Save failed:', err);
+      toast.error('Failed to save chat: ' + (err?.message || 'Unknown error'));
+      return null;
+    }
   }, [messages, saveChat, provider, persona]);
 
   // Handle load chat from history
