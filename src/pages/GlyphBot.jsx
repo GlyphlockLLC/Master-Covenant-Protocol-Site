@@ -810,11 +810,8 @@ export default function GlyphBotPage() {
               </div>
 
               <div className="flex-1 chat-scroll-container p-4 space-y-3">
-                {messages.slice(-5).reverse().filter(m => m && m.role !== 'system').map((m, idx) => {
-                  const msgId = m?.id || `telem-${idx}-${Date.now()}`;
-                  if (!m) return null;
-                  return (
-                  <div key={msgId} className="rounded-xl border-2 border-purple-500/30 bg-slate-900/60 p-3 hover:border-cyan-400/50 transition-all duration-300 shadow-[0_0_10px_rgba(168,85,247,0.15)]">
+                {messages.slice(-5).reverse().filter(m => m && m.content && m.role !== 'system').map((m, idx) => (
+                  <div key={m.id || `telem-${idx}`} className="rounded-xl border-2 border-purple-500/30 bg-slate-900/60 p-3 hover:border-cyan-400/50 transition-all duration-300 shadow-[0_0_10px_rgba(168,85,247,0.15)]">
                     <div className="flex items-center justify-between mb-2">
                       <span className={`text-[9px] uppercase tracking-wider font-bold px-2 py-1 rounded-lg ${
                         m.role === 'assistant' 
@@ -829,8 +826,7 @@ export default function GlyphBotPage() {
                     </div>
                     <p className="text-[11px] text-slate-300 line-clamp-2">{m.content}</p>
                   </div>
-                  );
-                })}
+                ))}
 
                     {lastMeta && (
                   <div className="mt-4 p-4 rounded-xl border-2 border-cyan-500/40 bg-gradient-to-br from-cyan-500/10 to-purple-500/10 shadow-[0_0_20px_rgba(6,182,212,0.2)]">

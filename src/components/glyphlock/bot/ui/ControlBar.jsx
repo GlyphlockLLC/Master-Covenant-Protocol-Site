@@ -124,11 +124,19 @@ export default function ControlBar({
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="bg-slate-800 border-slate-700">
-                        <SelectItem value="neutral">Neutral</SelectItem>
-                        <SelectItem value="warm">Warm</SelectItem>
-                        <SelectItem value="aggressive">Aggressive</SelectItem>
-                        <SelectItem value="calming">Calming</SelectItem>
-                        <SelectItem value="corporate">Corporate</SelectItem>
+                        {emotionPresets && emotionPresets.length > 0 ? emotionPresets.filter(e => e && e.id).map(e => (
+                          <SelectItem key={e.id} value={e.id} className="text-white">
+                            {e.label}
+                          </SelectItem>
+                        )) : (
+                          <>
+                            <SelectItem value="neutral">Neutral</SelectItem>
+                            <SelectItem value="warm">Warm</SelectItem>
+                            <SelectItem value="aggressive">Aggressive</SelectItem>
+                            <SelectItem value="calming">Calming</SelectItem>
+                            <SelectItem value="corporate">Corporate</SelectItem>
+                          </>
+                        )}
                       </SelectContent>
                     </Select>
                   </div>
