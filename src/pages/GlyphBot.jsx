@@ -54,15 +54,23 @@ export default function GlyphBotPage() {
   const chatContainerRef = useRef(null);
   
   // Phase 7: TTS settings state with ENHANCED CONTROLS
-  const [voiceSettings, setVoiceSettings] = useState({
-    voiceProfile: 'neutral_female',
-    speed: 1.0,
-    pitch: 1.0,
-    volume: 1.0,
-    bass: 0,
-    clarity: 0,
-    emotion: 'neutral',
-    provider: 'auto'
+  const [voiceSettings, setVoiceSettings] = useState(() => {
+    try {
+      const saved = localStorage.getItem('glyphbot_voice_settings');
+      if (saved) return JSON.parse(saved);
+    } catch (e) {
+      console.warn('Failed to load voice settings:', e);
+    }
+    return {
+      voiceProfile: 'neutral_female',
+      speed: 1.0,
+      pitch: 1.0,
+      volume: 1.0,
+      bass: 0,
+      clarity: 0,
+      emotion: 'neutral',
+      provider: 'auto'
+    };
   });
 
   // Phase 7C: TTS Hook (production-ready)
