@@ -9,16 +9,22 @@ export function useGlyphBotPersistence(currentUser) {
   const [fullHistory, setFullHistory] = useState([]);
 
   useEffect(() => {
-    try {
-      const savedChatId = localStorage.getItem(STORAGE_KEYS.CURRENT_CHAT_ID);
-      if (savedChatId) setCurrentChatId(savedChatId);
-
-      const savedFullHistory = localStorage.getItem(STORAGE_KEYS.FULL_HISTORY);
-      if (savedFullHistory) setFullHistory(JSON.parse(savedFullHistory));
-    } catch (e) {
-      console.warn('[Persistence] Failed to load local state:', e);
+    if (currentUser?.email) {
+      base44.functions.invoke('loadGlyphBotChats', { includeArchived: false })
+        .then(({ data }) => {
+          if (data?.success && data.chats?.length > 0) {
+            const latest = data.chats[0];
+            const chatId = latest.id || latest._id || latest.entity_id;
+            setCurrentChatId(chatId);
+            try {
+              const msgs = JSON.parse(latest.fullHistory || '[]');
+              setFullHistory(msgs);
+            } catch {}
+          }
+        })
+        .catch(e => console.error('[AutoLoad]', e));
     }
-  }, []);
+  }, [currentUser?.email]);
 
   const loadSavedChats = useCallback(async () => {
     if (!currentUser?.email) return;
@@ -49,10 +55,19 @@ export function useGlyphBotPersistence(currentUser) {
 
     setFullHistory(prev => {
       const updated = [...prev, message];
-      localStorage.setItem(STORAGE_KEYS.FULL_HISTORY, JSON.stringify(updated));
+      // Auto-save to backend immediately
+      if (currentUser?.email && currentChatId) {
+        base44.functions.invoke('saveGlyphBotChat', {
+          chatId: currentChatId,
+          messages: updated,
+          title: generateChatTitle(updated),
+          provider: 'AUTO',
+          persona: 'GENERAL'
+        }).catch(e => console.error('[AutoSave]', e));
+      }
       return updated;
     });
-  }, []);
+  }, [currentUser?.email, currentChatId]);
 
   const initializeHistory = useCallback((messages) => {
     if (!Array.isArray(messages)) return;
@@ -142,10 +157,6 @@ export function useGlyphBotPersistence(currentUser) {
   const startNewChat = useCallback(() => {
     setCurrentChatId(null);
     setFullHistory([]);
-    localStorage.removeItem(STORAGE_KEYS.CURRENT_CHAT_ID);
-    localStorage.removeItem(STORAGE_KEYS.FULL_HISTORY);
-    localStorage.removeItem(STORAGE_KEYS.MESSAGES);
-    sessionStorage.removeItem(STORAGE_KEYS.MESSAGES);
   }, []);
 
   const archiveChat = useCallback(async (chatId) => {
