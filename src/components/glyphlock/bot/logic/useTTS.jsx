@@ -134,25 +134,12 @@ export default function useTTS(options = {}) {
         await audioContext.resume();
       }
 
-      let enhancedText = text;
-      if (settings.emotion && settings.emotion !== 'neutral') {
-        const emotionInstructions = {
-          confident: '[Speak with authority and conviction] ',
-          calm: '[Speak in a soothing, reassuring tone] ',
-          urgent: '[Speak with energy and urgency] ',
-          storyteller: '[Speak as if narrating an engaging story] '
-        };
-        enhancedText = (emotionInstructions[settings.emotion] || '') + text;
-      }
-
-      const audioData = await synthesizeTTS(enhancedText, {
+      const audioData = await synthesizeTTS(text, {
         voice: voiceId,
-        speed: settings.speed,
-        emotion: settings.emotion
+        speed: settings.speed
       });
 
       let audioBuffer = await audioContext.decodeAudioData(audioData);
-
       audioBuffer = await applyAudioFilters(audioContext, audioBuffer, settings);
 
       const source = audioContext.createBufferSource();
@@ -180,17 +167,14 @@ export default function useTTS(options = {}) {
         speed: settings.speed,
         bass: settings.bass,
         clarity: settings.clarity,
-        emotion: settings.emotion,
-        enhanced: true,
         timestamp: Date.now()
       });
 
       source.start(0);
-      
       return true;
 
     } catch (error) {
-      console.error('[TTS] OpenAI synthesis error:', error);
+      console.warn('[TTS] OpenAI failed:', error);
       setIsSpeaking(false);
       setIsLoading(false);
       throw error;

@@ -272,17 +272,13 @@ export default function GlyphBotPage() {
           bass: voiceSettings.bass,
           clarity: voiceSettings.clarity,
           volume: voiceSettings.volume,
-          emotion: voiceSettings.emotion,
-          provider: voiceSettings.provider
+          emotion: voiceSettings.emotion
         } : null
       };
       
       setMessages(prev => [...prev, botMsg]);
-      
-      // Track for full history persistence
       trackMessage(botMsg);
 
-      // Increment chat count
       setChatCount(prev => {
         const newCount = prev + 1;
         localStorage.setItem(STORAGE_KEYS.CHAT_COUNT, newCount.toString());
@@ -297,9 +293,8 @@ export default function GlyphBotPage() {
         shouldSpeak: response.shouldSpeak
       });
 
-      // Phase 7C: Auto-speak if voice mode is on
       if (modes.voice && botText) {
-        playText(botText);
+        playText(botText, voiceSettings);
       }
 
       if (response.meta) {
@@ -643,9 +638,9 @@ export default function GlyphBotPage() {
               modes={modes}
               onToggleMode={handleToggleMode}
               onClear={handleClear}
-              onVoiceSettingsChange={(text, settings) => {
-                console.log('[GlyphBot] Voice test triggered:', { text, settings });
-                playText(text, settings);
+              onVoiceSettingsChange={{
+                playText,
+                setVoiceSettings
               }}
               voiceSettings={voiceSettings}
               voiceProfiles={voiceProfiles}

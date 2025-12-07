@@ -56,9 +56,17 @@ export default function ControlBar({
 }) {
   const [showVoiceControls, setShowVoiceControls] = useState(false);
 
+  const [localSettings, setLocalSettings] = React.useState(voiceSettings);
+
+  React.useEffect(() => {
+    setLocalSettings(voiceSettings);
+  }, [voiceSettings]);
+
   const handleVoiceChange = (key, value) => {
-    if (onVoiceSettingsChange) {
-      onVoiceSettingsChange(prev => ({ ...prev, [key]: value }));
+    const updated = { ...localSettings, [key]: value };
+    setLocalSettings(updated);
+    if (onVoiceSettingsChange?.setVoiceSettings) {
+      onVoiceSettingsChange.setVoiceSettings(updated);
     }
   };
 
@@ -117,18 +125,18 @@ export default function ControlBar({
                   <div className="space-y-2">
                     <Label className="text-xs text-slate-400">Emotion Preset</Label>
                     <Select 
-                      value={voiceSettings?.emotion || 'neutral'} 
+                      value={localSettings?.emotion || 'neutral'} 
                       onValueChange={(val) => handleVoiceChange('emotion', val)}
                     >
                       <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="bg-slate-800 border-slate-700">
-                        {emotionPresets.map(e => (
-                          <SelectItem key={e.id} value={e.id} className="text-white">
-                            {e.label}
-                          </SelectItem>
-                        ))}
+                        <SelectItem value="neutral">Neutral</SelectItem>
+                        <SelectItem value="warm">Warm</SelectItem>
+                        <SelectItem value="aggressive">Aggressive</SelectItem>
+                        <SelectItem value="calming">Calming</SelectItem>
+                        <SelectItem value="corporate">Corporate</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -136,7 +144,7 @@ export default function ControlBar({
                   <div className="space-y-2">
                     <Label className="text-xs text-slate-400">Voice Profile</Label>
                     <Select 
-                      value={voiceSettings?.voiceProfile || 'neutral_female'} 
+                      value={localSettings?.voiceProfile || 'neutral_female'} 
                       onValueChange={(val) => handleVoiceChange('voiceProfile', val)}
                     >
                       <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
@@ -155,10 +163,10 @@ export default function ControlBar({
                   <div className="space-y-2">
                     <Label className="text-xs text-slate-400 flex items-center justify-between">
                       <span>Pitch</span>
-                      <span className="text-cyan-400 font-mono">{voiceSettings?.pitch?.toFixed(2) || '1.00'}x</span>
+                      <span className="text-cyan-400 font-mono">{localSettings?.pitch?.toFixed(2) || '1.00'}x</span>
                     </Label>
                     <Slider
-                      value={[voiceSettings?.pitch || 1.0]}
+                      value={[localSettings?.pitch || 1.0]}
                       onValueChange={([val]) => handleVoiceChange('pitch', val)}
                       min={0.5}
                       max={2.0}
@@ -166,37 +174,52 @@ export default function ControlBar({
                       className="w-full"
                     />
                     <div className="flex justify-between text-[9px] text-slate-600">
-                      <span>Much Deeper</span>
-                      <span>Much Higher</span>
+                      <span>Deep</span>
+                      <span>High</span>
                     </div>
                   </div>
 
                   <div className="space-y-2">
                     <Label className="text-xs text-slate-400 flex items-center justify-between">
                       <span>Speed</span>
-                      <span className="text-cyan-400 font-mono">{voiceSettings?.speed?.toFixed(2) || '1.00'}x</span>
+                      <span className="text-cyan-400 font-mono">{localSettings?.speed?.toFixed(2) || '1.00'}x</span>
                     </Label>
                     <Slider
-                      value={[voiceSettings?.speed || 1.0]}
+                      value={[localSettings?.speed || 1.0]}
                       onValueChange={([val]) => handleVoiceChange('speed', val)}
-                      min={0.5}
-                      max={2.0}
+                      min={0.8}
+                      max={1.4}
                       step={0.05}
                       className="w-full"
                     />
                     <div className="flex justify-between text-[9px] text-slate-600">
-                      <span>Much Slower</span>
-                      <span>Much Faster</span>
+                      <span>Slower</span>
+                      <span>Faster</span>
                     </div>
                   </div>
 
                   <div className="space-y-2">
                     <Label className="text-xs text-slate-400 flex items-center justify-between">
-                      <span>Bass</span>
-                      <span className="text-purple-400 font-mono">{((voiceSettings?.bass || 0) * 100).toFixed(0)}%</span>
+                      <span>Volume</span>
+                      <span className="text-cyan-400 font-mono">{((localSettings?.volume || 1.0) * 100).toFixed(0)}%</span>
                     </Label>
                     <Slider
-                      value={[voiceSettings?.bass || 0]}
+                      value={[localSettings?.volume || 1.0]}
+                      onValueChange={([val]) => handleVoiceChange('volume', val)}
+                      min={0.0}
+                      max={1.0}
+                      step={0.05}
+                      className="w-full"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label className="text-xs text-slate-400 flex items-center justify-between">
+                      <span>Bass</span>
+                      <span className="text-purple-400 font-mono">{((localSettings?.bass || 0) * 100).toFixed(0)}%</span>
+                    </Label>
+                    <Slider
+                      value={[localSettings?.bass || 0]}
                       onValueChange={([val]) => handleVoiceChange('bass', val)}
                       min={-1.0}
                       max={1.0}
@@ -212,10 +235,10 @@ export default function ControlBar({
                   <div className="space-y-2">
                     <Label className="text-xs text-slate-400 flex items-center justify-between">
                       <span>Clarity</span>
-                      <span className="text-purple-400 font-mono">{((voiceSettings?.clarity || 0) * 100).toFixed(0)}%</span>
+                      <span className="text-purple-400 font-mono">{((localSettings?.clarity || 0) * 100).toFixed(0)}%</span>
                     </Label>
                     <Slider
-                      value={[voiceSettings?.clarity || 0]}
+                      value={[localSettings?.clarity || 0]}
                       onValueChange={([val]) => handleVoiceChange('clarity', val)}
                       min={-1.0}
                       max={1.0}
@@ -231,15 +254,9 @@ export default function ControlBar({
                   <div className="flex gap-2 pt-2 border-t border-slate-700">
                     <button
                       type="button"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        const testPhrase = "This is a voice test with your current settings.";
-                        console.log('[ControlBar] Test voice clicked', voiceSettings);
-                        if (typeof onVoiceSettingsChange === 'function') {
-                          onVoiceSettingsChange(testPhrase, voiceSettings);
-                        } else if (onVoiceSettingsChange?.testVoice) {
-                          onVoiceSettingsChange.testVoice(testPhrase, voiceSettings);
+                      onClick={() => {
+                        if (onVoiceSettingsChange?.playText) {
+                          onVoiceSettingsChange.playText("This is a voice test with your current settings.", localSettings);
                         }
                       }}
                       className="flex-1 px-3 py-2 rounded-lg text-xs bg-cyan-500/20 border border-cyan-500/50 text-cyan-300 hover:bg-cyan-500/30 transition-all flex items-center justify-center gap-1.5"
@@ -249,24 +266,13 @@ export default function ControlBar({
                     </button>
                     <button
                       type="button"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        try {
-                          localStorage.setItem('glyphbot_voice_settings', JSON.stringify(voiceSettings));
-                          console.log('[ControlBar] Voice settings saved:', voiceSettings);
-                          const btn = e.currentTarget;
-                          const originalHTML = btn.innerHTML;
-                          btn.innerHTML = '<span class="text-emerald-400 text-xs">✓ Saved</span>';
-                          setTimeout(() => { btn.innerHTML = originalHTML; }, 1500);
-                        } catch (err) {
-                          console.error('[ControlBar] Failed to save voice settings:', err);
-                        }
+                      onClick={() => {
+                        localStorage.setItem('glyphbot_voice_settings', JSON.stringify(localSettings));
                       }}
                       className="flex-1 px-3 py-2 rounded-lg text-xs bg-purple-500/20 border border-purple-500/50 text-purple-300 hover:bg-purple-500/30 transition-all flex items-center justify-center gap-1.5"
                     >
                       <Settings2 className="w-3 h-3" />
-                      Save Default
+                      Save
                     </button>
                   </div>
                 </div>
