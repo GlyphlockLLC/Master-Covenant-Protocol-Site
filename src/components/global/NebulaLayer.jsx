@@ -160,7 +160,9 @@ export default function NebulaLayer({ intensity = 0.5 }) {
     function animate() {
       time += 0.005;
 
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      // Fill with pure space black
+      ctx.fillStyle = '#000000';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       // Nebula clouds
       const nebula1 = ctx.createRadialGradient(
@@ -171,8 +173,8 @@ export default function NebulaLayer({ intensity = 0.5 }) {
         canvas.height * 0.3,
         canvas.width * 0.6
       );
-      nebula1.addColorStop(0, `rgba(139, 0, 255, ${0.25 * intensity})`);
-      nebula1.addColorStop(0.4, `rgba(59, 130, 246, ${0.18 * intensity})`);
+      nebula1.addColorStop(0, `rgba(59, 130, 246, ${0.12 * intensity})`);
+      nebula1.addColorStop(0.4, `rgba(30, 64, 175, ${0.08 * intensity})`);
       nebula1.addColorStop(1, 'rgba(0, 0, 0, 0)');
       ctx.fillStyle = nebula1;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -185,8 +187,8 @@ export default function NebulaLayer({ intensity = 0.5 }) {
         canvas.height * 0.65,
         canvas.width * 0.5
       );
-      nebula2.addColorStop(0, `rgba(0, 191, 255, ${0.22 * intensity})`);
-      nebula2.addColorStop(0.5, `rgba(139, 0, 255, ${0.15 * intensity})`);
+      nebula2.addColorStop(0, `rgba(140, 75, 255, ${0.1 * intensity})`);
+      nebula2.addColorStop(0.5, `rgba(59, 130, 246, ${0.08 * intensity})`);
       nebula2.addColorStop(1, 'rgba(0, 0, 0, 0)');
       ctx.fillStyle = nebula2;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -278,7 +280,8 @@ export default function NebulaLayer({ intensity = 0.5 }) {
         style={{ 
           zIndex: 0,
           mixBlendMode: 'screen',
-          opacity: 1
+          opacity: 0.6,
+          backgroundColor: '#000000'
         }}
       />
       
@@ -289,7 +292,8 @@ export default function NebulaLayer({ intensity = 0.5 }) {
         style={{ 
           zIndex: 1,
           mixBlendMode: 'screen',
-          opacity: 1
+          opacity: 0.8,
+          backgroundColor: '#000000'
         }}
       />
     </>
