@@ -227,6 +227,48 @@ export default function ControlBar({
                       <span>Crisp</span>
                     </div>
                   </div>
+
+                  <div className="flex gap-2 pt-2 border-t border-slate-700">
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        const testPhrase = "This is a voice test with your current settings.";
+                        console.log('[ControlBar] Test voice clicked', voiceSettings);
+                        if (typeof onVoiceSettingsChange === 'function') {
+                          onVoiceSettingsChange(testPhrase, voiceSettings);
+                        } else if (onVoiceSettingsChange?.testVoice) {
+                          onVoiceSettingsChange.testVoice(testPhrase, voiceSettings);
+                        }
+                      }}
+                      className="flex-1 px-3 py-2 rounded-lg text-xs bg-cyan-500/20 border border-cyan-500/50 text-cyan-300 hover:bg-cyan-500/30 transition-all flex items-center justify-center gap-1.5"
+                    >
+                      <Volume2 className="w-3 h-3" />
+                      Test Voice
+                    </button>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        try {
+                          localStorage.setItem('glyphbot_voice_settings', JSON.stringify(voiceSettings));
+                          console.log('[ControlBar] Voice settings saved:', voiceSettings);
+                          const btn = e.currentTarget;
+                          const originalHTML = btn.innerHTML;
+                          btn.innerHTML = '<span class="text-emerald-400 text-xs">✓ Saved</span>';
+                          setTimeout(() => { btn.innerHTML = originalHTML; }, 1500);
+                        } catch (err) {
+                          console.error('[ControlBar] Failed to save voice settings:', err);
+                        }
+                      }}
+                      className="flex-1 px-3 py-2 rounded-lg text-xs bg-purple-500/20 border border-purple-500/50 text-purple-300 hover:bg-purple-500/30 transition-all flex items-center justify-center gap-1.5"
+                    >
+                      <Settings2 className="w-3 h-3" />
+                      Save Default
+                    </button>
+                  </div>
                 </div>
               </PopoverContent>
             </Popover>
