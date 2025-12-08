@@ -72,6 +72,9 @@ export default function Navbar({ user, onLogin, onLogout }) {
                      {/* Top glow bar */}
                      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-indigo-500 to-violet-600 shadow-[0_0_12px_rgba(59,130,246,0.9)]"></div>
 
+                     {/* Black glassmorphism underlay */}
+                     <div className="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+
                      {/* Subtle grid pattern */}
                      <div className="absolute inset-0 opacity-8" style={{
                        backgroundImage: `
