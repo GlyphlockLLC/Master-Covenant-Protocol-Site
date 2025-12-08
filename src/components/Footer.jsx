@@ -75,7 +75,7 @@ export default function Footer() {
             <h4 className="text-white font-bold mb-6 uppercase tracking-widest text-xs">Company</h4>
             <div className="flex flex-col gap-4">
               {FOOTER_LINKS.company.map((link) => (
-                <Link key={link.page} to={createPageUrl(link.page)} className="hover:text-indigo-300 hover:drop-shadow-[0_0_6px_rgba(87,61,255,0.6)] transition-all">
+                <Link key={link.page} to={createPageUrl(link.page)} className="text-white font-medium hover:text-cyan-400 hover:drop-shadow-[0_0_8px_rgba(6,182,212,0.8)] transition-all duration-300">
                   {link.label}
                 </Link>
               ))}
@@ -87,7 +87,7 @@ export default function Footer() {
             <h4 className="text-white font-bold mb-6 uppercase tracking-widest text-xs">Products</h4>
             <div className="flex flex-col gap-4">
               {FOOTER_LINKS.products.map((link) => (
-                <Link key={link.page} to={createPageUrl(link.page)} className="hover:text-indigo-300 hover:drop-shadow-[0_0_6px_rgba(87,61,255,0.6)] transition-all">
+                <Link key={link.page} to={createPageUrl(link.page)} className="text-white font-medium hover:text-blue-400 hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.8)] transition-all duration-300">
                   {link.label}
                 </Link>
               ))}
@@ -99,7 +99,7 @@ export default function Footer() {
             <h4 className="text-white font-bold mb-6 uppercase tracking-widest text-xs">Resources</h4>
             <div className="flex flex-col gap-4">
               {FOOTER_LINKS.resources.map((link) => (
-                <Link key={link.page} to={createPageUrl(link.page)} className="hover:text-indigo-300 hover:drop-shadow-[0_0_6px_rgba(87,61,255,0.6)] transition-all">
+                <Link key={link.page} to={createPageUrl(link.page)} className="text-white font-medium hover:text-indigo-400 hover:drop-shadow-[0_0_8px_rgba(129,140,248,0.8)] transition-all duration-300">
                   {link.label}
                 </Link>
               ))}
@@ -110,10 +110,10 @@ export default function Footer() {
           <div className="lg:col-span-2">
             <h4 className="text-white font-bold mb-6 uppercase tracking-widest text-xs">Contact</h4>
             <div className="flex flex-col gap-4">
-              <a href="mailto:glyphlock@gmail.com" className="flex items-center gap-2 hover:text-[#00E4FF] transition-colors">
+              <a href="mailto:glyphlock@gmail.com" className="flex items-center gap-2 text-white font-medium hover:text-cyan-400 hover:drop-shadow-[0_0_8px_rgba(6,182,212,0.8)] transition-all duration-300">
                 <Mail size={16} /> glyphlock@gmail.com
               </a>
-              <a href="tel:+14242466499" className="flex items-center gap-2 hover:text-[#00E4FF] transition-colors">
+              <a href="tel:+14242466499" className="flex items-center gap-2 text-white font-medium hover:text-blue-400 hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.8)] transition-all duration-300">
                 <Phone size={16} /> (424) 246-6499
               </a>
               <p className="text-sm opacity-60 pt-2">
@@ -141,10 +141,10 @@ export default function Footer() {
 
         {/* Bottom Bar - Legal Links */}
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm">
-          <p>© {new Date().getFullYear()} GlyphLock Security LLC. All rights reserved.</p>
+          <p className="text-white font-medium">© {new Date().getFullYear()} GlyphLock Security LLC. All rights reserved.</p>
           <div className="flex items-center gap-8">
             {FOOTER_LINKS.legal.map((link) => (
-            <Link key={link.page} to={createPageUrl(link.page)} className="hover:text-indigo-300 hover:drop-shadow-[0_0_6px_rgba(87,61,255,0.6)] transition-all">
+            <Link key={link.page} to={createPageUrl(link.page)} className="text-white font-medium hover:text-cyan-400 hover:drop-shadow-[0_0_8px_rgba(6,182,212,0.8)] transition-all duration-300">
               {link.label}
             </Link>
             ))}
