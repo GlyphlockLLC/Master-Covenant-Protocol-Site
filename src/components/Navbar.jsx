@@ -22,7 +22,7 @@ export default function Navbar({ user, onLogin, onLogout }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <nav className="w-full bg-black/15 border-b border-[#00E4FF]/20 shadow-[0_2px_20px_rgba(0,228,255,0.1)] text-white sticky top-0 backdrop-blur-2xl" style={{ zIndex: 10000 }}>
+    <nav className="w-full bg-gradient-to-r from-indigo-950/20 via-violet-950/10 to-blue-950/20 border-b border-white/10 shadow-[0_2px_25px_rgba(87,61,255,0.2)] text-white sticky top-0 backdrop-blur-2xl" style={{ zIndex: 10000 }}>
       <div className="max-w-[1400px] mx-auto px-6 md:px-12 py-4 flex items-center justify-between">
         {/* Logo Area */}
         <Link to={createPageUrl("Home")} className="flex items-center gap-3 group">
@@ -68,21 +68,21 @@ export default function Navbar({ user, onLogin, onLogout }) {
                   className="absolute left-1/2 -translate-x-1/2 top-full pt-4 w-72"
                   style={{ zIndex: 10001 }}
                   >
-                   <div className="relative bg-[#0A0F24]/85 border border-[#00E4FF]/40 rounded-2xl shadow-[0_0_40px_rgba(0,228,255,0.3),inset_0_1px_0_rgba(255,255,255,0.1)] backdrop-blur-2xl overflow-hidden">
+                   <div className="relative bg-white/5 backdrop-blur-2xl backdrop-saturate-150 border border-white/20 rounded-2xl shadow-[0_0_40px_rgba(87,61,255,0.35),inset_0_1px_0_rgba(255,255,255,0.1)] overflow-hidden">
                      {/* Top glow bar */}
-                     <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#00E4FF] to-[#8C4BFF]"></div>
+                     <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#5F3DFF] to-[#A83CFF] shadow-[0_0_8px_rgba(87,61,255,0.8)]"></div>
 
                      {/* Subtle grid pattern */}
                      <div className="absolute inset-0 opacity-5" style={{
                        backgroundImage: `
-                         linear-gradient(rgba(0,228,255,0.3) 1px, transparent 1px),
-                         linear-gradient(90deg, rgba(0,228,255,0.3) 1px, transparent 1px)
+                         linear-gradient(rgba(95,61,255,0.4) 1px, transparent 1px),
+                         linear-gradient(90deg, rgba(95,61,255,0.4) 1px, transparent 1px)
                        `,
                        backgroundSize: '20px 20px'
                      }}></div>
 
                      {/* Ambient glow */}
-                     <div className="absolute -inset-1 bg-gradient-to-br from-[#00E4FF]/10 via-transparent to-[#8C4BFF]/10 blur-xl -z-10"></div>
+                     <div className="absolute -inset-1 bg-gradient-to-br from-[#5F3DFF]/15 via-transparent to-[#A83CFF]/15 blur-xl -z-10"></div>
 
                      <div className="relative p-2">
                        {section.items.map((item, idx) => (
@@ -94,28 +94,28 @@ export default function Navbar({ user, onLogin, onLogout }) {
                          >
                            <Link
                              to={createPageUrl(item.page)}
-                             className="group/item relative block px-4 py-3.5 rounded-lg text-gray-300 hover:text-white transition-all duration-200 overflow-hidden"
+                             className="group/item relative block px-4 py-3.5 rounded-lg text-violet-200 hover:text-white transition-all duration-200 overflow-hidden"
                            >
                              {/* Hover background */}
-                             <div className="absolute inset-0 bg-gradient-to-r from-[#00E4FF]/0 via-[#00E4FF]/5 to-[#8C4BFF]/10 opacity-0 group-hover/item:opacity-100 transition-opacity"></div>
+                             <div className="absolute inset-0 bg-gradient-to-r from-[#5F3DFF]/0 via-[#5F3DFF]/10 to-[#A83CFF]/15 opacity-0 group-hover/item:opacity-100 transition-opacity"></div>
 
                              {/* Hover border */}
-                             <div className="absolute inset-0 border border-[#00E4FF]/0 group-hover/item:border-[#00E4FF]/30 rounded-lg transition-all"></div>
+                             <div className="absolute inset-0 border border-violet-400/0 group-hover/item:border-violet-400/40 rounded-lg transition-all"></div>
 
                              {/* Content */}
                              <div className="relative flex items-center justify-between">
                                <span className="font-semibold text-sm group-hover/item:translate-x-1 transition-transform duration-200">
                                  {item.label}
                                </span>
-                               <svg className="w-4 h-4 opacity-0 group-hover/item:opacity-100 -translate-x-2 group-hover/item:translate-x-0 transition-all text-[#00E4FF]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                               <svg className="w-4 h-4 opacity-0 group-hover/item:opacity-100 -translate-x-2 group-hover/item:translate-x-0 transition-all text-indigo-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                                </svg>
-                             </div>
+                               </div>
 
-                             {/* Glow effect on hover */}
-                             <div className="absolute inset-0 opacity-0 group-hover/item:opacity-100 transition-opacity">
-                               <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-gradient-to-b from-[#00E4FF] to-[#8C4BFF] rounded-r-full shadow-[0_0_10px_rgba(0,228,255,0.5)]"></div>
-                             </div>
+                               {/* Glow effect on hover */}
+                               <div className="absolute inset-0 opacity-0 group-hover/item:opacity-100 transition-opacity">
+                               <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-gradient-to-b from-[#5F3DFF] to-[#A83CFF] rounded-r-full shadow-[0_0_12px_rgba(87,61,255,0.8)]"></div>
+                               </div>
                            </Link>
                          </motion.div>
                        ))}
