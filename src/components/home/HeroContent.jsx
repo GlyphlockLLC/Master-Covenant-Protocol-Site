@@ -12,7 +12,7 @@ export default function HeroContent() {
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 text-white tracking-tight drop-shadow-[0_0_30px_rgba(255,255,255,0.3)] leading-tight">
           THE FUTURE OF SECURITY ISN'T COMING — <span className="bg-gradient-to-r from-[#1E40AF] via-[#3B82F6] to-[#60A5FA] bg-clip-text text-transparent drop-shadow-[0_0_40px_rgba(59,130,246,0.8)] animate-pulse">IT'S ALREADY HERE.</span>
         </h1>
-        <p className="text-xl md:text-2xl text-white/90 max-w-4xl mx-auto mb-6 font-medium leading-relaxed">
+        <p className="text-xl md:text-2xl text-white max-w-4xl mx-auto mb-6 font-medium leading-relaxed">
           Quantum-immune authentication, autonomous threat suppression, and AI-driven audit intelligence designed for infrastructures that cannot afford to fail.
         </p>
         <Badge className="mb-10 bg-[#1E3A8A]/30 border-2 border-[#3B82F6]/60 text-white px-6 py-2 shadow-[0_0_20px_rgba(59,130,246,0.4)]">
@@ -20,12 +20,12 @@ export default function HeroContent() {
         </Badge>
         
         <div className="flex items-center justify-center gap-6 mb-12">
-          <div className="bg-slate-900/80 border-2 border-[#3B82F6]/50 px-6 py-4 rounded-xl shadow-[0_0_25px_rgba(59,130,246,0.3)] hover:shadow-[0_0_40px_rgba(30,64,175,0.5)] transition-all duration-300">
-            <Lock className="w-6 h-6 text-[#3B82F6] mx-auto mb-2 drop-shadow-[0_0_10px_rgba(59,130,246,0.8)]" />
+          <div className="bg-white/15 backdrop-blur-md backdrop-saturate-150 border border-white/20 px-6 py-4 rounded-xl shadow-[0_0_30px_rgba(255,255,255,0.1)] hover:shadow-[0_0_45px_rgba(59,130,246,0.5)] hover:bg-white/20 transition-all duration-600 ease-out">
+            <Lock className="w-6 h-6 text-[#60A5FA] mx-auto mb-2 drop-shadow-[0_0_15px_rgba(96,165,250,1)]" />
             <div className="text-sm text-white font-bold tracking-wider">AES-256</div>
           </div>
-          <div className="bg-slate-900/80 border-2 border-[#3B82F6]/50 px-6 py-4 rounded-xl shadow-[0_0_25px_rgba(59,130,246,0.3)] hover:shadow-[0_0_40px_rgba(30,64,175,0.5)] transition-all duration-300">
-            <Shield className="w-6 h-6 text-[#3B82F6] mx-auto mb-2 drop-shadow-[0_0_10px_rgba(59,130,246,0.8)]" />
+          <div className="bg-white/15 backdrop-blur-md backdrop-saturate-150 border border-white/20 px-6 py-4 rounded-xl shadow-[0_0_30px_rgba(255,255,255,0.1)] hover:shadow-[0_0_45px_rgba(59,130,246,0.5)] hover:bg-white/20 transition-all duration-600 ease-out">
+            <Shield className="w-6 h-6 text-[#60A5FA] mx-auto mb-2 drop-shadow-[0_0_15px_rgba(96,165,250,1)]" />
             <div className="text-sm text-white font-bold tracking-wider">PQC KEY EXCHANGE</div>
           </div>
         </div>
@@ -54,10 +54,10 @@ export default function HeroContent() {
         ].map((stat, idx) => {
           const Icon = stat.icon;
           return (
-            <div key={idx} className="bg-black/20 border-2 border-[#3B82F6]/40 p-6 rounded-xl text-center shadow-[0_0_25px_rgba(59,130,246,0.2)] hover:shadow-[0_0_40px_rgba(30,64,175,0.4)] hover:border-[#3B82F6]/60 transition-all duration-300 group backdrop-blur-md">
-              <Icon className="w-8 h-8 text-[#3B82F6] mx-auto mb-3 drop-shadow-[0_0_12px_rgba(59,130,246,0.8)] group-hover:animate-pulse" />
-              <div className="text-3xl font-black text-white mb-2 tracking-tight drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]">{stat.value}</div>
-              <div className="text-sm text-white/80 font-bold tracking-wider">{stat.label}</div>
+            <div key={idx} className="bg-white/15 backdrop-blur-md backdrop-saturate-150 border border-white/20 p-6 rounded-xl text-center shadow-[0_0_30px_rgba(255,255,255,0.1)] hover:shadow-[0_0_50px_rgba(59,130,246,0.4)] hover:bg-white/20 hover:border-white/30 transition-all duration-600 ease-out group">
+              <Icon className="w-8 h-8 text-[#60A5FA] mx-auto mb-3 drop-shadow-[0_0_15px_rgba(96,165,250,1)] group-hover:scale-110 transition-transform duration-300" />
+              <div className="text-3xl font-black text-white mb-2 tracking-tight drop-shadow-[0_0_20px_rgba(255,255,255,0.4)]">{stat.value}</div>
+              <div className="text-sm text-white font-bold tracking-wider">{stat.label}</div>
             </div>
           );
         })}

@@ -61,7 +61,7 @@ export default function ServicesGrid() {
         <h2 className="text-3xl md:text-5xl font-black text-white mb-4 drop-shadow-[0_0_25px_rgba(255,255,255,0.3)]">
           Complete Security <span className="bg-gradient-to-r from-[#1E40AF] via-[#3B82F6] to-[#60A5FA] bg-clip-text text-transparent">Ecosystem</span>
         </h2>
-        <p className="text-lg text-white/70">
+        <p className="text-lg text-white/90">
           Integrated tools designed for enterprise-level protection
         </p>
       </div>
@@ -69,7 +69,7 @@ export default function ServicesGrid() {
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {services.map((service, idx) => (
           <Link key={idx} to={createPageUrl(service.link)}>
-            <div className="bg-black/30 border-2 border-[#3B82F6]/40 rounded-xl overflow-hidden group cursor-pointer hover:scale-105 transition-all duration-300 h-full shadow-[0_0_25px_rgba(59,130,246,0.2)] hover:shadow-[0_0_40px_rgba(59,130,246,0.4)] hover:border-[#3B82F6]/60 backdrop-blur-md">
+            <div className="bg-white/15 backdrop-blur-md backdrop-saturate-150 border border-white/20 rounded-xl overflow-hidden group cursor-pointer hover:scale-[1.03] transition-all duration-600 ease-out h-full shadow-[0_0_30px_rgba(255,255,255,0.1)] hover:shadow-[0_0_50px_rgba(59,130,246,0.4)] hover:bg-white/20 hover:border-white/30">
               <div className="relative h-48 overflow-hidden">
                 <img 
                   src={service.image} 
@@ -82,7 +82,7 @@ export default function ServicesGrid() {
                   <service.icon className="w-6 h-6 text-[#3B82F6] drop-shadow-[0_0_8px_rgba(59,130,246,0.8)]" />
                   <h3 className="text-xl font-bold text-white">{service.title}</h3>
                 </div>
-                <p className="text-white/70">{service.description}</p>
+                <p className="text-white/90">{service.description}</p>
               </div>
             </div>
           </Link>

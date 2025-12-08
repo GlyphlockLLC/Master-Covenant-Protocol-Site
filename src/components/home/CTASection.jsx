@@ -23,7 +23,7 @@ export default function CTASection() {
 
   return (
     <div className="w-full max-w-5xl mx-auto px-4 py-16 relative" style={{ background: 'transparent' }}>
-      <div className="relative bg-black/30 border-2 border-[#3B82F6]/50 rounded-2xl p-8 md:p-12 text-center shadow-[0_0_60px_rgba(59,130,246,0.3)] hover:shadow-[0_0_80px_rgba(30,64,175,0.4)] transition-all duration-500 backdrop-blur-xl">
+      <div className="relative bg-white/15 backdrop-blur-xl backdrop-saturate-150 border border-white/20 rounded-2xl p-8 md:p-12 text-center shadow-[0_0_40px_rgba(255,255,255,0.12)] hover:shadow-[0_0_70px_rgba(59,130,246,0.4)] hover:bg-white/20 transition-all duration-600 ease-out">
         {/* Pulsing glow overlay */}
         <div className="absolute -inset-1 bg-gradient-to-r from-[#1E3A8A] via-[#3B82F6] to-[#1E40AF] rounded-2xl blur-xl opacity-20 animate-pulse pointer-events-none"></div>
         
@@ -31,7 +31,7 @@ export default function CTASection() {
           <h2 className="text-3xl md:text-5xl font-black text-white mb-4 tracking-tight drop-shadow-[0_0_25px_rgba(255,255,255,0.4)]">
             READY TO SECURE YOUR <span className="bg-gradient-to-r from-[#3B82F6] to-[#60A5FA] bg-clip-text text-transparent">DIGITAL ASSETS?</span>
           </h2>
-          <p className="text-xl text-white/80 mb-8 max-w-2xl mx-auto font-medium">
+          <p className="text-xl text-white mb-8 max-w-2xl mx-auto font-medium">
             Join hundreds of enterprises protecting their infrastructure with GlyphLock
           </p>
 
