@@ -80,18 +80,10 @@ export default function HomeDreamTeamCTA() {
         </div>
 
         {/* CTA SECTION */}
-        <div className="w-full bg-gradient-to-br from-blue-800/40 to-indigo-900/40 border border-blue-700/40 rounded-3xl p-6 md:p-8 shadow-xl backdrop-blur-2xl flex flex-col md:flex-row items-center gap-6 md:gap-8">
-          {/* CTA IMAGE LEFT */}
-          <img
-            src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/b3faa0663_Whisk_700dafa6070c5a48ef74745234e723a3dr.jpg"
-            alt="Dream Team Lock Emblem"
-            className="w-48 h-48 md:w-64 md:h-64 object-contain drop-shadow-[0_0_35px_rgba(0,150,255,0.7)]"
-          />
-
-          {/* CTA TEXT RIGHT */}
-          <div className="flex flex-col space-y-3">
+        <div className="w-full bg-gradient-to-br from-blue-800/40 to-indigo-900/40 border border-blue-700/40 rounded-3xl p-6 md:p-8 shadow-xl backdrop-blur-2xl">
+          <div className="flex flex-col items-center text-center space-y-3">
             <h3 className="text-2xl md:text-3xl font-bold text-white">Enter the Dream Team</h3>
-            <p className="text-base md:text-lg text-white/80">
+            <p className="text-base md:text-lg text-white/80 max-w-2xl">
               Meet the operators. See the roles. Understand the architecture behind GlyphLock's firepower.
             </p>
             <Link
