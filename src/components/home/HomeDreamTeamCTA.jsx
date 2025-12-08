@@ -20,9 +20,23 @@ export default function HomeDreamTeamCTA() {
           <img
             src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/168848645_Whisk_dc6bc22c5ef0f01a1264315f95279f3edr.jpeg"
             alt="GlyphLock Dream Team Logo"
-            className="w-48 h-48 md:w-56 md:h-56 object-contain drop-shadow-[0_0_35px_rgba(87,61,255,0.8)] animate-pulse"
-            style={{ mixBlendMode: 'screen', filter: 'brightness(1.2) contrast(1.3)' }}
+            className="w-48 h-48 md:w-56 md:h-56 object-contain"
+            style={{ 
+              mixBlendMode: 'screen', 
+              filter: 'brightness(1.2) contrast(1.3)',
+              animation: 'royalBluePulse 4s ease-in-out infinite'
+            }}
           />
+          <style dangerouslySetInnerHTML={{__html: `
+            @keyframes royalBluePulse {
+              0%, 100% { 
+                filter: brightness(1.2) contrast(1.3) drop-shadow(0 0 35px rgba(87,61,255,0.8));
+              }
+              50% { 
+                filter: brightness(1.5) contrast(1.4) drop-shadow(0 0 60px rgba(59,130,246,0.95)) drop-shadow(0 0 80px rgba(87,61,255,0.7));
+              }
+            }
+          `}} />
           <h1 className="text-2xl md:text-4xl font-black tracking-wide text-center text-white">
             THE DREAM TEAM
           </h1>
