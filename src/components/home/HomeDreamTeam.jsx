@@ -21,11 +21,11 @@ export default function HomeDreamTeam() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+        <div className="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar pb-6 md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 md:gap-6 md:justify-center md:overflow-visible">
           {dreamTeam.map((member, i) => (
-            <div key={member.id} className="perspective-1000">
+            <div key={member.id} className="perspective-1000 flex-shrink-0 w-72 md:w-auto snap-start">
               <div
-                className={`relative w-full aspect-[2/3] cursor-pointer transition-all duration-700 preserve-3d ${
+                className={`relative w-full aspect-[2/3] min-h-[440px] cursor-pointer transition-all duration-700 preserve-3d overflow-visible ${
                   flippedIndex === i ? "rotate-y-180" : ""
                 }`}
                 onClick={() => setFlippedIndex(flippedIndex === i ? null : i)}
@@ -60,10 +60,10 @@ export default function HomeDreamTeam() {
                 </div>
 
                 {/* BACK */}
-                <div className="absolute inset-0 backface-hidden rotate-y-180 rounded-2xl overflow-hidden bg-white/8 backdrop-blur-lg border-2 border-white/15 shadow-[0_0_40px_rgba(87,61,255,0.4)] p-6">
+                <div className="absolute inset-0 backface-hidden rotate-y-180 rounded-2xl overflow-hidden bg-gradient-to-br from-indigo-950/40 via-violet-950/30 to-blue-950/40 backdrop-blur-lg border-2 border-indigo-400/40 shadow-[0_0_40px_rgba(87,61,255,0.4)] p-6">
                   
                   {/* Header */}
-                  <div className="flex items-center justify-between mb-4 pb-4 border-b border-white/15">
+                  <div className="flex items-center justify-between mb-4 pb-4 border-b border-indigo-400/30">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500/30 to-violet-500/30 border border-indigo-400/40 flex items-center justify-center shadow-[0_0_20px_rgba(87,61,255,0.4)]">
                         <Shield className="w-5 h-5 text-indigo-300" />
@@ -79,9 +79,9 @@ export default function HomeDreamTeam() {
                   </div>
 
                   {/* Binding sections */}
-                  <div className="space-y-4 overflow-y-auto max-h-[calc(100%-120px)] hide-scrollbar">
+                  <div className="space-y-4">
                     {member.backSections.map((section, index) => (
-                      <div key={index} className="bg-white/5 border border-white/10 rounded-xl p-3 backdrop-blur-sm shadow-[inset_0_0_15px_rgba(87,61,255,0.1)]">
+                      <div key={index} className="bg-gradient-to-br from-indigo-950/30 via-violet-950/20 to-blue-950/30 border border-indigo-400/30 rounded-xl p-3 backdrop-blur-sm shadow-[inset_0_0_15px_rgba(87,61,255,0.1)]">
                         <div className="flex items-center gap-2 mb-2">
                           <Zap className="w-4 h-4 text-violet-300" />
                           <h5 className="text-sm font-bold text-violet-200 uppercase tracking-wider">{section.title}</h5>
@@ -92,7 +92,7 @@ export default function HomeDreamTeam() {
                   </div>
 
                   {/* Footer */}
-                  <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between pt-3 border-t border-white/15">
+                  <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between pt-3 border-t border-indigo-400/40">
                     <div className="flex items-center gap-2">
                       <div className="w-6 h-6 rounded-full bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center shadow-[0_0_12px_rgba(87,61,255,0.5)]">
                         <span className="text-[10px] font-black text-white">GL</span>

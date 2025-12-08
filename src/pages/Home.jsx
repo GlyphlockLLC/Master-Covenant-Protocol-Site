@@ -4,7 +4,6 @@ import { createPageUrl } from "@/utils";
 import HeroSection from '@/components/home/HeroSection';
 import HeroContent from '@/components/home/HeroContent';
 import ServicesGrid from '@/components/home/ServicesGrid';
-import DreamTeamHero from '@/components/home/DreamTeamHero';
 import HomeDreamTeam from '@/components/home/HomeDreamTeam';
 import CTASection from '@/components/home/CTASection';
 import TechnologyMarquee from '@/components/TechnologyMarquee';
@@ -118,9 +117,6 @@ export default function Home() {
         <ScrollSection>
           <HeroContent />
         </ScrollSection>
-
-        {/* Dream Team Hero - Premium Holographic Cards */}
-        <DreamTeamHero />
 
         {/* AI Operators - HomeDreamTeam */}
         <ScrollSection>
