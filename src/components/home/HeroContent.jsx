@@ -32,7 +32,7 @@ export default function HeroContent() {
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link to={createPageUrl("Consultation")}>
-            <Button size="lg" className="bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white text-lg px-8 font-black tracking-wide shadow-[0_0_35px_rgba(6,182,212,0.5)] hover:shadow-[0_0_55px_rgba(6,182,212,0.7)] transition-all duration-300">
+            <Button size="lg" className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white text-lg px-8 font-black tracking-wide shadow-[0_0_35px_rgba(59,130,246,0.6)] hover:shadow-[0_0_55px_rgba(59,130,246,0.8)] transition-all duration-300">
               BOOK FREE CONSULTATION
               <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
