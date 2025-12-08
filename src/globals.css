@@ -933,6 +933,72 @@ input::placeholder, textarea::placeholder {
   --blur: blur(14px);
 }
 
+/* DREAM TEAM LEGENDARY PANEL EFFECTS */
+
+/* SIGIL PULSE */
+@keyframes sigilPulse {
+  0% { transform: scale(0.95); opacity: 0.20; }
+  50% { transform: scale(1.05); opacity: 0.35; }
+  100% { transform: scale(0.95); opacity: 0.20; }
+}
+.animate-sigilPulse {
+  animation: sigilPulse 6s ease-in-out infinite;
+}
+
+/* PARALLAX PARTICLES */
+@keyframes glyphFloat {
+  0% { transform: translateY(0) scale(1); opacity: 0.5; }
+  50% { transform: translateY(-25px) scale(1.2); opacity: 1; }
+  100% { transform: translateY(0) scale(1); opacity: 0.5; }
+}
+.glyph-particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: rgba(150,170,255,0.7);
+  border-radius: 50%;
+  filter: blur(2px);
+  animation: glyphFloat linear infinite;
+}
+
+/* MOVING BEAMS */
+.beam {
+  position: absolute;
+  top: -30%;
+  left: -10%;
+  width: 200%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(130,150,255,0.7), transparent);
+  transform: rotate(10deg);
+  animation: beamMove 5s linear infinite;
+  opacity: 0.5;
+}
+
+.beam.delay-700 {
+  animation-delay: 0.7s;
+  top: 20%;
+}
+
+.beam.delay-1500 {
+  animation-delay: 1.5s;
+  top: 70%;
+}
+
+@keyframes beamMove {
+  0% { transform: translateX(-50%) rotate(10deg); }
+  100% { transform: translateX(50%) rotate(10deg); }
+}
+
+/* STATS TICKER */
+@keyframes tickerMove {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-ticker {
+  white-space: nowrap;
+  animation: tickerMove 14s linear infinite;
+}
+
 .glyph-glass {
   background: var(--white-soft);
   backdrop-filter: var(--blur);
