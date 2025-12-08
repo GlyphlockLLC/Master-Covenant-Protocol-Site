@@ -111,7 +111,7 @@ export default function CursorOrb() {
       ref={canvasRef}
       className="fixed inset-0 pointer-events-none"
       style={{ 
-        zIndex: 9999999,
+        zIndex: 1,
         mixBlendMode: 'screen',
         cursor: 'none'
       }}
