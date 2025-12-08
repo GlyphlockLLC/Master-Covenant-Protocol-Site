@@ -103,13 +103,15 @@ export default function Home() {
       </div>
 
       <div className="w-full relative" style={{ background: 'transparent' }}>
-        {/* Launch Countdown Pill */}
-        <CountdownPill />
-
         {/* Hero Video */}
         <ScrollSection>
           <HeroSection />
         </ScrollSection>
+
+        {/* Launch Countdown Pill - Below Hero */}
+        <div className="w-full mt-10">
+          <CountdownPill />
+        </div>
 
         {/* Hero Content - Stats & CTAs */}
         <ScrollSection>
