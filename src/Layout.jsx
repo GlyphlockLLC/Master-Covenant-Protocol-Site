@@ -65,7 +65,14 @@ export default function Layout({ children, currentPageName }) {
   };
 
   return (
-    <div className="min-h-screen text-white flex flex-col relative overflow-x-hidden selection:bg-[#00E4FF] selection:text-black" style={{ background: 'transparent' }}>
+    <div 
+      className="min-h-screen text-white flex flex-col relative overflow-x-hidden selection:bg-[#00E4FF] selection:text-black" 
+      style={{ 
+        background: 'transparent',
+        paddingBottom: 'env(safe-area-inset-bottom)',
+        overscrollBehavior: 'none'
+      }}
+    >
       <MobileTouchOptimizer />
       <SecurityMonitor />
 

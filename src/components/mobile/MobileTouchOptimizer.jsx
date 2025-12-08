@@ -8,48 +8,71 @@ import { useEffect } from 'react';
  */
 export default function MobileTouchOptimizer() {
   useEffect(() => {
-    // Prevent iOS zoom on input focus
-    const addMaximumScaleToMetaViewport = () => {
-      const el = document.querySelector('meta[name=viewport]');
-      if (el) {
-        let content = el.getAttribute('content');
-        const re = /maximum\-scale=[0-9\.]+/g;
-        if (re.test(content)) {
-          content = content.replace(re, 'maximum-scale=1.0');
-        } else {
-          content = [content, 'maximum-scale=1.0'].join(', ');
-        }
-        el.setAttribute('content', content);
-      }
-    };
-
-    const disableIosTextFieldZoom = () => {
-      const inputs = document.querySelectorAll('input, textarea, select');
-      inputs.forEach(input => {
-        if (input.style.fontSize.endsWith('px')) {
-          const size = parseFloat(input.style.fontSize);
-          if (size < 16) {
-            input.style.fontSize = '16px';
-          }
-        }
-      });
-    };
-
     // Only apply on mobile
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    if (isMobile) {
-      addMaximumScaleToMetaViewport();
-      disableIosTextFieldZoom();
+    if (!isMobile) return;
 
-      // Re-check on dynamic content
-      const observer = new MutationObserver(disableIosTextFieldZoom);
-      observer.observe(document.body, {
-        childList: true,
-        subtree: true
+    // Set viewport meta tag correctly
+    const setViewport = () => {
+      let viewport = document.querySelector('meta[name=viewport]');
+      if (!viewport) {
+        viewport = document.createElement('meta');
+        viewport.name = 'viewport';
+        document.head.appendChild(viewport);
+      }
+      viewport.content = 'width=device-width, initial-scale=1, maximum-scale=1';
+    };
+
+    // Prevent iOS zoom on input focus
+    const preventInputZoom = () => {
+      const inputs = document.querySelectorAll('input, textarea, select');
+      inputs.forEach(input => {
+        const currentSize = window.getComputedStyle(input).fontSize;
+        const size = parseFloat(currentSize);
+        if (size < 16) {
+          input.style.fontSize = '16px';
+        }
       });
+    };
 
-      return () => observer.disconnect();
-    }
+    // Normalize touch events - ensure they work alongside mouse events
+    const normalizeTouchEvents = () => {
+      const interactiveElements = document.querySelectorAll('button, a, input, textarea, select, [role="button"], [onclick]');
+      
+      interactiveElements.forEach(el => {
+        // Ensure touch-action is set
+        if (!el.style.touchAction) {
+          el.style.touchAction = 'manipulation';
+        }
+
+        // Add touch event handlers if only mouse handlers exist
+        if (!el.ontouchstart && (el.onclick || el.onmousedown)) {
+          el.addEventListener('touchstart', (e) => {
+            // Prevent ghost clicks
+            e.preventDefault();
+            el.click();
+          }, { passive: false });
+        }
+      });
+    };
+
+    // Apply all fixes
+    setViewport();
+    preventInputZoom();
+    normalizeTouchEvents();
+
+    // Re-apply on DOM changes
+    const observer = new MutationObserver(() => {
+      preventInputZoom();
+      normalizeTouchEvents();
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+
+    return () => observer.disconnect();
   }, []);
 
   return null;

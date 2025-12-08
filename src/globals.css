@@ -290,7 +290,26 @@ p {
   body {
     padding-left: max(0px, env(safe-area-inset-left));
     padding-right: max(0px, env(safe-area-inset-right));
+    padding-bottom: max(0px, env(safe-area-inset-bottom));
   }
+}
+
+/* Prevent scroll bounce and overscroll issues on mobile */
+html, body {
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Fix touch event normalization */
+button, a, input, textarea, select, [role="button"] {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Ensure scroll containers don't trap events */
+.scroll-container, [class*="scroll"], [class*="overflow"] {
+  touch-action: pan-y pan-x;
+  overscroll-behavior: contain;
 }
 
 /* Prevent Text Overflow */
