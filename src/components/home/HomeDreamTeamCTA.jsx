@@ -18,7 +18,7 @@ export default function HomeDreamTeamCTA() {
         {/* DREAM TEAM CREST */}
         <div className="flex flex-col items-center space-y-6">
           <img
-            src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/54c764af0_Whisk_bd85583b947dcac83fc479363a774286dr.jpg"
+            src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/6db20a295_34226b41-415a-418e-821f-a17c8751522d.jpg"
             alt="Dream Team Emblem"
             className="w-80 h-80 md:w-96 md:h-96 object-contain drop-shadow-[0_0_30px_rgba(120,0,255,0.7)] animate-pulse"
           />
