@@ -298,6 +298,23 @@ p {
   @apply flex items-center justify-between;
 }
 
+/* Mobile Nebula GPU Acceleration */
+.nebula-layer-container {
+  transform: translateZ(0);
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  contain: layout style paint;
+  -webkit-transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+}
+
+@media (max-width: 768px) {
+  .nebula-layer-container {
+    contain: strict;
+    isolation: isolate;
+  }
+}
+
 /* Mobile-Safe Animations */
 @media (prefers-reduced-motion: reduce) {
   *,
