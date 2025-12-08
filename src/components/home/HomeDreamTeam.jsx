@@ -47,9 +47,8 @@ export default function HomeDreamTeam() {
                     <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500/30 to-violet-500/30 border border-indigo-400/40 flex items-center justify-center shadow-[0_0_25px_rgba(87,61,255,0.4)] mb-4">
                       <Shield className="w-8 h-8 text-indigo-300" />
                     </div>
-                    <h3 className="text-2xl font-black text-white mb-2">{member.name}</h3>
-                    <p className="text-sm text-indigo-200 font-semibold mb-3 uppercase tracking-wider">{member.position}</p>
-                    <p className="text-sm text-violet-100 leading-relaxed">{member.frontDesc}</p>
+                    <h3 className="text-2xl font-black text-white mb-2">{member.front.name}</h3>
+                    <p className="text-sm text-indigo-200 font-semibold mb-3 uppercase tracking-wider">{member.front.role}</p>
                   </div>
 
                   {/* Tap hint */}
@@ -69,8 +68,8 @@ export default function HomeDreamTeam() {
                         <Shield className="w-5 h-5 text-indigo-300" />
                       </div>
                       <div>
-                        <h4 className="text-lg font-black text-white">{member.name}</h4>
-                        <p className="text-xs text-indigo-200">{member.position}</p>
+                        <h4 className="text-lg font-black text-white">{member.front.name}</h4>
+                        <p className="text-xs text-indigo-200">{member.front.role}</p>
                       </div>
                     </div>
                     <Badge className="bg-green-500/20 text-green-400 border-green-500/50 text-xs px-2 py-1 shadow-[0_0_12px_rgba(34,197,94,0.4)]">
@@ -80,7 +79,7 @@ export default function HomeDreamTeam() {
 
                   {/* Binding sections */}
                   <div className="space-y-4 overflow-y-auto max-h-[calc(100%-120px)] hide-scrollbar">
-                    {member.backSections.map((section, index) => (
+                    {member.back.map((section, index) => (
                       <div key={index} className="bg-white/5 border border-white/10 rounded-xl p-3 backdrop-blur-sm shadow-[inset_0_0_15px_rgba(87,61,255,0.1)]">
                         <div className="flex items-center gap-2 mb-2">
                           <Zap className="w-4 h-4 text-violet-300" />
