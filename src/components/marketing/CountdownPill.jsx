@@ -1,88 +1,88 @@
 import React, { useEffect, useState } from "react";
 
-// LAUNCH MOMENT (Arizona Standard Time = UTC-7)
-const launchUTC = Date.UTC(2026, 0, 1, 7, 0, 0); 
-// 2026-01-01 07:00:00 UTC == 12:00AM Jan 1 AZ time
+// FIXED GLOBAL LAUNCH (AZ 00:00 => UTC 07:00)
+const LAUNCH_UTC = Date.UTC(2026, 0, 1, 7, 0, 0);
 
 function getRemaining() {
-  const nowUTC = Date.now(); // always UTC epoch
-  const diff = launchUTC - nowUTC;
+  const nowUTC = Date.now();
+  const diff = LAUNCH_UTC - nowUTC;
 
-  if (diff <= 0) {
-    return { over: true, d: 0, h: 0, m: 0, s: 0 };
-  }
+  if (diff <= 0) return { over: true, d: 0, h: 0, m: 0, s: 0 };
 
   return {
     over: false,
-    d: Math.floor(diff / (1000 * 60 * 60 * 24)),
-    h: Math.floor((diff / (1000 * 60 * 60)) % 24),
-    m: Math.floor((diff / (1000 * 60)) % 60),
+    d: Math.floor(diff / 86400000),
+    h: Math.floor((diff / 3600000) % 24),
+    m: Math.floor((diff / 60000) % 60),
     s: Math.floor((diff / 1000) % 60),
   };
 }
 
 export default function CountdownPill() {
   const [t, setT] = useState(getRemaining());
-
   useEffect(() => {
     const i = setInterval(() => setT(getRemaining()), 1000);
     return () => clearInterval(i);
   }, []);
 
-  const u = (v) => v.toString().padStart(2, "0");
+  const pad = (n) => n.toString().padStart(2, "0");
 
   return (
-    <div className="w-full flex justify-center mt-8 mb-4 px-4">
-      <div
-        className="
-          relative rounded-full max-w-2xl w-full
-          px-8 py-4 sm:px-10 sm:py-5
-          bg-gradient-to-r from-[#0A0018]/80 via-[#120033]/70 to-[#170040]/80
-          border border-violet-500/40 backdrop-blur-xl
-          shadow-[0_0_45px_rgba(168,85,247,0.28)]
-          animate-[shimmer_6s_linear_infinite]
-          overflow-hidden
-        "
-      >
+    <div className="w-full flex justify-center mt-10 mb-4 px-4 select-none">
+      <div className="
+        relative max-w-4xl w-full 
+        rounded-full overflow-hidden
+        bg-[rgba(10,2,25,0.6)]
+        backdrop-blur-2xl
+        border border-violet-500/50
+        shadow-[0_0_55px_rgba(139,92,246,0.45)]
+        px-10 py-6 sm:px-14 sm:py-7
 
-        {/* hologram shimmer overlay */}
-        <div className="
-          absolute inset-0 rounded-full pointer-events-none
-          bg-[radial-gradient(circle_at_20%_40%,rgba(255,255,255,0.11),transparent_60%)]
-          opacity-40 mix-blend-screen
-        " />
+        before:absolute before:inset-0 before:rounded-full
+        before:bg-gradient-to-r before:from-violet-600/30 before:via-indigo-500/20 before:to-fuchsia-600/25
+        before:blur-xl before:opacity-70
 
-        {/* main text */}
-        <div className="flex flex-col items-center gap-1 z-10 relative">
-          <p className="text-violet-200/90 text-xs tracking-[0.30em] uppercase">
+        after:absolute after:inset-0 after:rounded-full 
+        after:bg-[radial-gradient(circle_at_25%_30%,rgba(255,255,255,0.18),transparent_65%)]
+        after:opacity-40 mix-blend-screen
+
+        animate-[cardGlow_6s_ease-in-out_infinite]
+      ">
+
+        {/* Title */}
+        <div className="relative z-10 flex flex-col items-center">
+          <p className="text-[0.7rem] sm:text-xs tracking-[0.3em] text-violet-300 uppercase">
             Pre-Launch Engineering Mode
           </p>
 
-          <p className="text-violet-100 text-lg sm:text-xl font-semibold">
+          <p className="text-lg sm:text-xl md:text-2xl font-semibold text-violet-100 mt-1">
             Launching{" "}
-            <span className="text-violet-300 font-bold">
+            <span className="font-bold text-violet-300">
               January 1st, 2026
             </span>
           </p>
         </div>
 
-        {/* countdown or final message */}
+        {/* Countdown */}
         {!t.over ? (
-          <div className="mt-3 flex justify-center gap-5 sm:gap-8 z-10 relative">
+          <div className="relative z-10 mt-5 flex justify-center gap-6 sm:gap-10 md:gap-12">
             {[
               ["Days", t.d],
               ["Hours", t.h],
               ["Minutes", t.m],
               ["Seconds", t.s],
-            ].map(([label, value]) => (
+            ].map(([label, val]) => (
               <div key={label} className="flex flex-col items-center">
                 <span className="
-                  text-lg sm:text-2xl font-bold text-violet-100 tabular-nums
+                  text-2xl sm:text-3xl md:text-4xl 
+                  font-bold text-violet-100 
+                  tracking-widest tabular-nums
+                  drop-shadow-[0_0_8px_rgba(147,51,234,0.65)]
                 ">
-                  {u(value)}
+                  {pad(val)}
                 </span>
                 <span className="
-                  text-[0.55rem] sm:text-xs uppercase tracking-[0.2em] text-violet-300/75
+                  text-[0.55rem] sm:text-xs uppercase tracking-[0.18em] text-violet-300 mt-1
                 ">
                   {label}
                 </span>
@@ -90,24 +90,23 @@ export default function CountdownPill() {
             ))}
           </div>
         ) : (
-          <p className="text-center mt-3 text-violet-200 font-medium text-sm">
+          <p className="relative z-10 mt-5 text-center text-violet-200 font-medium text-sm">
             Launch Phase Activated — Systems Online.
           </p>
         )}
 
-        {/* micro note */}
-        <p className="text-center text-[0.6rem] mt-3 text-violet-400/60 tracking-wide z-10 relative">
-          Countdown synchronized to the official launch moment (UTC-anchored).
+        {/* Micro text */}
+        <p className="relative z-10 text-center text-[0.6rem] mt-4 text-violet-400/70 tracking-wide">
+          Countdown is globally synchronized using UTC for accuracy.
         </p>
-
       </div>
 
-      {/* Keyframes */}
+      {/* Animations */}
       <style>{`
-        @keyframes shimmer {
-          0% { box-shadow: 0 0 28px rgba(168,85,247,0.22); }
-          50% { box-shadow: 0 0 55px rgba(168,85,247,0.42); }
-          100% { box-shadow: 0 0 28px rgba(168,85,247,0.22); }
+        @keyframes cardGlow {
+          0% { box-shadow: 0 0 38px rgba(139,92,246,0.25); }
+          50% { box-shadow: 0 0 70px rgba(139,92,246,0.55); }
+          100% { box-shadow: 0 0 38px rgba(139,92,246,0.25); }
         }
       `}</style>
     </div>
