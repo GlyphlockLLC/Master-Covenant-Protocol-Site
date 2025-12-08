@@ -21,6 +21,7 @@ export default function HomeDreamTeamCTA() {
             src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/54252f1f5_Whisk_43152c64a0d1d49bbc244415f014d1f3dr.jpg"
             alt="GlyphLock Dream Team Basketball"
             className="w-48 h-48 md:w-56 md:h-56 object-contain drop-shadow-[0_0_35px_rgba(87,61,255,0.8)] animate-pulse"
+            style={{ mixBlendMode: 'screen', filter: 'brightness(1.2) contrast(1.3)' }}
           />
           <h1 className="text-2xl md:text-4xl font-black tracking-wide text-center text-white">
             THE DREAM TEAM
