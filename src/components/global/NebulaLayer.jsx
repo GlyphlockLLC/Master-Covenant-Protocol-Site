@@ -21,8 +21,15 @@ export default function NebulaLayer({ intensity = 0.5 }) {
     const starsCanvas = starsCanvasRef.current;
     if (!canvas || !starsCanvas) return;
 
-    const ctx = canvas.getContext('2d', { alpha: true });
-    const starsCtx = starsCanvas.getContext('2d', { alpha: true });
+    const ctx = canvas.getContext('2d', { 
+      alpha: true,
+      desynchronized: true,
+      willReadFrequently: false
+    });
+    const starsCtx = starsCanvas.getContext('2d', { 
+      alpha: true,
+      willReadFrequently: false
+    });
     
     let mouseX = canvas.width / 2;
     let mouseY = canvas.height / 2;
@@ -276,24 +283,36 @@ export default function NebulaLayer({ intensity = 0.5 }) {
       <canvas
         ref={starsCanvasRef}
         id="nebula-layer-stars"
-        className="fixed inset-0 pointer-events-none"
+        className="fixed inset-0 pointer-events-none nebula-layer-container"
         style={{ 
           zIndex: 0,
-          mixBlendMode: 'screen',
+          mixBlendMode: window.innerWidth < 768 ? 'normal' : 'screen',
           opacity: 0.6,
-          backgroundColor: '#000000'
+          backgroundColor: '#000000',
+          transform: 'translateZ(0)',
+          willChange: 'transform, opacity',
+          backfaceVisibility: 'hidden',
+          WebkitTransform: 'translateZ(0)',
+          WebkitBackfaceVisibility: 'hidden',
+          contain: 'layout style paint'
         }}
       />
       
       <canvas
         ref={canvasRef}
         id="nebula-layer"
-        className="fixed inset-0 pointer-events-none"
+        className="fixed inset-0 pointer-events-none nebula-layer-container"
         style={{ 
           zIndex: 1,
-          mixBlendMode: 'screen',
+          mixBlendMode: window.innerWidth < 768 ? 'normal' : 'screen',
           opacity: 0.8,
-          backgroundColor: '#000000'
+          backgroundColor: '#000000',
+          transform: 'translateZ(0)',
+          willChange: 'transform, opacity',
+          backfaceVisibility: 'hidden',
+          WebkitTransform: 'translateZ(0)',
+          WebkitBackfaceVisibility: 'hidden',
+          contain: 'layout style paint'
         }}
       />
     </>

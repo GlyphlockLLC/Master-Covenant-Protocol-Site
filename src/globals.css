@@ -342,6 +342,23 @@ html, body {
   pointer-events: auto !important;
 }
 
+/* Ensure nebula animations persist during scroll */
+#nebula-layer,
+#nebula-layer-stars {
+  position: fixed !important;
+  will-change: transform, opacity !important;
+  transform: translateZ(0) !important;
+  -webkit-transform: translateZ(0) !important;
+}
+
+@media (max-width: 768px) {
+  #nebula-layer,
+  #nebula-layer-stars {
+    animation-play-state: running !important;
+    isolation: isolate;
+  }
+}
+
 /* CRITICAL: Restore pointer events on all interactive elements */
 button, a, input, textarea, select, [role="button"], [type="button"], [type="submit"], label {
   touch-action: manipulation;
