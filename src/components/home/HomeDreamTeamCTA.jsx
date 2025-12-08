@@ -21,7 +21,7 @@ export default function HomeDreamTeamCTA() {
             src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/54252f1f5_Whisk_43152c64a0d1d49bbc244415f014d1f3dr.jpg"
             alt="GlyphLock Dream Team Basketball"
             className="w-48 h-48 md:w-56 md:h-56 object-contain drop-shadow-[0_0_35px_rgba(87,61,255,0.8)] animate-pulse"
-            style={{ mixBlendMode: 'screen', filter: 'brightness(1.2) contrast(1.3)' }}
+            style={{ mixBlendMode: 'multiply', filter: 'brightness(1.5) contrast(1.4) saturate(1.2)' }}
           />
           <h1 className="text-2xl md:text-4xl font-black tracking-wide text-center text-white">
             THE DREAM TEAM
@@ -38,19 +38,19 @@ export default function HomeDreamTeamCTA() {
             <img 
               src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/7e8ba0de1_3880beef-889a-4dec-9b80-2b561f3c47a3.jpg"
               alt=""
-              className="w-full h-full object-cover opacity-25"
+              className="w-full h-full object-cover opacity-50"
             />
-            <div className="absolute inset-0 bg-gradient-to-br from-black/75 via-indigo-950/65 to-blue-950/75" />
+            <div className="absolute inset-0 bg-gradient-to-br from-black/50 via-indigo-950/40 to-blue-950/50" />
           </div>
 
-          <div className="relative z-10 space-y-4">
+          <div className="relative z-10 space-y-4 text-center">
             {/* Behind GlyphLock */}
             <div>
               <h2 className="text-xl md:text-2xl font-bold text-white mb-2">Behind GlyphLock</h2>
-              <p className="text-sm md:text-base leading-relaxed text-white/90 mb-2">
+              <p className="text-sm md:text-base leading-relaxed text-white/90 mb-2 max-w-4xl mx-auto">
                 GlyphLock doesn't "use" AI — it deploys it. This system runs a coordinated AI roster, each operator built to challenge the others, override errors, and reinforce the truth.
               </p>
-              <ul className="list-disc ml-5 space-y-1 text-xs md:text-sm text-indigo-200">
+              <ul className="list-none space-y-1 text-xs md:text-sm text-indigo-200 max-w-3xl mx-auto">
                 <li><strong>Positioned</strong> — every engine has a defined job, not a guess.</li>
                 <li><strong>Cross-Checked</strong> — outputs are reviewed and corrected across operators.</li>
                 <li><strong>Covenant-Bound</strong> — no rogue models, no free agents, no silent failures.</li>
@@ -61,7 +61,7 @@ export default function HomeDreamTeamCTA() {
             {/* Operator Roles */}
             <div className="border-t border-white/10 pt-4">
               <h3 className="text-xl md:text-2xl font-bold mb-3 text-white">Operator Roles</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4 text-sm md:text-base text-white/90">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4 text-sm md:text-base text-white/90 max-w-3xl mx-auto">
                 <div className="space-y-1.5">
                   <p><strong>Claude</strong> — Deep Reasoning · Audit</p>
                   <p><strong>Alfred</strong> — System Orchestration</p>
@@ -72,7 +72,7 @@ export default function HomeDreamTeamCTA() {
                   <p><strong>Perplexity</strong> — Real-Time Recall</p>
                 </div>
               </div>
-              <p className="text-center text-indigo-300 mt-3 text-sm md:text-base tracking-wide">
+              <p className="text-indigo-300 mt-3 text-sm md:text-base tracking-wide">
                 One roster. Many positions. Zero blind spots.
               </p>
             </div>
