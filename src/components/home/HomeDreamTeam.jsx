@@ -10,18 +10,18 @@ export default function HomeDreamTeam() {
     <section className="w-full py-16 px-4 relative">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
-          <Badge className="mb-4 bg-white/10 backdrop-blur-md border-2 border-white/20 text-white px-6 py-2 shadow-[0_0_30px_rgba(87,61,255,0.5)]">
-            <span className="font-black tracking-[0.2em] text-sm">GLYPHLOCK ARCHETYPES</span>
+          <Badge className="mb-4 bg-gradient-to-r from-indigo-500/30 to-violet-500/30 backdrop-blur-md border-2 border-indigo-400/50 text-white px-6 py-2 shadow-[0_0_30px_rgba(87,61,255,0.6)]">
+            <span className="font-black tracking-[0.2em] text-sm">AI OPERATORS</span>
           </Badge>
           <h2 className="text-4xl md:text-5xl font-black text-white mb-4">
-            Protected <span className="bg-gradient-to-r from-indigo-400 via-violet-400 to-blue-400 bg-clip-text text-transparent">Archetypes</span>
+            The <span className="bg-gradient-to-r from-indigo-400 via-violet-400 to-blue-400 bg-clip-text text-transparent">Dream Team</span>
           </h2>
           <p className="text-lg text-violet-100 max-w-2xl mx-auto">
-            Each AI operator is cryptographically bound to the GlyphLock framework — tap to reveal binding details.
+            Five AI operators cryptographically bound to GlyphLock — tap any card to reveal binding details.
           </p>
         </div>
 
-        <div className="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar pb-6 md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 md:gap-6 md:justify-center md:overflow-visible">
+        <div className="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar pb-6 gap-8 md:grid md:grid-cols-5 md:gap-6 md:justify-center md:overflow-visible">
           {dreamTeam.map((member, i) => (
             <div key={member.id} className="perspective-1000 flex-shrink-0 w-72 md:w-auto snap-start">
               <div
@@ -31,7 +31,7 @@ export default function HomeDreamTeam() {
                 onClick={() => setFlippedIndex(flippedIndex === i ? null : i)}
               >
                 {/* FRONT */}
-                <div className="absolute inset-0 backface-hidden rounded-2xl overflow-hidden bg-gradient-to-br from-indigo-500/20 via-violet-500/15 to-blue-500/20 backdrop-blur-md border-2 border-white/15 shadow-[0_0_40px_rgba(87,61,255,0.4)] hover:shadow-[0_0_60px_rgba(87,61,255,0.6)] transition-all">
+                <div className="absolute inset-0 backface-hidden rounded-2xl overflow-hidden bg-gradient-to-br from-indigo-500/30 via-violet-500/20 to-blue-500/30 backdrop-blur-md border-2 border-indigo-400/50 shadow-[0_0_40px_rgba(87,61,255,0.5)] hover:shadow-[0_0_60px_rgba(87,61,255,0.7)] transition-all">
                   
                   {/* Gradient overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-indigo-950/60 via-transparent to-violet-950/20" />
