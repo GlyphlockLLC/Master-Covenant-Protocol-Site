@@ -15,55 +15,43 @@ export default function HomeDreamTeamCTA() {
       </div>
 
       <div className="relative mx-auto max-w-6xl">
-        {/* Hero visual section with both images */}
-        <div className="relative mb-10 rounded-3xl border border-cyan-400/40 bg-gradient-to-br from-indigo-950/60 via-blue-950/40 to-violet-950/50 p-8 md:p-12 shadow-[0_0_60px_rgba(56,189,248,0.4)] backdrop-blur-xl overflow-hidden">
-          {/* Pulsing logo in top right */}
-          <div className="absolute top-4 right-4 md:top-6 md:right-6 z-20 animate-pulse">
-            <div className="relative w-16 h-16 md:w-20 md:h-20">
-              <div className="absolute inset-0 blur-xl opacity-60 bg-gradient-to-r from-cyan-400 via-blue-500 to-violet-500 rounded-full animate-pulse" />
-              <img 
-                src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/0584b5287_34226b41-415a-418e-821f-a17c8751522d.jpg"
-                alt="GlyphLock"
-                className="relative w-full h-full object-contain drop-shadow-[0_0_25px_rgba(56,189,248,1)]"
-              />
-            </div>
-          </div>
+        {/* Hero title section */}
+        <div className="relative mb-6 text-center">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight">
+            THE{" "}
+            <span className="bg-gradient-to-r from-cyan-300 via-blue-300 to-violet-300 bg-clip-text text-transparent">
+              DREAM TEAM
+            </span>
+          </h2>
+          <p className="mt-4 text-lg md:text-xl font-bold text-cyan-100">
+            1 Coach. 5 Positions. $1B Vision.
+          </p>
+        </div>
 
-          {/* Basketball court dramatic background */}
-          <div className="absolute inset-0 opacity-30 pointer-events-none mix-blend-luminosity">
+        {/* Barrier image section with basketball court and logo */}
+        <div className="relative mb-10 h-48 md:h-64 rounded-3xl border border-cyan-400/40 shadow-[0_0_60px_rgba(56,189,248,0.4)] overflow-hidden">
+          {/* Basketball court background */}
+          <div className="absolute inset-0">
             <img 
               src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/24df5ae09_Whisk_700dafa6070c5a48ef74745234e723a3dr.jpg"
               alt=""
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover opacity-40"
             />
           </div>
 
-          {/* Cyan glow overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-cyan-500/20 via-blue-600/10 to-violet-600/20 pointer-events-none" />
+          {/* Gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-r from-indigo-950/60 via-blue-950/40 to-violet-950/60 backdrop-blur-sm" />
 
-          {/* Large centered logo with glow */}
-          <div className="relative z-10 flex justify-center mb-8">
-            <div className="relative">
-              <div className="absolute inset-0 blur-2xl opacity-70 bg-gradient-to-r from-cyan-400 via-blue-500 to-violet-500 rounded-full" />
+          {/* Centered pulsing logo */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="relative animate-pulse">
+              <div className="absolute inset-0 blur-3xl opacity-70 bg-gradient-to-r from-cyan-400 via-blue-500 to-violet-500 rounded-full" />
               <img 
-                src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/798b74a4a_Whisk_bd85583b947dcac83fc479363a774286dr.jpg"
+                src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/0584b5287_34226b41-415a-418e-821f-a17c8751522d.jpg"
                 alt="GlyphLock Dream Team"
-                className="relative w-32 h-32 md:w-48 md:h-48 object-contain drop-shadow-[0_0_40px_rgba(56,189,248,1)]"
+                className="relative w-32 h-32 md:w-40 md:h-40 object-contain drop-shadow-[0_0_40px_rgba(56,189,248,1)]"
               />
             </div>
-          </div>
-
-          {/* Title over imagery */}
-          <div className="relative z-10 text-center">
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight drop-shadow-[0_0_20px_rgba(56,189,248,0.8)]">
-              THE{" "}
-              <span className="bg-gradient-to-r from-cyan-300 via-blue-300 to-violet-300 bg-clip-text text-transparent">
-                DREAM TEAM
-              </span>
-            </h2>
-            <p className="mt-4 text-lg md:text-xl font-bold text-cyan-100 drop-shadow-[0_0_15px_rgba(56,189,248,0.6)]">
-              1 Coach. 5 Positions. $1B Vision.
-            </p>
           </div>
         </div>
 
