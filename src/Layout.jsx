@@ -10,6 +10,7 @@ import Footer from "@/components/Footer";
 import GlyphLoader from "@/components/GlyphLoader";
 import MobileScalingSystem from "@/components/mobile/mobile-utils";
 import MobileTouchOptimizer from "@/components/mobile/MobileTouchOptimizer";
+import ThemeProvider from "@/components/ThemeProvider";
 
 const { GlyphBotJr } = UI;
 
@@ -65,16 +66,17 @@ export default function Layout({ children, currentPageName }) {
   };
 
   return (
-    <div 
-      className="min-h-screen text-white flex flex-col relative overflow-x-hidden selection:bg-[#00E4FF] selection:text-black" 
-      style={{ 
-        background: 'transparent',
-        paddingBottom: 'env(safe-area-inset-bottom)',
-        overscrollBehavior: 'none'
-      }}
-    >
-      <MobileTouchOptimizer />
-      <SecurityMonitor />
+    <ThemeProvider>
+      <div 
+        className="min-h-screen text-white flex flex-col relative overflow-x-hidden selection:bg-[#00E4FF] selection:text-black" 
+        style={{ 
+          background: '#000000',
+          paddingBottom: 'env(safe-area-inset-bottom)',
+          overscrollBehavior: 'none'
+        }}
+      >
+        <MobileTouchOptimizer />
+        <SecurityMonitor />
 
       {/* SITE-WIDE COSMIC SYSTEM - Lowest layer (hidden on mobile) */}
       <div className="hidden md:block" style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: 0, pointerEvents: 'none' }}>
@@ -99,10 +101,11 @@ export default function Layout({ children, currentPageName }) {
         <GlyphBotJr />
       </div>
 
-      {/* Footer */}
-      <div className="relative" style={{ zIndex: 100 }}>
-        <Footer />
+        {/* Footer */}
+        <div className="relative" style={{ zIndex: 100 }}>
+          <Footer />
+        </div>
       </div>
-    </div>
+    </ThemeProvider>
   );
 }

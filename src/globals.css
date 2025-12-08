@@ -9,6 +9,19 @@ css
   -webkit-touch-callout: none;
 }
 
+:root {
+  --background: 0 0% 0%;
+  --foreground: 0 0% 100%;
+  --surface: 220 13% 7%;
+  --panel: 222 13% 10%;
+  --text-primary: 0 0% 100%;
+  --text-secondary: 0 0% 70%;
+  --border: 240 10% 15%;
+  --royal-blue: 217 91% 60%;
+  --purple: 271 76% 53%;
+  --cyan: 189 100% 50%;
+}
+
 html {
   font-size: 16px;
   -webkit-text-size-adjust: 100%;
@@ -17,8 +30,12 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  background: transparent !important;
+  background: #000000 !important;
   color: #ffffff !important;
+}
+
+html.dark {
+  background: #000000 !important;
 }
 
 body {
@@ -31,16 +48,23 @@ body {
   contain: layout style;
   transform: translateZ(0);
   backface-visibility: hidden;
-  background: transparent !important;
+  background: #000000 !important;
   color: #ffffff !important;
 }
 
-body, #root, #__next, main, section, div {
-  background: transparent !important;
+body, #root, #__next, main, section {
+  background: #000000 !important;
 }
 
 #root, #__next {
-  background: transparent !important;
+  background: #000000 !important;
+}
+
+/* Mobile-specific background fix */
+@media (max-width: 768px) {
+  html, body, #root, #__next {
+    background: #000000 !important;
+  }
 }
 
 /* Minimum Touch Target Sizes (44x44px) */
