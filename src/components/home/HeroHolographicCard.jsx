@@ -91,7 +91,7 @@ export default function HeroHolographicCard({ card, size = 'normal' }) {
               boxShadow: `0 0 40px ${card.glowColor}, inset 0 0 20px rgba(255,255,255,0.1)`
             }}
           >
-            <div className="absolute inset-0 rounded-2xl bg-slate-950" />
+            <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-indigo-950/80 via-violet-950/60 to-blue-950/80" />
           </div>
 
           {/* Card image */}
