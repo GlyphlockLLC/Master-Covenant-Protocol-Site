@@ -18,9 +18,9 @@ export default function HomeDreamTeamCTA() {
         {/* DREAM TEAM CREST */}
         <div className="flex flex-col items-center space-y-2">
           <img
-            src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/6db20a295_34226b41-415a-418e-821f-a17c8751522d.jpg"
-            alt="Dream Team Emblem"
-            className="w-48 h-48 md:w-56 md:h-56 object-contain drop-shadow-[0_0_30px_rgba(120,0,255,0.7)] animate-pulse"
+            src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/54252f1f5_Whisk_43152c64a0d1d49bbc244415f014d1f3dr.jpg"
+            alt="GlyphLock Dream Team Basketball"
+            className="w-48 h-48 md:w-56 md:h-56 object-contain drop-shadow-[0_0_35px_rgba(87,61,255,0.8)] animate-pulse"
           />
           <h1 className="text-2xl md:text-4xl font-black tracking-wide text-center text-white">
             THE DREAM TEAM
@@ -31,31 +31,43 @@ export default function HomeDreamTeamCTA() {
         </div>
 
         {/* BEHIND GLYPHLOCK SECTION */}
-        <div className="w-full bg-gradient-to-br from-indigo-900/50 to-blue-900/40 border border-indigo-700/30 rounded-2xl p-4 md:p-6 shadow-xl backdrop-blur-xl space-y-2">
-          <h2 className="text-xl md:text-2xl font-bold text-white">Behind GlyphLock</h2>
+        <div className="relative w-full border border-indigo-700/30 rounded-2xl p-4 md:p-6 shadow-xl backdrop-blur-xl overflow-hidden space-y-2">
+          {/* Dream Team Logo Background */}
+          <div className="absolute inset-0 rounded-2xl overflow-hidden">
+            <img 
+              src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/0ede26fe8_Whisk_bd85583b947dcac83fc479363a774286dr.jpg"
+              alt=""
+              className="w-full h-full object-cover opacity-10"
+            />
+            <div className="absolute inset-0 bg-gradient-to-br from-indigo-900/70 to-blue-900/60" />
+          </div>
+          
+          <div className="relative z-10">
+            <h2 className="text-xl md:text-2xl font-bold text-white">Behind GlyphLock</h2>
 
           <p className="text-sm md:text-base leading-relaxed text-white/90">
             GlyphLock doesn't "use" AI — it deploys it. This system runs a coordinated AI roster, each operator built to challenge the others, override errors, and reinforce the truth.
           </p>
 
-          <ul className="list-disc ml-5 space-y-1 text-xs md:text-sm text-indigo-200">
-            <li><strong>Positioned</strong> — every engine has a defined job, not a guess.</li>
-            <li><strong>Cross-Checked</strong> — outputs are reviewed and corrected across operators.</li>
-            <li><strong>Covenant-Bound</strong> — no rogue models, no free agents, no silent failures.</li>
-            <li><strong>No Single Point of Failure</strong> — redundancy by design, intelligence by rotation.</li>
-          </ul>
+            <ul className="list-disc ml-5 space-y-1 text-xs md:text-sm text-indigo-200">
+              <li><strong>Positioned</strong> — every engine has a defined job, not a guess.</li>
+              <li><strong>Cross-Checked</strong> — outputs are reviewed and corrected across operators.</li>
+              <li><strong>Covenant-Bound</strong> — no rogue models, no free agents, no silent failures.</li>
+              <li><strong>No Single Point of Failure</strong> — redundancy by design, intelligence by rotation.</li>
+            </ul>
+          </div>
         </div>
 
         {/* OPERATOR ROLES BOX */}
         <div className="relative w-full border border-blue-700/40 rounded-2xl p-4 md:p-6 shadow-xl backdrop-blur-xl overflow-hidden">
-          {/* Basketball court background */}
+          {/* Holographic court background */}
           <div className="absolute inset-0 rounded-2xl overflow-hidden">
             <img 
-              src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/24df5ae09_Whisk_700dafa6070c5a48ef74745234e723a3dr.jpg"
+              src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/7e8ba0de1_3880beef-889a-4dec-9b80-2b561f3c47a3.jpg"
               alt=""
-              className="w-full h-full object-cover opacity-20"
+              className="w-full h-full object-cover opacity-25"
             />
-            <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-indigo-950/70 to-blue-950/80" />
+            <div className="absolute inset-0 bg-gradient-to-br from-black/75 via-indigo-950/65 to-blue-950/75" />
           </div>
 
           <div className="relative z-10">
