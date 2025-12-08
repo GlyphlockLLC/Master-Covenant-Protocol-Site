@@ -68,21 +68,21 @@ export default function Navbar({ user, onLogin, onLogout }) {
                   className="absolute left-1/2 -translate-x-1/2 top-full pt-4 w-72"
                   style={{ zIndex: 10001 }}
                   >
-                   <div className="relative bg-white/5 backdrop-blur-2xl backdrop-saturate-150 border border-white/20 rounded-2xl shadow-[0_0_40px_rgba(87,61,255,0.35),inset_0_1px_0_rgba(255,255,255,0.1)] overflow-hidden">
+                   <div className="relative bg-gradient-to-br from-blue-900/30 via-indigo-900/35 to-violet-900/30 backdrop-blur-2xl backdrop-saturate-150 border-2 border-indigo-400/30 rounded-2xl shadow-[0_0_50px_rgba(59,130,246,0.5),0_0_80px_rgba(139,92,246,0.3),inset_0_1px_0_rgba(255,255,255,0.15)] overflow-hidden">
                      {/* Top glow bar */}
-                     <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#5F3DFF] to-[#A83CFF] shadow-[0_0_8px_rgba(87,61,255,0.8)]"></div>
+                     <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-indigo-500 to-violet-600 shadow-[0_0_12px_rgba(59,130,246,0.9)]"></div>
 
                      {/* Subtle grid pattern */}
-                     <div className="absolute inset-0 opacity-5" style={{
+                     <div className="absolute inset-0 opacity-8" style={{
                        backgroundImage: `
-                         linear-gradient(rgba(95,61,255,0.4) 1px, transparent 1px),
-                         linear-gradient(90deg, rgba(95,61,255,0.4) 1px, transparent 1px)
+                         linear-gradient(rgba(59,130,246,0.5) 1px, transparent 1px),
+                         linear-gradient(90deg, rgba(139,92,246,0.5) 1px, transparent 1px)
                        `,
                        backgroundSize: '20px 20px'
                      }}></div>
 
                      {/* Ambient glow */}
-                     <div className="absolute -inset-1 bg-gradient-to-br from-[#5F3DFF]/15 via-transparent to-[#A83CFF]/15 blur-xl -z-10"></div>
+                     <div className="absolute -inset-1 bg-gradient-to-br from-blue-500/20 via-indigo-500/15 to-violet-600/20 blur-xl -z-10"></div>
 
                      <div className="relative p-2">
                        {section.items.map((item, idx) => (
@@ -97,10 +97,10 @@ export default function Navbar({ user, onLogin, onLogout }) {
                              className="group/item relative block px-4 py-3.5 rounded-lg text-violet-200 hover:text-white transition-all duration-200 overflow-hidden"
                            >
                              {/* Hover background */}
-                             <div className="absolute inset-0 bg-gradient-to-r from-[#5F3DFF]/0 via-[#5F3DFF]/10 to-[#A83CFF]/15 opacity-0 group-hover/item:opacity-100 transition-opacity"></div>
+                             <div className="absolute inset-0 bg-gradient-to-r from-blue-500/15 via-indigo-500/25 to-violet-600/20 opacity-0 group-hover/item:opacity-100 transition-opacity"></div>
 
                              {/* Hover border */}
-                             <div className="absolute inset-0 border border-violet-400/0 group-hover/item:border-violet-400/40 rounded-lg transition-all"></div>
+                             <div className="absolute inset-0 border border-blue-400/0 group-hover/item:border-blue-400/50 rounded-lg transition-all"></div>
 
                              {/* Content */}
                              <div className="relative flex items-center justify-between">
@@ -114,7 +114,7 @@ export default function Navbar({ user, onLogin, onLogout }) {
 
                                {/* Glow effect on hover */}
                                <div className="absolute inset-0 opacity-0 group-hover/item:opacity-100 transition-opacity">
-                               <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-gradient-to-b from-[#5F3DFF] to-[#A83CFF] rounded-r-full shadow-[0_0_12px_rgba(87,61,255,0.8)]"></div>
+                               <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-gradient-to-b from-blue-500 via-indigo-500 to-violet-600 rounded-r-full shadow-[0_0_15px_rgba(59,130,246,0.9)]"></div>
                                </div>
                            </Link>
                          </motion.div>
