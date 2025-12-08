@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import HeroSection from '@/components/home/HeroSection';
 import HeroContent from '@/components/home/HeroContent';
-import DreamTeamHero from '@/components/home/DreamTeamHero';
 import HomeDreamTeam from '@/components/home/HomeDreamTeam';
 import ServicesGrid from '@/components/home/ServicesGrid';
 import CTASection from '@/components/home/CTASection';
@@ -119,10 +118,7 @@ export default function Home() {
           <HeroContent />
         </ScrollSection>
 
-        {/* Protected Archetypes - Big Holographic Cards */}
-        <DreamTeamHero />
-
-        {/* AI Operators - The Dream Team Flip Cards */}
+        {/* AI Operators - The Dream Team */}
         <ScrollSection>
           <HomeDreamTeam />
         </ScrollSection>
