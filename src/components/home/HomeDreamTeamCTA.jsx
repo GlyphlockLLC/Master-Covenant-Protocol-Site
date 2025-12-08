@@ -1,111 +1,78 @@
-// DREAM TEAM CTA — HOME ONLY
-// Do not render flip cards here. Full roster lives at /dreamteam.
-
 import React from "react";
 import { Link } from "react-router-dom";
+import { createPageUrl } from "@/utils";
 
 export default function HomeDreamTeamCTA() {
   return (
-    <section className="relative py-12 px-4 md:px-8 lg:px-12 overflow-hidden">
-      {/* soft glow behind card */}
-      <div className="pointer-events-none absolute inset-0 opacity-70">
-        <div className="absolute -top-40 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-indigo-600/40 blur-3xl" />
-        <div className="absolute -bottom-40 left-10 h-64 w-64 rounded-full bg-violet-500/35 blur-3xl" />
-        <div className="absolute -bottom-32 right-10 h-56 w-56 rounded-full bg-sky-500/30 blur-3xl" />
+    <section className="relative w-full py-24 overflow-hidden rounded-3xl mt-20 select-none">
+
+      {/* BACKGROUND + PARALLAX */}
+      <div className="absolute inset-0 animate-pan">
+        <img
+          src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/10b04ca10_3880beef-889a-4dec-9b80-2b561f3c47a31.jpg"
+          alt="Dream Team Background"
+          className="w-full h-full object-cover opacity-80"
+        />
       </div>
 
-      <div className="relative mx-auto max-w-6xl">
-        {/* DREAM TEAM CREST */}
-        <div className="flex flex-col items-center space-y-2 mb-4">
+      {/* OVERLAY */}
+      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+
+      {/* CONTENT */}
+      <div className="relative z-10 flex flex-col items-center text-center px-6">
+
+        {/* LOGO FADE-IN */}
+        <div className="w-56 h-auto mb-10 opacity-0 animate-fade-in">
           <img
-            src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/168848645_Whisk_dc6bc22c5ef0f01a1264315f95279f3edr.jpeg"
-            alt="GlyphLock Dream Team Logo"
-            className="w-48 h-48 md:w-56 md:h-56 object-contain"
-            style={{ 
-              mixBlendMode: 'screen', 
-              filter: 'brightness(1.2) contrast(1.3)',
-              animation: 'royalBluePulse 4s ease-in-out infinite'
-            }}
+            src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/00707b06f_c44b0deb.png"
+            alt="GlyphLock Dream Team"
+            className="mx-auto drop-shadow-[0_0_30px_rgba(125,80,255,0.9)]"
           />
-          <style dangerouslySetInnerHTML={{__html: `
-            @keyframes royalBluePulse {
-              0%, 100% { 
-                filter: brightness(1.2) contrast(1.3) drop-shadow(0 0 35px rgba(87,61,255,0.8));
-              }
-              50% { 
-                filter: brightness(1.5) contrast(1.4) drop-shadow(0 0 60px rgba(59,130,246,0.95)) drop-shadow(0 0 80px rgba(87,61,255,0.7));
-              }
-            }
-          `}} />
-          <h1 className="text-2xl md:text-4xl font-black tracking-wide text-center text-white">
-            THE DREAM TEAM
-          </h1>
-          <p className="text-base md:text-lg text-cyan-100/80 text-center max-w-2xl">
-            Multiple Models. One Machine. Zero Weak Links.
-          </p>
         </div>
 
-        {/* UNIFIED CARD */}
-        <div className="relative w-full border border-blue-700/40 rounded-2xl p-4 md:p-6 shadow-xl backdrop-blur-xl overflow-hidden">
-          {/* Holographic court background */}
-          <div className="absolute inset-0 rounded-2xl overflow-hidden">
-            <img 
-              src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/7e8ba0de1_3880beef-889a-4dec-9b80-2b561f3c47a3.jpg"
-              alt=""
-              className="w-full h-full object-cover opacity-50"
+        {/* HEADLINE */}
+        <h2 className="text-white text-3xl md:text-4xl font-extrabold mb-4 opacity-0 animate-fade-in-delayed drop-shadow-xl">
+          AI didn't understand teamwork…
+          <br />
+          <span className="text-indigo-300">until we showed it the Dream Team.</span>
+        </h2>
+
+        {/* SUBTEXT */}
+        <p className="text-gray-200 text-lg md:text-xl max-w-2xl leading-relaxed mb-12 opacity-0 animate-fade-in-long">
+          GlyphLock runs five AI systems like a championship lineup—each one covering the
+          others, checking every output, and eliminating blind spots in real time.
+          <br />
+          <span className="text-white font-semibold">One model fails. A team doesn't.</span>
+        </p>
+
+        {/* CTA BUTTON WITH 3D HOVER + NEON PULSE */}
+        <Link to={createPageUrl("DreamTeam")}>
+          <div className="relative group cursor-pointer transform-gpu transition-transform duration-300 hover:scale-[1.15] hover:rotate-[2deg] active:scale-95">
+
+            {/* NEON AURA */}
+            <div
+              className="absolute inset-0 rounded-full blur-3xl opacity-60 group-hover:opacity-95 transition-all duration-500"
+              style={{
+                background: "radial-gradient(circle, rgba(130,0,255,0.85), rgba(0,0,0,0))",
+              }}
             />
-            <div className="absolute inset-0 bg-gradient-to-br from-black/50 via-indigo-950/40 to-blue-950/50" />
+
+            {/* NEON OUTLINE RING */}
+            <div className="absolute inset-0 rounded-full border-4 border-indigo-400 opacity-50 group-hover:opacity-90 animate-pulse"></div>
+
+            {/* BALL LOGO */}
+            <img
+              src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/a7c736bf1_9dd41410-ffb9-48e2-97bc-b28c9da62b8a.png"
+              alt="Enter Dream Team"
+              className="relative w-60 h-60 drop-shadow-[0_0_35px_rgba(120,60,255,1)] transition-all duration-300 group-hover:drop-shadow-[0_0_55px_rgba(160,90,255,1)]"
+            />
+
+            {/* LABEL */}
+            <span className="block mt-5 text-white text-2xl font-semibold tracking-wide group-hover:text-indigo-300 transition-colors">
+              ENTER THE DREAM TEAM →
+            </span>
           </div>
-
-          <div className="relative z-10 space-y-4 text-center">
-            {/* Behind GlyphLock */}
-            <div>
-              <h2 className="text-xl md:text-2xl font-bold text-white mb-2">Behind GlyphLock</h2>
-              <p className="text-sm md:text-base leading-relaxed text-white/90 mb-2 max-w-4xl mx-auto">
-                GlyphLock doesn't "use" AI — it deploys it. This system runs a coordinated AI roster, each operator built to challenge the others, override errors, and reinforce the truth.
-              </p>
-              <ul className="list-none space-y-1 text-xs md:text-sm text-indigo-200 max-w-3xl mx-auto">
-                <li><strong>Positioned</strong> — every engine has a defined job, not a guess.</li>
-                <li><strong>Cross-Checked</strong> — outputs are reviewed and corrected across operators.</li>
-                <li><strong>Covenant-Bound</strong> — no rogue models, no free agents, no silent failures.</li>
-                <li><strong>No Single Point of Failure</strong> — redundancy by design, intelligence by rotation.</li>
-              </ul>
-            </div>
-
-            {/* Operator Roles */}
-            <div className="border-t border-white/10 pt-4">
-              <h3 className="text-xl md:text-2xl font-bold mb-3 text-white">Operator Roles</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4 text-sm md:text-base text-white/90 max-w-3xl mx-auto">
-                <div className="space-y-1.5">
-                  <p><strong>Claude</strong> — Deep Reasoning · Audit</p>
-                  <p><strong>Alfred</strong> — System Orchestration</p>
-                  <p><strong>GPT</strong> — Creative Intelligence</p>
-                </div>
-                <div className="space-y-1.5">
-                  <p><strong>Cursor</strong> — Code Precision</p>
-                  <p><strong>Perplexity</strong> — Real-Time Recall</p>
-                </div>
-              </div>
-              <p className="text-indigo-300 mt-3 text-sm md:text-base tracking-wide">
-                One roster. Many positions. Zero blind spots.
-              </p>
-            </div>
-
-            {/* CTA */}
-            <div className="border-t border-white/10 pt-4 flex flex-col items-center text-center space-y-2">
-              <h3 className="text-xl md:text-2xl font-bold text-white">Enter the Dream Team</h3>
-              <p className="text-sm md:text-base text-white/80 max-w-2xl">
-                Meet the operators. See the roles. Understand the architecture behind GlyphLock's firepower.
-              </p>
-              <Link
-                to="/dreamteam"
-                className="mt-1 inline-flex items-center justify-center px-5 py-2.5 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl shadow-lg hover:opacity-90 transition text-sm md:text-base font-semibold text-white"
-              >
-                Enter the Dream Team
-              </Link>
-            </div>
-          </div>
-        </div>
+        </Link>
       </div>
     </section>
   );
