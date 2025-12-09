@@ -37,30 +37,86 @@ export default function HomeDreamTeamCTA() {
       </section>
 
       {/* GLYPHLOCK LOGO BUTTON - BELOW CTA */}
-      <div className="flex justify-center w-full mt-12 px-4" style={{ position: 'relative', zIndex: 30 }}>
-        <Link to={createPageUrl("DreamTeam")} style={{ position: 'relative', zIndex: 30 }}>
-          <div className="relative group cursor-pointer transition-all duration-300 hover:scale-110 active:scale-95 flex flex-col items-center" style={{ isolation: 'isolate', pointerEvents: 'auto' }}>
+      <div 
+        className="flex justify-center w-full mt-12 mb-12 px-4" 
+        style={{ 
+          position: 'relative !important', 
+          zIndex: 9999,
+          isolation: 'isolate',
+          minHeight: '350px',
+          display: 'flex !important',
+          visibility: 'visible !important',
+          opacity: 1
+        }}
+      >
+        <Link 
+          to={createPageUrl("DreamTeam")} 
+          style={{ 
+            position: 'relative', 
+            zIndex: 9999,
+            display: 'block',
+            visibility: 'visible !important'
+          }}
+        >
+          <div 
+            className="relative group cursor-pointer transition-all duration-300 hover:scale-110 active:scale-95 flex flex-col items-center" 
+            style={{ 
+              isolation: 'isolate', 
+              pointerEvents: 'auto !important',
+              touchAction: 'manipulation',
+              WebkitTapHighlightColor: 'transparent',
+              display: 'flex',
+              visibility: 'visible !important',
+              zIndex: 9999
+            }}
+          >
             
             {/* BLACK GLOW BEHIND BUTTON */}
-            <div className="absolute inset-0 -m-8 rounded-full bg-black/60 blur-3xl" style={{ zIndex: -1 }}></div>
+            <div 
+              className="absolute inset-0 -m-8 rounded-full bg-black/60 blur-3xl" 
+              style={{ zIndex: 1 }}
+            ></div>
             
             {/* DREAM GLOW */}
-            <div className="dream-glow" style={{ zIndex: -1 }}></div>
+            <div 
+              className="dream-glow" 
+              style={{ zIndex: 2 }}
+            ></div>
             
             {/* LOGO WITH 3D DEPTH */}
             <img
               src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/48ca17dba_c44b0deb.png"
               alt="Enter Dream Team"
-              className="relative w-64 sm:w-72 md:w-80 h-auto drop-shadow-[0_10px_80px_rgba(168,85,247,1)] group-hover:drop-shadow-[0_15px_120px_rgba(168,85,247,1)] transition-all filter group-hover:brightness-110"
+              className="relative w-64 sm:w-72 md:w-80 h-auto"
               style={{ 
-                filter: 'drop-shadow(0 10px 40px rgba(0,0,0,0.8)) drop-shadow(0 0 80px rgba(168,85,247,1))',
-                zIndex: 10,
-                pointerEvents: 'auto'
+                filter: 'drop-shadow(0 10px 40px rgba(0,0,0,0.8)) drop-shadow(0 0 80px rgba(168,85,247,1)) drop-shadow(0_10px_80px_rgba(168,85,247,1))',
+                zIndex: 100,
+                pointerEvents: 'auto !important',
+                display: 'block !important',
+                visibility: 'visible !important',
+                opacity: 1,
+                minWidth: '250px',
+                minHeight: '250px',
+                maxWidth: '100%',
+                height: 'auto',
+                imageRendering: 'auto',
+                WebkitUserSelect: 'none',
+                userSelect: 'none'
               }}
+              loading="eager"
+              draggable="false"
             />
 
             {/* LABEL */}
-            <span className="relative block mt-4 md:mt-6 text-white text-lg sm:text-xl md:text-2xl font-black tracking-wider group-hover:text-blue-400 transition-colors drop-shadow-[0_4px_8px_rgba(0,0,0,1)]" style={{ zIndex: 10 }}>
+            <span 
+              className="relative block mt-4 md:mt-6 text-white text-lg sm:text-xl md:text-2xl font-black tracking-wider group-hover:text-blue-400 transition-colors" 
+              style={{ 
+                zIndex: 100,
+                textShadow: '0 4px 8px rgba(0,0,0,1)',
+                display: 'block !important',
+                visibility: 'visible !important'
+              }}
+            >
               Tap the ball to meet the roster
             </span>
           </div>
