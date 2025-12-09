@@ -240,7 +240,7 @@ export default function DreamTeamPage() {
       >
         {/* Introduction Section - The Dream Team Philosophy */}
         <div className="h-screen snap-start flex items-center justify-center relative px-6">
-        <div className="max-w-4xl mx-auto text-center space-y-6">
+          <div className="max-w-4xl mx-auto text-center space-y-6">
           <h1 className="text-5xl md:text-7xl font-black mb-6">
             <span className="text-white">WHY THE </span>
             <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-400 bg-clip-text text-transparent">DREAM TEAM?</span>
@@ -303,16 +303,17 @@ export default function DreamTeamPage() {
             <ChevronDown className="w-12 h-12 text-indigo-300/70 mx-auto animate-bounce" />
             <p className="text-sm text-violet-300 mt-2">Scroll to meet the roster</p>
           </div>
-          </div>
+        </div>
+      </div>
 
-          {/* Player Cards */}
-          {DREAM_TEAM_ROSTER.map((card, index) => (
-          <FullScreenCard key={card.id} card={card} index={index} />
-          ))}
+      {/* Player Cards */}
+      {DREAM_TEAM_ROSTER.map((card, index) => (
+        <FullScreenCard key={card.id} card={card} index={index} />
+      ))}
 
-          {/* CTA Section */}
-          <div className="min-h-screen snap-start flex items-center justify-center relative py-20">
-          <div className="text-center px-6">
+      {/* CTA Section */}
+      <div className="min-h-screen snap-start flex items-center justify-center relative py-20">
+        <div className="text-center px-6">
             <h2 className="text-4xl md:text-6xl font-black mb-6">
               <span className="bg-gradient-to-r from-fuchsia-400 via-pink-400 to-cyan-300 bg-clip-text text-transparent">
                 Deploy Your Squad
@@ -321,50 +322,50 @@ export default function DreamTeamPage() {
             <p className="text-violet-200 text-lg mb-8 max-w-xl mx-auto">
               The Dream Team is ready. Enter the GlyphBot Console to orchestrate your AI chain.
             </p>
-            <Link
-              to={createPageUrl("GlyphBot")}
-              className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl text-lg font-bold bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-[0_0_50px_rgba(87,61,255,0.5)] hover:shadow-[0_0_80px_rgba(87,61,255,0.7)] transition-all"
-            >
-              Enter the Console
-              <ChevronRight className="w-6 h-6" />
-            </Link>
-          </div>
-          </div>
-          </div>
-
-          {/* Navigation dots */}
-          <div className="fixed right-6 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-3">
-            <button
-              onClick={() => scrollToCard(-1)}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                currentIndex === 0 
-                  ? 'bg-indigo-400 scale-125 shadow-[0_0_15px_rgba(87,61,255,0.8)]' 
-                  : 'bg-white/20 hover:bg-white/40'
-              }`}
-              aria-label="Go to introduction"
-            />
-            {DREAM_TEAM_ROSTER.map((card, index) => (
-          <button
-            key={card.id}
-            onClick={() => scrollToCard(index + 1)}
-            className={`w-3 h-3 rounded-full transition-all duration-300 ${
-              currentIndex === index + 1 
-                ? 'bg-indigo-400 scale-125 shadow-[0_0_15px_rgba(87,61,255,0.8)]' 
-                : 'bg-white/20 hover:bg-white/40'
-            }`}
-            aria-label={`Go to ${card.name}`}
-          />
-        ))}
-      </div>
-
-      {/* Scroll indicator */}
-      {currentIndex < DREAM_TEAM_ROSTER.length && (
-        <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 animate-bounce">
-          <ChevronDown className="w-8 h-8 text-indigo-300/70" />
+          <Link
+            to={createPageUrl("GlyphBot")}
+            className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl text-lg font-bold bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-[0_0_50px_rgba(87,61,255,0.5)] hover:shadow-[0_0_80px_rgba(87,61,255,0.7)] transition-all"
+          >
+            Enter the Console
+            <ChevronRight className="w-6 h-6" />
+          </Link>
         </div>
-      )}
+      </div>
     </div>
-  );
+
+    {/* Navigation dots */}
+    <div className="fixed right-6 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-3">
+      <button
+        onClick={() => scrollToCard(-1)}
+        className={`w-3 h-3 rounded-full transition-all duration-300 ${
+          currentIndex === 0 
+            ? 'bg-indigo-400 scale-125 shadow-[0_0_15px_rgba(87,61,255,0.8)]' 
+            : 'bg-white/20 hover:bg-white/40'
+        }`}
+        aria-label="Go to introduction"
+      />
+      {DREAM_TEAM_ROSTER.map((card, index) => (
+        <button
+          key={card.id}
+          onClick={() => scrollToCard(index + 1)}
+          className={`w-3 h-3 rounded-full transition-all duration-300 ${
+            currentIndex === index + 1 
+              ? 'bg-indigo-400 scale-125 shadow-[0_0_15px_rgba(87,61,255,0.8)]' 
+              : 'bg-white/20 hover:bg-white/40'
+          }`}
+          aria-label={`Go to ${card.name}`}
+        />
+      ))}
+    </div>
+
+    {/* Scroll indicator */}
+    {currentIndex < DREAM_TEAM_ROSTER.length && (
+      <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 animate-bounce">
+        <ChevronDown className="w-8 h-8 text-indigo-300/70" />
+      </div>
+    )}
+  </div>
+);
 }
 
 function FullScreenCard({ card, index }) {
