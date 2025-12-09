@@ -404,6 +404,12 @@ html, body {
   pointer-events: auto !important;
 }
 
+/* Footer isolation - prevent fixed/sticky behavior */
+footer, [role="contentinfo"] {
+  position: relative !important;
+  background-attachment: scroll !important;
+}
+
 /* Ensure nebula animations persist during scroll */
 #nebula-layer,
 #nebula-layer-stars {
