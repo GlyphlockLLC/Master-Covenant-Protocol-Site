@@ -75,8 +75,8 @@ export default function Layout({ children, currentPageName }) {
           left: 0, 
           right: 0, 
           bottom: 0, 
-          zIndex: 0, 
-          pointerEvents: 'none',
+          zIndex: -10, 
+          pointerEvents: 'none !important',
           transform: 'translateZ(0)',
           willChange: 'transform',
           backfaceVisibility: 'hidden'
@@ -94,8 +94,8 @@ export default function Layout({ children, currentPageName }) {
           left: 0, 
           right: 0, 
           bottom: 0, 
-          zIndex: 1, 
-          pointerEvents: 'none',
+          zIndex: -9, 
+          pointerEvents: 'none !important',
           transform: 'translateZ(0)',
           willChange: 'transform',
           backfaceVisibility: 'hidden'
@@ -110,19 +110,20 @@ export default function Layout({ children, currentPageName }) {
           background: 'transparent',
           paddingBottom: 'env(safe-area-inset-bottom)',
           overscrollBehavior: 'none',
-          zIndex: 10
+          zIndex: 10,
+          position: 'relative'
         }}
       >
         <MobileTouchOptimizer />
         <SecurityMonitor />
 
         {/* Navbar */}
-        <div style={{ position: 'relative', zIndex: 50 }}>
+        <div style={{ position: 'relative', zIndex: 9998, pointerEvents: 'auto' }}>
           <Navbar user={user} onLogin={handleLogin} onLogout={handleLogout} />
         </div>
 
         {/* Main content */}
-        <main className="flex-1 relative pt-4" style={{ background: 'transparent', zIndex: 10, pointerEvents: 'auto' }}>
+        <main className="flex-1 relative pt-4" style={{ background: 'transparent', zIndex: 100, pointerEvents: 'auto', position: 'relative' }}>
           {children}
         </main>
 
@@ -132,18 +133,18 @@ export default function Layout({ children, currentPageName }) {
           bottom: 0, 
           right: 0, 
           zIndex: 99999, 
-          pointerEvents: 'auto',
+          pointerEvents: 'auto !important',
           isolation: 'isolate',
           touchAction: 'manipulation',
           WebkitTapHighlightColor: 'transparent',
-          display: 'block',
-          visibility: 'visible'
+          display: 'block !important',
+          visibility: 'visible !important'
         }}>
           <GlyphBotJr />
         </div>
 
         {/* Footer */}
-        <div className="relative" style={{ zIndex: 20 }}>
+        <div className="relative" style={{ zIndex: 9997, pointerEvents: 'auto', position: 'relative' }}>
           <Footer />
         </div>
       </div>
