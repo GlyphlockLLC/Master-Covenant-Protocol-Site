@@ -46,6 +46,10 @@ export default function ChatInput({
       recognitionRef.current.onerror = (event) => {
         console.error('Speech recognition error:', event.error);
         setIsListening(false);
+        if (event.error === 'aborted' || event.error === 'not-allowed') {
+          // Don't restart on user-initiated stops or permission issues
+          return;
+        }
       };
       
       recognitionRef.current.onend = () => {
@@ -55,7 +59,11 @@ export default function ChatInput({
     
     return () => {
       if (recognitionRef.current) {
-        recognitionRef.current.stop();
+        try {
+          recognitionRef.current.stop();
+        } catch (err) {
+          // Ignore errors on cleanup
+        }
       }
     };
   }, [value, onChange]);
