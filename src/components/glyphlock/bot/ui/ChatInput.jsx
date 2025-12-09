@@ -67,11 +67,23 @@ export default function ChatInput({
     }
     
     if (isListening) {
-      recognitionRef.current.stop();
+      try {
+        recognitionRef.current.stop();
+      } catch (err) {
+        console.error('Stop recognition error:', err);
+      }
       setIsListening(false);
     } else {
-      recognitionRef.current.start();
-      setIsListening(true);
+      try {
+        recognitionRef.current.start();
+        setIsListening(true);
+      } catch (err) {
+        console.error('Start recognition error:', err);
+        if (err.message.includes('already started')) {
+          // Already running, just update state
+          setIsListening(true);
+        }
+      }
     }
   };
 
