@@ -610,6 +610,7 @@ export default function GlyphBotPage() {
                 <>
                   <button
                     onClick={() => setShowAuditPanel(!showAuditPanel)}
+                    style={{ touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent', pointerEvents: 'auto', minHeight: '44px' }}
                     className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all duration-300 ${
                       showAuditPanel 
                         ? 'bg-cyan-500/30 border-2 border-cyan-400 text-cyan-300'
@@ -622,6 +623,7 @@ export default function GlyphBotPage() {
                   </button>
                   <button
                     onClick={() => setShowHistoryPanel(!showHistoryPanel)}
+                    style={{ touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent', pointerEvents: 'auto', minHeight: '44px' }}
                     className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold bg-emerald-500/20 border-2 border-emerald-500/50 text-emerald-300 hover:border-cyan-400 hover:text-cyan-300 hover:bg-cyan-500/20 transition-all duration-300"
                     title={showHistoryPanel ? 'Hide History' : 'Show History'}
                   >
@@ -701,7 +703,11 @@ export default function GlyphBotPage() {
                 <AlertTriangle className="w-4 h-4 drop-shadow-[0_0_6px_rgba(245,158,11,0.8)]" />
                 <span>Older messages trimmed to optimize memory (keeping last {MAX_MESSAGES})</span>
               </div>
-              <button onClick={() => setShowTrimWarning(false)} className="text-amber-400 hover:text-amber-200 transition-colors p-1 rounded-lg hover:bg-amber-500/20">
+              <button 
+                onClick={() => setShowTrimWarning(false)} 
+                style={{ touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent', pointerEvents: 'auto', minHeight: '44px', minWidth: '44px' }}
+                className="text-amber-400 hover:text-amber-200 transition-colors p-1 rounded-lg hover:bg-amber-500/20"
+              >
                 <X className="w-4 h-4" />
               </button>
             </div>
@@ -722,6 +728,7 @@ export default function GlyphBotPage() {
                     </div>
                     <button
                       onClick={() => setShowAuditHistory(!showAuditHistory)}
+                      style={{ touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent', pointerEvents: 'auto', minHeight: '44px', minWidth: '44px' }}
                       className={`px-2 py-1 rounded text-[10px] uppercase tracking-wider transition-all ${
                         showAuditHistory
                           ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/50'

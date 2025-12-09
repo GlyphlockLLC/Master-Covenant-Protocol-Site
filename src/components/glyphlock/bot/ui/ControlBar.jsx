@@ -26,6 +26,14 @@ function ModeToggle({ active, icon: Icon, label, onClick, color = 'cyan' }) {
     <button
       type="button"
       onClick={onClick}
+      style={{
+        touchAction: 'manipulation',
+        WebkitTapHighlightColor: 'transparent',
+        pointerEvents: 'auto',
+        isolation: 'isolate',
+        position: 'relative',
+        zIndex: 9999
+      }}
       className={`
         flex items-center gap-1.5 px-3 py-2 rounded-xl text-[11px] font-semibold uppercase tracking-wide
         border-2 transition-all duration-300 backdrop-blur-sm min-h-[44px]
@@ -71,6 +79,7 @@ export default function ControlBar({
             <select
               value={persona}
               onChange={(e) => setPersona(e.target.value)}
+              style={{ touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent', pointerEvents: 'auto', minHeight: '44px' }}
               className="min-w-[140px] text-xs bg-slate-900/80 border-2 border-purple-500/40 rounded-xl px-3 py-2 text-cyan-200 font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-400 transition-all shadow-[0_0_15px_rgba(168,85,247,0.2)] hover:shadow-[0_0_20px_rgba(6,182,212,0.3)]"
             >
               {PERSONAS.map((p) => (
@@ -84,6 +93,7 @@ export default function ControlBar({
             <select
               value={provider}
               onChange={(e) => setProvider(e.target.value)}
+              style={{ touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent', pointerEvents: 'auto', minHeight: '44px' }}
               className="min-w-[160px] text-xs bg-slate-900/80 border-2 border-cyan-500/40 rounded-xl px-3 py-2 text-purple-200 font-medium focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-400 transition-all shadow-[0_0_15px_rgba(6,182,212,0.2)] hover:shadow-[0_0_20px_rgba(168,85,247,0.3)]"
             >
               {MODEL_OPTIONS.map((m) => (
@@ -105,7 +115,10 @@ export default function ControlBar({
           {modes.voice && (
             <Popover open={showVoiceControls} onOpenChange={setShowVoiceControls}>
               <PopoverTrigger asChild>
-                <button className="flex items-center gap-1 px-2 py-1.5 rounded-lg text-[10px] bg-purple-500/20 border border-purple-500/40 text-purple-300 hover:bg-purple-500/30 transition-all">
+                <button 
+                  style={{ touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent', pointerEvents: 'auto', minHeight: '44px', minWidth: '44px' }}
+                  className="flex items-center gap-1 px-2 py-1.5 rounded-lg text-[10px] bg-purple-500/20 border border-purple-500/40 text-purple-300 hover:bg-purple-500/30 transition-all"
+                >
                   <Settings2 className="w-3 h-3" />
                   <ChevronDown className="w-3 h-3" />
                 </button>
@@ -259,6 +272,7 @@ export default function ControlBar({
                           onVoiceSettingsChange.playText("This is a voice test with your current settings.", voiceSettings);
                         }
                       }}
+                      style={{ touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent', pointerEvents: 'auto', minHeight: '44px' }}
                       className="flex-1 px-3 py-2 rounded-lg text-xs bg-cyan-500/20 border border-cyan-500/50 text-cyan-300 hover:bg-cyan-500/30 transition-all flex items-center justify-center gap-1.5"
                     >
                       <Volume2 className="w-3 h-3" />
@@ -269,6 +283,7 @@ export default function ControlBar({
                       onClick={() => {
                         localStorage.setItem('glyphbot_voice_settings', JSON.stringify(voiceSettings));
                       }}
+                      style={{ touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent', pointerEvents: 'auto', minHeight: '44px' }}
                       className="flex-1 px-3 py-2 rounded-lg text-xs bg-purple-500/20 border border-purple-500/50 text-purple-300 hover:bg-purple-500/30 transition-all flex items-center justify-center gap-1.5"
                     >
                       <Settings2 className="w-3 h-3" />
@@ -311,6 +326,7 @@ export default function ControlBar({
           
           <button
             onClick={onClear}
+            style={{ touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent', pointerEvents: 'auto', minHeight: '44px' }}
             className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-[11px] font-semibold uppercase tracking-wide bg-rose-950/40 border-2 border-rose-500/50 text-rose-300 hover:bg-rose-500/30 hover:border-rose-400 hover:shadow-[0_0_20px_rgba(244,63,94,0.5)] transition-all duration-300"
           >
             <Trash2 className="w-3.5 h-3.5" />

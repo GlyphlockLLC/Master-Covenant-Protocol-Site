@@ -28,6 +28,7 @@ export default function ChatMessage({ msg, isAssistant, onReplay }) {
       {isAssistant && onReplay && msg.ttsMetadata && (
         <button
           onClick={() => onReplay(msg.id, msg.ttsMetadata)}
+          style={{ touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent', pointerEvents: 'auto', minHeight: '44px', minWidth: '44px' }}
           className="absolute top-2 right-2 p-1.5 rounded-lg bg-cyan-500/20 border border-cyan-400/50 text-cyan-300 hover:bg-cyan-500/30 transition-all"
           title="Replay with original voice settings"
         >
