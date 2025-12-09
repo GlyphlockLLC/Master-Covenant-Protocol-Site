@@ -342,7 +342,7 @@ function FullScreenCard({ card, index }) {
             <img 
               src={card.imageSrc} 
               alt={card.name}
-              className="absolute inset-0 w-full h-full object-contain rounded-3xl"
+              className="absolute inset-0 w-full h-full object-cover object-center rounded-3xl"
               loading="lazy"
             />
 
