@@ -104,54 +104,58 @@ export default function Layout({ children, currentPageName }) {
         <CursorOrb />
       </div>
 
-      <div 
-        className="min-h-screen text-white flex flex-col relative overflow-x-hidden selection:bg-[#00E4FF] selection:text-black" 
-        style={{ 
-          background: 'transparent',
-          paddingBottom: 'env(safe-area-inset-bottom)',
-          overscrollBehavior: 'none',
-          zIndex: 10,
-          position: 'relative'
-        }}
-      >
-        <MobileTouchOptimizer />
-        <SecurityMonitor />
+      {currentPageName === 'DreamTeam' ? (
+        // Dream Team: Minimal layout - only children, no navbar/footer/chrome
+        <div className="fixed inset-0" style={{ zIndex: 9999, background: 'transparent', overflow: 'hidden' }}>
+          {children}
+        </div>
+      ) : (
+        // Normal pages: Full layout with navbar, footer, etc.
+        <div 
+          className="min-h-screen text-white flex flex-col relative overflow-x-hidden selection:bg-[#00E4FF] selection:text-black" 
+          style={{ 
+            background: 'transparent',
+            paddingBottom: 'env(safe-area-inset-bottom)',
+            overscrollBehavior: 'none',
+            zIndex: 10,
+            position: 'relative'
+          }}
+        >
+          <MobileTouchOptimizer />
+          <SecurityMonitor />
 
-        {/* Navbar - Hidden on Dream Team page */}
-        {currentPageName !== 'DreamTeam' && (
+          {/* Navbar */}
           <div style={{ position: 'relative', zIndex: 9998, pointerEvents: 'auto' }}>
             <Navbar user={user} onLogin={handleLogin} onLogout={handleLogout} />
           </div>
-        )}
 
-        {/* Main content */}
-        <main className={`flex-1 relative ${currentPageName === 'DreamTeam' ? '' : 'pt-4'}`} style={{ background: 'transparent', zIndex: currentPageName === 'DreamTeam' ? 'auto' : 100, pointerEvents: 'auto', position: 'relative' }}>
-          {children}
-        </main>
+          {/* Main content */}
+          <main className="flex-1 relative pt-4" style={{ background: 'transparent', zIndex: 100, pointerEvents: 'auto', position: 'relative' }}>
+            {children}
+          </main>
 
-        {/* GlyphBot Jr */}
-        <div style={{ 
-          position: 'fixed', 
-          bottom: 0, 
-          right: 0, 
-          zIndex: 99999, 
-          pointerEvents: 'auto !important',
-          isolation: 'isolate',
-          touchAction: 'manipulation',
-          WebkitTapHighlightColor: 'transparent',
-          display: 'block !important',
-          visibility: 'visible !important'
-        }}>
-          <GlyphBotJr />
-        </div>
+          {/* GlyphBot Jr */}
+          <div style={{ 
+            position: 'fixed', 
+            bottom: 0, 
+            right: 0, 
+            zIndex: 99999, 
+            pointerEvents: 'auto !important',
+            isolation: 'isolate',
+            touchAction: 'manipulation',
+            WebkitTapHighlightColor: 'transparent',
+            display: 'block !important',
+            visibility: 'visible !important'
+          }}>
+            <GlyphBotJr />
+          </div>
 
-        {/* Footer - Hidden on Dream Team page */}
-        {currentPageName !== 'DreamTeam' && (
+          {/* Footer */}
           <div className="relative z-10 overflow-hidden" style={{ pointerEvents: 'auto', isolation: 'isolate' }}>
             <Footer />
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </ThemeProvider>
   );
   }
