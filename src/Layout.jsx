@@ -106,7 +106,7 @@ export default function Layout({ children, currentPageName }) {
 
       {currentPageName === 'DreamTeam' ? (
         // Dream Team: Minimal layout - only children, no navbar/footer/chrome
-        <div className="fixed inset-0" style={{ zIndex: 9999, background: 'transparent', overflow: 'hidden' }}>
+        <div className="fixed inset-0" style={{ zIndex: 9999, background: '#000000', overflow: 'hidden' }}>
           {children}
         </div>
       ) : (
