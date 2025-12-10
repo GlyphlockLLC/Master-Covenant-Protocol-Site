@@ -128,10 +128,29 @@ export default function ControlBar({
                   <div className="text-xs font-bold text-cyan-300 uppercase tracking-wider">Voice Controls</div>
                   
                   <div className="space-y-2">
-                    <Label className="text-xs text-slate-400">Emotion Preset</Label>
+                    <Label className="text-xs text-slate-400 flex items-center justify-between">
+                      <span>Emotion Preset</span>
+                      <span className="text-[9px] text-cyan-400 font-mono">{voiceSettings?.emotion || 'neutral'}</span>
+                    </Label>
                     <Select 
                       value={voiceSettings?.emotion || 'neutral'} 
-                      onValueChange={(val) => handleVoiceChange('emotion', val)}
+                      onValueChange={(val) => {
+                        const preset = emotionPresets?.find(e => e.id === val);
+                        if (preset && onVoiceSettingsChange?.setVoiceSettings) {
+                          console.log('[Voice] Applying emotion preset:', preset);
+                          onVoiceSettingsChange.setVoiceSettings(prev => ({
+                            ...prev,
+                            emotion: val,
+                            pitch: preset.pitch || prev.pitch,
+                            speed: preset.speed || prev.speed,
+                            bass: preset.bass ?? prev.bass,
+                            clarity: preset.clarity ?? prev.clarity,
+                            volume: preset.volume ?? prev.volume
+                          }));
+                        } else {
+                          handleVoiceChange('emotion', val);
+                        }
+                      }}
                     >
                       <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
                         <SelectValue />
@@ -144,10 +163,12 @@ export default function ControlBar({
                         )) : (
                           <>
                             <SelectItem value="neutral">Neutral</SelectItem>
-                            <SelectItem value="warm">Warm</SelectItem>
-                            <SelectItem value="aggressive">Aggressive</SelectItem>
-                            <SelectItem value="calming">Calming</SelectItem>
-                            <SelectItem value="corporate">Corporate</SelectItem>
+                            <SelectItem value="energetic">Energetic</SelectItem>
+                            <SelectItem value="calm">Calm</SelectItem>
+                            <SelectItem value="authoritative">Authoritative</SelectItem>
+                            <SelectItem value="friendly">Friendly</SelectItem>
+                            <SelectItem value="whisper">Whisper</SelectItem>
+                            <SelectItem value="intense">Intense</SelectItem>
                           </>
                         )}
                       </SelectContent>
