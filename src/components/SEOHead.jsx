@@ -52,7 +52,7 @@ export default function SEOHead({
     // Update title
     document.title = resolvedTitle;
 
-    // Update favicon
+    // GLYPHLOCK: Enhanced favicon with multiple sizes
     let favicon = document.querySelector('link[rel="icon"]');
     if (!favicon) {
       favicon = document.createElement('link');
@@ -61,6 +61,24 @@ export default function SEOHead({
     }
     favicon.setAttribute('href', 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/08025b614_gl-logo.png');
     favicon.setAttribute('type', 'image/png');
+
+    // Apple touch icon
+    let appleTouchIcon = document.querySelector('link[rel="apple-touch-icon"]');
+    if (!appleTouchIcon) {
+      appleTouchIcon = document.createElement('link');
+      appleTouchIcon.setAttribute('rel', 'apple-touch-icon');
+      document.head.appendChild(appleTouchIcon);
+    }
+    appleTouchIcon.setAttribute('href', 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/08025b614_gl-logo.png');
+
+    // Manifest
+    let manifest = document.querySelector('link[rel="manifest"]');
+    if (!manifest) {
+      manifest = document.createElement('link');
+      manifest.setAttribute('rel', 'manifest');
+      document.head.appendChild(manifest);
+    }
+    manifest.setAttribute('href', '/site.webmanifest');
 
     // Update or create meta tags
     const updateMetaTag = (name, content, property = false) => {
@@ -78,29 +96,53 @@ export default function SEOHead({
     updateMetaTag('title', resolvedTitle);
     updateMetaTag('description', resolvedDescription);
     updateMetaTag('keywords', resolvedKeywords);
+
+    // GLYPHLOCK: Enhanced SEO & Security Meta Tags
     updateMetaTag('robots', 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1');
-    updateMetaTag('googlebot', 'index, follow');
+    updateMetaTag('googlebot', 'index, follow, max-snippet:-1, max-image-preview:large');
     updateMetaTag('bingbot', 'index, follow');
     updateMetaTag('author', 'GlyphLock Security LLC');
+    updateMetaTag('viewport', 'width=device-width, initial-scale=1.0, maximum-scale=5.0');
+    updateMetaTag('theme-color', '#000000');
+    updateMetaTag('format-detection', 'telephone=no');
+    updateMetaTag('apple-mobile-web-app-capable', 'yes');
+    updateMetaTag('apple-mobile-web-app-status-bar-style', 'black-translucent');
+    updateMetaTag('apple-mobile-web-app-title', 'GlyphLock');
+    updateMetaTag('application-name', 'GlyphLock Security');
+    updateMetaTag('msapplication-TileColor', '#000000');
+    updateMetaTag('referrer', 'strict-origin-when-cross-origin');
 
-    // Open Graph
+    // Geo tags
+    updateMetaTag('geo.region', 'US-AZ');
+    updateMetaTag('geo.placename', 'El Mirage');
+    updateMetaTag('geo.position', '33.6131;-112.3246');
+    updateMetaTag('ICBM', '33.6131, -112.3246');
+
+    // GLYPHLOCK: Enhanced Open Graph
     updateMetaTag('og:type', type, true);
     updateMetaTag('og:url', fullUrl, true);
     updateMetaTag('og:title', resolvedTitle, true);
     updateMetaTag('og:description', resolvedDescription, true);
     updateMetaTag('og:image', ogImage, true);
+    updateMetaTag('og:image:secure_url', ogImage, true);
     updateMetaTag('og:image:width', '1200', true);
     updateMetaTag('og:image:height', '630', true);
     updateMetaTag('og:image:alt', resolvedTitle, true);
+    updateMetaTag('og:image:type', 'image/png', true);
     updateMetaTag('og:site_name', 'GlyphLock', true);
+    updateMetaTag('og:locale', 'en_US', true);
+    updateMetaTag('fb:app_id', 'YOUR_FB_APP_ID', true); // Replace with actual FB app ID
 
-    // Twitter
+    // GLYPHLOCK: Enhanced Twitter Cards
     updateMetaTag('twitter:card', 'summary_large_image');
+    updateMetaTag('twitter:site', '@glyphlock');
+    updateMetaTag('twitter:creator', '@glyphlock');
     updateMetaTag('twitter:url', fullUrl);
     updateMetaTag('twitter:title', resolvedTitle);
     updateMetaTag('twitter:description', resolvedDescription);
     updateMetaTag('twitter:image', ogImage);
     updateMetaTag('twitter:image:alt', resolvedTitle);
+    updateMetaTag('twitter:domain', 'glyphlock.io');
 
     // Canonical link
     let canonical = document.querySelector('link[rel="canonical"]');

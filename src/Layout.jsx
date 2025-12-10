@@ -11,6 +11,8 @@ import GlyphLoader from "@/components/GlyphLoader";
 import MobileScalingSystem from "@/components/mobile/mobile-utils";
 import MobileTouchOptimizer from "@/components/mobile/MobileTouchOptimizer";
 import ThemeProvider from "@/components/ThemeProvider";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
+import StructuredDataOrg from "@/components/StructuredDataOrg";
 
 const { GlyphBotJr } = UI;
 
@@ -67,6 +69,10 @@ export default function Layout({ children, currentPageName }) {
 
   return (
     <ThemeProvider>
+      {/* GLYPHLOCK: Analytics & SEO */}
+      <GoogleAnalytics />
+      <StructuredDataOrg />
+      
       {/* SITE-WIDE NEBULA - Absolute bottom layer */}
       <div 
         style={{ 
