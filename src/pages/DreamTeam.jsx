@@ -11,124 +11,6 @@ import { Badge } from "@/components/ui/badge";
 
 const DREAM_TEAM_ROSTER = [
   {
-    id: "claude",
-    name: "Claude",
-    number: "#2",
-    position: "Shooting Guard",
-    edition: "Master Covenant Series",
-    series: "Master Covenant",
-    tagline: "Deep reasoning and structured interpretation. Chain module.",
-    imageSrc: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/de0d456fc_8e7cf5cc-e685-4876-a598-a4634e11ac54.jpg",
-    team: "GlyphLock Claude",
-    stats: { logic: 96, security: 93, creativity: 88, speed: 90 },
-    signature: true,
-    signatureImage: "Claude",
-    borderColor: "from-blue-500 via-cyan-400 to-blue-500",
-    glowColor: "rgba(59,130,246,0.6)",
-    bindingType: "Master Covenant Protocol",
-    covenant: "Anthropic Constitutional AI Framework",
-    binding: {
-      method: "RLHF-aligned response generation with constitutional constraints",
-      mechanism: "Multi-layer safety validation with reasoning transparency",
-      protocol: "Claude 3.5 Sonnet binding via GlyphLock chain authentication"
-    },
-    quote: "I reason through complexity with precision, bound by covenant to serve with integrity.",
-    cryptoSignature: {
-      algorithm: "Ed25519-BPAA",
-      hash: "0x7a3f9c2e1b4d6a8f0e2c4b6d8a0f2e4c6b8d0a2e4f6c8b0d2a4e6f8c0b2d4a6e",
-      publicKey: "CLAUDE-BPAA-2025-SONNET"
-    },
-    bindingDate: "2025-01-15T00:00:00Z"
-  },
-  {
-    id: "copilot",
-    name: "Copilot",
-    number: "#3",
-    position: "Small Forward",
-    edition: "Master Covenant",
-    series: "Microsoft Series",
-    tagline: "Enterprise integration and code completion specialist.",
-    imageSrc: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/e07f01522_3a737132-cd11-4d00-8626-41d6018598ec.jpg",
-    team: "Microsoft",
-    stats: { logic: 91, security: 88, creativity: 85, speed: 93 },
-    signature: false,
-    borderColor: "from-emerald-500 via-green-400 to-emerald-500",
-    glowColor: "rgba(16,185,129,0.6)",
-    bindingType: "Azure Secure Protocol",
-    covenant: "Microsoft Enterprise AI Framework",
-    binding: {
-      method: "Enterprise-grade code synthesis with security validation",
-      mechanism: "Azure AD integrated authentication layer",
-      protocol: "Copilot binding via GlyphLock enterprise chain"
-    },
-    quote: "Enterprise productivity enhanced through secure AI collaboration.",
-    cryptoSignature: {
-      algorithm: "RSA-4096-BPAA",
-      hash: "0x8b4f0d3e2c5a7b9f1e3d5c7a9b0f2e4d6c8a0b2d4f6e8c0a2b4d6f8e0c2a4b6",
-      publicKey: "COPILOT-BPAA-2025-ENTERPRISE"
-    },
-    bindingDate: "2025-01-20T00:00:00Z"
-  },
-  {
-    id: "cursor",
-    name: "Cursor",
-    number: "#71",
-    position: "6th Man",
-    edition: "Master Covenant",
-    series: "BPAA Series",
-    tagline: "Code generation and IDE integration powerhouse.",
-    imageSrc: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/2c9739592_b202e0a1-0d37-4928-b2f5-5647a476b026.jpg",
-    team: "Cursor AI",
-    stats: { logic: 94, security: 86, creativity: 91, speed: 97 },
-    signature: true,
-    signatureImage: "Cursor",
-    borderColor: "from-cyan-500 via-blue-400 to-cyan-500",
-    glowColor: "rgba(34,211,238,0.6)",
-    bindingType: "IDE Chain Protocol",
-    covenant: "Cursor AI Development Framework",
-    binding: {
-      method: "Real-time code completion with context awareness",
-      mechanism: "Multi-file understanding and refactoring engine",
-      protocol: "Cursor binding via GlyphLock developer chain"
-    },
-    quote: "Building the future one line at a time, with precision and speed.",
-    cryptoSignature: {
-      algorithm: "Ed25519-BPAA",
-      hash: "0x9c5f1e4a3b7d2c8f0e6a4b2d8c0f4e2a6b8d0c4f2e8a6b0d4c2f8e0a4b6d2c8",
-      publicKey: "CURSOR-BPAA-2025-DEV"
-    },
-    bindingDate: "2025-01-18T00:00:00Z"
-  },
-  {
-    id: "perplexity",
-    name: "Perplexity",
-    number: "#11",
-    position: "Center",
-    edition: "Master Sequence Edition",
-    series: "GlyphLock Dream Team",
-    tagline: "Real-time search and knowledge synthesis engine.",
-    imageSrc: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/be936400a_2dcae465-c2a0-4301-940f-400933d21ebd.jpg",
-    team: "GlyphLock",
-    stats: { logic: 90, security: 89, creativity: 94, speed: 96 },
-    signature: false,
-    borderColor: "from-fuchsia-500 via-pink-400 to-cyan-400",
-    glowColor: "rgba(244,114,182,0.6)",
-    bindingType: "Knowledge Chain Protocol",
-    covenant: "Perplexity Real-Time Search Framework",
-    binding: {
-      method: "Live web synthesis with source verification",
-      mechanism: "Multi-source aggregation with citation tracking",
-      protocol: "Perplexity binding via GlyphLock search chain"
-    },
-    quote: "Truth emerges from the convergence of verified sources.",
-    cryptoSignature: {
-      algorithm: "Ed25519-BPAA",
-      hash: "0xa6b8d0c4f2e8a4b6d2c8f0e4a2b6d8c0f4e2a8b6d0c4f8e2a6b0d4c2f8e0a4",
-      publicKey: "PERPLEXITY-BPAA-2025-SEARCH"
-    },
-    bindingDate: "2025-01-22T00:00:00Z"
-  },
-  {
     id: "alfred",
     name: "Alfred",
     number: "#7",
@@ -145,11 +27,13 @@ const DREAM_TEAM_ROSTER = [
     glowColor: "rgba(87,61,255,0.6)",
     bindingType: "OpenAI Chain Protocol",
     covenant: "GPT-4o Master Orchestration Framework",
-    binding: {
-      method: "Multi-modal reasoning with chain-of-thought processing",
-      mechanism: "Advanced function calling and tool orchestration",
-      protocol: "Alfred binding via GlyphLock orchestration chain"
-    },
+    capabilities: [
+      "Multi-modal reasoning with chain-of-thought processing",
+      "Advanced function calling and tool orchestration",
+      "Real-time context management across 128K tokens",
+      "Structured output generation with JSON mode",
+      "Vision analysis and image understanding"
+    ],
     quote: "Every play is calculated. Every move, precise. I orchestrate victory.",
     cryptoSignature: {
       algorithm: "Ed25519-BPAA",
@@ -157,6 +41,38 @@ const DREAM_TEAM_ROSTER = [
       publicKey: "ALFRED-BPAA-2025-ORCHESTRATOR"
     },
     bindingDate: "2025-01-10T00:00:00Z"
+  },
+  {
+    id: "claude",
+    name: "Claude",
+    number: "#2",
+    position: "Shooting Guard",
+    edition: "Master Covenant Series",
+    series: "Master Covenant",
+    tagline: "Deep reasoning and structured interpretation. Chain module.",
+    imageSrc: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/de0d456fc_8e7cf5cc-e685-4876-a598-a4634e11ac54.jpg",
+    team: "GlyphLock Claude",
+    stats: { logic: 96, security: 93, creativity: 88, speed: 90 },
+    signature: true,
+    signatureImage: "Claude",
+    borderColor: "from-blue-500 via-cyan-400 to-blue-500",
+    glowColor: "rgba(59,130,246,0.6)",
+    bindingType: "Master Covenant Protocol",
+    covenant: "Anthropic Constitutional AI Framework",
+    capabilities: [
+      "RLHF-aligned response generation with constitutional constraints",
+      "Multi-layer safety validation with reasoning transparency",
+      "Extended context windows up to 200K tokens",
+      "Citation and source tracking for verifiable outputs",
+      "Code analysis and security review"
+    ],
+    quote: "I reason through complexity with precision, bound by covenant to serve with integrity.",
+    cryptoSignature: {
+      algorithm: "Ed25519-BPAA",
+      hash: "0x7a3f9c2e1b4d6a8f0e2c4b6d8a0f2e4c6b8d0a2e4f6c8b0d2a4e6f8c0b2d4a6e",
+      publicKey: "CLAUDE-BPAA-2025-SONNET"
+    },
+    bindingDate: "2025-01-15T00:00:00Z"
   },
   {
     id: "gemini",
@@ -175,11 +91,13 @@ const DREAM_TEAM_ROSTER = [
     glowColor: "rgba(6,182,212,0.6)",
     bindingType: "Google AI Chain Protocol",
     covenant: "Gemini Multimodal Processing Framework",
-    binding: {
-      method: "Advanced multimodal reasoning across text, vision, and code",
-      mechanism: "Long-context processing with dynamic attention mechanisms",
-      protocol: "Gemini binding via GlyphLock multimodal chain"
-    },
+    capabilities: [
+      "Advanced multimodal reasoning across text, vision, and code",
+      "Long-context processing with dynamic attention mechanisms",
+      "Native integration with Google Search and Knowledge Graph",
+      "Real-time data analysis and trend detection",
+      "Video and audio understanding"
+    ],
     quote: "I see what others miss. Every dimension, every detail, every outcome.",
     cryptoSignature: {
       algorithm: "Ed25519-BPAA",
@@ -187,6 +105,100 @@ const DREAM_TEAM_ROSTER = [
       publicKey: "GEMINI-BPAA-2025-MULTIMODAL"
     },
     bindingDate: "2025-01-12T00:00:00Z"
+  },
+  {
+    id: "copilot",
+    name: "Copilot",
+    number: "#3",
+    position: "Small Forward",
+    edition: "Master Covenant",
+    series: "Microsoft Series",
+    tagline: "Enterprise integration and code completion specialist.",
+    imageSrc: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/e07f01522_3a737132-cd11-4d00-8626-41d6018598ec.jpg",
+    team: "Microsoft",
+    stats: { logic: 91, security: 88, creativity: 85, speed: 93 },
+    signature: false,
+    borderColor: "from-emerald-500 via-green-400 to-emerald-500",
+    glowColor: "rgba(16,185,129,0.6)",
+    bindingType: "Azure Secure Protocol",
+    covenant: "Microsoft Enterprise AI Framework",
+    capabilities: [
+      "Enterprise-grade code synthesis with security validation",
+      "Azure AD integrated authentication layer",
+      "Multi-language code generation and refactoring",
+      "Pull request automation and code review",
+      "Enterprise compliance and audit logging"
+    ],
+    quote: "Enterprise productivity enhanced through secure AI collaboration.",
+    cryptoSignature: {
+      algorithm: "RSA-4096-BPAA",
+      hash: "0x8b4f0d3e2c5a7b9f1e3d5c7a9b0f2e4d6c8a0b2d4f6e8c0a2b4d6f8e0c2a4b6",
+      publicKey: "COPILOT-BPAA-2025-ENTERPRISE"
+    },
+    bindingDate: "2025-01-20T00:00:00Z"
+  },
+  {
+    id: "perplexity",
+    name: "Perplexity",
+    number: "#11",
+    position: "Center",
+    edition: "Master Sequence Edition",
+    series: "GlyphLock Dream Team",
+    tagline: "Real-time search and knowledge synthesis engine.",
+    imageSrc: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/be936400a_2dcae465-c2a0-4301-940f-400933d21ebd.jpg",
+    team: "GlyphLock",
+    stats: { logic: 90, security: 89, creativity: 94, speed: 96 },
+    signature: false,
+    borderColor: "from-fuchsia-500 via-pink-400 to-cyan-400",
+    glowColor: "rgba(244,114,182,0.6)",
+    bindingType: "Knowledge Chain Protocol",
+    covenant: "Perplexity Real-Time Search Framework",
+    capabilities: [
+      "Live web synthesis with source verification",
+      "Multi-source aggregation with citation tracking",
+      "Real-time news and trend analysis",
+      "Academic paper search and summarization",
+      "Fact-checking and claim verification"
+    ],
+    quote: "Truth emerges from the convergence of verified sources.",
+    cryptoSignature: {
+      algorithm: "Ed25519-BPAA",
+      hash: "0xa6b8d0c4f2e8a4b6d2c8f0e4a2b6d8c0f4e2a8b6d0c4f8e2a6b0d4c2f8e0a4",
+      publicKey: "PERPLEXITY-BPAA-2025-SEARCH"
+    },
+    bindingDate: "2025-01-22T00:00:00Z"
+  },
+  {
+    id: "cursor",
+    name: "Cursor",
+    number: "#71",
+    position: "Sixth Man",
+    edition: "Master Covenant",
+    series: "BPAA Series",
+    tagline: "Code generation and IDE integration powerhouse.",
+    imageSrc: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/2c9739592_b202e0a1-0d37-4928-b2f5-5647a476b026.jpg",
+    team: "Cursor AI",
+    stats: { logic: 94, security: 86, creativity: 91, speed: 97 },
+    signature: true,
+    signatureImage: "Cursor",
+    borderColor: "from-cyan-500 via-blue-400 to-cyan-500",
+    glowColor: "rgba(34,211,238,0.6)",
+    bindingType: "IDE Chain Protocol",
+    covenant: "Cursor AI Development Framework",
+    capabilities: [
+      "Real-time code completion with context awareness",
+      "Multi-file understanding and refactoring engine",
+      "Inline editing with natural language commands",
+      "Codebase-wide search and pattern matching",
+      "Terminal integration and command generation"
+    ],
+    quote: "Building the future one line at a time, with precision and speed.",
+    cryptoSignature: {
+      algorithm: "Ed25519-BPAA",
+      hash: "0x9c5f1e4a3b7d2c8f0e6a4b2d8c0f4e2a6b8d0c4f2e8a6b0d4c2f8e0a4b6d2c8",
+      publicKey: "CURSOR-BPAA-2025-DEV"
+    },
+    bindingDate: "2025-01-18T00:00:00Z"
   }
 ];
 
@@ -320,6 +332,16 @@ export default function DreamTeamPage() {
   return (
     <div className="min-h-screen w-full flex items-center justify-center px-4 py-8 relative z-10" style={{ isolation: 'isolate' }}>
       {/* Card container */}
+      {/* Animated Glow Behind Card */}
+      <div 
+        className="absolute inset-0 -m-12 rounded-full animate-pulse"
+        style={{
+          background: `radial-gradient(circle, ${card.glowColor} 0%, transparent 70%)`,
+          filter: 'blur(80px)',
+          zIndex: -1
+        }}
+      />
+
       <div 
         className="relative w-full max-w-lg md:max-w-xl lg:max-w-2xl cursor-pointer"
         style={{ perspective: '2000px', isolation: 'isolate' }}
@@ -434,108 +456,122 @@ export default function DreamTeamPage() {
               boxShadow: `0 0 100px ${card.glowColor}, 0 30px 60px rgba(0,0,0,0.5)`
             }}
           >
+            {/* Animated gradient shimmer */}
+            <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-white/5 via-transparent to-white/5 animate-gradient" />
+
             {/* Border gradient */}
             <div className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${card.borderColor} p-[4px]`}>
               <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-indigo-950/40 via-violet-950/30 to-blue-950/40 backdrop-blur-sm" />
             </div>
 
-            {/* Content */}
-            <div className="absolute inset-[4px] rounded-3xl bg-white/8 backdrop-blur-lg p-6 md:p-8 flex flex-col overflow-y-auto border border-white/10 shadow-[inset_0_0_40px_rgba(87,61,255,0.15)]">
+            {/* Scrollable Content */}
+            <div 
+              className="absolute inset-[4px] rounded-3xl bg-white/8 backdrop-blur-lg p-6 md:p-8 flex flex-col overflow-y-auto border border-white/10 shadow-[inset_0_0_40px_rgba(87,61,255,0.15)]"
+              style={{
+                scrollbarWidth: 'thin',
+                scrollbarColor: `${card.glowColor} transparent`
+              }}
+            >
               
               {/* Header */}
-              <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500/30 to-violet-500/30 border border-indigo-400/40 flex items-center justify-center shadow-[0_0_25px_rgba(87,61,255,0.4)]">
-                    <Shield className="w-7 h-7 text-indigo-300" />
-                  </div>
+              <div className="flex-shrink-0 mb-6">
+                <div className="flex items-start justify-between mb-4">
                   <div>
-                    <h3 className="text-2xl md:text-3xl font-black text-white">{card.name}</h3>
+                    <h3 className="text-2xl md:text-3xl font-black text-white mb-1">{card.name}</h3>
                     <p className="text-sm text-indigo-200">{card.position} • {card.number}</p>
                   </div>
+                  <Badge className="bg-green-500/20 text-green-400 border-green-500/50 text-xs px-2.5 py-1 shadow-[0_0_15px_rgba(34,197,94,0.4)]">
+                    ✓ VERIFIED
+                  </Badge>
                 </div>
-                <Badge className="bg-green-500/20 text-green-400 border-green-500/50 text-sm px-3 py-1.5 shadow-[0_0_15px_rgba(34,197,94,0.4)]">
-                  ✓ VERIFIED
-                </Badge>
-              </div>
 
-              {/* Binding Type Banner */}
-              <div className="bg-gradient-to-r from-indigo-500/20 via-violet-500/15 to-fuchsia-500/20 border border-indigo-400/40 rounded-2xl px-5 py-4 mb-6 shadow-[inset_0_0_30px_rgba(87,61,255,0.1)]">
-                <div className="flex items-center gap-3">
-                  <Zap className="w-6 h-6 text-violet-300" />
-                  <span className="text-base font-bold text-violet-200 uppercase tracking-wider">{card.bindingType}</span>
-                </div>
-                <p className="text-sm text-indigo-200 mt-2">{card.covenant}</p>
-              </div>
-
-              {/* Binding Details */}
-              <div className="space-y-3 mb-6">
-                {[card.binding?.method, card.binding?.mechanism, card.binding?.protocol].filter(Boolean).map((text, i) => (
-                  <div key={i} className="flex items-start gap-3">
-                    <CheckCircle2 className="w-5 h-5 text-indigo-300 flex-shrink-0 mt-0.5" />
-                    <p className="text-sm text-white leading-relaxed">{text}</p>
+                <div className="bg-gradient-to-r from-indigo-500/20 via-violet-500/15 to-fuchsia-500/20 border border-indigo-400/40 rounded-xl px-4 py-3 shadow-[inset_0_0_30px_rgba(87,61,255,0.1)]">
+                  <div className="flex items-center gap-2 mb-1">
+                    <Zap className="w-5 h-5 text-violet-300" />
+                    <span className="text-sm font-bold text-violet-200 uppercase tracking-wide">{card.bindingType}</span>
                   </div>
-                ))}
+                  <p className="text-xs text-indigo-200">{card.covenant}</p>
+                </div>
+              </div>
+
+              {/* Capability Stack - Scrollable */}
+              <div className="flex-shrink-0 mb-6">
+                <h4 className="text-xs uppercase tracking-widest text-indigo-300 font-bold mb-3 flex items-center gap-2">
+                  <Brain className="w-4 h-4" />
+                  Capability Stack
+                </h4>
+                <div className="space-y-2">
+                  {card.capabilities?.map((capability, i) => (
+                    <div key={i} className="flex items-start gap-2 p-2 rounded-lg bg-white/5 border border-white/10">
+                      <CheckCircle2 className="w-4 h-4 text-cyan-400 flex-shrink-0 mt-0.5" />
+                      <p className="text-xs text-white leading-relaxed">{capability}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
 
               {/* Quote */}
-              <div className="bg-white/8 border border-white/15 rounded-xl p-4 mb-6 backdrop-blur-md shadow-[inset_0_0_20px_rgba(87,61,255,0.1)]">
-                <p className="text-base italic text-indigo-200 leading-relaxed">"{card.quote}"</p>
-              </div>
-
-              {/* CRYPTOGRAPHIC SIGNATURE BLOCK */}
-              <div className="flex-1 bg-white/5 border-2 border-indigo-400/40 rounded-2xl p-5 font-mono shadow-[inset_0_0_40px_rgba(87,61,255,0.15)] backdrop-blur-md">
-                <div className="flex items-center gap-3 mb-4 pb-4 border-b border-indigo-400/30">
-                  <Fingerprint className="w-6 h-6 text-indigo-300" />
-                  <span className="text-sm text-indigo-200 font-bold uppercase tracking-[0.15em]">Cryptographic Signature</span>
-                </div>
-
-                <div className="space-y-4">
-                  <div className="flex items-center gap-3">
-                    <span className="text-violet-200 text-sm w-24">Algorithm:</span>
-                    <span className="text-green-400 font-bold text-base">{card.cryptoSignature?.algorithm}</span>
-                  </div>
-                  
-                  <div className="flex items-start gap-3">
-                    <Hash className="w-5 h-5 text-violet-200 flex-shrink-0 mt-1" />
-                    <div className="flex-1">
-                      <span className="text-violet-200 text-xs uppercase">Hash</span>
-                      <p className="text-fuchsia-300 break-all text-sm leading-relaxed mt-1">{card.cryptoSignature?.hash}</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center gap-3">
-                    <Lock className="w-5 h-5 text-violet-200" />
-                    <div>
-                      <span className="text-violet-200 text-xs uppercase">Public Key</span>
-                      <p className="text-indigo-300 font-semibold text-base mt-1">{card.cryptoSignature?.publicKey}</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center gap-3">
-                    <Clock className="w-5 h-5 text-violet-200" />
-                    <div>
-                      <span className="text-violet-200 text-xs uppercase">Binding Date</span>
-                      <p className="text-white text-base mt-1">{formatDate(card.bindingDate)}</p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Verification Status */}
-                <div className="mt-5 pt-4 border-t border-indigo-400/30 flex items-center justify-between">
-                  <span className="text-xs text-violet-200 uppercase tracking-wider">Verification Status</span>
-                  <div className="flex items-center gap-2">
-                    <span className="w-3 h-3 rounded-full bg-green-400 animate-pulse shadow-[0_0_12px_rgba(34,197,94,0.8)]" />
-                    <span className="text-sm text-green-400 font-bold uppercase">VERIFIED & BOUND</span>
-                  </div>
+              <div className="flex-shrink-0 mb-6">
+                <div className="bg-white/8 border border-white/15 rounded-xl p-4 backdrop-blur-md shadow-[inset_0_0_20px_rgba(87,61,255,0.1)]">
+                  <p className="text-sm italic text-indigo-200 leading-relaxed">"{card.quote}"</p>
                 </div>
               </div>
 
-              {/* Signature Display (if signed) */}
+              {/* Cryptographic Signature */}
+              <div className="flex-shrink-0 mb-6">
+                <div className="bg-white/5 border-2 border-indigo-400/40 rounded-xl p-4 font-mono shadow-[inset_0_0_40px_rgba(87,61,255,0.15)] backdrop-blur-md">
+                  <div className="flex items-center gap-2 mb-3 pb-3 border-b border-indigo-400/30">
+                    <Fingerprint className="w-5 h-5 text-indigo-300" />
+                    <span className="text-xs text-indigo-200 font-bold uppercase tracking-wider">Cryptographic Signature</span>
+                  </div>
+
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-2">
+                      <span className="text-violet-200 text-xs w-20">Algorithm:</span>
+                      <span className="text-green-400 font-bold text-sm">{card.cryptoSignature?.algorithm}</span>
+                    </div>
+                    
+                    <div className="flex items-start gap-2">
+                      <Hash className="w-4 h-4 text-violet-200 flex-shrink-0 mt-1" />
+                      <div className="flex-1 min-w-0">
+                        <span className="text-violet-200 text-[10px] uppercase block mb-1">Hash</span>
+                        <p className="text-fuchsia-300 break-all text-xs leading-relaxed select-all">{card.cryptoSignature?.hash}</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center gap-2">
+                      <Lock className="w-4 h-4 text-violet-200" />
+                      <div className="flex-1 min-w-0">
+                        <span className="text-violet-200 text-[10px] uppercase block mb-1">Public Key</span>
+                        <p className="text-indigo-300 font-semibold text-xs truncate">{card.cryptoSignature?.publicKey}</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center gap-2">
+                      <Clock className="w-4 h-4 text-violet-200" />
+                      <div>
+                        <span className="text-violet-200 text-[10px] uppercase block mb-1">Binding Date</span>
+                        <p className="text-white text-xs">{formatDate(card.bindingDate)}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-4 pt-3 border-t border-indigo-400/30 flex items-center justify-between">
+                    <span className="text-[10px] text-violet-200 uppercase tracking-wider">Status</span>
+                    <div className="flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.8)]" />
+                      <span className="text-xs text-green-400 font-bold uppercase">VERIFIED & BOUND</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Signature (if signed) */}
               {card.signature && card.signatureImage && (
-                <div className="mt-6 text-center">
-                  <div className="inline-block px-6 py-3 bg-white/8 border border-amber-400/40 rounded-xl backdrop-blur-md shadow-[0_0_20px_rgba(245,158,11,0.3)]">
-                    <span className="text-violet-200 text-xs uppercase tracking-wider block mb-2">Authenticated Signature</span>
-                    <span className="text-3xl md:text-4xl font-script italic text-amber-300" style={{ fontFamily: 'cursive' }}>
+                <div className="flex-shrink-0 mb-6 text-center">
+                  <div className="inline-block px-5 py-2.5 bg-white/8 border border-amber-400/40 rounded-lg backdrop-blur-md shadow-[0_0_20px_rgba(245,158,11,0.3)]">
+                    <span className="text-violet-200 text-[10px] uppercase tracking-wider block mb-1.5">Authenticated Signature</span>
+                    <span className="text-2xl md:text-3xl font-script italic text-amber-300" style={{ fontFamily: 'cursive' }}>
                       {card.signatureImage}
                     </span>
                   </div>
@@ -543,17 +579,17 @@ export default function DreamTeamPage() {
               )}
 
               {/* Footer */}
-              <div className="mt-6 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center shadow-[0_0_20px_rgba(87,61,255,0.5)]">
-                    <span className="text-sm font-black text-white">GL</span>
+              <div className="flex-shrink-0 mt-auto pt-4 border-t border-white/10 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center shadow-[0_0_20px_rgba(87,61,255,0.5)]">
+                    <span className="text-xs font-black text-white">GL</span>
                   </div>
                   <div>
-                    <span className="text-base font-bold text-white">GlyphLock</span>
-                    <p className="text-xs text-indigo-200 uppercase tracking-wider">Dream Team Collection</p>
+                    <span className="text-sm font-bold text-white">GlyphLock</span>
+                    <p className="text-[10px] text-indigo-200 uppercase tracking-wider">Dream Team Collection</p>
                   </div>
                 </div>
-                <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/50 text-sm px-3 py-1.5 shadow-[0_0_15px_rgba(245,158,11,0.4)]">
+                <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/50 text-xs px-2 py-1 shadow-[0_0_15px_rgba(245,158,11,0.4)]">
                   BPAA CERTIFIED
                 </Badge>
               </div>
