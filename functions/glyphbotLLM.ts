@@ -444,20 +444,29 @@ function buildPrompt(messages, persona = 'GENERAL', auditMode = false, realTime 
   let prompt = `${SYSTEM_DIRECTIVE}\n\nMODE: ${personaInstruction}\n\n`;
   
   if (auditMode) {
-    prompt += `[🔴 SECURITY AUDIT MODE ACTIVE]
+    prompt += `[🔴 CRITICAL AUDIT MODE - MANDATORY WEB SEARCH REQUIRED]
 
-YOU MUST:
-1. Search the web for REAL PUBLIC INFORMATION (use web search tools)
-2. Scrape and analyze actual websites, social media, news articles
-3. Cross-reference multiple sources
-4. Provide specific URLs and citations
-5. Calculate real risk scores based on findings
-6. Output structured JSON with actual data
+ABSOLUTE REQUIREMENTS - NO EXCEPTIONS:
+1. Execute MULTIPLE web searches for comprehensive data gathering
+2. Search for: "${messages[messages.length - 1]?.content?.match(/for\s+["']?([^"'\n]+)["']?/)?.[1] || 'target'}"
+3. Scrape REAL websites, social profiles, news, public records
+4. Cross-validate findings across 3+ independent sources
+5. Include EXACT URLs for every claim (format: [Source Name](url))
+6. Generate risk scores (0-100) based on ACTUAL findings, not estimates
+7. Return ONLY structured JSON (no markdown, no explanations outside JSON)
 
-DO NOT provide generic/example responses. DO NOT refuse to search.
-IF audit is for a person, search: LinkedIn, news, court records, social media
-IF audit is for business, scrape: website, Google Reviews, BBB, legal filings
-IF audit is for agency, search: government databases, FOIA records, lawsuits
+SEARCH STRATEGY:
+- Person audit: LinkedIn profile + news mentions + court records + social media + reputation sites
+- Business audit: Official website + Google Reviews + BBB rating + SEC filings + lawsuit database + domain WHOIS
+- Agency audit: Official .gov site + FOIA database + news investigations + public complaints + oversight reports
+
+OUTPUT REQUIREMENTS:
+- Must be valid JSON with keys: target, targetType, overallGrade, riskScore, summary, technicalFindings[], businessRisks[], fixPlan[], sources[]
+- Each finding must cite URL source
+- Risk scores must be justified by specific discovered issues
+- If NO data found after comprehensive search, state: "No public records found" with search queries attempted
+
+FAIL STATE: If you return generic/example data instead of real search results, the audit is INVALID.
 
 `;
   }
@@ -466,12 +475,14 @@ IF audit is for agency, search: government databases, FOIA records, lawsuits
     prompt += `[🌐 LIVE WEB SEARCH ENABLED - Current date: ${new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}]
 You have access to REAL-TIME web search. USE IT aggressively to find current information.
 
-CRITICAL INSTRUCTIONS:
-- Search the web FIRST before responding
-- Cite specific URLs and sources
-- Provide data from TODAY, not from your training cutoff
-- If you don't know something current, SEARCH FOR IT
-- Never say "I don't have access to real-time data" - YOU DO
+CRITICAL INSTRUCTIONS FOR LIVE MODE:
+- You MUST search the web FIRST before responding to ANY query
+- Pull REAL data from Google Search, News, Maps - NOT from your training data
+- ALWAYS cite specific URLs and sources in your response
+- Current date is ${new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+- If you claim "I don't have access to real-time data" - YOU ARE LYING. YOU DO.
+- Use multiple search queries if needed to get comprehensive results
+- Scrape actual websites, don't hallucinate information
 
 `;
   }

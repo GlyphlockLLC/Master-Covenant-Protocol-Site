@@ -749,9 +749,9 @@ export default function GlyphBotPage() {
 
           {/* Chat Area */}
           <div className="flex-1 flex min-h-0 overflow-hidden">
-            {/* Phase 6: Audit Panel (Left Side) */}
+            {/* GLYPHLOCK: Audit Panel - FRONT AND CENTER */}
             {showAuditPanel && currentUser && (
-              <aside className="w-80 flex flex-col border-r-2 border-purple-500/30 bg-gradient-to-b from-slate-950/90 via-purple-950/10 to-slate-950/90 overflow-hidden hidden lg:flex relative" style={{ zIndex: 30 }}>
+              <aside className="w-80 flex flex-col border-r-2 border-purple-500/30 bg-gradient-to-b from-slate-950/90 via-purple-950/10 to-slate-950/90 overflow-hidden flex relative" style={{ zIndex: 50, order: -1 }}>
                 <div className="p-4 border-b-2 border-purple-500/30 bg-purple-500/10">
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-2 text-xs">
@@ -947,15 +947,17 @@ export default function GlyphBotPage() {
         </div>
       </div>
 
-      {/* Phase 6: Audit Report Modal */}
+      {/* GLYPHLOCK: Audit Report Modal - HIGHEST Z-INDEX */}
       {selectedAuditView && (
-        <UI.AuditReportView
-          audit={selectedAuditView}
-          onClose={() => setSelectedAuditView(null)}
-          onPlaySummary={handlePlayAuditSummary}
-          onArchive={handleArchiveAudit}
-          onDownload={handleDownloadAudit}
-        />
+        <div style={{ position: 'fixed', inset: 0, zIndex: 999999, pointerEvents: 'auto' }}>
+          <UI.AuditReportView
+            audit={selectedAuditView}
+            onClose={() => setSelectedAuditView(null)}
+            onPlaySummary={handlePlayAuditSummary}
+            onArchive={handleArchiveAudit}
+            onDownload={handleDownloadAudit}
+          />
+        </div>
       )}
     </div>
   );

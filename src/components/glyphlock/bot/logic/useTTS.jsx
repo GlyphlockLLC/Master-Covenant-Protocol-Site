@@ -349,11 +349,14 @@ export default function useTTS(options = {}) {
     const voiceProfile = VOICE_PROFILES[settings.voiceProfile] || VOICE_PROFILES.neutral_female;
     const voiceId = voiceProfile.id;
 
+    // GLYPHLOCK: Optimized provider fallback chain
     if (provider === 'auto' || provider === 'openai') {
       try {
-        const success = await playWithOpenAI(cleanText, settings, voiceId);
+        console.log('[TTS] Attempting OpenAI TTS...');
+        const success = await playWithOpenAI(cleanText, settings, settings.voiceProfile);
         if (success) return true;
         
+        console.warn('[TTS] OpenAI failed, falling back to Web Speech');
         if (provider === 'auto') {
           return await playWithWebSpeech(cleanText, settings);
         }
@@ -361,6 +364,7 @@ export default function useTTS(options = {}) {
       } catch (err) {
         console.error('[TTS] OpenAI TTS error:', err);
         if (provider === 'auto') {
+          console.log('[TTS] Auto-fallback to Web Speech');
           return await playWithWebSpeech(cleanText, settings);
         }
         setLastError(err.message);
@@ -369,6 +373,7 @@ export default function useTTS(options = {}) {
       }
     }
 
+    // GLYPHLOCK: Direct Web Speech for 'webspeech' provider
     return await playWithWebSpeech(cleanText, settings);
   }, [provider, stop, playWithOpenAI, playWithWebSpeech, currentSettings]);
 
