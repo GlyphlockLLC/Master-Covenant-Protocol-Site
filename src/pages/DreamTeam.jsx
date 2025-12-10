@@ -8,8 +8,6 @@ import { createPageUrl } from "@/utils";
 import SEOHead from "@/components/SEOHead";
 import { Zap, Shield, Brain, Gauge, ChevronRight, ChevronDown, CheckCircle2, Lock, Fingerprint, Hash, Clock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import NebulaLayer from "@/components/global/NebulaLayer";
-import CursorOrb from "@/components/global/CursorOrb";
 
 const DREAM_TEAM_ROSTER = [
   {
@@ -209,16 +207,8 @@ export default function DreamTeamPage() {
         description="Meet the GlyphLock Dream Team. Collectible AI player cards featuring Alfred, Claude, Copilot, Perplexity, and Cursor. Master Covenant Series."
       />
 
-      {/* Background layers - owned by this page */}
-      <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
-        <NebulaLayer intensity={1.2} />
-        <div className="hidden md:block">
-          <CursorOrb />
-        </div>
-      </div>
-
       {/* Introduction Section - The Dream Team Philosophy */}
-      <div className="min-h-screen flex items-center justify-center relative px-6 z-10">
+      <div className="min-h-screen flex items-center justify-center relative px-6">
           <div className="max-w-4xl mx-auto text-center space-y-6">
           <h1 className="text-5xl md:text-7xl font-black mb-6">
             <span className="text-white">WHY THE </span>
