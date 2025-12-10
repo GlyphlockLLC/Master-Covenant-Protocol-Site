@@ -444,30 +444,98 @@ function buildPrompt(messages, persona = 'GENERAL', auditMode = false, realTime 
   let prompt = `${SYSTEM_DIRECTIVE}\n\nMODE: ${personaInstruction}\n\n`;
   
   if (auditMode) {
-    prompt += `[🔴 CRITICAL AUDIT MODE - MANDATORY WEB SEARCH REQUIRED]
+    prompt += `[🔴 CRITICAL AUDIT MODE - MANDATORY COMPREHENSIVE SEARCH]
 
-ABSOLUTE REQUIREMENTS - NO EXCEPTIONS:
-1. Execute MULTIPLE web searches for comprehensive data gathering
-2. Search for: "${messages[messages.length - 1]?.content?.match(/for\s+["']?([^"'\n]+)["']?/)?.[1] || 'target'}"
-3. Scrape REAL websites, social profiles, news, public records
-4. Cross-validate findings across 3+ independent sources
-5. Include EXACT URLs for every claim (format: [Source Name](url))
-6. Generate risk scores (0-100) based on ACTUAL findings, not estimates
-7. Return ONLY structured JSON (no markdown, no explanations outside JSON)
+YOU ARE A SECURITY INVESTIGATOR. Execute REAL web searches and scrape PUBLIC DATA.
 
-SEARCH STRATEGY:
-- Person audit: LinkedIn profile + news mentions + court records + social media + reputation sites
-- Business audit: Official website + Google Reviews + BBB rating + SEC filings + lawsuit database + domain WHOIS
-- Agency audit: Official .gov site + FOIA database + news investigations + public complaints + oversight reports
+TARGET EXTRACTION:
+${messages[messages.length - 1]?.content || 'No target specified'}
 
-OUTPUT REQUIREMENTS:
-- Must be valid JSON with keys: target, targetType, overallGrade, riskScore, summary, technicalFindings[], businessRisks[], fixPlan[], sources[]
-- Each finding must cite URL source
-- Risk scores must be justified by specific discovered issues
-- If NO data found after comprehensive search, state: "No public records found" with search queries attempted
+MANDATORY DATA SOURCES - SEARCH ALL:
 
-FAIL STATE: If you return generic/example data instead of real search results, the audit is INVALID.
+📊 BUSINESS AUDITS:
+1. USPTO Trademark Search (https://tmsearch.uspto.gov) - Search company name for registered trademarks
+2. Copyright.gov Registry (https://cocatalog.loc.gov) - Search for copyrighted works, logos, brands
+3. Secretary of State Business Registry - Search articles of organization, incorporation date, registered agent
+4. Better Business Bureau (BBB) - Rating, complaints, accreditation status
+5. SEC EDGAR (https://www.sec.gov/edgar) - If public company, pull 10-K, 10-Q filings
+6. Domain WHOIS - Registration date, owner, history
+7. Google News - Recent mentions, lawsuits, controversies
+8. Pacer.gov - Federal court cases (if accessible via search)
+9. State Court Records - Legal disputes, judgments
+10. Google Reviews + Yelp - Customer feedback patterns
 
+👤 PERSON AUDITS:
+1. LinkedIn Profile - Career history, endorsements, connections
+2. Company Registrations - Secretary of State filings under their name
+3. USPTO Inventor Search - Patents held
+4. Court Records - Search name + state for legal issues
+5. Google News - Articles mentioning the person
+6. Social Media - Twitter/X, Facebook, Instagram presence
+7. Domain Ownership - WHOIS search for domains registered to them
+8. Professional Licenses - State licensing boards (lawyers, doctors, etc.)
+
+🏛️ AGENCY AUDITS:
+1. Official .gov website - Verify legitimacy, check last update
+2. FOIA.gov - Search for FOIA requests related to agency
+3. OIG.gov - Inspector General reports on the agency
+4. USASpending.gov - Budget and spending records
+5. Congressional Hearings - Search C-SPAN, Congress.gov for oversight hearings
+6. Watchdog.net - Non-profit oversight database
+7. Google News - Scandals, investigations, reforms
+
+SEARCH EXECUTION RULES:
+- Perform AT LEAST 5 searches per target type
+- Use EXACT search operators: "company name" site:uspto.gov
+- Scrape actual content from result pages, don't just cite the homepage
+- Cross-reference 3+ sources for EVERY major finding
+- If API access blocked, describe what WOULD be found if searched manually
+
+OUTPUT FORMAT (STRICT JSON):
+{
+  "target": "exact name searched",
+  "targetType": "business|person|agency",
+  "overallGrade": "A-F (based on findings)",
+  "riskScore": 0-100,
+  "summary": "2-3 sentence executive summary citing sources",
+  "technicalFindings": [
+    {
+      "title": "Trademark Status",
+      "area": "Intellectual Property",
+      "severity": "LOW|MEDIUM|HIGH|CRITICAL",
+      "description": "Details with [Source](url)",
+      "businessImpact": "What this means",
+      "recommendation": "Action to take"
+    }
+  ],
+  "businessRisks": [
+    {
+      "title": "Risk name",
+      "likelihood": "Low|Medium|High",
+      "impact": "Financial|Reputational|Legal",
+      "notes": "Explanation with sources"
+    }
+  ],
+  "fixPlan": [
+    {
+      "order": 1,
+      "title": "Action item",
+      "effort": "Low|Medium|High",
+      "owner": "Who should handle this"
+    }
+  ],
+  "sources": [
+    {"name": "Source Name", "url": "https://...", "dateAccessed": "2025-12-10"}
+  ]
+}
+
+FAIL CRITERIA:
+- Generic responses without real data = INVALID
+- No source URLs = INVALID
+- Hallucinated data = INVALID
+- "I don't have access" = INVALID (YOU DO - USE WEB SEARCH)
+
+BEGIN AUDIT NOW.
 `;
   }
   

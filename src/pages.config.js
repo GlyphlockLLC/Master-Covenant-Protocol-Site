@@ -55,6 +55,7 @@ import Qr from './pages/Qr';
 import VideoUpload from './pages/VideoUpload';
 import Mobile from './pages/Mobile';
 import AboutCarlo from './pages/AboutCarlo';
+import GlyphLockPlayground from './pages/GlyphLockPlayground';
 import __Layout from './Layout.jsx';
 
 
@@ -116,6 +117,7 @@ export const PAGES = {
     "VideoUpload": VideoUpload,
     "Mobile": Mobile,
     "AboutCarlo": AboutCarlo,
+    "GlyphLockPlayground": GlyphLockPlayground,
 }
 
 export const pagesConfig = {
