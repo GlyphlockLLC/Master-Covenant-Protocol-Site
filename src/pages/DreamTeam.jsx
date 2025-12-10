@@ -217,10 +217,8 @@ export default function DreamTeamPage() {
         </div>
       </div>
 
-      {/* Foreground content wrapper */}
-      <div className="relative z-10">
-        {/* Introduction Section - The Dream Team Philosophy */}
-        <div className="min-h-screen flex items-center justify-center relative px-6">
+      {/* Introduction Section - The Dream Team Philosophy */}
+      <div className="min-h-screen flex items-center justify-center relative px-6 z-10">
           <div className="max-w-4xl mx-auto text-center space-y-6">
           <h1 className="text-5xl md:text-7xl font-black mb-6">
             <span className="text-white">WHY THE </span>
@@ -293,7 +291,7 @@ export default function DreamTeamPage() {
       ))}
 
       {/* CTA SECTION */}
-      <div className="min-h-screen flex items-center justify-center relative py-20 overflow-hidden">
+      <div className="min-h-screen flex items-center justify-center relative py-20 overflow-hidden z-10">
         <div className="text-center px-6">
           <h2 className="text-4xl md:text-6xl font-black mb-6">
             <span className="bg-gradient-to-r from-fuchsia-400 via-pink-400 to-cyan-300 bg-clip-text text-transparent">
@@ -310,12 +308,11 @@ export default function DreamTeamPage() {
             Enter the Console
             <ChevronRight className="w-6 h-6" />
           </Link>
-        </div>
-      </div>
-      </div>
-      </>
-      );
-      }
+          </div>
+          </div>
+          </>
+          );
+          }
 
       function FullScreenCard({ card, index }) {
   const [isFlipped, setIsFlipped] = useState(false);
@@ -331,7 +328,7 @@ export default function DreamTeamPage() {
   };
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center px-4 py-8 relative" style={{ zIndex: 5, isolation: 'isolate' }}>
+    <div className="min-h-screen w-full flex items-center justify-center px-4 py-8 relative z-10" style={{ isolation: 'isolate' }}>
       {/* Card container */}
       <div 
         className="relative w-full max-w-lg md:max-w-xl lg:max-w-2xl cursor-pointer"
