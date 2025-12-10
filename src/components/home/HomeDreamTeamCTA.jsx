@@ -16,15 +16,25 @@ export default function HomeDreamTeamCTA() {
         </div>
       </div>
 
+      {/* PULSING GLOW BEHIND ENTIRE CTA */}
+      <div 
+        className="absolute inset-0 -m-8 rounded-3xl animate-pulse"
+        style={{
+          background: 'radial-gradient(circle, rgba(79,70,229,0.4) 0%, rgba(65,105,225,0.2) 50%, transparent 70%)',
+          filter: 'blur(80px)',
+          zIndex: -1
+        }}
+      />
+
       {/* COURT IMAGE WITH BUTTON OVERLAY */}
       <section className="relative w-full mx-auto max-w-5xl rounded-3xl shadow-[0_0_80px_rgba(79,70,229,0.6)] overflow-hidden">
         
-        {/* COURT BACKGROUND - CONTAINED */}
-        <div className="relative w-full aspect-[16/9]">
+        {/* COURT BACKGROUND - TIGHTER CROP */}
+        <div className="relative w-full aspect-[21/9]">
           <img
             src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/03ba5648e_3880beef-889a-4dec-9b80-2b561f3c47a31.jpg"
             alt="Basketball Court"
-            className="w-full h-full object-cover brightness-125 contrast-125 saturate-150"
+            className="w-full h-full object-cover object-center brightness-125 contrast-125 saturate-150"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
         </div>
@@ -90,7 +100,7 @@ export default function HomeDreamTeamCTA() {
       </section>
 
       {/* ROSTER ROLES - BELOW COURT */}
-      <div className="relative w-full max-w-5xl mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
+      <div className="relative w-full max-w-5xl mt-12 mb-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
         {[
           { name: 'Alfred', role: 'Point Guard (Floor General)', desc: 'Orchestrates the chain, calls the plays, enforces execution order so every touch has purpose.' },
           { name: 'Claude', role: 'Shooting Guard (Closer)', desc: 'Pure shot-maker on hard problems: deep reasoning, constraints, proofs. When it has to be right, the ball goes here.' },
@@ -105,13 +115,6 @@ export default function HomeDreamTeamCTA() {
             <p className="text-sm text-white/70 leading-relaxed">{player.desc}</p>
           </div>
         ))}
-      </div>
-
-      {/* CHEMISTRY LINE */}
-      <div className="relative w-full max-w-3xl mt-12 mb-12 p-6 rounded-xl bg-gradient-to-r from-blue-500/20 via-indigo-500/20 to-cyan-500/20 border-2 border-blue-400/40 backdrop-blur-md">
-        <p className="text-lg text-white font-black text-center">
-          They're not fighting for touches; they're running sets. <span className="text-blue-400">Specialized roles. Coordinated execution. Olympic-level play—not streetball.</span>
-        </p>
       </div>
     </div>
   );
