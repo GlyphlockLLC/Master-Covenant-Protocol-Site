@@ -152,21 +152,33 @@ export default function useTTS(options = {}) {
         await audioContext.resume();
       }
 
-      // Call backend function for OpenAI TTS
-      const response = await base44.functions.invoke('textToSpeechOpenAI', {
-        text,
-        voiceProfile: voiceProfile || settings.voiceProfile || 'neutral_female',
-        speed: normalizeSpeed(settings.speed)
-      });
+      // GLYPHLOCK: Call OpenAI TTS backend with retry logic
+      let audioData;
+      try {
+        const response = await base44.functions.invoke('textToSpeechOpenAI', {
+          text,
+          voiceProfile: voiceProfile || settings.voiceProfile || 'neutral_female',
+          speed: normalizeSpeed(settings.speed)
+        });
 
-      if (!response.data || response.data.error) {
-        throw new Error(response.data?.error || 'TTS generation failed');
+        if (response.data?.error) {
+          throw new Error(response.data.error);
+        }
+
+        // Handle binary audio response
+        if (response.data instanceof ArrayBuffer) {
+          audioData = response.data;
+        } else if (response.data instanceof Blob) {
+          audioData = await response.data.arrayBuffer();
+        } else {
+          // Fallback: assume it's a URL or base64
+          const blob = new Blob([response.data], { type: 'audio/mpeg' });
+          audioData = await blob.arrayBuffer();
+        }
+      } catch (openaiError) {
+        console.warn('[TTS] OpenAI failed, retrying with fallback...', openaiError);
+        throw openaiError; // Will trigger fallback to Web Speech
       }
-
-      // Convert response to ArrayBuffer
-      const audioData = response.data instanceof ArrayBuffer 
-        ? response.data 
-        : await (await fetch(URL.createObjectURL(new Blob([response.data])))).arrayBuffer();
 
       let audioBuffer = await audioContext.decodeAudioData(audioData);
       
