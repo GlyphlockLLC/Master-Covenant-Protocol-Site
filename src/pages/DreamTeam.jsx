@@ -435,15 +435,16 @@ export default function DreamTeamPage() {
           {isFlipped ? 'Click to see front' : 'Click to flip card'}
         </div>
 
-        <div 
-          className="relative w-full aspect-[3/4]"
-          style={{ 
-            transformStyle: 'preserve-3d',
-            transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
-            transition: 'transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
-            willChange: 'transform'
-          }}
-        >
+        <div className="space-y-6">
+          <div 
+            className="relative w-full aspect-[3/4]"
+            style={{ 
+              transformStyle: 'preserve-3d',
+              transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
+              transition: 'transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
+              willChange: 'transform'
+            }}
+          >
           {/* FRONT OF CARD */}
           <div 
             className="absolute inset-0 rounded-3xl overflow-hidden"
@@ -505,24 +506,8 @@ export default function DreamTeamPage() {
               <div className="text-4xl md:text-5xl font-black text-white mb-2">{card.name}</div>
               <p className="text-sm text-violet-100 mb-4">{card.tagline}</p>
 
-              {/* Stats */}
-              <div className="grid grid-cols-4 gap-3">
-                {Object.entries(card.stats).map(([key, val]) => (
-                  <div key={key} className="text-center">
-                    <div className="text-2xl md:text-3xl font-black text-white">{val}</div>
-                    <div className="text-[10px] uppercase tracking-wider text-indigo-200">{key}</div>
-                    <div className="w-full h-1.5 bg-white/10 rounded-full mt-1 overflow-hidden">
-                      <div 
-                        className="h-full bg-gradient-to-r from-indigo-500 to-violet-400 rounded-full shadow-[0_0_8px_rgba(87,61,255,0.6)]"
-                        style={{ width: `${val}%` }}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-
               {/* Footer */}
-              <div className="flex items-center justify-between mt-4 pt-4 border-t border-white/15">
+              <div className="flex items-center justify-between pt-4 border-t border-white/15">
                 <div className="flex items-center gap-2">
                   <Shield className="w-5 h-5 text-indigo-300" />
                   <span className="text-xs uppercase tracking-wider text-violet-200">BPAA Certified</span>
@@ -681,6 +666,26 @@ export default function DreamTeamPage() {
               </div>
             </div>
           </div>
+
+          {/* Stats - Outside Card */}
+          {!isFlipped && (
+            <div className="w-full max-w-2xl mx-auto px-4">
+              <div className="grid grid-cols-4 gap-4 p-6 rounded-2xl bg-gradient-to-br from-indigo-500/10 via-violet-500/10 to-blue-500/10 border-2 border-indigo-400/30 backdrop-blur-xl shadow-[0_0_40px_rgba(87,61,255,0.3)]">
+                {Object.entries(card.stats).map(([key, val]) => (
+                  <div key={key} className="text-center">
+                    <div className="text-3xl md:text-4xl font-black text-white drop-shadow-[0_0_10px_rgba(59,130,246,0.8)]">{val}</div>
+                    <div className="text-xs uppercase tracking-wider text-indigo-200 font-bold mb-2">{key}</div>
+                    <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+                      <div 
+                        className="h-full bg-gradient-to-r from-indigo-500 via-blue-500 to-violet-500 rounded-full shadow-[0_0_12px_rgba(87,61,255,0.8)]"
+                        style={{ width: `${val}%` }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
