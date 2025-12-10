@@ -35,11 +35,16 @@ export default function PaywallGuard({ serviceName, children, requirePlan = "pro
         return;
       }
 
-      // Check if user has active subscription in metadata
+      // GLYPHLOCK: Check subscription plan key matches required tier
       const hasSubscription = userData.subscription_plan && 
                             userData.subscription_status === 'active';
       
-      setHasAccess(hasSubscription);
+      // GLYPHLOCK: Map plan requirements (creator < professional < enterprise)
+      const planHierarchy = { creator: 1, professional: 2, enterprise: 3 };
+      const userPlanLevel = planHierarchy[userData.subscription_plan] || 0;
+      const requiredLevel = planHierarchy[requirePlan] || 1;
+      
+      setHasAccess(hasSubscription && userPlanLevel >= requiredLevel);
     } catch (error) {
       console.error("Access check error:", error);
       setHasAccess(false);
@@ -48,10 +53,11 @@ export default function PaywallGuard({ serviceName, children, requirePlan = "pro
     }
   };
 
-  const handleUpgrade = async (planPrice) => {
+  const handleUpgrade = async (planKey) => {
     try {
+      // GLYPHLOCK: Use plan key instead of price ID
       const response = await base44.functions.invoke('stripeCreateCheckout', {
-        priceId: planPrice,
+        plan: planKey,
         mode: 'subscription',
         successUrl: `${window.location.origin}${createPageUrl('PaymentSuccess')}?session_id={CHECKOUT_SESSION_ID}`,
         cancelUrl: `${window.location.origin}${createPageUrl('PaymentCancel')}`
@@ -141,7 +147,7 @@ export default function PaywallGuard({ serviceName, children, requirePlan = "pro
                       </li>
                     </ul>
                     <Button 
-                      onClick={() => handleUpgrade('price_1SUlImAOe9xXPv0na5BmMKKY')}
+                      onClick={() => handleUpgrade('creator')}
                       className="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 border-0 text-white font-semibold py-3 rounded-xl transition-all duration-300"
                       style={{ boxShadow: '0 0 20px rgba(6, 182, 212, 0.3)' }}
                     >
@@ -186,7 +192,7 @@ export default function PaywallGuard({ serviceName, children, requirePlan = "pro
                       </li>
                     </ul>
                     <Button 
-                      onClick={() => handleUpgrade('price_1SUlRKAOe9xXPv0nW0uH1IQl')}
+                      onClick={() => handleUpgrade('professional')}
                       className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 border-0 text-white font-semibold py-3 rounded-xl transition-all duration-300"
                       style={{ boxShadow: '0 0 20px rgba(168, 85, 247, 0.4)' }}
                     >

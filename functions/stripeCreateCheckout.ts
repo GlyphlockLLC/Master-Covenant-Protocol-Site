@@ -3,6 +3,12 @@ import Stripe from 'npm:stripe@^14.14.0';
 
 const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY'));
 
+// GLYPHLOCK: Env-based price ID mapping
+const PRICE_MAPPING = {
+  creator: Deno.env.get('STRIPE_PRICE_CREATOR_MONTHLY'),
+  professional: Deno.env.get('STRIPE_PRICE_PROFESSIONAL_MONTHLY')
+};
+
 Deno.serve(async (req) => {
   try {
     if (req.method !== 'POST') {
@@ -16,16 +22,29 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { priceId, lineItems, mode = 'subscription', successUrl, cancelUrl } = await req.json();
+    const { plan, priceId, lineItems, mode = 'subscription', successUrl, cancelUrl } = await req.json();
 
-    if (!priceId && !lineItems) {
-      return Response.json({ error: 'Price ID or line items are required' }, { status: 400 });
+    // GLYPHLOCK: Enterprise requires manual approval, not direct checkout
+    if (plan === 'enterprise') {
+      return Response.json({ 
+        error: 'Enterprise requires manual approval. Please submit a request instead.' 
+      }, { status: 400 });
     }
 
-    // Build line items - either from priceId or custom lineItems
+    // GLYPHLOCK: Resolve price ID from plan name or use provided priceId
+    let resolvedPriceId = priceId;
+    if (plan && PRICE_MAPPING[plan]) {
+      resolvedPriceId = PRICE_MAPPING[plan];
+    }
+
+    if (!resolvedPriceId && !lineItems) {
+      return Response.json({ error: 'Plan, price ID, or line items are required' }, { status: 400 });
+    }
+
+    // GLYPHLOCK: Build line items - either from resolved priceId or custom lineItems
     const checkoutLineItems = lineItems || [
       {
-        price: priceId,
+        price: resolvedPriceId,
         quantity: 1,
       },
     ];
@@ -41,6 +60,7 @@ Deno.serve(async (req) => {
       metadata: {
         userId: user.id,
         userEmail: user.email,
+        plan: plan || 'unknown' // GLYPHLOCK: Track plan type for webhook mapping
       },
       allow_promotion_codes: true,
     });

@@ -698,6 +698,17 @@ export default function GlyphBotPage() {
               emotionPresets={emotionPresets}
             />
 
+          {/* GLYPHLOCK: Provider Chain - Restored */}
+          {providerMeta && (
+            <div className="px-4 py-2 border-b border-slate-800/50 bg-slate-950/40">
+              <Logic.GlyphProviderChain
+                availableProviders={providerMeta.availableProviders}
+                providerStats={providerMeta.providerStats}
+                providerUsed={lastMeta?.providerUsed || provider}
+              />
+            </div>
+          )}
+
           {/* Provider Debug Panel - Always visible for monitoring */}
           <div className="px-4 py-3 border-b border-slate-800/50 bg-slate-900/40">
             <UI.ProviderDebugPanel
@@ -705,6 +716,19 @@ export default function GlyphBotPage() {
               lastMeta={lastMeta}
             />
           </div>
+
+          {/* GLYPHLOCK: Provider Status Panel - Restored (conditional) */}
+          {modes.panel && providerMeta && (
+            <div className="px-4 py-3 border-b border-slate-800/50 bg-slate-900/40">
+              <UI.ProviderStatusPanel
+                availableProviders={providerMeta.availableProviders}
+                providerStats={providerMeta.providerStats}
+                providerUsed={lastMeta?.providerUsed || provider}
+                jsonModeEnabled={modes.json || modes.struct || modes.audit}
+                onProviderSelect={(id) => setProvider(id)}
+              />
+            </div>
+          )}
 
           {/* Trim Warning */}
           {showTrimWarning && (
@@ -822,18 +846,37 @@ export default function GlyphBotPage() {
               </aside>
             )}
 
-            {/* Session Stats - Desktop */}
+            {/* GLYPHLOCK: Telemetry Sidebar - Restored */}
             <aside className="hidden xl:flex w-72 flex-col border-l-2 border-purple-500/30 bg-gradient-to-b from-slate-950/90 via-purple-950/10 to-slate-950/90 overflow-hidden">
               <div className="px-4 py-4 border-b-2 border-purple-500/30 bg-purple-500/10">
                 <div className="flex items-center gap-2 text-xs">
                   <Activity className="w-4 h-4 text-cyan-400 drop-shadow-[0_0_8px_rgba(6,182,212,0.8)]" />
-                  <span className="uppercase tracking-[0.3em] text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400 font-bold">Session Stats</span>
+                  <span className="uppercase tracking-[0.3em] text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400 font-bold">Telemetry</span>
                 </div>
               </div>
 
-              <div className="flex-1 chat-scroll-container p-4 space-y-4">
+              <div className="flex-1 chat-scroll-container p-4 space-y-3">
+                {/* GLYPHLOCK: Rolling feed of last 5 messages */}
+                {messages.slice(-5).reverse().filter(m => m && m.content && m.role !== 'system').map((m, idx) => (
+                  <div key={m.id || `telem-${idx}`} className="rounded-xl border-2 border-purple-500/30 bg-slate-900/60 p-3 hover:border-cyan-400/50 transition-all duration-300 shadow-[0_0_10px_rgba(168,85,247,0.15)]">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className={`text-[9px] uppercase tracking-wider font-bold px-2 py-1 rounded-lg ${
+                        m.role === 'assistant' 
+                          ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-[0_0_8px_rgba(6,182,212,0.3)]' 
+                          : 'bg-purple-500/20 text-purple-300 border border-purple-500/40'
+                      }`}>
+                        {m.role === 'assistant' ? 'Bot' : 'You'}
+                      </span>
+                      {m.latencyMs && (
+                        <span className="text-[9px] text-cyan-400/70 font-mono">{m.latencyMs}ms</span>
+                      )}
+                    </div>
+                    <p className="text-[11px] text-slate-300 line-clamp-2">{m.content}</p>
+                  </div>
+                ))}
+
                 {/* Current Session Stats */}
-                <div className="space-y-2">
+                <div className="space-y-2 pt-3 border-t border-purple-500/20">
                   <div className="text-[10px] text-slate-400 uppercase tracking-wider">Current Session</div>
                   <div className="grid grid-cols-2 gap-2">
                     <div className="bg-slate-900/60 border border-purple-500/30 rounded-lg p-2">

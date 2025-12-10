@@ -108,14 +108,15 @@ export default function Pricing() {
   ];
 
   const handleSubscribe = async (plan) => {
-    if (!plan.priceId) return;
+    // GLYPHLOCK: Use plan name instead of priceId for env-based mapping
+    const planKey = plan.name.toLowerCase();
 
     try {
       setLoading(plan.name);
       setError(null);
       
       const response = await base44.functions.invoke('stripeCreateCheckout', {
-        priceId: plan.priceId,
+        plan: planKey, // GLYPHLOCK: Send plan name, backend resolves price ID from env
         mode: 'subscription',
         successUrl: `${window.location.origin}${createPageUrl('PaymentSuccess')}?session_id={CHECKOUT_SESSION_ID}`,
         cancelUrl: `${window.location.origin}${createPageUrl('PaymentCancel')}`
@@ -252,11 +253,36 @@ export default function Pricing() {
                   </div>
 
                   {plan.name === "Enterprise" ? (
-                    <Link to={createPageUrl("Consultation")} className="w-full">
-                      <Button className="w-full bg-transparent border border-[#8C4BFF] text-[#8C4BFF] hover:bg-[#8C4BFF] hover:text-white hover:shadow-[0_0_20px_rgba(140,75,255,0.4)] transition-all h-12 text-lg font-bold uppercase tracking-wide">
-                        Request Enterprise Access
-                      </Button>
-                    </Link>
+                    <Button
+                      onClick={async () => {
+                        try {
+                          setLoading("Enterprise");
+                          const response = await base44.functions.invoke('requestEnterpriseAccess', {
+                            companyName: 'Not specified',
+                            message: 'Enterprise access request from pricing page'
+                          });
+                          if (response.data?.success) {
+                            setError(null);
+                            alert('Enterprise access request submitted! Check your email for confirmation.');
+                          }
+                        } catch (err) {
+                          setError(err.message || 'Failed to submit request');
+                        } finally {
+                          setLoading(null);
+                        }
+                      }}
+                      disabled={loading === "Enterprise"}
+                      className="w-full bg-transparent border border-[#8C4BFF] text-[#8C4BFF] hover:bg-[#8C4BFF] hover:text-white hover:shadow-[0_0_20px_rgba(140,75,255,0.4)] transition-all h-12 text-lg font-bold uppercase tracking-wide"
+                    >
+                      {loading === "Enterprise" ? (
+                        <span className="flex items-center gap-2">
+                          <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
+                          Processing...
+                        </span>
+                      ) : (
+                        "Request Enterprise Access"
+                      )}
+                    </Button>
                   ) : (
                     <Button
                       onClick={() => handleSubscribe(plan)}
