@@ -313,13 +313,11 @@ export default function DreamTeamPage() {
         </div>
       </div>
       </div>
+      </>
+      );
+      }
 
-
-  </div>
-);
-}
-
-function FullScreenCard({ card, index }) {
+      function FullScreenCard({ card, index }) {
   const [isFlipped, setIsFlipped] = useState(false);
 
   const handleFlip = useCallback(() => {
@@ -575,7 +573,7 @@ function FullScreenCard({ card, index }) {
             </div>
           </div>
         </div>
-        </div>
-        </>
-        );
-        }
+      </div>
+    </div>
+  );
+}
