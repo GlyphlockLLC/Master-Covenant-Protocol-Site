@@ -5,16 +5,16 @@ import { createPageUrl } from "@/utils";
 export default function HomeDreamTeamCTA() {
   return (
     <div className="w-full flex flex-col items-center mt-20">
-      <section className="relative w-full py-12 overflow-hidden mx-auto max-w-5xl rounded-3xl border-4 border-transparent neon-ring-cta shadow-[0_0_80px_rgba(79,70,229,0.6)]">
+      <section className="relative w-full py-12 overflow-hidden mx-auto max-w-5xl rounded-3xl shadow-[0_0_80px_rgba(79,70,229,0.6)]">
 
-        {/* COURT BACKGROUND - CONTAINED */}
+        {/* COURT BACKGROUND - VIVID */}
         <div className="absolute inset-0 rounded-3xl overflow-hidden">
           <img
             src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/03ba5648e_3880beef-889a-4dec-9b80-2b561f3c47a31.jpg"
             alt=""
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover brightness-125 contrast-125 saturate-150"
           />
-          <div className="absolute inset-0 bg-black/50"></div>
+          <div className="absolute inset-0 bg-black/30"></div>
         </div>
 
         {/* CONTENT */}
@@ -29,20 +29,7 @@ export default function HomeDreamTeamCTA() {
           <div className="text-xl md:text-2xl w-full max-w-full leading-relaxed font-black drop-shadow-[0_4px_12px_rgba(0,0,0,1)] space-y-6">
             <p className="text-white">Other stacks do mixtape moves.<br />GlyphLock runs the Olympic playbook—<span className="text-blue-400">'92 talent, real sets, no solo highlights.</span></p>
             
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">
-              <Link
-                to={createPageUrl('DreamTeam')}
-                className="px-8 py-4 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-bold text-lg hover:from-cyan-500 hover:to-blue-500 transition-all shadow-[0_0_30px_rgba(6,182,212,0.4)] hover:shadow-[0_0_50px_rgba(6,182,212,0.6)] transform hover:scale-105"
-              >
-                Draft Your Dream Team
-              </Link>
-              <Link
-                to={createPageUrl('DreamTeam')}
-                className="px-8 py-4 rounded-xl border-2 border-cyan-400 text-cyan-400 font-bold text-lg hover:bg-cyan-400 hover:text-black transition-all"
-              >
-                See The Playbook
-              </Link>
-            </div>
+            <p className="text-lg text-white/90 mt-6">Tap the ball below to meet the full roster.</p>
 
           </div>
         </div>
@@ -89,10 +76,14 @@ export default function HomeDreamTeamCTA() {
               style={{ zIndex: 1 }}
             ></div>
             
-            {/* DREAM GLOW */}
+            {/* PULSING DREAM GLOW */}
             <div 
-              className="dream-glow" 
-              style={{ zIndex: 2 }}
+              className="absolute inset-0 -m-16 rounded-full animate-pulse"
+              style={{ 
+                zIndex: 2,
+                background: 'radial-gradient(circle, rgba(79,70,229,0.8) 0%, rgba(65,105,225,0.6) 40%, transparent 70%)',
+                filter: 'blur(60px)'
+              }}
             ></div>
             
             {/* LOGO WITH 3D DEPTH */}
