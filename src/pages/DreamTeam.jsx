@@ -40,7 +40,7 @@ const DREAM_TEAM_ROSTER = [
       hash: "0xb7c9d1e5f3a2b6c8d0e4f2a8b6d0c4f8e2a6b0d4c2f8e0a4b6d2c8f0e4a2b6",
       publicKey: "ALFRED-BPAA-2025-ORCHESTRATOR"
     },
-    bindingDate: "2025-01-10T00:00:00Z"
+    bindingDate: "2025-06-15T00:00:00Z"
   },
   {
     id: "claude",
@@ -72,7 +72,7 @@ const DREAM_TEAM_ROSTER = [
       hash: "0x7a3f9c2e1b4d6a8f0e2c4b6d8a0f2e4c6b8d0a2e4f6c8b0d2a4e6f8c0b2d4a6e",
       publicKey: "CLAUDE-BPAA-2025-SONNET"
     },
-    bindingDate: "2025-01-15T00:00:00Z"
+    bindingDate: "2025-06-20T00:00:00Z"
   },
   {
     id: "gemini",
@@ -104,7 +104,7 @@ const DREAM_TEAM_ROSTER = [
       hash: "0xc8d0e6f4a3b7c9d1e5f3a7b9c1d3e5f7a9b1c3d5e7f9a1b3c5d7e9f1a3b5c7",
       publicKey: "GEMINI-BPAA-2025-MULTIMODAL"
     },
-    bindingDate: "2025-01-12T00:00:00Z"
+    bindingDate: "2025-06-18T00:00:00Z"
   },
   {
     id: "copilot",
@@ -135,7 +135,7 @@ const DREAM_TEAM_ROSTER = [
       hash: "0x8b4f0d3e2c5a7b9f1e3d5c7a9b0f2e4d6c8a0b2d4f6e8c0a2b4d6f8e0c2a4b6",
       publicKey: "COPILOT-BPAA-2025-ENTERPRISE"
     },
-    bindingDate: "2025-01-20T00:00:00Z"
+    bindingDate: "2025-06-25T00:00:00Z"
   },
   {
     id: "perplexity",
@@ -166,7 +166,7 @@ const DREAM_TEAM_ROSTER = [
       hash: "0xa6b8d0c4f2e8a4b6d2c8f0e4a2b6d8c0f4e2a8b6d0c4f8e2a6b0d4c2f8e0a4",
       publicKey: "PERPLEXITY-BPAA-2025-SEARCH"
     },
-    bindingDate: "2025-01-22T00:00:00Z"
+    bindingDate: "2025-07-01T00:00:00Z"
   },
   {
     id: "cursor",
@@ -198,7 +198,7 @@ const DREAM_TEAM_ROSTER = [
       hash: "0x9c5f1e4a3b7d2c8f0e6a4b2d8c0f4e2a6b8d0c4f2e8a6b0d4c2f8e0a4b6d2c8",
       publicKey: "CURSOR-BPAA-2025-DEV"
     },
-    bindingDate: "2025-01-18T00:00:00Z"
+    bindingDate: "2025-06-28T00:00:00Z"
   }
 ];
 
@@ -362,6 +362,7 @@ export default function DreamTeamPage() {
             transformStyle: 'preserve-3d',
             transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
             transition: 'transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
+            willChange: 'transform'
           }}
         >
           {/* FRONT OF CARD */}
@@ -370,6 +371,7 @@ export default function DreamTeamPage() {
             style={{ 
               backfaceVisibility: 'hidden',
               WebkitBackfaceVisibility: 'hidden',
+              transform: 'rotateY(0deg)',
               boxShadow: `0 0 80px ${card.glowColor}, 0 30px 60px rgba(0,0,0,0.5)`
             }}
           >
