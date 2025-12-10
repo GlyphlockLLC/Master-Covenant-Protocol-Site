@@ -547,59 +547,28 @@ Deno.serve(async (req) => {
       const enhancedPrompt = buildPrompt(sanitizedMessages, persona, auditMode, realTime);
       
       try {
+        // For audit mode, don't use JSON schema - it causes errors with web search
         const llmResult = await base44.integrations.Core.InvokeLLM({
           prompt: enhancedPrompt,
-          add_context_from_internet: true, // ENABLE WEB SEARCH
-          response_json_schema: auditMode ? {
-            type: "object",
-            properties: {
-              target: { type: "string" },
-              targetType: { type: "string" },
-              auditMode: { type: "string" },
-              overallGrade: { type: "string" },
-              riskScore: { type: "number" },
-              summary: { type: "string" },
-              sourcesAnalyzed: { type: "number" },
-              technicalFindings: { 
-                type: "array",
-                items: {
-                  type: "object",
-                  properties: {
-                    title: { type: "string" },
-                    description: { type: "string" },
-                    severity: { type: "string" },
-                    sources: { type: "array", items: { type: "string" } }
-                  }
-                }
-              },
-              businessRisks: {
-                type: "array",
-                items: {
-                  type: "object",
-                  properties: {
-                    title: { type: "string" },
-                    description: { type: "string" },
-                    severity: { type: "string" }
-                  }
-                }
-              },
-              fixPlan: {
-                type: "array",
-                items: {
-                  type: "object",
-                  properties: {
-                    title: { type: "string" },
-                    description: { type: "string" },
-                    timeline: { type: "string" }
-                  }
-                }
-              }
-            }
-          } : null
+          add_context_from_internet: true // ENABLE WEB SEARCH
         });
         
         const totalLatency = Date.now() - startTime;
-        const resultText = auditMode ? JSON.stringify(llmResult) : llmResult;
+        
+        // Parse audit results if in audit mode
+        let resultText = llmResult;
+        if (auditMode && typeof llmResult === 'string') {
+          // Try to extract JSON if LLM returned it in markdown code blocks
+          const jsonMatch = llmResult.match(/```json\s*([\s\S]*?)\s*```/);
+          if (jsonMatch) {
+            try {
+              const parsed = JSON.parse(jsonMatch[1]);
+              resultText = JSON.stringify(parsed);
+            } catch {
+              resultText = llmResult;
+            }
+          }
+        }
         
         // Audit log
         base44.entities.SystemAuditLog.create({
