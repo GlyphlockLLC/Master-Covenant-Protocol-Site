@@ -279,6 +279,7 @@ export default function ChatHistoryPanel({
                   <button
                     key={realId}
                     onClick={() => onLoadChat?.(realId)}
+                    style={{ touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent', minHeight: '44px' }}
                     className={`w-full text-left p-2 rounded-lg transition-all text-xs ${
                       realId === currentChatId
                         ? 'bg-cyan-500/20 border border-cyan-400/50 text-cyan-200'
@@ -301,6 +302,7 @@ export default function ChatHistoryPanel({
         <div className="border-t border-slate-800/50 mt-2">
           <button
             onClick={() => setShowArchived(!showArchived)}
+            style={{ touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent', minHeight: '44px' }}
             className="w-full flex items-center justify-between px-4 py-2 text-xs text-slate-400 hover:text-slate-200 transition-colors"
           >
             <span className="flex items-center gap-2">
@@ -330,6 +332,7 @@ export default function ChatHistoryPanel({
                       <div className="flex items-center gap-1 mt-2">
                         <button
                           onClick={() => handleUnarchive(realId)}
+                          style={{ touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent', minHeight: '44px' }}
                           className="flex items-center gap-1 px-2 py-1 rounded bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500/30 text-[10px]"
                         >
                           <ArchiveRestore className="w-3 h-3" />
@@ -337,6 +340,7 @@ export default function ChatHistoryPanel({
                         </button>
                         <button
                           onClick={() => handleDelete(realId)}
+                          style={{ touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent', minHeight: '44px' }}
                           className="flex items-center gap-1 px-2 py-1 rounded bg-red-500/20 text-red-300 hover:bg-red-500/30 text-[10px]"
                         >
                           <Trash2 className="w-3 h-3" />

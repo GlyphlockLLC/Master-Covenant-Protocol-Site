@@ -317,15 +317,16 @@ export default function GlyphBotPage() {
       }
 
     } catch (err) {
-      console.error('[GlyphBot] FULL ERROR:', err);
       const errorMsg = { 
         id: `err-${Date.now()}`, 
         role: 'assistant', 
-        content: `Error: ${err?.message || 'Connection failed'}`,
-        audit: null 
+        content: `⚠️ **Error**: ${err?.message || 'Connection failed'}\n\nPlease try again or check the Provider Console for details.`,
+        audit: null,
+        isError: true
       };
       setMessages(prev => [...prev, errorMsg]);
       trackMessage(errorMsg);
+      toast.error('Failed to send message');
     } finally {
       setIsSending(false);
     }
@@ -894,6 +895,7 @@ export default function GlyphBotPage() {
             onStop={handleStop}
             onRegenerate={handleRegenerate}
             isSending={isSending}
+            disabled={isSending}
           />
         </div>
       </div>
