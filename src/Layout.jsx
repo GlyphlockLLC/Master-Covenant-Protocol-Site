@@ -75,7 +75,7 @@ export default function Layout({ children, currentPageName }) {
           left: 0, 
           right: 0, 
           bottom: 0, 
-          zIndex: -10, 
+          zIndex: 0, 
           pointerEvents: 'none !important',
           transform: 'translateZ(0)',
           willChange: 'transform',
@@ -94,7 +94,7 @@ export default function Layout({ children, currentPageName }) {
           left: 0, 
           right: 0, 
           bottom: 0, 
-          zIndex: -9, 
+          zIndex: 1, 
           pointerEvents: 'none !important',
           transform: 'translateZ(0)',
           willChange: 'transform',
@@ -110,7 +110,6 @@ export default function Layout({ children, currentPageName }) {
           background: 'transparent',
           paddingBottom: 'env(safe-area-inset-bottom)',
           overscrollBehavior: 'none',
-          zIndex: 10,
           position: 'relative'
         }}
       >
@@ -123,7 +122,7 @@ export default function Layout({ children, currentPageName }) {
         </div>
 
         {/* Main content */}
-        <main className="flex-1 relative pt-4" style={{ background: 'transparent', zIndex: 100, pointerEvents: 'auto', position: 'relative' }}>
+        <main className="flex-1 relative pt-4" style={{ background: 'transparent', zIndex: 10, pointerEvents: 'auto', position: 'relative' }}>
           {children}
         </main>
 
@@ -144,9 +143,9 @@ export default function Layout({ children, currentPageName }) {
         </div>
 
         {/* Footer - always rendered */}
-        <div className="relative z-10 overflow-hidden" style={{ pointerEvents: 'auto', isolation: 'isolate' }}>
+        <footer className="relative overflow-hidden" style={{ zIndex: 100, pointerEvents: 'auto', isolation: 'isolate' }}>
           <Footer />
-        </div>
+        </footer>
       </div>
     </ThemeProvider>
   );
