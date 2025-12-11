@@ -3,37 +3,10 @@
  * Countdown timer + main value proposition
  */
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-
-export default function Hero() {
-  const [timeUntilDryRun, setTimeUntilDryRun] = useState(calculateTimeRemaining());
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeUntilDryRun(calculateTimeRemaining());
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
-
-  function calculateTimeRemaining() {
-    const dryRunDate = new Date('2026-01-28T00:00:00');
-    const now = new Date();
-    const diff = dryRunDate.getTime() - now.getTime();
-
-    if (diff <= 0) {
-      return { days: 0, hours: 0, minutes: 0, seconds: 0 };
-    }
-
-    return {
-      days: Math.floor(diff / (1000 * 60 * 60 * 24)),
-      hours: Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-      minutes: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
-      seconds: Math.floor((diff % (1000 * 60)) / 1000)
-    };
-  }
+import CountdownTimer from '@/components/ui/CountdownTimer';
 
   const scrollToSection = (id) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
@@ -122,27 +95,9 @@ export default function Hero() {
           <div className="text-center text-white mb-4 text-base md:text-lg">
             Days Until Dry-Run Submission
           </div>
-          <div className="grid grid-cols-4 gap-2 md:gap-4">
-            <CountdownUnit value={timeUntilDryRun.days} label="Days" />
-            <CountdownUnit value={timeUntilDryRun.hours} label="Hours" />
-            <CountdownUnit value={timeUntilDryRun.minutes} label="Minutes" />
-            <CountdownUnit value={timeUntilDryRun.seconds} label="Seconds" />
-          </div>
+          <CountdownTimer targetDate="2026-01-28T00:00:00" />
         </div>
       </div>
     </section>
-  );
-}
-
-function CountdownUnit({ value, label }) {
-  return (
-    <div className="text-center">
-      <div className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-2">
-        {String(value).padStart(2, '0')}
-      </div>
-      <div className="text-xs md:text-sm text-gray-200 uppercase tracking-wide">
-        {label}
-      </div>
-    </div>
   );
 }
