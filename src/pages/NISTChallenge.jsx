@@ -90,9 +90,6 @@ export default function NISTChallengePage() {
       {/* Modality Tabs */}
       <ModalityTabs />
 
-      {/* Master Covenant Diagram */}
-      <CovenantDiagram />
-
       {/* Comparison Table */}
       <ComparisonTable />
 
