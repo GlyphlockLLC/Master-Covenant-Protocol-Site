@@ -57,6 +57,7 @@ import Mobile from './pages/Mobile';
 import AboutCarlo from './pages/AboutCarlo';
 import GlyphLockPlayground from './pages/GlyphLockPlayground';
 import AccountSecurity from './pages/AccountSecurity';
+import NISTChallenge from './pages/NISTChallenge';
 import __Layout from './Layout.jsx';
 
 
@@ -120,6 +121,7 @@ export const PAGES = {
     "AboutCarlo": AboutCarlo,
     "GlyphLockPlayground": GlyphLockPlayground,
     "AccountSecurity": AccountSecurity,
+    "NISTChallenge": NISTChallenge,
 }
 
 export const pagesConfig = {

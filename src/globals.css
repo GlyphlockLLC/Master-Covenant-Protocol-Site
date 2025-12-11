@@ -1411,6 +1411,66 @@ input::placeholder, textarea::placeholder {
   cursor: not-allowed;
 }
 
+/* NIST CHALLENGE PAGE STYLES */
+.nist-challenge-page {
+  font-family: var(--font-body);
+  color: #2d3748;
+  line-height: 1.6;
+}
+
+.nist-challenge-page h1,
+.nist-challenge-page h2,
+.nist-challenge-page h3,
+.nist-challenge-page h4 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  line-height: 1.2;
+  color: #1a202c !important;
+}
+
+.nist-challenge-page .hero-section::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, 
+    #3182ce 0%, 
+    #4299e1 50%, 
+    #3182ce 100%
+  );
+}
+
+.nist-challenge-page .timeline-node {
+  transition: transform 0.2s ease;
+}
+
+.nist-challenge-page .timeline-node:hover {
+  transform: scale(1.05);
+}
+
+.nist-challenge-page .comparison-table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.nist-challenge-page .fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
 /* DREAM TEAM MODULE — ROYAL BLUE OMEGA MODE */
 .dreamteam-shell {
   position: relative;

@@ -1,0 +1,160 @@
+/**
+ * Covenant Diagram Component
+ * Visual comparison: Traditional AI vs GlyphLock Master Covenant
+ */
+
+import React from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { ArrowRight, Shield, Scale, FileCheck } from 'lucide-react';
+
+export default function CovenantDiagram() {
+  return (
+    <section className="covenant-section py-16 bg-white">
+      <div className="container mx-auto px-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              What Makes GlyphLock Different?
+            </h2>
+            <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
+              The Master Covenant: 71-clause legal framework binding AI to accountability standards
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8 mb-12">
+            {/* Traditional Approach */}
+            <Card className="border-2 border-gray-300">
+              <CardHeader className="bg-gray-50">
+                <CardTitle className="flex items-center gap-2">
+                  <span className="text-xl">⚠️</span>
+                  Traditional AI Detection
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="pt-6 space-y-4">
+                <div className="space-y-3">
+                  <ProcessStep number="1" text="Input data received" />
+                  <ArrowRight className="w-5 h-5 text-gray-400 mx-auto" />
+                  <ProcessStep number="2" text="Statistical pattern analysis" />
+                  <ArrowRight className="w-5 h-5 text-gray-400 mx-auto" />
+                  <ProcessStep number="3" text="Binary classification output" />
+                  <ArrowRight className="w-5 h-5 text-gray-400 mx-auto" />
+                  <ProcessStep number="4" text="No accountability trail" gray />
+                </div>
+                
+                <div className="pt-4 border-t space-y-2">
+                  <p className="text-sm text-gray-600 flex items-center gap-2">
+                    <span className="text-red-500">✗</span> No legal framework
+                  </p>
+                  <p className="text-sm text-gray-600 flex items-center gap-2">
+                    <span className="text-red-500">✗</span> Limited explainability
+                  </p>
+                  <p className="text-sm text-gray-600 flex items-center gap-2">
+                    <span className="text-red-500">✗</span> No attribution tracking
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* GlyphLock Approach */}
+            <Card className="border-2 border-blue-500 shadow-lg relative overflow-hidden">
+              <div className="absolute top-2 right-2">
+                <Badge className="bg-yellow-400 text-black">UNIQUE</Badge>
+              </div>
+              <CardHeader className="bg-gradient-to-br from-blue-50 to-cyan-50">
+                <CardTitle className="flex items-center gap-2">
+                  <Shield className="w-6 h-6 text-blue-600" />
+                  GlyphLock Master Covenant
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="pt-6 space-y-4">
+                <div className="space-y-3">
+                  <ProcessStep number="1" text="Input data received" blue />
+                  <ArrowRight className="w-5 h-5 text-blue-400 mx-auto" />
+                  <ProcessStep number="2" text="Statistical pattern analysis" blue />
+                  <div className="flex items-center gap-2">
+                    <ArrowRight className="w-5 h-5 text-blue-400" />
+                    <Badge variant="outline" className="text-xs">Parallel Processing</Badge>
+                    <ArrowRight className="w-5 h-5 text-blue-400" />
+                  </div>
+                  <div className="grid grid-cols-2 gap-2">
+                    <ProcessStep number="3a" text="Legal compliance check" blue small />
+                    <ProcessStep number="3b" text="Covenant verification" blue small />
+                  </div>
+                  <ArrowRight className="w-5 h-5 text-blue-400 mx-auto" />
+                  <ProcessStep number="4" text="Dual-layer output + audit trail" blue />
+                </div>
+                
+                <div className="pt-4 border-t space-y-2">
+                  <p className="text-sm text-gray-700 flex items-center gap-2">
+                    <Shield className="w-4 h-4 text-green-500" />
+                    71-clause legal framework
+                  </p>
+                  <p className="text-sm text-gray-700 flex items-center gap-2">
+                    <Scale className="w-4 h-4 text-green-500" />
+                    Patent-pending methodology
+                  </p>
+                  <p className="text-sm text-gray-700 flex items-center gap-2">
+                    <FileCheck className="w-4 h-4 text-green-500" />
+                    Full accountability tracing
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Key Benefits */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <BenefitCard
+              icon="📋"
+              title="Contractual Binding"
+              description="AI systems legally bound to output standards"
+            />
+            <BenefitCard
+              icon="🔍"
+              title="Explainable AI"
+              description="Every decision traces to specific covenant clause"
+            />
+            <BenefitCard
+              icon="⚖️"
+              title="Legal Framework"
+              description="USPTO patent #18/584,961 validated"
+            />
+            <BenefitCard
+              icon="🛡️"
+              title="Enterprise Ready"
+              description="Federal evaluation provides third-party credibility"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ProcessStep({ number, text, gray, blue, small }) {
+  const bgColor = gray ? 'bg-gray-100' : blue ? 'bg-blue-50' : 'bg-white';
+  const borderColor = gray ? 'border-gray-300' : blue ? 'border-blue-300' : 'border-gray-200';
+  const textSize = small ? 'text-xs' : 'text-sm';
+  
+  return (
+    <div className={`p-3 rounded-lg border-2 ${borderColor} ${bgColor}`}>
+      <div className="flex items-center gap-3">
+        <span className={`font-bold ${blue ? 'text-blue-600' : 'text-gray-600'}`}>
+          {number}
+        </span>
+        <span className={`${textSize} font-medium text-gray-700`}>{text}</span>
+      </div>
+    </div>
+  );
+}
+
+function BenefitCard({ icon, title, description }) {
+  return (
+    <div className="p-4 rounded-lg bg-gradient-to-br from-blue-50 to-cyan-50 border border-blue-200">
+      <div className="text-3xl mb-2">{icon}</div>
+      <h4 className="font-semibold text-gray-900 mb-1">{title}</h4>
+      <p className="text-xs text-gray-600">{description}</p>
+    </div>
+  );
+}
