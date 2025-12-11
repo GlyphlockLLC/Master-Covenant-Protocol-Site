@@ -28,20 +28,20 @@ export default function CountdownTimer({ targetDate }) {
   return (
     <div className="flex justify-center gap-3 md:gap-6">
       <div className="flex flex-col items-center" role="timer" aria-label={`${timeLeft.days} days`}>
-        <span className="text-3xl md:text-4xl lg:text-5xl font-bold text-blue-100 tabular-nums">{String(timeLeft.days).padStart(2, '0')}</span>
-        <span className="text-xs md:text-sm text-blue-200 mt-1 font-medium">Days</span>
+        <span className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 tabular-nums">{String(timeLeft.days).padStart(2, '0')}</span>
+        <span className="text-xs md:text-sm text-gray-700 mt-1 font-medium uppercase">Days</span>
       </div>
       <div className="flex flex-col items-center" role="timer" aria-label={`${timeLeft.hours} hours`}>
-        <span className="text-3xl md:text-4xl lg:text-5xl font-bold text-blue-100 tabular-nums">{String(timeLeft.hours).padStart(2, '0')}</span>
-        <span className="text-xs md:text-sm text-blue-200 mt-1 font-medium">Hours</span>
+        <span className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 tabular-nums">{String(timeLeft.hours).padStart(2, '0')}</span>
+        <span className="text-xs md:text-sm text-gray-700 mt-1 font-medium uppercase">Hours</span>
       </div>
       <div className="flex flex-col items-center" role="timer" aria-label={`${timeLeft.minutes} minutes`}>
-        <span className="text-3xl md:text-4xl lg:text-5xl font-bold text-blue-100 tabular-nums">{String(timeLeft.minutes).padStart(2, '0')}</span>
-        <span className="text-xs md:text-sm text-blue-200 mt-1 font-medium">Minutes</span>
+        <span className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 tabular-nums">{String(timeLeft.minutes).padStart(2, '0')}</span>
+        <span className="text-xs md:text-sm text-gray-700 mt-1 font-medium uppercase">Minutes</span>
       </div>
       <div className="flex flex-col items-center" role="timer" aria-label={`${timeLeft.seconds} seconds`}>
-        <span className="text-3xl md:text-4xl lg:text-5xl font-bold text-blue-100 tabular-nums">{String(timeLeft.seconds).padStart(2, '0')}</span>
-        <span className="text-xs md:text-sm text-blue-200 mt-1 font-medium">Seconds</span>
+        <span className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 tabular-nums">{String(timeLeft.seconds).padStart(2, '0')}</span>
+        <span className="text-xs md:text-sm text-gray-700 mt-1 font-medium uppercase">Seconds</span>
       </div>
     </div>
   );

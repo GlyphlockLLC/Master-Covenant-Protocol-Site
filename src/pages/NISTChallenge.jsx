@@ -8,7 +8,6 @@ import SEOHead from '@/components/SEOHead';
 import Hero from '@/components/nist/Hero';
 import DifferenceComparison from '@/components/nist/DifferenceComparison';
 import ModalityTabs from '@/components/nist/ModalityTabs';
-import CovenantDiagram from '@/components/nist/CovenantDiagram';
 import Timeline from '@/components/nist/Timeline';
 import ComparisonTable from '@/components/nist/ComparisonTable';
 import TechnicalCredentials from '@/components/nist/TechnicalCredentials';
