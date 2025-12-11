@@ -58,6 +58,8 @@ import AboutCarlo from './pages/AboutCarlo';
 import GlyphLockPlayground from './pages/GlyphLockPlayground';
 import AccountSecurity from './pages/AccountSecurity';
 import NISTChallenge from './pages/NISTChallenge';
+import CaseStudies from './pages/CaseStudies';
+import CaseStudyCovenantVictory from './pages/CaseStudyCovenantVictory';
 import __Layout from './Layout.jsx';
 
 
@@ -122,6 +124,8 @@ export const PAGES = {
     "GlyphLockPlayground": GlyphLockPlayground,
     "AccountSecurity": AccountSecurity,
     "NISTChallenge": NISTChallenge,
+    "CaseStudies": CaseStudies,
+    "CaseStudyCovenantVictory": CaseStudyCovenantVictory,
 }
 
 export const pagesConfig = {
