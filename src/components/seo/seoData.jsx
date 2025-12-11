@@ -241,6 +241,21 @@ export const SEO_DATA = {
     internalLinks: ["/about", "/legal/privacy"]
   },
 
+  // --- ACCOUNT ---
+  "AccountSecurity": {
+    title: "Account Security | Two-Factor Authentication & MFA Settings",
+    description: "Manage your GlyphLock account security with TOTP two-factor authentication, recovery codes, and advanced protection settings.",
+    keywords: ["account security", "two-factor authentication", "2FA setup", "TOTP authenticator", "recovery codes", "MFA settings", "secure account management"],
+    h1: "Account Security & Authentication",
+    url: "/account/security",
+    ogTitle: "Secure Your GlyphLock Account with 2FA",
+    ogDescription: "Enable authenticator app protection and manage your account security settings.",
+    schemaType: "WebPage",
+    priority: 0.7,
+    changefreq: "monthly",
+    internalLinks: ["/dashboard", "/legal/privacy"]
+  },
+
   // --- LEGAL ---
   "Privacy": {
     title: "Privacy Policy | User Data Protection Standards",

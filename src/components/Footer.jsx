@@ -26,7 +26,7 @@ export default function Footer() {
     <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-violet-500/15 rounded-full blur-[120px] pointer-events-none"></div>
 
       <div className="max-w-[1400px] mx-auto px-6 md:px-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 mb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 mb-20">
           {/* Brand Column */}
           <div className="lg:col-span-4 space-y-6">
             <div className="flex items-center gap-3">
@@ -100,6 +100,18 @@ export default function Footer() {
             <div className="flex flex-col gap-4">
               {FOOTER_LINKS.resources.map((link) => (
                 <Link key={link.page} to={createPageUrl(link.page)} className="text-white font-medium hover:text-indigo-400 hover:drop-shadow-[0_0_8px_rgba(129,140,248,0.8)] transition-all duration-300">
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+          
+          {/* Account Column */}
+          <div className="lg:col-span-2">
+            <h4 className="text-white font-bold mb-6 uppercase tracking-widest text-xs">Account</h4>
+            <div className="flex flex-col gap-4">
+              {FOOTER_LINKS.account.map((link) => (
+                <Link key={link.page} to={createPageUrl(link.page)} className="text-white font-medium hover:text-purple-400 hover:drop-shadow-[0_0_8px_rgba(168,85,247,0.8)] transition-all duration-300">
                   {link.label}
                 </Link>
               ))}

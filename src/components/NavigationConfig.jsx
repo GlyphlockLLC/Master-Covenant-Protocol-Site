@@ -47,6 +47,13 @@ export const NAV_SECTIONS = [
       { label: "Roadmap", page: "Roadmap" },
       { label: "Consultation", page: "Consultation" }
     ]
+  },
+  {
+    label: "Account",
+    items: [
+      { label: "Security Settings", page: "AccountSecurity" },
+      { label: "Dashboard", page: "Dashboard" }
+    ]
   }
 ];
 
@@ -78,6 +85,10 @@ export const FOOTER_LINKS = {
     { label: "Privacy Policy", page: "Privacy" },
     { label: "Terms of Service", page: "Terms" },
     { label: "Cookie Policy", page: "Cookies" }
+  ],
+  account: [
+    { label: "Security Settings", page: "AccountSecurity" },
+    { label: "Dashboard", page: "Dashboard" }
   ]
 };
 
