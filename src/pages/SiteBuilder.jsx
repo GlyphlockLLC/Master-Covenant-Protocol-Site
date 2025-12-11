@@ -19,7 +19,11 @@ import {
   CheckCircle2,
   AlertCircle,
   Clock,
-  RefreshCw
+  RefreshCw,
+  Paperclip,
+  X,
+  Image as ImageIcon,
+  FileText
 } from 'lucide-react';
 import { toast } from 'sonner';
 import SEOHead from '@/components/SEOHead';
@@ -33,6 +37,9 @@ export default function SiteBuilder() {
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
   const [mode, setMode] = useState('chat'); // 'plan', 'chat', 'code'
+  const [uploadedFiles, setUploadedFiles] = useState([]);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef(null);
   const scrollRef = useRef(null);
 
   useEffect(() => {
@@ -135,6 +142,43 @@ export default function SiteBuilder() {
       e.preventDefault();
       sendMessage();
     }
+  };
+
+  const handleFileUpload = async (e) => {
+    const files = Array.from(e.target.files);
+    if (files.length === 0) return;
+
+    setUploading(true);
+    const uploaded = [];
+
+    for (const file of files) {
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+        
+        // Determine file type
+        let fileType = 'document';
+        if (file.type.startsWith('image/')) fileType = 'image';
+        if (file.name.match(/\.(js|jsx|ts|tsx|json|css)$/)) fileType = 'code';
+        
+        formData.append('type', fileType);
+
+        const response = await base44.functions.invoke('siteBuilderUpload', formData);
+        uploaded.push(response.data.file);
+        toast.success(`Uploaded ${file.name}`);
+      } catch (error) {
+        console.error('Upload failed:', error);
+        toast.error(`Failed to upload ${file.name}`);
+      }
+    }
+
+    setUploadedFiles(prev => [...prev, ...uploaded]);
+    setUploading(false);
+    e.target.value = null;
+  };
+
+  const removeFile = (fileUrl) => {
+    setUploadedFiles(prev => prev.filter(f => f.url !== fileUrl));
   };
 
   if (loading) {
@@ -364,7 +408,49 @@ export default function SiteBuilder() {
 
               {/* Input Area */}
               <div className="border-t border-blue-500/20 p-4 bg-white/5">
+                {/* Uploaded Files Preview */}
+                {uploadedFiles.length > 0 && (
+                  <div className="mb-3 flex flex-wrap gap-2">
+                    {uploadedFiles.map((file, idx) => (
+                      <div key={idx} className="flex items-center gap-2 bg-white/10 rounded-lg px-3 py-2 border border-blue-500/20">
+                        {file.type.startsWith('image/') ? (
+                          <ImageIcon className="w-4 h-4 text-blue-400" />
+                        ) : (
+                          <FileText className="w-4 h-4 text-indigo-400" />
+                        )}
+                        <span className="text-xs text-white truncate max-w-[150px]">{file.name}</span>
+                        <button
+                          onClick={() => removeFile(file.url)}
+                          className="text-red-400 hover:text-red-300"
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
                 <div className="flex gap-3">
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    multiple
+                    accept="image/*,.pdf,.txt,.js,.jsx,.json,.css"
+                    onChange={handleFileUpload}
+                    className="hidden"
+                  />
+                  <Button
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={uploading || sending}
+                    variant="outline"
+                    className="bg-white/5 border-blue-500/20 hover:bg-white/10"
+                  >
+                    {uploading ? (
+                      <Loader2 className="w-5 h-5 animate-spin text-blue-400" />
+                    ) : (
+                      <Paperclip className="w-5 h-5 text-blue-400" />
+                    )}
+                  </Button>
                   <Textarea
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
@@ -390,7 +476,7 @@ export default function SiteBuilder() {
                   </Button>
                 </div>
                 <p className="text-xs text-blue-300 mt-2">
-                  Press Enter to send • Shift + Enter for new line
+                  Press Enter to send • Shift + Enter for new line • Attach images & code files
                 </p>
               </div>
             </CardContent>
