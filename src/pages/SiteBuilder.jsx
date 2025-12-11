@@ -32,6 +32,7 @@ export default function SiteBuilder() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [sending, setSending] = useState(false);
+  const [mode, setMode] = useState('chat'); // 'plan', 'chat', 'code'
   const scrollRef = useRef(null);
 
   useEffect(() => {
@@ -84,9 +85,10 @@ export default function SiteBuilder() {
   const sendMessage = async () => {
     if (!input.trim() || sending || !conversation) return;
 
+    const modePrefix = mode === 'plan' ? '[PLAN MODE] ' : mode === 'code' ? '[CODE MODE] ' : '';
     const userMessage = {
       role: 'user',
-      content: input
+      content: modePrefix + input
     };
 
     setMessages(prev => [...prev, userMessage]);
@@ -155,17 +157,94 @@ export default function SiteBuilder() {
                   <h1 className="text-2xl font-black text-white">Site Builder Agent</h1>
                   <p className="text-sm text-blue-300">Autonomous Full-Stack Development Assistant</p>
                 </div>
-              </div>
-              <Badge className="bg-green-500/20 text-green-400 border-green-500/50">
-                <CheckCircle2 className="w-3 h-3 mr-1" />
-                Active
-              </Badge>
+                </div>
+                <div className="flex items-center gap-3">
+                {/* Mode Selector */}
+                <div className="flex gap-2 bg-white/5 rounded-lg p-1">
+                  <button
+                    onClick={() => setMode('chat')}
+                    className={`px-4 py-2 rounded-md text-xs font-bold transition-all ${
+                      mode === 'chat'
+                        ? 'bg-blue-500 text-white shadow-[0_0_15px_rgba(59,130,246,0.5)]'
+                        : 'text-gray-400 hover:text-white'
+                    }`}
+                  >
+                    💬 CHAT
+                  </button>
+                  <button
+                    onClick={() => setMode('plan')}
+                    className={`px-4 py-2 rounded-md text-xs font-bold transition-all ${
+                      mode === 'plan'
+                        ? 'bg-indigo-500 text-white shadow-[0_0_15px_rgba(99,102,241,0.5)]'
+                        : 'text-gray-400 hover:text-white'
+                    }`}
+                  >
+                    📋 PLAN
+                  </button>
+                  <button
+                    onClick={() => setMode('code')}
+                    className={`px-4 py-2 rounded-md text-xs font-bold transition-all ${
+                      mode === 'code'
+                        ? 'bg-violet-500 text-white shadow-[0_0_15px_rgba(139,92,246,0.5)]'
+                        : 'text-gray-400 hover:text-white'
+                    }`}
+                  >
+                    ⚡ CODE
+                  </button>
+                </div>
+                <Badge className="bg-green-500/20 text-green-400 border-green-500/50">
+                  <CheckCircle2 className="w-3 h-3 mr-1" />
+                  Active
+                </Badge>
+                </div>
             </div>
           </div>
         </div>
 
+        {/* Mode Info Banner */}
+        <div className="container mx-auto px-4 pt-6">
+          <div className="mb-6 p-4 rounded-xl border-2 transition-all" style={{
+            background: mode === 'chat' ? 'rgba(59,130,246,0.1)' : mode === 'plan' ? 'rgba(99,102,241,0.1)' : 'rgba(139,92,246,0.1)',
+            borderColor: mode === 'chat' ? 'rgba(59,130,246,0.3)' : mode === 'plan' ? 'rgba(99,102,241,0.3)' : 'rgba(139,92,246,0.3)'
+          }}>
+            {mode === 'chat' && (
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                  <span className="text-2xl">💬</span>
+                </div>
+                <div>
+                  <h3 className="text-white font-bold">Chat Mode Active</h3>
+                  <p className="text-sm text-blue-300">Discuss, explain, and get guidance without executing code changes</p>
+                </div>
+              </div>
+            )}
+            {mode === 'plan' && (
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-indigo-500/20 flex items-center justify-center">
+                  <span className="text-2xl">📋</span>
+                </div>
+                <div>
+                  <h3 className="text-white font-bold">Plan Mode Active</h3>
+                  <p className="text-sm text-indigo-300">Strategic thinking, architecture analysis, and implementation roadmaps</p>
+                </div>
+              </div>
+            )}
+            {mode === 'code' && (
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-lg bg-violet-500/20 flex items-center justify-center">
+                  <span className="text-2xl">⚡</span>
+                </div>
+                <div>
+                  <h3 className="text-white font-bold">Code Mode Active</h3>
+                  <p className="text-sm text-violet-300">Execute changes, create files, and modify codebase (⚠️ admin only)</p>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
         {/* Agent Capabilities Panel */}
-        <div className="container mx-auto px-4 py-6">
+        <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
             <Card className="bg-white/5 border-blue-500/20">
               <CardContent className="p-4 flex items-center gap-3">
@@ -279,7 +358,11 @@ export default function SiteBuilder() {
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    placeholder="Describe what you want to build or modify..."
+                    placeholder={
+                      mode === 'chat' ? 'Ask a question or discuss the codebase...' :
+                      mode === 'plan' ? 'Describe what you want to plan or architect...' :
+                      'Describe the code changes to execute...'
+                    }
                     className="flex-1 bg-white/5 border-blue-500/20 text-white placeholder:text-blue-300/50 min-h-[60px] max-h-[200px]"
                     disabled={sending}
                   />
