@@ -8,7 +8,6 @@ import { Badge } from '@/components/ui/badge';
 import { BrainCircuit, Send, Loader2, CheckCircle2, AlertCircle, Clock, Zap, Paperclip, X, Image as ImageIcon, FileText, Upload, Save, FolderOpen, Trash2, Star } from 'lucide-react';
 import HoverTooltip from '@/components/ui/HoverTooltip';
 import { toast } from 'sonner';
-import { toast } from 'sonner';
 import ReactMarkdown from 'react-markdown';
 
 export default function AgentBrainPanel() {
