@@ -29,6 +29,7 @@ import { toast } from 'sonner';
 import SEOHead from '@/components/SEOHead';
 import ReactMarkdown from 'react-markdown';
 import DevModeLayout from '@/components/devengine/DevModeLayout';
+import AgentBrainPanel from '@/components/devengine/AgentBrainPanel';
 
 export default function SiteBuilder() {
   const [user, setUser] = useState(null);
@@ -249,6 +250,17 @@ export default function SiteBuilder() {
                       <Code className="w-4 h-4" />
                       DEV ENGINE
                     </button>
+                    <button
+                      onClick={() => setViewMode('brain')}
+                      className={`px-4 py-2 rounded-md text-xs font-bold transition-all flex items-center gap-2 ${
+                        viewMode === 'brain'
+                          ? 'bg-violet-500 text-white shadow-[0_0_15px_rgba(139,92,246,0.5)]'
+                          : 'text-gray-400 hover:text-white'
+                      }`}
+                    >
+                      <Zap className="w-4 h-4" />
+                      AGENT BRAIN
+                    </button>
                   </div>
                 )}
                 {/* Mode Selector */}
@@ -295,7 +307,7 @@ export default function SiteBuilder() {
           </div>
         </div>
 
-        {/* Render Dev Engine or Visual Builder */}
+        {/* Render Dev Engine, Agent Brain, or Visual Builder */}
         {viewMode === 'dev' && isAdmin ? (
           <div className="h-[calc(100vh-120px)]">
             <DevModeLayout />
@@ -306,6 +318,18 @@ export default function SiteBuilder() {
               <AlertCircle className="w-16 h-16 text-red-400 mx-auto mb-4" />
               <h2 className="text-2xl font-bold text-white mb-2">Access Denied</h2>
               <p className="text-slate-400">Dev Engine is admin-only.</p>
+            </div>
+          </div>
+        ) : viewMode === 'brain' && isAdmin ? (
+          <div className="container mx-auto px-4 pt-6 h-[calc(100vh-140px)]">
+            <AgentBrainPanel />
+          </div>
+        ) : viewMode === 'brain' && !isAdmin ? (
+          <div className="min-h-screen flex items-center justify-center">
+            <div className="text-center">
+              <AlertCircle className="w-16 h-16 text-red-400 mx-auto mb-4" />
+              <h2 className="text-2xl font-bold text-white mb-2">Access Denied</h2>
+              <p className="text-slate-400">Agent Brain is admin-only.</p>
             </div>
           </div>
         ) : (
