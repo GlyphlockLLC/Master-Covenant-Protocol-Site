@@ -18,6 +18,10 @@ export default function AgentBrainPanel() {
   const [plan, setPlan] = useState([]);
   const scrollRef = useRef(null);
 
+  // Safety guards - ensure arrays are always valid
+  const safeMessages = Array.isArray(messages) ? messages : [];
+  const safePlan = Array.isArray(plan) ? plan : [];
+
   useEffect(() => {
     initConversation();
   }, []);
@@ -30,10 +34,12 @@ export default function AgentBrainPanel() {
 
   useEffect(() => {
     // Extract plan from latest assistant message
-    const lastAssistant = [...messages].reverse().find(m => m.role === 'assistant');
+    if (!Array.isArray(messages) || messages.length === 0) return;
+    
+    const lastAssistant = [...messages].reverse().find(m => m && m.role === 'assistant');
     if (lastAssistant && lastAssistant.content) {
       const steps = extractPlanSteps(lastAssistant.content);
-      if (steps.length > 0) {
+      if (Array.isArray(steps) && steps.length > 0) {
         setPlan(steps);
       }
     }
@@ -49,12 +55,14 @@ export default function AgentBrainPanel() {
         }
       });
       setConversation(conv);
-      setMessages(Array.isArray(conv.messages) ? conv.messages : []);
+      const initialMessages = Array.isArray(conv.messages) ? conv.messages : [];
+      setMessages(initialMessages);
       
       // Subscribe to updates
       const unsubscribe = base44.agents.subscribeToConversation(conv.id, (data) => {
-        if (data && Array.isArray(data.messages)) {
-          setMessages(data.messages);
+        if (data && data.messages) {
+          const newMessages = Array.isArray(data.messages) ? data.messages : [];
+          setMessages(newMessages);
         }
       });
       
@@ -107,7 +115,8 @@ export default function AgentBrainPanel() {
       content: modePrefix + input.trim()
     };
 
-    setMessages(prev => Array.isArray(prev) ? [...prev, userMessage] : [userMessage]);
+    const prevMessages = Array.isArray(messages) ? messages : [];
+    setMessages([...prevMessages, userMessage]);
     setInput('');
     setSending(true);
 
@@ -117,13 +126,11 @@ export default function AgentBrainPanel() {
     } catch (error) {
       console.error('Send error:', error);
       toast.error('Failed to send message');
-      setMessages(prev => {
-        const safePrev = Array.isArray(prev) ? prev : [];
-        return [...safePrev, {
-          role: 'assistant',
-          content: 'Error: ' + error.message
-        }];
-      });
+      const prevMessages = Array.isArray(messages) ? messages : [];
+      setMessages([...prevMessages, {
+        role: 'assistant',
+        content: 'Error: ' + error.message
+      }]);
     } finally {
       setSending(false);
     }
@@ -179,7 +186,7 @@ export default function AgentBrainPanel() {
         </Card>
 
         {/* Plan Steps */}
-        {Array.isArray(plan) && plan.length > 0 && (
+        {safePlan.length > 0 && (
           <Card className="bg-white/5 border-indigo-500/20 flex-1">
             <CardHeader className="pb-3">
               <CardTitle className="text-white text-sm flex items-center gap-2">
@@ -189,7 +196,7 @@ export default function AgentBrainPanel() {
             <CardContent>
               <ScrollArea className="h-[400px]">
                 <div className="space-y-2">
-                  {plan.map((step, idx) => (
+                  {safePlan.map((step, idx) => (
                     <div
                       key={step.id}
                       className="flex items-start gap-2 p-2 rounded-lg bg-white/5 border border-white/10"
@@ -238,7 +245,7 @@ export default function AgentBrainPanel() {
         <CardContent className="p-0 flex-1 flex flex-col">
           {/* Messages */}
           <ScrollArea ref={scrollRef} className="flex-1 p-4 space-y-4">
-            {!messages || messages.length === 0 ? (
+            {safeMessages.length === 0 ? (
               <div className="text-center py-12">
                 <BrainCircuit className="w-16 h-16 text-blue-400 mx-auto mb-4 opacity-50" />
                 <h3 className="text-xl font-bold text-white mb-2">Agent Brain Ready</h3>
@@ -273,7 +280,7 @@ export default function AgentBrainPanel() {
                 </div>
               </div>
             ) : (
-              (Array.isArray(messages) ? messages : []).map((msg, idx) => (
+              safeMessages.map((msg, idx) => (
                 <MessageBubble key={idx} message={msg} />
               ))
             )}
@@ -319,8 +326,10 @@ export default function AgentBrainPanel() {
 }
 
 function MessageBubble({ message }) {
+  if (!message) return null;
+  
   const isUser = message.role === 'user';
-  const isToolCall = message.tool_calls && message.tool_calls.length > 0;
+  const hasToolCalls = message.tool_calls && Array.isArray(message.tool_calls) && message.tool_calls.length > 0;
 
   return (
     <div className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}>
@@ -349,9 +358,9 @@ function MessageBubble({ message }) {
           </ReactMarkdown>
         )}
 
-        {isToolCall && (
+        {hasToolCalls && (
           <div className="mt-3 space-y-2">
-            {message.tool_calls.map((tool, idx) => (
+            {(message.tool_calls || []).map((tool, idx) => (
               <ToolCallCard key={idx} toolCall={tool} />
             ))}
           </div>
