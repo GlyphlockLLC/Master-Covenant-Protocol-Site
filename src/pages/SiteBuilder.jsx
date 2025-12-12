@@ -45,6 +45,9 @@ export default function SiteBuilder() {
   const fileInputRef = useRef(null);
   const scrollRef = useRef(null);
 
+  // Safety guards
+  const safeMessages = Array.isArray(messages) ? messages : [];
+
   useEffect(() => {
     loadUser();
   }, []);
@@ -89,7 +92,6 @@ export default function SiteBuilder() {
 
   const initConversation = async () => {
     try {
-      // Create or load conversation
       const conv = await base44.agents.createConversation({
         agent_name: 'siteBuilder',
         metadata: {
@@ -97,8 +99,24 @@ export default function SiteBuilder() {
           description: 'Building GlyphLock site'
         }
       });
+      
       setConversation(conv);
-      setMessages(Array.isArray(conv.messages) ? conv.messages : []);
+      const initialMessages = Array.isArray(conv.messages) ? conv.messages : [];
+      setMessages(initialMessages);
+      
+      // Subscribe to updates
+      const unsubscribe = base44.agents.subscribeToConversation(conv.id, (data) => {
+        if (data && data.messages) {
+          const newMessages = Array.isArray(data.messages) ? data.messages : [];
+          setMessages(newMessages);
+        }
+      });
+      
+      return () => {
+        if (typeof unsubscribe === 'function') {
+          unsubscribe();
+        }
+      };
     } catch (error) {
       console.error('Failed to init conversation:', error);
       toast.error('Failed to initialize agent');
@@ -115,34 +133,22 @@ export default function SiteBuilder() {
       content: modePrefix + input
     };
 
-    setMessages(prev => Array.isArray(prev) ? [...prev, userMessage] : [userMessage]);
+    const prevMessages = Array.isArray(messages) ? messages : [];
+    setMessages([...prevMessages, userMessage]);
     setInput('');
     setSending(true);
 
     try {
-      const response = await base44.agents.addMessage(conversation, userMessage);
-      
-      // Subscribe to streaming updates with safety checks
-      const unsubscribe = base44.agents.subscribeToConversation(conversation.id, (data) => {
-        if (data && Array.isArray(data.messages)) {
-          setMessages(data.messages);
-        }
-      });
-
-      // Cleanup after response complete
-      setTimeout(() => unsubscribe(), 100);
-      
+      await base44.agents.addMessage(conversation, userMessage);
       toast.success('Agent responding...');
     } catch (error) {
       console.error('Send error:', error);
       toast.error('Failed to send message');
-      setMessages(prev => {
-        const safePrev = Array.isArray(prev) ? prev : [];
-        return [...safePrev, {
-          role: 'assistant',
-          content: 'Error: ' + error.message
-        }];
-      });
+      const currentMessages = Array.isArray(messages) ? messages : [];
+      setMessages([...currentMessages, {
+        role: 'assistant',
+        content: 'Error: ' + error.message
+      }]);
     } finally {
       setSending(false);
     }
@@ -431,7 +437,7 @@ export default function SiteBuilder() {
                 ref={scrollRef}
                 className="h-[400px] md:h-[500px] p-3 md:p-6 space-y-3 md:space-y-4"
               >
-                {messages.length === 0 ? (
+                {safeMessages.length === 0 ? (
                   <div className="text-center py-12">
                     <Sparkles className="w-16 h-16 text-blue-400 mx-auto mb-4 opacity-50" />
                     <h3 className="text-xl font-bold text-white mb-2">Ready to Build</h3>
@@ -472,17 +478,9 @@ export default function SiteBuilder() {
                     </div>
                   </div>
                 ) : (
-                  Array.isArray(messages) && messages.length > 0 ? (
-                    messages.map((msg, idx) => (
-                      <MessageBubble key={idx} message={msg} />
-                    ))
-                  ) : (
-                    <div className="text-center py-12">
-                      <Sparkles className="w-16 h-16 text-blue-400 mx-auto mb-4 opacity-50" />
-                      <h3 className="text-xl font-bold text-white mb-2">Ready to Build</h3>
-                      <p className="text-blue-300 mb-6">Tell me what you want to create or modify</p>
-                    </div>
-                  )
+                  safeMessages.map((msg, idx) => (
+                    <MessageBubble key={idx} message={msg} />
+                  ))
                 )}
                 {sending && (
                   <div className="flex items-center gap-2 text-blue-400">
@@ -604,8 +602,10 @@ export default function SiteBuilder() {
 }
 
 function MessageBubble({ message }) {
+  if (!message) return null;
+  
   const isUser = message.role === 'user';
-  const isToolCall = message.tool_calls && message.tool_calls.length > 0;
+  const hasToolCalls = message.tool_calls && Array.isArray(message.tool_calls) && message.tool_calls.length > 0;
 
   return (
     <div className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}>
@@ -636,9 +636,9 @@ function MessageBubble({ message }) {
         )}
 
         {/* Tool Calls */}
-        {isToolCall && (
+        {hasToolCalls && (
           <div className="mt-3 space-y-2">
-            {message.tool_calls.map((tool, idx) => (
+            {(message.tool_calls || []).map((tool, idx) => (
               <ToolCallCard key={idx} toolCall={tool} />
             ))}
           </div>
