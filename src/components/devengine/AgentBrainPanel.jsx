@@ -107,11 +107,11 @@ export default function AgentBrainPanel() {
     if (!input.trim() || sending || !conversation) return;
 
     const modePrefix = {
-      explain: '[MODE: EXPLAIN] ',
-      build: '[MODE: BUILD] ',
-      refactor: '[MODE: REFACTOR] ',
-      debug: '[MODE: DEBUG] '
-    }[mode] || '[MODE: BUILD] ';
+      explain: '[EXPLAIN MODE] ',
+      build: '[BUILD MODE - EXECUTE CHANGES] ',
+      refactor: '[REFACTOR MODE - EXECUTE CHANGES] ',
+      debug: '[DEBUG MODE - EXECUTE FIXES] '
+    }[mode] || '[BUILD MODE - EXECUTE CHANGES] ';
 
     const userMessage = {
       role: 'user',
@@ -148,10 +148,10 @@ export default function AgentBrainPanel() {
 
   const getModeConfig = () => {
     const configs = {
-      explain: { color: 'bg-cyan-500', label: 'Explain', icon: '💡' },
-      build: { color: 'bg-blue-500', label: 'Build', icon: '🔨' },
-      refactor: { color: 'bg-indigo-500', label: 'Refactor', icon: '♻️' },
-      debug: { color: 'bg-red-500', label: 'Debug', icon: '🐛' }
+      explain: { color: 'bg-cyan-500', label: 'Explain', icon: '💡', desc: 'Analyze & document' },
+      build: { color: 'bg-blue-500', label: 'Build', icon: '🔨', desc: 'Execute & deploy' },
+      refactor: { color: 'bg-indigo-500', label: 'Refactor', icon: '♻️', desc: 'Optimize & improve' },
+      debug: { color: 'bg-red-500', label: 'Debug', icon: '🐛', desc: 'Fix & resolve' }
     };
     return configs[mode] || configs.build;
   };
@@ -261,37 +261,40 @@ export default function AgentBrainPanel() {
               {safeMessages.length === 0 ? (
                 <div className="flex items-center justify-center min-h-[400px]">
                   <div className="text-center px-4 max-w-2xl">
-                    <BrainCircuit className="w-12 h-12 md:w-16 md:h-16 text-blue-400 mx-auto mb-4 opacity-50" />
-                    <h3 className="text-lg md:text-xl font-bold text-white mb-2">Agent Brain Ready</h3>
-                    <p className="text-sm md:text-base text-blue-300/80 mb-6">
-                      Current Mode: <span className="font-bold">{modeConfig.label}</span> {modeConfig.icon}
-                    </p>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-left">
-                  <div className="p-4 rounded-xl bg-cyan-500/10 border border-cyan-500/20">
-                    <div className="text-sm text-white font-semibold mb-1">💡 Explain</div>
-                    <p className="text-xs text-cyan-300">
-                      Get insights, documentation, and architectural guidance
-                    </p>
+                  <BrainCircuit className="w-12 h-12 md:w-16 md:h-16 text-blue-400 mx-auto mb-4 opacity-50 animate-pulse" />
+                  <h3 className="text-lg md:text-xl font-bold text-white mb-2">Autonomous Agent Ready</h3>
+                  <p className="text-sm md:text-base text-blue-300/80 mb-2">
+                    Mode: <span className="font-bold">{modeConfig.label}</span> {modeConfig.icon}
+                  </p>
+                  <p className="text-xs text-blue-400/60 mb-6">
+                    {modeConfig.desc}
+                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-left">
+                  <div className="p-4 rounded-xl bg-cyan-500/10 border border-cyan-500/20 hover:bg-cyan-500/15 transition-colors">
+                  <div className="text-sm text-white font-semibold mb-1">💡 Explain</div>
+                  <p className="text-xs text-cyan-300">
+                    Analyzes code • No execution
+                  </p>
                   </div>
-                  <div className="p-4 rounded-xl bg-blue-500/10 border border-blue-500/20">
-                    <div className="text-sm text-white font-semibold mb-1">🔨 Build</div>
-                    <p className="text-xs text-blue-300">
-                      Create components, pages, and features from scratch
-                    </p>
+                  <div className="p-4 rounded-xl bg-blue-500/10 border border-blue-500/20 hover:bg-blue-500/15 transition-colors">
+                  <div className="text-sm text-white font-semibold mb-1">🔨 Build</div>
+                  <p className="text-xs text-blue-300">
+                    Creates & deploys • Full execution
+                  </p>
                   </div>
-                  <div className="p-4 rounded-xl bg-indigo-500/10 border border-indigo-500/20">
-                    <div className="text-sm text-white font-semibold mb-1">♻️ Refactor</div>
-                    <p className="text-xs text-indigo-300">
-                      Improve code quality, performance, and architecture
-                    </p>
+                  <div className="p-4 rounded-xl bg-indigo-500/10 border border-indigo-500/20 hover:bg-indigo-500/15 transition-colors">
+                  <div className="text-sm text-white font-semibold mb-1">♻️ Refactor</div>
+                  <p className="text-xs text-indigo-300">
+                    Optimizes & rewrites • Full execution
+                  </p>
                   </div>
-                  <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20">
-                    <div className="text-sm text-white font-semibold mb-1">🐛 Debug</div>
-                    <p className="text-xs text-red-300">
-                      Find and fix bugs, errors, and unexpected behavior
-                    </p>
+                  <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 hover:bg-red-500/15 transition-colors">
+                  <div className="text-sm text-white font-semibold mb-1">🐛 Debug</div>
+                  <p className="text-xs text-red-300">
+                    Fixes bugs instantly • Full execution
+                  </p>
                   </div>
-                    </div>
+                  </div>
                   </div>
                 </div>
               ) : (
