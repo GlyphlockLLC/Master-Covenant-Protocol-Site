@@ -23,11 +23,15 @@ import {
   Paperclip,
   X,
   Image as ImageIcon,
-  FileText
+  FileText,
+  Monitor,
+  Smartphone
 } from 'lucide-react';
 import { toast } from 'sonner';
 import SEOHead from '@/components/SEOHead';
 import ReactMarkdown from 'react-markdown';
+import MobileDevConsole from '@/components/devengine/MobileDevConsole';
+import DevModeLayout from '@/components/devengine/DevModeLayout';
 
 export default function SiteBuilder() {
   const [user, setUser] = useState(null);
@@ -39,11 +43,21 @@ export default function SiteBuilder() {
   const [mode, setMode] = useState('chat'); // 'plan', 'chat', 'code'
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [uploading, setUploading] = useState(false);
+  const [viewMode, setViewMode] = useState('visual'); // 'visual', 'dev'
+  const [isMobile, setIsMobile] = useState(false);
   const fileInputRef = useRef(null);
   const scrollRef = useRef(null);
 
   useEffect(() => {
     loadUser();
+    
+    // Detect mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
   useEffect(() => {
@@ -220,6 +234,31 @@ export default function SiteBuilder() {
                 </div>
                 </div>
                 <div className="flex items-center gap-3">
+                {/* View Mode Toggle */}
+                <div className="flex gap-2 bg-white/5 rounded-lg p-1">
+                  <button
+                    onClick={() => setViewMode('visual')}
+                    className={`px-4 py-2 rounded-md text-xs font-bold transition-all flex items-center gap-2 ${
+                      viewMode === 'visual'
+                        ? 'bg-blue-500 text-white shadow-[0_0_15px_rgba(59,130,246,0.5)]'
+                        : 'text-gray-400 hover:text-white'
+                    }`}
+                  >
+                    <Sparkles className="w-4 h-4" />
+                    VISUAL
+                  </button>
+                  <button
+                    onClick={() => setViewMode('dev')}
+                    className={`px-4 py-2 rounded-md text-xs font-bold transition-all flex items-center gap-2 ${
+                      viewMode === 'dev'
+                        ? 'bg-indigo-500 text-white shadow-[0_0_15px_rgba(99,102,241,0.5)]'
+                        : 'text-gray-400 hover:text-white'
+                    }`}
+                  >
+                    <Code className="w-4 h-4" />
+                    DEV ENGINE
+                  </button>
+                </div>
                 {/* Mode Selector */}
                 <div className="flex gap-2 bg-white/5 rounded-lg p-1">
                   <button
@@ -262,8 +301,17 @@ export default function SiteBuilder() {
           </div>
         </div>
 
-        {/* Mode Info Banner */}
-        <div className="container mx-auto px-4 pt-6">
+        {/* Render appropriate view */}
+        {viewMode === 'dev' ? (
+          isMobile ? (
+            <MobileDevConsole />
+          ) : (
+            <DevModeLayout />
+          )
+        ) : (
+          <>
+            {/* Mode Info Banner */}
+            <div className="container mx-auto px-4 pt-6">
           <div className="mb-6 p-4 rounded-xl border-2 transition-all" style={{
             background: mode === 'chat' ? 'rgba(59,130,246,0.1)' : mode === 'plan' ? 'rgba(99,102,241,0.1)' : 'rgba(139,92,246,0.1)',
             borderColor: mode === 'chat' ? 'rgba(59,130,246,0.3)' : mode === 'plan' ? 'rgba(99,102,241,0.3)' : 'rgba(139,92,246,0.3)'
@@ -497,6 +545,8 @@ export default function SiteBuilder() {
           </Card>
         </div>
       </div>
+        </>
+      )}
     </>
   );
 }
