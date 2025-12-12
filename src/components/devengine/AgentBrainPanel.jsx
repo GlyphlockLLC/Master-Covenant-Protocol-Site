@@ -52,11 +52,17 @@ export default function AgentBrainPanel() {
       setMessages(Array.isArray(conv.messages) ? conv.messages : []);
       
       // Subscribe to updates
-      base44.agents.subscribeToConversation(conv.id, (data) => {
+      const unsubscribe = base44.agents.subscribeToConversation(conv.id, (data) => {
         if (data && Array.isArray(data.messages)) {
           setMessages(data.messages);
         }
       });
+      
+      return () => {
+        if (typeof unsubscribe === 'function') {
+          unsubscribe();
+        }
+      };
     } catch (error) {
       console.error('Failed to init agent:', error);
       toast.error('Failed to initialize Agent Brain');
@@ -173,7 +179,7 @@ export default function AgentBrainPanel() {
         </Card>
 
         {/* Plan Steps */}
-        {plan.length > 0 && (
+        {Array.isArray(plan) && plan.length > 0 && (
           <Card className="bg-white/5 border-indigo-500/20 flex-1">
             <CardHeader className="pb-3">
               <CardTitle className="text-white text-sm flex items-center gap-2">
@@ -232,7 +238,7 @@ export default function AgentBrainPanel() {
         <CardContent className="p-0 flex-1 flex flex-col">
           {/* Messages */}
           <ScrollArea ref={scrollRef} className="flex-1 p-4 space-y-4">
-            {messages.length === 0 ? (
+            {!messages || messages.length === 0 ? (
               <div className="text-center py-12">
                 <BrainCircuit className="w-16 h-16 text-blue-400 mx-auto mb-4 opacity-50" />
                 <h3 className="text-xl font-bold text-white mb-2">Agent Brain Ready</h3>
@@ -267,7 +273,7 @@ export default function AgentBrainPanel() {
                 </div>
               </div>
             ) : (
-              Array.isArray(messages) && messages.map((msg, idx) => (
+              (Array.isArray(messages) ? messages : []).map((msg, idx) => (
                 <MessageBubble key={idx} message={msg} />
               ))
             )}
