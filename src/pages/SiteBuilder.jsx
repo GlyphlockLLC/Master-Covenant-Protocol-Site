@@ -62,7 +62,7 @@ export default function SiteBuilder() {
       }
       const userData = await base44.auth.me();
       
-      // Check if user is authorized
+      // Check if user is authorized for Site Builder
       const authorizedUsers = ['carloearl@glyphlock.com', 'carloearl@gmail.com'];
       const isAuthorized = userData.role === 'admin' || authorizedUsers.includes(userData.email);
       
@@ -81,6 +81,8 @@ export default function SiteBuilder() {
       setLoading(false);
     }
   };
+
+  const isAdmin = user && (user.role === 'admin' || ['carloearl@glyphlock.com', 'carloearl@gmail.com'].includes(user.email));
 
   const initConversation = async () => {
     try {

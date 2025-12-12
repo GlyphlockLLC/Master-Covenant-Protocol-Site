@@ -36,11 +36,17 @@ export default function ApprovalPanel(props) {
       </div>
 
       <div className="flex items-center gap-2">
+        {busy && (
+          <div className="text-emerald-400 text-xs flex items-center gap-1">
+            <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+            Processing...
+          </div>
+        )}
         <button
           type="button"
           onClick={onReject}
           disabled={!hasProposal || busy}
-          className="px-3 py-1 rounded text-xs bg-slate-800 hover:bg-slate-700 disabled:opacity-40"
+          className="px-3 py-1 rounded text-xs bg-slate-800 hover:bg-slate-700 disabled:opacity-40 transition-colors"
         >
           Reject
         </button>
@@ -48,9 +54,9 @@ export default function ApprovalPanel(props) {
           type="button"
           onClick={onApprove}
           disabled={!hasProposal || busy}
-          className="px-3 py-1 rounded text-xs bg-emerald-500 text-black hover:bg-emerald-400 disabled:opacity-40"
+          className="px-3 py-1 rounded text-xs bg-emerald-500 text-black hover:bg-emerald-400 disabled:opacity-40 transition-colors font-semibold"
         >
-          Approve & Apply
+          ✓ Approve & Apply
         </button>
       </div>
     </div>

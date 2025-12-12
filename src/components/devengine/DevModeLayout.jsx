@@ -204,14 +204,33 @@ export default function DevModeLayout() {
         <div className="h-56">
           <VirtualTerminal
             onCommand={async function onCommand(cmd) {
-              // Simple terminal wiring, can be extended later
+              // Terminal command handler
               if (cmd === 'tree') {
                 return JSON.stringify(fileTree, null, 2);
               }
               if (cmd === 'status') {
-                return status;
+                return `Status: ${status}\nSelected: ${selectedFile || 'none'}\nBackups: ${backups.length}`;
               }
-              return 'Unknown command. Try: tree, status';
+              if (cmd === 'files') {
+                if (fileTree.length === 0) return 'No files loaded';
+                const flatFiles = [];
+                function flatten(nodes) {
+                  nodes.forEach(n => {
+                    if (!n.children) flatFiles.push(n.path);
+                    else flatten(n.children);
+                  });
+                }
+                flatten(fileTree);
+                return flatFiles.slice(0, 20).join('\n') + (flatFiles.length > 20 ? '\n...' : '');
+              }
+              if (cmd === 'log') {
+                const result = await callDevFunction('devGetBackups', { path: selectedFile || 'all' });
+                if (result.backups && result.backups.length > 0) {
+                  return result.backups.slice(0, 10).map(b => `${b.timestamp} - ${b.path}`).join('\n');
+                }
+                return 'No action log available';
+              }
+              return 'Command not found';
             }}
           />
         </div>

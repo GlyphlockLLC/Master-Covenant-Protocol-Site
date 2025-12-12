@@ -60,9 +60,9 @@ export default function AIConsole(props) {
       </div>
 
       {analysis && (
-        <div className="mt-2 p-2 bg-slate-900 border border-slate-800 rounded text-[11px] text-slate-200 max-h-32 overflow-auto">
-          <div className="font-semibold text-emerald-300 mb-1">Analysis</div>
-          <pre className="whitespace-pre-wrap break-words">
+        <div className="mt-2 p-2 bg-slate-900 border border-slate-800 rounded text-[11px] text-slate-200 max-h-40 overflow-auto">
+          <div className="font-semibold text-emerald-300 mb-1">✓ Analysis Complete</div>
+          <pre className="whitespace-pre-wrap break-words font-mono">
             {typeof analysis === 'string' ? analysis : JSON.stringify(analysis, null, 2)}
           </pre>
         </div>
