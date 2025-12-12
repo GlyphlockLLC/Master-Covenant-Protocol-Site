@@ -544,9 +544,9 @@ export default function SiteBuilder() {
             </CardContent>
           </Card>
         </div>
+          </>
+        )}
       </div>
-        </>
-      )}
     </>
   );
 }
