@@ -204,33 +204,89 @@ export default function DevModeLayout() {
         <div className="h-56">
           <VirtualTerminal
             onCommand={async function onCommand(cmd) {
-              // Terminal command handler
-              if (cmd === 'tree') {
-                return JSON.stringify(fileTree, null, 2);
+              const parts = cmd.trim().split(' ');
+              const command = parts[0];
+              const args = parts.slice(1);
+
+              // TREE - Show file tree structure
+              if (command === 'tree') {
+                if (fileTree.length === 0) return '📁 No files loaded';
+                return '📂 File Tree:\n' + JSON.stringify(fileTree, null, 2);
               }
-              if (cmd === 'status') {
-                return `Status: ${status}\nSelected: ${selectedFile || 'none'}\nBackups: ${backups.length}`;
+
+              // STATUS - System status
+              if (command === 'status') {
+                return `
+        📊 SYSTEM STATUS
+        ━━━━━━━━━━━━━━━━
+        Status: ${status}
+        Selected File: ${selectedFile || 'none'}
+        Backups: ${backups.length}
+        Files Loaded: ${fileTree.length}
+        `;
               }
-              if (cmd === 'files') {
-                if (fileTree.length === 0) return 'No files loaded';
+
+              // FILES - List all files
+              if (command === 'files' || command === 'ls') {
+                if (fileTree.length === 0) return '❌ No files loaded';
                 const flatFiles = [];
-                function flatten(nodes) {
+                function flatten(nodes, prefix = '') {
                   nodes.forEach(n => {
-                    if (!n.children) flatFiles.push(n.path);
-                    else flatten(n.children);
+                    if (!n.children) {
+                      flatFiles.push(prefix + n.name);
+                    } else {
+                      flatFiles.push(prefix + '📁 ' + n.name + '/');
+                      flatten(n.children, prefix + '  ');
+                    }
                   });
                 }
                 flatten(fileTree);
-                return flatFiles.slice(0, 20).join('\n') + (flatFiles.length > 20 ? '\n...' : '');
+                const display = flatFiles.slice(0, 30).join('\n');
+                return display + (flatFiles.length > 30 ? `\n... ${flatFiles.length - 30} more files` : '');
               }
-              if (cmd === 'log') {
+
+              // ENTITIES - List entities
+              if (command === 'entities') {
+                const entities = fileTree.filter(f => f.path?.startsWith('entities/'));
+                if (entities.length === 0) return '❌ No entities found';
+                return '📦 ENTITIES:\n' + entities.map(e => '  • ' + e.name).join('\n');
+              }
+
+              // FUNCTIONS - List backend functions
+              if (command === 'functions') {
+                const functions = fileTree.filter(f => f.path?.startsWith('functions/'));
+                if (functions.length === 0) return '❌ No functions found';
+                return '⚙️ BACKEND FUNCTIONS:\n' + functions.map(f => '  • ' + f.name).join('\n');
+              }
+
+              // PAGES - List pages
+              if (command === 'pages') {
+                const pages = fileTree.filter(f => f.path?.startsWith('pages/'));
+                if (pages.length === 0) return '❌ No pages found';
+                return '📄 PAGES:\n' + pages.map(p => '  • ' + p.name).join('\n');
+              }
+
+              // CAT - Show file content
+              if (command === 'cat') {
+                if (!args[0]) return '❌ Usage: cat <filename>';
+                if (selectedFile && selectedFile.includes(args[0])) {
+                  return fileContent || '❌ File content not loaded';
+                }
+                return `❌ File "${args[0]}" not found or not selected`;
+              }
+
+              // LOG - Action log
+              if (command === 'log') {
                 const result = await callDevFunction('devGetBackups', { path: selectedFile || 'all' });
                 if (result.backups && result.backups.length > 0) {
-                  return result.backups.slice(0, 10).map(b => `${b.timestamp} - ${b.path}`).join('\n');
+                  return '📝 ACTION LOG:\n' + result.backups.slice(0, 10)
+                    .map(b => `  ${b.timestamp} - ${b.path}`)
+                    .join('\n');
                 }
-                return 'No action log available';
+                return '❌ No action log available';
               }
-              return 'Command not found';
+
+              return `❌ Command not found: ${command}\n💡 Type "help" for available commands`;
             }}
           />
         </div>
