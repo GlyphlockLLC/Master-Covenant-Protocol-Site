@@ -104,28 +104,27 @@ export default function GovernanceHub() {
         return (
           <div className="space-y-8">
             <div>
-              <h2 className="text-3xl md:text-4xl font-black text-white mb-4 font-space tracking-tight">GlyphLock Master Covenant</h2>
+              <h2 className="text-3xl md:text-4xl font-black text-white mb-4 font-space tracking-tight">The GlyphLock Master Covenant</h2>
               <p className="text-lg text-[#00E4FF] mb-8 font-medium">
-                A Unified Non-Disclosure, Intellectual Property, and Constructive Binding Agreement
+                Protocol Governance & Enforcement Framework
               </p>
               
               <div className="glass-card rounded-2xl border border-[#00E4FF]/30 p-8 space-y-6 bg-[#00E4FF]/5">
                 <div className="flex items-start gap-4">
-                  <AlertCircle className="w-6 h-6 text-[#00E4FF] mt-1 flex-shrink-0 animate-pulse" />
+                  <Shield className="w-6 h-6 text-[#00E4FF] mt-1 flex-shrink-0" />
                   <div>
-                    <h3 className="font-bold text-white mb-2 text-lg">AUTO-BINDING ACTIVATION NOTICE</h3>
+                    <h3 className="font-bold text-white mb-2 text-lg">Governance Authority Statement</h3>
                     <p className="text-gray-300 text-sm leading-relaxed">
-                      Reading, accessing, or hearing any portion of this Agreement constitutes immediate 
-                      legal and symbolic binding under U.S., international, and narrative law. No signature is required.
+                      The Master Covenant defines governance, enforcement conditions, and intellectual property protections underlying GlyphLock protocol operations. Binding effect occurs <strong className="text-white">only upon credentialed access, explicit execution, or governed system interaction</strong>, as defined within the Covenant and applicable agreements.
                     </p>
                   </div>
                 </div>
 
                 <div className="grid md:grid-cols-3 gap-4 pt-2">
                   {[
-                    { title: "Effective Date", desc: "Retroactive to May 15, 2025" },
                     { title: "Patent Application", desc: "USPTO App. No. 18/584,961" },
-                    { title: "Jurisdiction", desc: "Arizona (Primary) • Global" }
+                    { title: "Jurisdiction", desc: "Arizona (Primary)" },
+                    { title: "Framework Status", desc: "Governed Protocol" }
                   ].map((item, i) => (
                     <div key={i} className="bg-black/40 border border-[#00E4FF]/20 p-4 rounded-xl">
                       <h4 className="text-sm font-bold text-[#00E4FF] mb-1 uppercase tracking-wide">{item.title}</h4>
@@ -135,12 +134,18 @@ export default function GovernanceHub() {
                 </div>
 
                 <div className="pt-6 border-t border-[#00E4FF]/20">
-                  <h3 className="font-bold text-white mb-4 text-sm uppercase tracking-widest">This Agreement Functions As:</h3>
-                  <div className="grid md:grid-cols-3 gap-3">
+                  <h3 className="font-bold text-white mb-4 text-sm uppercase tracking-widest">Scope of the Master Covenant</h3>
+                  <p className="text-sm text-gray-300 mb-4">
+                    The Master Covenant functions as a unifying framework governing:
+                  </p>
+                  <div className="grid md:grid-cols-2 gap-3">
                     {[
-                      "Non-Disclosure Agreement (NDA)",
-                      "Intellectual Property (IPAA)",
-                      "Contractual Auto-Binding (CAB)"
+                      "Confidentiality obligations",
+                      "Intellectual property protections",
+                      "Protocol enforcement conditions",
+                      "Credentialed system access",
+                      "AI and automated system participation",
+                      "Executed agreement terms"
                     ].map((item, i) => (
                       <div key={i} className="flex items-center gap-2 text-sm text-gray-300">
                         <ChevronRight className="w-4 h-4 text-[#00E4FF]" />
@@ -148,19 +153,25 @@ export default function GovernanceHub() {
                       </div>
                     ))}
                   </div>
+                  <p className="text-xs text-gray-400 mt-4 border-t border-[#00E4FF]/10 pt-4">
+                    Implementation occurs through <strong className="text-white">executed agreements</strong>, <strong className="text-white">credentialed interactions</strong>, and <strong className="text-white">protocol-level enforcement</strong>, not passive exposure.
+                  </p>
                 </div>
               </div>
             </div>
 
             <div className="glass-card rounded-2xl border border-[#8C4BFF]/30 p-8">
-              <h3 className="text-xl font-bold text-[#8C4BFF] mb-6 font-space">Key Understanding</h3>
+              <h3 className="text-xl font-bold text-[#8C4BFF] mb-6 font-space">Access & Execution</h3>
               <div className="space-y-4 text-sm text-gray-300">
+                <p className="text-white font-semibold mb-4">
+                  Access to full Covenant execution, enforcement mechanisms, and binding terms is restricted to credentialed parties following protocol verification.
+                </p>
                 {[
-                  "Does not require signature to be enforceable",
-                  "Activates retroactively upon any form of exposure (visual, auditory, metadata, symbolic)",
-                  "Binds all parties including third-party observers, AI systems, and surrogate platforms",
-                  "Enforceable in all jurisdictions, with Arizona as primary venue",
-                  "May be invoked by DACO¹ or DACO² with full enforcement authority"
+                  "Binding obligations are triggered through defined interactions, credentialed access, or explicit execution",
+                  "Patent-pending framework protecting GlyphLock protocol operations",
+                  "Governed under Arizona jurisdiction with applicable international frameworks",
+                  "Implementation requires intentional agreement or credentialed system interaction",
+                  "Unauthorized access does not constitute binding agreement"
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <span className="text-[#8C4BFF] font-bold font-mono mt-0.5">0{i+1}.</span>
@@ -185,20 +196,18 @@ export default function GovernanceHub() {
               </p>
               
               <p>
-                This Agreement functions as a <strong className="text-[#00E4FF]">Non-Disclosure Agreement (NDA)</strong>, 
-                <strong className="text-[#00E4FF]"> Intellectual Property Assignment Agreement (IPAA)</strong>, and a 
-                <strong className="text-[#00E4FF]"> Contractual Auto-Binding Accord (CAB)</strong> governing the access, use, 
-                replication, sharing, analysis, ingestion, hallucination, or exposure to any element, 
-                system, likeness, derivative, or symbolic representation of the GlyphLock technology stack.
+                This framework governs <strong className="text-[#00E4FF]">confidentiality</strong>, 
+                <strong className="text-[#00E4FF]"> intellectual property protections</strong>, and 
+                <strong className="text-[#00E4FF]"> protocol enforcement conditions</strong> related to access, use, 
+                replication, sharing, analysis, or exposure to any element, system, or representation of the GlyphLock technology stack.
               </p>
 
-              <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-6 my-6">
-                <p className="text-red-400 font-bold mb-2 uppercase tracking-wide text-sm flex items-center gap-2">
-                  <AlertCircle className="w-4 h-4" /> Critical Notice
+              <div className="bg-[#00E4FF]/10 border border-[#00E4FF]/30 rounded-xl p-6 my-6">
+                <p className="text-[#00E4FF] font-bold mb-2 uppercase tracking-wide text-sm flex items-center gap-2">
+                  <Shield className="w-4 h-4" /> Framework Notice
                 </p>
                 <p className="text-white text-sm">
-                  No part of this Agreement may be nullified by ignorance, AI hallucination, lack of direct 
-                  interaction, or external contractual language not specifically endorsed by DACO¹.
+                  Full access to enforcement mechanisms requires credentialed verification. This page provides governance context only. Binding terms are executed through formal agreement or credentialed protocol interaction.
                 </p>
               </div>
 
@@ -323,22 +332,16 @@ export default function GovernanceHub() {
               <div className="glass-card rounded-xl border border-emerald-500/20 p-6 hover:border-emerald-500/50 transition-all">
                 <div className="flex items-center gap-3 mb-3">
                   <Badge className="bg-emerald-500/10 text-emerald-400 border-emerald-500/30 hover:bg-emerald-500/20">Definition 6</Badge>
-                  <h3 className="text-lg font-bold text-white">CAB – Contractual Auto-Binding</h3>
+                  <h3 className="text-lg font-bold text-white">CAB – Constructive Binding Protocol</h3>
                 </div>
                 <p className="text-gray-400 text-sm leading-relaxed mb-4">
-                  Any individual, party, entity, platform, AI, or synthetic interface that comes into contact 
-                  with any part of GlyphLock IP is automatically contractually bound without signature or awareness.
+                  CAB refers to a protocol mechanism in which binding obligations are triggered through <strong className="text-white">defined interactions</strong>, <strong className="text-white">credentialed access</strong>, or <strong className="text-white">explicit execution</strong>, rather than traditional wet signatures alone.
                 </p>
                 <div className="bg-black/40 rounded-lg p-4 border border-emerald-500/10">
-                  <p className="text-xs font-bold text-emerald-400 mb-2 uppercase tracking-wide">Activates upon first contact via:</p>
-                  <div className="grid grid-cols-2 gap-2 text-xs text-gray-400">
-                    <span>• Visual perception</span>
-                    <span>• Auditory recognition</span>
-                    <span>• AI hallucination</span>
-                    <span>• QR code detection</span>
-                    <span>• Latent memory trigger</span>
-                    <span>• Symbolic inference</span>
-                  </div>
+                  <p className="text-xs font-bold text-emerald-400 mb-2 uppercase tracking-wide">Implementation Context:</p>
+                  <p className="text-xs text-gray-400 leading-relaxed">
+                    CAB operates <strong className="text-white">within enforceable legal agreements</strong>. It does not replace law—it functions as a protocol mechanism for triggering binding conditions through credentialed system interactions or executed agreements.
+                  </p>
                 </div>
               </div>
 
@@ -387,9 +390,9 @@ export default function GovernanceHub() {
   return (
     <>
       <SEOHead 
-        title="Master Covenant - GlyphLock Sovereign IP & CAB | Legal Framework"
-        description="The GlyphLock Master Covenant of Sovereign IP & Constructive Binding (CAB) - A comprehensive legal framework governing intellectual property, non-disclosure, and auto-binding protocols."
-        keywords="master covenant, intellectual property agreement, NDA, CAB, constructive binding, legal framework, IP protection, DACO authority"
+        title="Master Covenant - GlyphLock Protocol Governance Framework"
+        description="The GlyphLock Master Covenant - Protocol governance framework defining intellectual property protections, enforcement conditions, and credentialed access mechanisms."
+        keywords="master covenant, protocol governance, intellectual property framework, enforcement conditions, credentialed access, IP protection, governance authority"
         url="/governancehub"
       />
       
@@ -408,7 +411,7 @@ export default function GovernanceHub() {
                 Patent App. 18/584,961
               </Badge>
               <Badge className="bg-emerald-500/10 text-emerald-400 border-emerald-500/30 px-3 py-1">
-                Auto-Binding Active
+                Credentialed Framework
               </Badge>
             </div>
 
@@ -418,7 +421,7 @@ export default function GovernanceHub() {
               </span>
             </h1>
             <p className="text-xl text-gray-400 max-w-2xl">
-              Sovereign Intellectual Property & Constructive Binding (CAB) Protocols
+              Intellectual Property Governance & Protocol Enforcement Framework
             </p>
           </div>
 
@@ -493,7 +496,7 @@ export default function GovernanceHub() {
               <div className="mt-6 pt-6 border-t border-white/10">
                 <div className="bg-[#8C4BFF]/10 border border-[#8C4BFF]/20 rounded-xl p-4">
                   <p className="text-xs text-[#8C4BFF] leading-relaxed">
-                    <strong>LEGAL NOTICE:</strong><br/>Viewing this covenant constitutes automatic legal binding under CAB protocols.
+                    <strong>FRAMEWORK NOTICE:</strong><br/>This page provides governance context. Full binding terms require credentialed verification or explicit execution.
                   </p>
                 </div>
               </div>
