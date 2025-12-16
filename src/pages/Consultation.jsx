@@ -13,8 +13,8 @@ import { Shield, Target, Zap, Clock, CheckCircle2, Lock, AlertTriangle } from "l
 import GlyphLoader from "@/components/GlyphLoader";
 import SEOHead from "@/components/SEOHead";
 import { injectServiceSchema } from "@/components/utils/seoHelpers";
-import HCaptcha from "@hcaptcha/react-hcaptcha";
 import DOMPurify from "dompurify";
+import VerificationGate from "@/components/security/VerificationGate";
 
 export default function Consultation() {
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ export default function Consultation() {
     message: "",
     preferred_date: ""
   });
-  const [captchaToken, setCaptchaToken] = useState(null);
+  const [verificationToken, setVerificationToken] = useState(null);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -91,15 +91,32 @@ export default function Consultation() {
     }
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (!captchaToken) {
-      alert('Please complete the security verification');
+    if (!verificationToken) {
+      alert('Verification required');
       return;
     }
-    
-    createConsultation.mutate(formData);
+
+    // Validate token server-side before submission
+    try {
+      const validation = await base44.functions.invoke('validateVerificationToken', {
+        token: verificationToken
+      });
+
+      if (!validation.data?.valid) {
+        alert('Verification failed. Submission rejected.');
+        setVerificationToken(null);
+        return;
+      }
+
+      // Proceed with submission
+      createConsultation.mutate(formData);
+    } catch (error) {
+      alert('Verification failed. Submission rejected.');
+      setVerificationToken(null);
+    }
   };
 
   const serviceOptions = [
@@ -269,20 +286,18 @@ export default function Consultation() {
                     </div>
 
                     <div className="space-y-4">
-                      <HCaptcha
-                        sitekey="10000000-ffff-ffff-ffff-000000000001"
-                        onVerify={(token) => setCaptchaToken(token)}
-                        onExpire={() => setCaptchaToken(null)}
-                        theme="dark"
+                      <VerificationGate 
+                        onVerified={(token) => setVerificationToken(token)}
+                        disabled={createConsultation.isPending}
                       />
 
                       <Button
                         type="submit"
                         size="lg"
-                        disabled={createConsultation.isPending || !captchaToken}
+                        disabled={createConsultation.isPending || !verificationToken}
                         className="w-full bg-gradient-to-r from-[#1E40AF] to-[#3B82F6] hover:from-[#2563EB] hover:to-[#60A5FA] text-white font-black text-lg py-6 shadow-[0_0_30px_rgba(59,130,246,0.4)] hover:shadow-[0_0_50px_rgba(30,64,175,0.6)] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                       >
-                        {createConsultation.isPending ? "Processing..." : "Continue to Verification →"}
+                        {createConsultation.isPending ? "Processing..." : "Continue to Payment →"}
                       </Button>
                     </div>
                   </form>
