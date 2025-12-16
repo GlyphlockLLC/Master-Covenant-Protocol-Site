@@ -20,12 +20,10 @@ export default function Consultation() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     full_name: "",
+    organization: "",
     email: "",
-    company: "",
-    phone: "",
-    service_interest: "",
-    message: "",
-    preferred_date: ""
+    system_type: "",
+    description: ""
   });
   const [verificationToken, setVerificationToken] = useState(null);
 
@@ -51,12 +49,13 @@ export default function Consultation() {
       // Sanitize all inputs
       const sanitizedData = {
         full_name: DOMPurify.sanitize(data.full_name, { ALLOWED_TAGS: [] }),
+        organization: DOMPurify.sanitize(data.organization || '', { ALLOWED_TAGS: [] }),
         email: DOMPurify.sanitize(data.email, { ALLOWED_TAGS: [] }),
-        company: DOMPurify.sanitize(data.company || '', { ALLOWED_TAGS: [] }),
-        phone: DOMPurify.sanitize(data.phone, { ALLOWED_TAGS: [] }),
-        service_interest: data.service_interest,
-        message: DOMPurify.sanitize(data.message || '', { ALLOWED_TAGS: [] }),
-        preferred_date: data.preferred_date
+        system_type: DOMPurify.sanitize(data.system_type, { ALLOWED_TAGS: [] }),
+        description: DOMPurify.sanitize(data.description || '', { ALLOWED_TAGS: [] }),
+        service_interest: "Protocol Verification",
+        status: "pending",
+        payment_status: "pending"
       };
 
       // First create the consultation record
@@ -70,14 +69,14 @@ export default function Consultation() {
           price_data: {
             currency: 'usd',
             product_data: {
-              name: 'GlyphLock Security Consultation',
-              description: '60-minute expert cybersecurity analysis session',
+              name: 'GlyphLock Protocol Verification',
+              description: 'Controlled protocol verification engagement under Master Covenant governance',
             },
-            unit_amount: 20000, // $200.00 in cents
+            unit_amount: 1200000, // $12,000.00 in cents
           },
           quantity: 1,
         }],
-        successUrl: `${window.location.origin}${createPageUrl('ConsultationSuccess')}?consultation_id=${consultation.id}&session_id={CHECKOUT_SESSION_ID}`,
+        successUrl: `${window.location.origin}${createPageUrl('ConsultationSuccess')}?verification_id=${consultation.id}&session_id={CHECKOUT_SESSION_ID}`,
         cancelUrl: `${window.location.origin}${createPageUrl('Consultation')}?cancelled=true`
       });
       
@@ -119,62 +118,81 @@ export default function Consultation() {
     }
   };
 
-  const serviceOptions = [
-    "Enterprise Security Audit",
-    "Quantum-Ready System Integration",
-    "Website/Application Hardening",
-    "Visual Authentication Deployment",
-    "Risk Analysis & Threat Modeling",
-    "Custom Engagement"
+  const systemTypes = [
+    "Enterprise Infrastructure",
+    "Cloud Native Architecture",
+    "Hybrid Deployment",
+    "Legacy System Integration",
+    "Government/Defense System",
+    "Financial Services Platform",
+    "Healthcare System",
+    "Custom Environment"
   ];
 
-  const whatYouReceive = [
-    "60-minute expert analysis with a GlyphLock cybersecurity architect",
-    "Immediate threat & vulnerability overview",
-    "Customized solution roadmap",
-    "Cost and timeline estimates tailored to your infrastructure",
-    "Priority access to the GlyphLock build queue"
+  const verificationScope = [
+    "System integrity and threat exposure analysis",
+    "Enforceability assessment under Covenant governance",
+    "Visual, QR, and protocol authenticity validation",
+    "Credential eligibility determination",
+    "Definitive enforcement roadmap"
   ];
 
-  const whyGlyphLock = [
-    "Post-quantum encryption readiness",
-    "AI-powered threat detection",
-    "Autonomous system auditing",
-    "Zero-forge visual authentication",
-    "Enterprise-grade architecture"
+  const protocolCapabilities = [
+    "Zero forge visual authentication",
+    "AI driven protocol verification",
+    "Autonomous audit pathways",
+    "Post quantum readiness",
+    "Enforcement grade architecture"
   ];
 
   if (createConsultation.isPending) {
-    return <GlyphLoader text="Securing Appointment..." />;
+    return <GlyphLoader text="Processing Credential Request..." />;
   }
 
   return (
     <div className="min-h-screen text-white pt-20 pb-16" style={{ background: 'transparent' }}>
       <SEOHead 
-        title="Book Security Consultation - $200 | GlyphLock"
-        description="Schedule a tactical cybersecurity assessment with GlyphLock specialists. 60-minute expert analysis, threat overview, and custom solution roadmap."
+        title="Protocol Verification | GlyphLock"
+        description="GlyphLock protocol verification engagement - credentialed enforcement eligibility under Master Covenant governance."
         url="/consultation"
       />
       
       <div className="container mx-auto px-4">
         <div className="max-w-7xl mx-auto">
           {/* Hero Header */}
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 glyph-glass border-2 border-[#3B82F6]/40 rounded-full px-6 py-2 mb-6 shadow-[0_0_20px_rgba(59,130,246,0.2)]">
-              <Shield className="w-5 h-5 text-[#3B82F6]" />
-              <span className="text-sm font-bold text-white uppercase tracking-wider">Tactical Security Assessment</span>
-            </div>
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-black mb-6 tracking-tight">
-              Request <span className="bg-gradient-to-r from-[#1E40AF] via-[#3B82F6] to-[#60A5FA] bg-clip-text text-transparent">Credentials</span>
+          <div className="text-center mb-20">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black mb-4 tracking-tight leading-tight">
+              GlyphLock Protocol Verification
             </h1>
-            <p className="text-xl md:text-2xl text-white/80 mb-6 max-w-3xl mx-auto font-medium">
-              Protocol Verification Assessment by GlyphLock Specialists
+            <p className="text-lg text-slate-400 tracking-wide mb-12">
+              Governed by the Master Covenant
             </p>
-            <div className="inline-flex items-center gap-3 bg-gradient-to-r from-[#1E40AF]/20 to-[#3B82F6]/20 border-2 border-[#3B82F6]/50 rounded-xl px-8 py-4">
-              <Target className="w-6 h-6 text-[#3B82F6]" />
-              <span className="text-2xl font-black text-white">$200 Verification Assessment</span>
-              <span className="text-slate-400">•</span>
-              <span className="text-lg text-[#3B82F6] font-semibold">Credited Toward System Deployment</span>
+            
+            <div className="max-w-3xl mx-auto space-y-4 text-left mb-12">
+              <p className="text-xl text-white leading-relaxed">This is not a SaaS product.</p>
+              <p className="text-xl text-white leading-relaxed">This is not a consultation.</p>
+              <p className="text-xl text-white leading-relaxed">This is not a sales call.</p>
+              
+              <p className="text-xl text-white leading-relaxed mt-8">GlyphLock operates as a protocol authority.</p>
+              
+              <p className="text-lg text-slate-300 leading-relaxed mt-8">
+                This engagement exists to determine whether your system qualifies for credentialed enforcement under the Master Covenant.
+              </p>
+            </div>
+
+            <div className="inline-block border-2 border-slate-700 bg-slate-950/80 px-12 py-6">
+              <div className="text-sm text-slate-400 tracking-[0.2em] mb-2">ENGAGEMENT FEE</div>
+              <div className="text-4xl font-black text-white mb-4">$12,000 USD</div>
+              <div className="text-slate-400 space-y-1">
+                <div>One protocol.</div>
+                <div>One engagement.</div>
+                <div>One determination.</div>
+              </div>
+              <div className="text-slate-500 text-sm mt-6 space-y-1">
+                <div>No trials.</div>
+                <div>No demos.</div>
+                <div>No exploratory pricing.</div>
+              </div>
             </div>
           </div>
 
@@ -184,7 +202,7 @@ export default function Consultation() {
             <div className="lg:col-span-2">
               <Card className="glyph-glass-card card-elevated-hover">
                 <CardHeader>
-                  <CardTitle className="text-2xl font-bold text-white">Credential Request Form</CardTitle>
+                  <CardTitle className="text-2xl font-bold text-white tracking-wide">Credential Review Request</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <form onSubmit={handleSubmit} className="space-y-6">
@@ -197,7 +215,6 @@ export default function Consultation() {
                           value={formData.full_name}
                           onChange={(e) => setFormData({...formData, full_name: e.target.value})}
                           className="input-glow-blue"
-                          placeholder="John Smith"
                         />
                       </div>
                       <div>
@@ -209,78 +226,50 @@ export default function Consultation() {
                           value={formData.email}
                           onChange={(e) => setFormData({...formData, email: e.target.value})}
                           className="input-glow-blue"
-                          placeholder="john@company.com"
                         />
                       </div>
                     </div>
 
                     <div className="grid md:grid-cols-2 gap-6">
                       <div>
-                        <Label htmlFor="company" className="text-white font-semibold">Company <span className="text-slate-400">(Optional)</span></Label>
+                        <Label htmlFor="organization" className="text-white font-semibold">Organization *</Label>
                         <Input
-                          id="company"
-                          value={formData.company}
-                          onChange={(e) => setFormData({...formData, company: e.target.value})}
-                          className="input-glow-blue"
-                          placeholder="Acme Corp"
-                        />
-                      </div>
-                      <div>
-                        <Label htmlFor="phone" className="text-white font-semibold">Phone *</Label>
-                        <Input
-                          id="phone"
-                          type="tel"
+                          id="organization"
                           required
-                          value={formData.phone}
-                          onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                          value={formData.organization}
+                          onChange={(e) => setFormData({...formData, organization: e.target.value})}
                           className="input-glow-blue"
-                          placeholder="+1 (555) 123-4567"
                         />
                       </div>
-                    </div>
-
-                    <div className="grid md:grid-cols-2 gap-6">
                       <div>
-                        <Label htmlFor="service_interest" className="text-white font-semibold">Service Interest *</Label>
+                        <Label htmlFor="system_type" className="text-white font-semibold">System Type *</Label>
                         <Select
                           required
-                          value={formData.service_interest}
-                          onValueChange={(value) => setFormData({...formData, service_interest: value})}
+                          value={formData.system_type}
+                          onValueChange={(value) => setFormData({...formData, system_type: value})}
                         >
                           <SelectTrigger className="bg-slate-950/60 border-2 border-slate-700/50 text-white focus:border-[#3B82F6]">
-                            <SelectValue placeholder="Select a service" />
+                            <SelectValue />
                           </SelectTrigger>
                           <SelectContent className="bg-slate-900 border-2 border-slate-700">
-                            {serviceOptions.map((service) => (
-                              <SelectItem key={service} value={service} className="text-white hover:bg-slate-800">
-                                {service}
+                            {systemTypes.map((type) => (
+                              <SelectItem key={type} value={type} className="text-white hover:bg-slate-800">
+                                {type}
                               </SelectItem>
                             ))}
                           </SelectContent>
                         </Select>
                       </div>
-                      <div>
-                        <Label htmlFor="preferred_date" className="text-white font-semibold">Preferred Date & Time *</Label>
-                        <Input
-                          id="preferred_date"
-                          type="datetime-local"
-                          required
-                          value={formData.preferred_date}
-                          onChange={(e) => setFormData({...formData, preferred_date: e.target.value})}
-                          className="input-glow-blue"
-                          min={new Date().toISOString().slice(0, 16)}
-                        />
-                      </div>
                     </div>
 
                     <div>
-                      <Label htmlFor="message" className="text-white font-semibold">Message</Label>
+                      <Label htmlFor="description" className="text-white font-semibold">What Needs Verification *</Label>
                       <Textarea
-                        id="message"
+                        id="description"
                         rows={5}
-                        value={formData.message}
-                        onChange={(e) => setFormData({...formData, message: e.target.value})}
-                        placeholder="What are your security priorities? The more detail you share, the faster we can help."
+                        required
+                        value={formData.description}
+                        onChange={(e) => setFormData({...formData, description: e.target.value})}
                         className="bg-slate-950/60 border-2 border-slate-700/50 text-white focus:border-[#3B82F6] transition-colors resize-none"
                       />
                     </div>
@@ -295,9 +284,9 @@ export default function Consultation() {
                         type="submit"
                         size="lg"
                         disabled={createConsultation.isPending || !verificationToken}
-                        className="w-full bg-gradient-to-r from-[#1E40AF] to-[#3B82F6] hover:from-[#2563EB] hover:to-[#60A5FA] text-white font-black text-lg py-6 shadow-[0_0_30px_rgba(59,130,246,0.4)] hover:shadow-[0_0_50px_rgba(30,64,175,0.6)] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full bg-slate-800 border-2 border-slate-700 hover:bg-slate-700 text-white font-bold text-lg py-6 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                       >
-                        {createConsultation.isPending ? "Processing..." : "Continue to Payment →"}
+                        {createConsultation.isPending ? "Processing Request" : "Request Credential Review"}
                       </Button>
                     </div>
                   </form>
@@ -307,123 +296,134 @@ export default function Consultation() {
 
             {/* Sidebar */}
             <div className="space-y-6">
-              {/* What You Receive */}
-              <Card className="glyph-glass-card card-elevated-hover">
+              {/* What This Engagement Is */}
+              <Card className="glyph-glass-card">
                 <CardHeader>
-                  <CardTitle className="text-xl font-bold text-white flex items-center gap-2">
-                    <Zap className="w-5 h-5 text-[#3B82F6]" />
-                    What You Receive
-                  </CardTitle>
+                  <CardTitle className="text-xl font-bold text-white">What This Engagement Is</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-slate-300 mb-4 text-sm font-medium">
-                    A GlyphLock consultation isn't a "sales call." It's a full tactical assessment, engineered to give you clarity, direction, and actionable intelligence.
+                  <p className="text-slate-300 mb-4 text-sm">
+                    A controlled protocol verification conducted to:
                   </p>
-                  <div className="space-y-3">
-                    {whatYouReceive.map((item, index) => (
+                  <div className="space-y-2">
+                    {verificationScope.map((item, index) => (
                       <div key={index} className="flex items-start gap-3">
-                        <CheckCircle2 className="w-5 h-5 text-[#3B82F6] mt-0.5 flex-shrink-0" />
-                        <span className="text-white text-sm">{item}</span>
+                        <div className="w-1 h-1 bg-slate-600 mt-2 flex-shrink-0"></div>
+                        <span className="text-white text-sm leading-relaxed">{item}</span>
                       </div>
                     ))}
                   </div>
+                  <div className="mt-6 pt-4 border-t border-slate-700/50">
+                    <p className="text-white font-semibold text-sm">This engagement produces proof, not opinions.</p>
+                  </div>
                 </CardContent>
               </Card>
 
-              {/* Consultation Details */}
-              <Card className="glyph-glass-card card-elevated-hover">
+              {/* Engagement Format */}
+              <Card className="glyph-glass-card">
                 <CardHeader>
-                  <CardTitle className="text-xl font-bold text-white flex items-center gap-2">
-                    <Clock className="w-5 h-5 text-[#3B82F6]" />
-                    Verification Details
-                  </CardTitle>
+                  <CardTitle className="text-xl font-bold text-white">Engagement Format</CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-3">
                   <div className="flex justify-between items-center py-2 border-b border-slate-700/50">
-                    <span className="text-slate-400 font-medium">Assessment Fee:</span>
-                    <span className="font-bold text-[#3B82F6] text-lg">$200</span>
-                  </div>
-                  <p className="text-xs text-slate-400 italic">
-                    Credited toward system deployment upon authorization.
-                  </p>
-                  <div className="flex justify-between items-center py-2 border-b border-slate-700/50">
-                    <span className="text-slate-400 font-medium">Response Time:</span>
-                    <span className="font-bold text-white">Under 24 hours</span>
+                    <span className="text-slate-400">Duration:</span>
+                    <span className="font-bold text-white">Up to 90 minutes</span>
                   </div>
                   <div className="flex justify-between items-center py-2 border-b border-slate-700/50">
-                    <span className="text-slate-400 font-medium">Duration:</span>
-                    <span className="font-bold text-white">60 minutes</span>
+                    <span className="text-slate-400">Format:</span>
+                    <span className="font-bold text-white">Secure video or audio</span>
+                  </div>
+                  <div className="flex justify-between items-center py-2 border-b border-slate-700/50">
+                    <span className="text-slate-400">Recording:</span>
+                    <span className="font-bold text-white">Mutual authorization only</span>
                   </div>
                   <div className="flex justify-between items-center py-2">
-                    <span className="text-slate-400 font-medium">Format:</span>
-                    <span className="font-bold text-white">Secure video/audio</span>
+                    <span className="text-slate-400">Software:</span>
+                    <span className="font-bold text-white">No installs required</span>
                   </div>
-                  <p className="text-xs text-slate-400 italic mt-2">
-                    Your choice. No software installs required.
-                  </p>
                 </CardContent>
               </Card>
 
-              {/* Satisfaction Guarantee */}
-              <Card className="glyph-glass-card border-emerald-500/40 shadow-[0_0_25px_rgba(16,185,129,0.15)]">
-                <CardContent className="p-6 text-center">
-                  <Shield className="w-12 h-12 text-emerald-400 mx-auto mb-4 drop-shadow-[0_0_8px_rgba(16,185,129,0.6)]" />
-                  <h3 className="font-black text-white text-lg mb-3">Verification Guarantee</h3>
-                  <p className="text-sm text-slate-300 leading-relaxed">
-                    If protocol verification assessment fails to meet credentialing standards, GlyphLock issues a <span className="font-bold text-emerald-400">full refund within 48 hours</span> — no questions asked.
-                  </p>
+              {/* Credentialing Policy */}
+              <Card className="glyph-glass-card border-red-900/40">
+                <CardContent className="p-6">
+                  <h3 className="font-black text-white text-lg mb-4">Credentialing Policy</h3>
+                  <div className="space-y-3 text-sm text-slate-300">
+                    <p>GlyphLock does not provision access arbitrarily.</p>
+                    <p>Passing verification does not guarantee deployment.</p>
+                    <p>Failure halts progression immediately.</p>
+                    <p>Enforcement proceeds only upon credential approval.</p>
+                    <p className="pt-3 border-t border-slate-700/50 text-white font-semibold">
+                      All determinations are governed by the Master Covenant.
+                    </p>
+                  </div>
                 </CardContent>
               </Card>
             </div>
           </div>
 
           {/* Why GlyphLock Section */}
-          <Card className="glyph-glass-card card-elevated-hover mb-16">
+          <Card className="glyph-glass-card mb-16">
             <CardHeader>
-              <CardTitle className="text-3xl font-black text-white flex items-center gap-3">
-                <Lock className="w-8 h-8 text-[#3B82F6]" />
-                Why GlyphLock?
-              </CardTitle>
-              <p className="text-lg text-slate-300 mt-2 font-medium">
-                Because threats evolve daily. Protocol-governed systems adapt autonomously.
+              <CardTitle className="text-3xl font-black text-white">Why GlyphLock</CardTitle>
+              <p className="text-slate-300 mt-4 text-lg leading-relaxed">
+                Threats adapt.<br />
+                Protocols enforce.
               </p>
             </CardHeader>
             <CardContent>
-              <p className="text-slate-300 mb-6 text-lg font-medium">
-                GlyphLock delivers:
-              </p>
-              <div className="grid md:grid-cols-2 gap-4">
-                {whyGlyphLock.map((item, index) => (
-                  <div key={index} className="flex items-center gap-3 bg-slate-950/40 border border-[#3B82F6]/20 rounded-lg p-4">
-                    <CheckCircle2 className="w-5 h-5 text-[#3B82F6] flex-shrink-0" />
-                    <span className="text-white font-medium">{item}</span>
+              <p className="text-slate-300 mb-6 font-medium">GlyphLock delivers:</p>
+              <div className="space-y-2">
+                {protocolCapabilities.map((item, index) => (
+                  <div key={index} className="flex items-center gap-3 p-3 border-l-2 border-slate-700">
+                    <span className="text-white">{item}</span>
                   </div>
                 ))}
               </div>
-              <div className="mt-8 p-6 bg-slate-950/60 border-2 border-[#3B82F6]/40 rounded-xl text-center">
-                <p className="text-xl font-black text-white mb-2">
-                  We don't provision access arbitrarily.
-                </p>
-                <p className="text-lg text-[#3B82F6] font-bold">
-                  We verify. We credential. We enforce.
-                </p>
+              <div className="mt-8 p-8 border-2 border-slate-700 bg-slate-950/80 text-center">
+                <p className="text-lg text-white mb-4">We do not sell security theater.</p>
+                <div className="space-y-2 text-slate-300">
+                  <p>We verify.</p>
+                  <p>We credential.</p>
+                  <p>We enforce.</p>
+                </div>
               </div>
             </CardContent>
           </Card>
 
-          {/* Optional Add-Ons Notice */}
-          <Card className="glyph-glass-card border-purple-500/30">
+          {/* What This Engagement Is Not */}
+          <Card className="glyph-glass-card border-red-900/40 mb-16">
+            <CardHeader>
+              <CardTitle className="text-2xl font-black text-white">What This Engagement Is Not</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2 text-slate-300">
+                <p>Not SaaS onboarding</p>
+                <p>Not consulting hours</p>
+                <p>Not advisory services</p>
+                <p>Not a discovery call</p>
+                <p>Not a refundable experiment</p>
+              </div>
+              <p className="mt-6 text-white font-semibold">
+                If the reader is shopping, this page should repel them.
+              </p>
+            </CardContent>
+          </Card>
+
+          {/* Post Verification Pathways */}
+          <Card className="glyph-glass-card border-slate-700/50">
             <CardContent className="p-6">
               <div className="flex items-start gap-4">
-                <AlertTriangle className="w-6 h-6 text-purple-400 flex-shrink-0 mt-1" />
+                <Lock className="w-6 h-6 text-slate-500 flex-shrink-0 mt-1" />
                 <div>
-                  <h3 className="text-lg font-bold text-white mb-2">Optional Add-Ons (Shown After Payment)</h3>
-                  <ul className="text-sm text-slate-300 space-y-1">
-                    <li>• Full Enterprise Audit (Business / People / Agency)</li>
-                    <li>• Deep Technical Breakdown</li>
-                    <li>• Red-Team Simulation Package</li>
-                    <li>• Infrastructure Diagramming & Roadmapping</li>
-                    <li>• Compliance Preparation (SOC2, HIPAA, PCI, etc.)</li>
+                  <h3 className="text-lg font-bold text-white mb-2">Post Verification Pathways</h3>
+                  <p className="text-xs text-slate-500 mb-4">(Visible only after credential approval)</p>
+                  <ul className="text-sm text-slate-400 space-y-1">
+                    <li>• Protocol enforcement deployment</li>
+                    <li>• Red team simulation</li>
+                    <li>• Infrastructure diagramming</li>
+                    <li>• Compliance preparation</li>
+                    <li>• Long term protocol governance</li>
                   </ul>
                 </div>
               </div>

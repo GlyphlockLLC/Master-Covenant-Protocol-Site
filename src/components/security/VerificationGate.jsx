@@ -39,13 +39,13 @@ export default function VerificationGate({ onVerified, disabled = false }) {
 
   if (status === "verified") {
     return (
-      <div className="border border-slate-700/80 bg-slate-950/90 p-6">
+      <div className="border border-slate-700 bg-slate-950 p-6">
         <div className="flex items-center justify-between">
           <div>
-            <div className="text-sm text-slate-400 tracking-wider mb-1">VERIFICATION GATE</div>
+            <div className="text-xs text-slate-500 tracking-[0.2em] mb-1">VERIFICATION GATE</div>
             <div className="text-white font-medium">Request integrity confirmed</div>
           </div>
-          <div className="w-3 h-3 bg-green-500"></div>
+          <div className="w-2 h-2 bg-green-600"></div>
         </div>
       </div>
     );
@@ -53,12 +53,12 @@ export default function VerificationGate({ onVerified, disabled = false }) {
 
   if (status === "failed") {
     return (
-      <div className="border border-red-900/50 bg-slate-950/90 p-6">
-        <div className="text-sm text-slate-400 tracking-wider mb-2">VERIFICATION GATE</div>
+      <div className="border border-slate-700 bg-slate-950 p-6">
+        <div className="text-xs text-slate-500 tracking-[0.2em] mb-2">VERIFICATION GATE</div>
         <div className="text-red-400 font-medium mb-4">Verification failed. Submission rejected.</div>
         <button
           onClick={handleVerification}
-          className="w-full py-3 bg-slate-800 border border-slate-700 text-white font-medium hover:bg-slate-700 transition-colors"
+          className="w-full py-3 bg-slate-900 border border-slate-700 text-white font-medium hover:bg-slate-800 transition-colors"
           disabled={disabled}
         >
           Retry Verification
@@ -68,15 +68,15 @@ export default function VerificationGate({ onVerified, disabled = false }) {
   }
 
   return (
-    <div className="border border-slate-700/80 bg-slate-950/90 p-6">
-      <div className="mb-4">
+    <div className="border border-slate-700 bg-slate-950 p-6">
+      <div className="mb-5">
         <div className="text-white text-sm font-bold tracking-wide mb-2">
           Verification Gate Active
         </div>
         <div className="text-slate-400 text-sm mb-1">
           Confirm request integrity to proceed.
         </div>
-        <div className="text-slate-500 text-xs tracking-wider">
+        <div className="text-slate-600 text-xs tracking-[0.15em]">
           Protocol governed submission
         </div>
       </div>
@@ -84,7 +84,7 @@ export default function VerificationGate({ onVerified, disabled = false }) {
       <button
         onClick={handleVerification}
         disabled={disabled || status === "verifying"}
-        className="w-full py-3 bg-slate-800 border border-slate-700 text-white font-medium hover:bg-slate-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full py-3 bg-slate-900 border border-slate-700 text-white font-medium hover:bg-slate-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {status === "verifying" ? "Verifying..." : "Confirm & Proceed"}
       </button>
