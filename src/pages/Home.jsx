@@ -3,6 +3,7 @@ import HeroSection from '@/components/home/HeroSection';
 import HeroContent from '@/components/home/HeroContent';
 import HomeDreamTeamCTA from '@/components/home/HomeDreamTeamCTA';
 import ServicesGrid from '@/components/home/ServicesGrid';
+import ComplianceBadges from '@/components/compliance/ComplianceBadges';
 import CTASection from '@/components/home/CTASection';
 import TechnologyMarquee from '@/components/TechnologyMarquee';
 import CountdownPill from '@/components/marketing/CountdownPill';
@@ -160,6 +161,11 @@ export default function Home() {
         {/* Services Overview */}
         <ScrollSection className="container-responsive">
           <ServicesGrid />
+        </ScrollSection>
+
+        {/* Compliance Badges */}
+        <ScrollSection>
+          <ComplianceBadges showVerificationWarning={false} />
         </ScrollSection>
 
         {/* Technology Partners */}
