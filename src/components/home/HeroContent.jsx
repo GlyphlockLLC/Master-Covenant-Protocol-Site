@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 
 export default function HeroContent() {
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 py-16 relative" style={{ background: 'transparent', pointerEvents: 'auto' }}>
+    <section className="w-full max-w-7xl mx-auto px-4 py-16 relative" style={{ background: 'transparent', pointerEvents: 'auto' }}>
       <div className="text-center mb-16">
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 text-white tracking-tight drop-shadow-[0_0_30px_rgba(255,255,255,0.3)] leading-tight">
           THE FUTURE OF SECURITY ISN'T COMING — <span className="bg-gradient-to-r from-indigo-500 via-purple-500 to-violet-600 bg-clip-text text-transparent drop-shadow-[0_0_40px_rgba(139,92,246,0.9)] animate-pulse">IT'S ALREADY HERE.</span>
