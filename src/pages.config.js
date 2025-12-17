@@ -65,6 +65,7 @@ import SiteAudit from './pages/SiteAudit';
 import PartnerPortal from './pages/PartnerPortal';
 import TrustSecurity from './pages/TrustSecurity';
 import FullExport from './pages/FullExport';
+import EmergencyBackup from './pages/EmergencyBackup';
 import __Layout from './Layout.jsx';
 
 
@@ -136,6 +137,7 @@ export const PAGES = {
     "PartnerPortal": PartnerPortal,
     "TrustSecurity": TrustSecurity,
     "FullExport": FullExport,
+    "EmergencyBackup": EmergencyBackup,
 }
 
 export const pagesConfig = {
