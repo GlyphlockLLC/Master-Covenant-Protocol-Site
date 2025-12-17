@@ -96,7 +96,7 @@ function MobileSidebar({ isOpen, onClose, activeTab, setActiveTab, user, onLogou
             <X className="w-5 h-5" />
           </Button>
         </div>
-        <SidebarContent activeTab={activeTab} setActiveTab={(tab) => { setActiveTab(tab); onClose(); }} user={user} onLogout={onLogout} />
+        <SidebarContent activeTab={activeTab} setActiveTab={(tab) => { setActiveTab(tab); onClose(); }} user={user} onLogout={onLogout} threatCount={0} />
       </div>
     </div>
   );
