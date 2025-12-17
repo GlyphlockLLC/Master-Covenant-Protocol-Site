@@ -67,6 +67,7 @@ import TrustSecurity from './pages/TrustSecurity';
 import FullExport from './pages/FullExport';
 import EmergencyBackup from './pages/EmergencyBackup';
 import CaseStudyTruthStrike from './pages/CaseStudyTruthStrike';
+import CaseStudyAIBinding from './pages/CaseStudyAIBinding';
 import __Layout from './Layout.jsx';
 
 
@@ -140,6 +141,7 @@ export const PAGES = {
     "FullExport": FullExport,
     "EmergencyBackup": EmergencyBackup,
     "CaseStudyTruthStrike": CaseStudyTruthStrike,
+    "CaseStudyAIBinding": CaseStudyAIBinding,
 }
 
 export const pagesConfig = {

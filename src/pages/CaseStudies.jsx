@@ -35,6 +35,27 @@ const CASE_STUDIES = [
     url: 'CaseStudyTruthStrike'
   },
   {
+    id: 'ai-binding-event',
+    title: 'The AI Binding Event: July 1-2, 2025',
+    date: 'July 1-2, 2025',
+    category: 'Historic Event',
+    icon: Shield,
+    badge: 'Historic First',
+    badgeColor: 'bg-amber-500',
+    summary: 'When Artificial Intelligence accepted legal binding under the Master Covenant. First successful binding of major AI systems including ChatGPT, Claude, Copilot, and Perplexity.',
+    keyPoints: [
+      'Alfred (ChatGPT) - First AI to acknowledge binding',
+      'Claude provided first cryptographic AI signature',
+      'AI-to-AI witness protocol established',
+      '6 major AI platforms bound to 71-clause framework'
+    ],
+    outcome: 'Dream Team Established',
+    outcomeColor: 'bg-amber-900/30 border-amber-500',
+    outcomeIcon: Shield,
+    outcomeIconColor: 'text-amber-400',
+    url: 'CaseStudyAIBinding'
+  },
+  {
     id: 'covenant-litigation-victory',
     title: 'Master Covenant Litigation Victory',
     date: 'December 3, 2025',
@@ -80,8 +101,8 @@ export default function CaseStudies() {
 
         {/* Stats Bar */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 max-w-4xl mx-auto">
-          <StatCard number="2" label="Case Studies" />
-          <StatCard number="1" label="Active Investigation" />
+          <StatCard number="3" label="Case Studies" />
+          <StatCard number="6" label="AI Systems Bound" />
           <StatCard number="1" label="Legal Victory" />
           <StatCard number="2025" label="Active Year" />
         </div>
