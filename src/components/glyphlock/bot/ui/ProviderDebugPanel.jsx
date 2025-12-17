@@ -47,12 +47,20 @@ export default function ProviderDebugPanel({ providerMeta, lastMeta }) {
             <div className="bg-cyan-500/10 border border-cyan-500/30 rounded-lg p-3">
               <div className="text-xs text-cyan-300 font-bold mb-2">Last Response</div>
               <div className="space-y-1 text-xs text-cyan-200">
-                <div>Provider: <span className="text-white font-mono">{lastMeta.providerUsed}</span></div>
+                <div>Provider: <span className="text-white font-mono font-bold">{lastMeta.providerLabel || lastMeta.providerUsed}</span></div>
+                <div>Provider ID: <span className="text-white font-mono text-[10px]">{lastMeta.providerUsed}</span></div>
                 <div>Model: <span className="text-white font-mono">{lastMeta.model}</span></div>
                 {lastMeta.realTimeUsed && (
                   <div className="text-emerald-400">✓ Real-time web context used</div>
                 )}
               </div>
+            </div>
+          )}
+          
+          {/* No Response Yet */}
+          {!lastMeta && (
+            <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-3">
+              <div className="text-xs text-slate-400">No response yet. Send a message to see provider info.</div>
             </div>
           )}
 
