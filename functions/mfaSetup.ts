@@ -4,7 +4,10 @@
  */
 
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.4';
-import { generateTotpSecret, generateQrCodeDataUrl } from './utils/totpService.js';
+import speakeasy from 'npm:speakeasy@2.0.0';
+import QRCode from 'npm:qrcode@1.5.3';
+
+const ISSUER = 'GlyphLock';
 
 Deno.serve(async (req) => {
   try {
@@ -26,19 +29,24 @@ Deno.serve(async (req) => {
     }
     
     // Generate TOTP secret
-    const { secret, otpauthUrl } = generateTotpSecret(user.email);
+    const secret = speakeasy.generateSecret({
+      name: `${ISSUER} (${user.email})`,
+      issuer: ISSUER,
+      length: 32
+    });
     
     // Generate QR code
-    const qrCodeDataUrl = await generateQrCodeDataUrl(otpauthUrl);
-    
-    // Store secret in session temporarily (don't persist yet)
-    // For simplicity, we'll include it in the response and require it in verify-setup
-    // In production, consider using a signed JWT or server-side session
+    const qrCodeDataUrl = await QRCode.toDataURL(secret.otpauth_url, {
+      errorCorrectionLevel: 'H',
+      type: 'image/png',
+      width: 300,
+      margin: 2
+    });
     
     return Response.json({
       qrCodeDataUrl,
-      manualKey: secret,
-      tempSecret: secret // Client will send this back during verification
+      manualKey: secret.base32,
+      tempSecret: secret.base32
     });
     
   } catch (error) {
