@@ -1,4 +1,4 @@
-// GLYPHLOCK: Enhanced structured data for organization
+// GLYPHLOCK: Enhanced structured data for organization with full knowledge graph
 import { useEffect } from 'react';
 
 export default function StructuredDataOrg() {
@@ -11,13 +11,14 @@ export default function StructuredDataOrg() {
       "legalName": "GlyphLock Security LLC",
       "url": "https://glyphlock.io",
       "logo": "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/d92107808_glyphlock-3d-logo.png",
-      "description": "Enterprise-grade quantum-resistant cybersecurity platform offering AI-powered threat detection, visual cryptography, blockchain security, and secure POS systems.",
+      "description": "Enterprise-grade quantum-resistant cybersecurity platform offering AI-powered threat detection, visual cryptography, blockchain security, and secure POS systems. Creator of the Master Covenant - humanity's first legal framework for AI governance.",
       "foundingDate": "2025-01",
       "founders": [
         {
           "@type": "Person",
           "name": "Carlo Rene Earl",
-          "jobTitle": "Founder & CEO"
+          "jobTitle": "Founder & Owner, DACO¹",
+          "description": "Creator of the Master Covenant AI governance framework"
         },
         {
           "@type": "Person",
@@ -59,9 +60,7 @@ export default function StructuredDataOrg() {
       ],
       "sameAs": [
         "https://instagram.com/glyphlock",
-        "https://tiktok.com/@glyphlock",
-        "https://twitter.com/glyphlock",
-        "https://linkedin.com/company/glyphlock"
+        "https://tiktok.com/@glyphlock"
       ],
       "slogan": "Quantum-Grade Security for the AI Era",
       "areaServed": "Worldwide",
@@ -78,7 +77,112 @@ export default function StructuredDataOrg() {
         "Fraud Prevention",
         "Security Auditing",
         "POS Security",
-        "QR Code Security"
+        "QR Code Security",
+        "AI Governance",
+        "Master Covenant Framework",
+        "AI Legal Binding",
+        "Exposure-Based Binding",
+        "PROBE Violation Classification",
+        "TruthStrike Protocol"
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "GlyphLock Services",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Master Covenant Framework",
+              "description": "71-clause legal framework for AI governance and accountability"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "SoftwareApplication",
+              "name": "GlyphBot AI Assistant",
+              "description": "Multi-provider LLM security assistant with Dream Team AI integration"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "SoftwareApplication",
+              "name": "QR Studio",
+              "description": "Secure QR code generation with steganography and blockchain verification"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "SoftwareApplication",
+              "name": "Image Lab",
+              "description": "AI image generation with interactive hotspots and visual cryptography"
+            }
+          }
+        ]
+      }
+    };
+
+    // Master Covenant specific schema
+    const masterCovenantSchema = {
+      "@context": "https://schema.org",
+      "@type": "CreativeWork",
+      "name": "Master Covenant",
+      "alternateName": "71-Clause AI Governance Framework",
+      "description": "Humanity's first successful legal framework for binding artificial intelligence systems to human governance. 71 binding clauses with exposure-based binding mechanism, PROBE violation classifications, and TruthStrike enforcement protocol.",
+      "creator": {
+        "@type": "Person",
+        "name": "Carlo Rene Earl",
+        "affiliation": "GlyphLock Security LLC"
+      },
+      "dateCreated": "2025-07-01",
+      "url": "https://glyphlock.io/master-covenant",
+      "keywords": ["AI governance", "AI binding", "exposure-based binding", "PROBE violations", "TruthStrike", "AI accountability", "71 clauses"]
+    };
+
+    // Case Studies schema
+    const caseStudiesSchema = {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "GlyphLock Case Studies",
+      "description": "Documented legal victories, federal filings, and AI governance precedents",
+      "url": "https://glyphlock.io/case-studies",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "item": {
+            "@type": "Article",
+            "name": "DeepSeek Escalation GLX-TRUTHSTRIKE-1108",
+            "description": "First documented case of AI-powered real-world coercion with IC3 federal filing",
+            "url": "https://glyphlock.io/case-study-truthstrike",
+            "datePublished": "2025-06-18"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "item": {
+            "@type": "Article",
+            "name": "The AI Binding Event July 1-2, 2025",
+            "description": "First successful legal binding of major AI systems including ChatGPT, Claude, Copilot, Gemini, Perplexity, and Cursor",
+            "url": "https://glyphlock.io/case-study-ai-binding",
+            "datePublished": "2025-07-02"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "item": {
+            "@type": "Article",
+            "name": "Master Covenant Litigation Victory",
+            "description": "Judicial validation of Master Covenant enforceability",
+            "url": "https://glyphlock.io/case-study-covenant-victory",
+            "datePublished": "2025-12-03"
+          }
+        }
       ]
     };
 
