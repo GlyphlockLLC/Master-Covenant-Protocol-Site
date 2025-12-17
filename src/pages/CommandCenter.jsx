@@ -800,10 +800,28 @@ function SecurityTab({ threatDetection }) {
           <h2 className="text-xl font-bold text-white">Security Status</h2>
           <p className="text-sm text-slate-400">Your security posture overview</p>
         </div>
-        <Badge className="bg-green-500/20 text-green-400 border-green-500/30">
-          System Secure
+        <Badge className={criticalCount > 0 ? "bg-red-500/20 text-red-400 border-red-500/30" : "bg-green-500/20 text-green-400 border-green-500/30"}>
+          {criticalCount > 0 ? `${criticalCount} Critical Alert(s)` : "System Secure"}
         </Badge>
       </div>
+
+      {/* Active Threats Alert */}
+      {threatCount > 0 && (
+        <Card className="bg-red-500/10 border-red-500/30">
+          <CardContent className="p-4">
+            <div className="flex items-center gap-3">
+              <ShieldAlert className="w-5 h-5 text-red-400" />
+              <div className="flex-1">
+                <p className="text-white font-medium">{threatCount} Active Threat(s) Detected</p>
+                <p className="text-sm text-red-300">AI threat detection has identified suspicious activity</p>
+              </div>
+              <Link to={createPageUrl('CommandCenter') + '?tab=threats'}>
+                <Button size="sm" variant="destructive">View Threats</Button>
+              </Link>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Security Score */}
       <Card className="bg-slate-900/50 border-slate-800">
