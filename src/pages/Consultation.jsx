@@ -410,68 +410,63 @@ export default function Consultation() {
           </div>
 
           {/* Why GlyphLock Section */}
-          <Card className="glyph-glass-card mb-16">
-            <CardHeader>
-              <CardTitle className="text-3xl font-black text-white">Why GlyphLock</CardTitle>
-              <p className="text-slate-300 mt-4 text-lg leading-relaxed">
-                Threats adapt.<br />
-                Protocols enforce.
+          <div className="mb-16">
+            <div className="text-center mb-10">
+              <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">Why GlyphLock</h2>
+              <p className="text-slate-400 max-w-xl mx-auto">
+                Threats adapt. Protocols enforce. Here's what sets us apart.
               </p>
-            </CardHeader>
-            <CardContent>
-              <p className="text-slate-300 mb-6 font-medium">GlyphLock delivers:</p>
-              <div className="space-y-2">
-                {protocolCapabilities.map((item, index) => (
-                  <div key={index} className="flex items-center gap-3 p-3 border-l-2 border-slate-700">
-                    <span className="text-white">{item}</span>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-8 p-8 border-2 border-slate-700 bg-slate-950/80 text-center">
-                <p className="text-lg text-white mb-4">We do not sell security theater.</p>
-                <div className="space-y-2 text-slate-300">
-                  <p>We verify.</p>
-                  <p>We credential.</p>
-                  <p>We enforce.</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+            </div>
+            
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {protocolCapabilities.map((cap, idx) => (
+                <Card 
+                  key={idx} 
+                  className={`bg-slate-900/60 backdrop-blur-xl border transition-all duration-500 ${
+                    activeFeature === idx 
+                      ? 'border-cyan-500/50 shadow-lg shadow-cyan-500/10' 
+                      : 'border-slate-700/50 hover:border-slate-600/50'
+                  }`}
+                >
+                  <CardContent className="p-5">
+                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-4 transition-all duration-500 ${
+                      activeFeature === idx 
+                        ? 'bg-gradient-to-br from-cyan-500/20 to-blue-500/20 border border-cyan-500/30' 
+                        : 'bg-slate-800/50'
+                    }`}>
+                      <cap.icon className={`w-5 h-5 transition-colors duration-500 ${activeFeature === idx ? 'text-cyan-400' : 'text-slate-500'}`} />
+                    </div>
+                    <h3 className="text-white font-semibold mb-1">{cap.text}</h3>
+                    <p className="text-slate-400 text-sm">{cap.desc}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
 
-          {/* What This Engagement Is Not */}
-          <Card className="glyph-glass-card border-red-900/40 mb-16">
-            <CardHeader>
-              <CardTitle className="text-2xl font-black text-white">What This Engagement Is Not</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2 text-slate-300">
-                <p>Not SaaS onboarding</p>
-                <p>Not consulting hours</p>
-                <p>Not advisory services</p>
-                <p>Not a discovery call</p>
-                <p>Not a refundable experiment</p>
-              </div>
-              <p className="mt-6 text-white font-semibold">
-                If the reader is shopping, this page should repel them.
-              </p>
-            </CardContent>
-          </Card>
-
-          {/* Post Verification Pathways */}
-          <Card className="glyph-glass-card border-slate-700/50">
-            <CardContent className="p-6">
-              <div className="flex items-start gap-4">
-                <Lock className="w-6 h-6 text-slate-500 flex-shrink-0 mt-1" />
+          {/* Bottom CTA */}
+          <Card className="bg-gradient-to-br from-slate-900/80 to-slate-800/80 backdrop-blur-xl border border-slate-700/50 overflow-hidden">
+            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent" />
+            <CardContent className="p-8 md:p-12">
+              <div className="grid md:grid-cols-2 gap-8 items-center">
                 <div>
-                  <h3 className="text-lg font-bold text-white mb-2">Post Verification Pathways</h3>
-                  <p className="text-xs text-slate-500 mb-4">(Visible only after credential approval)</p>
-                  <ul className="text-sm text-slate-400 space-y-1">
-                    <li>• Protocol enforcement deployment</li>
-                    <li>• Red team simulation</li>
-                    <li>• Infrastructure diagramming</li>
-                    <li>• Compliance preparation</li>
-                    <li>• Long term protocol governance</li>
-                  </ul>
+                  <h3 className="text-2xl font-bold text-white mb-3">Ready to Begin?</h3>
+                  <p className="text-slate-400 mb-6">
+                    After verification, you'll gain access to protocol enforcement deployment, red team simulations, compliance preparation, and long-term governance support.
+                  </p>
+                  <div className="flex flex-wrap gap-3">
+                    {['Enforcement Deployment', 'Red Team Simulation', 'Compliance Prep', 'Governance Support'].map((item, idx) => (
+                      <div key={idx} className="px-3 py-1.5 rounded-full bg-slate-800/50 border border-slate-700/50 text-xs text-slate-300">
+                        {item}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="text-center md:text-right">
+                  <p className="text-slate-500 text-sm mb-2">Questions about the process?</p>
+                  <a href="mailto:glyphlock@gmail.com" className="text-cyan-400 hover:text-cyan-300 font-medium transition-colors">
+                    Contact our team →
+                  </a>
                 </div>
               </div>
             </CardContent>
