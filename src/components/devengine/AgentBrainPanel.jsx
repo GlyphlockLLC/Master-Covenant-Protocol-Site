@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
-import { BrainCircuit, Send, Loader2, CheckCircle2, AlertCircle, Clock, Zap, Paperclip, X, Image as ImageIcon, FileText, Upload, Save, FolderOpen, Trash2, Star } from 'lucide-react';
+import { BrainCircuit, Send, Loader2, CheckCircle2, AlertCircle, Clock, Zap, Paperclip, X, Image as ImageIcon, FileText, Upload, Save, FolderOpen, Trash2, Star, Play, Code, FileCode, Terminal } from 'lucide-react';
 import HoverTooltip from '@/components/ui/HoverTooltip';
 import { toast } from 'sonner';
 import ReactMarkdown from 'react-markdown';
@@ -22,8 +22,111 @@ export default function AgentBrainPanel() {
   const [savedConversations, setSavedConversations] = useState([]);
   const [showSaved, setShowSaved] = useState(false);
   const [savingConversation, setSavingConversation] = useState(false);
+  const [generatedCode, setGeneratedCode] = useState(null);
+  const [isExecuting, setIsExecuting] = useState(false);
+  const [executionPlan, setExecutionPlan] = useState(null);
   const scrollRef = useRef(null);
   const fileInputRef = useRef(null);
+
+  // Execute code generation via backend
+  const executeCodeGeneration = async (userRequest) => {
+    setIsExecuting(true);
+    try {
+      // Step 1: Analyze the request
+      toast.info('🧠 Analyzing request...');
+      const analysisRes = await base44.functions.invoke('agentExecuteCode', {
+        action: 'analyze_request',
+        payload: { userRequest, context: 'GlyphLock.io security platform' }
+      });
+
+      if (!analysisRes.data?.success) {
+        throw new Error(analysisRes.data?.error || 'Analysis failed');
+      }
+
+      setExecutionPlan(analysisRes.data);
+      
+      // Add plan to messages
+      const planMessage = {
+        role: 'assistant',
+        content: `## 📋 Execution Plan\n\n${analysisRes.data.summary}\n\n**Steps:**\n${analysisRes.data.plan?.map((p, i) => `${i + 1}. **${p.action}** \`${p.filePath}\` - ${p.description}`).join('\n') || 'No specific file changes needed.'}\n\n*Model: ${analysisRes.data.model}*`
+      };
+      setMessages(prev => [...prev, planMessage]);
+
+      // Step 2: Generate code for each file in the plan
+      if (analysisRes.data.plan && analysisRes.data.plan.length > 0) {
+        for (const step of analysisRes.data.plan) {
+          toast.info(`⚡ Generating ${step.filePath}...`);
+          
+          const codeRes = await base44.functions.invoke('agentExecuteCode', {
+            action: 'generate_code',
+            payload: {
+              filePath: step.filePath,
+              description: step.description,
+              mode: step.action
+            }
+          });
+
+          if (codeRes.data?.success) {
+            setGeneratedCode({
+              filePath: step.filePath,
+              code: codeRes.data.code,
+              model: codeRes.data.model
+            });
+
+            // Add code to messages
+            const codeMessage = {
+              role: 'assistant',
+              content: `## 📄 Generated: \`${step.filePath}\`\n\n\`\`\`jsx\n${codeRes.data.code.slice(0, 2000)}${codeRes.data.code.length > 2000 ? '\n// ... (truncated)' : ''}\n\`\`\`\n\n*Model: ${codeRes.data.model}*\n\n⚠️ **Code generated but NOT deployed.** To deploy, copy this code and paste it in the chat with me (Base44 AI) and say "write this to ${step.filePath}".`
+            };
+            setMessages(prev => [...prev, codeMessage]);
+          }
+        }
+      }
+
+      toast.success('✅ Code generation complete!');
+
+    } catch (error) {
+      console.error('Execution error:', error);
+      toast.error('Execution failed: ' + error.message);
+      setMessages(prev => [...prev, {
+        role: 'assistant',
+        content: `❌ **Execution Error:** ${error.message}\n\nTry rephrasing your request or contact admin.`
+      }]);
+    } finally {
+      setIsExecuting(false);
+    }
+  };
+
+  // Debug analysis
+  const executeDebugAnalysis = async (errorInfo) => {
+    setIsExecuting(true);
+    try {
+      toast.info('🐛 Analyzing error...');
+      
+      const debugRes = await base44.functions.invoke('agentExecuteCode', {
+        action: 'debug_analyze',
+        payload: {
+          errorMessage: errorInfo,
+          stackTrace: '',
+          filePath: ''
+        }
+      });
+
+      if (debugRes.data?.success) {
+        const debugMessage = {
+          role: 'assistant',
+          content: `## 🐛 Debug Analysis\n\n**Root Cause:** ${debugRes.data.rootCause || 'Unknown'}\n\n**Explanation:** ${debugRes.data.explanation}\n\n${debugRes.data.fix ? `**Suggested Fix:**\n\`\`\`\nFile: ${debugRes.data.fix.filePath}\nFind: ${debugRes.data.fix.findCode}\nReplace: ${debugRes.data.fix.replaceCode}\n\`\`\`` : ''}\n\n*Confidence: ${(debugRes.data.confidence * 100).toFixed(0)}% | Model: ${debugRes.data.model}*`
+        };
+        setMessages(prev => [...prev, debugMessage]);
+        toast.success('Debug analysis complete');
+      }
+
+    } catch (error) {
+      toast.error('Debug analysis failed');
+    } finally {
+      setIsExecuting(false);
+    }
+  };
 
   // Safety guards - ensure arrays are always valid
   const safeMessages = Array.isArray(messages) ? messages : [];
@@ -239,18 +342,12 @@ export default function AgentBrainPanel() {
   const sendMessage = async () => {
     if (!input.trim() || sending || !conversation) return;
 
-    const modePrefix = {
-      explain: '[EXPLAIN MODE] ',
-      build: '[BUILD MODE - EXECUTE CHANGES] ',
-      refactor: '[REFACTOR MODE - EXECUTE CHANGES] ',
-      debug: '[DEBUG MODE - EXECUTE FIXES] '
-    }[mode] || '[BUILD MODE - EXECUTE CHANGES] ';
-
+    const userInput = input.trim();
     const fileUrls = uploadedFiles.map(f => f.url);
     
     const userMessage = {
       role: 'user',
-      content: modePrefix + input.trim(),
+      content: userInput,
       ...(fileUrls.length > 0 && { file_urls: fileUrls })
     };
 
@@ -261,13 +358,34 @@ export default function AgentBrainPanel() {
     setSending(true);
 
     try {
-      await base44.agents.addMessage(conversation, userMessage);
-      toast.success('Agent processing...');
+      // For BUILD/REFACTOR modes, use the code execution backend
+      if (mode === 'build' || mode === 'refactor') {
+        setSending(false);
+        await executeCodeGeneration(userInput);
+        return;
+      }
+
+      // For DEBUG mode, use debug analysis
+      if (mode === 'debug') {
+        setSending(false);
+        await executeDebugAnalysis(userInput);
+        return;
+      }
+
+      // For EXPLAIN mode, use the regular agent conversation
+      const modePrefix = '[EXPLAIN MODE - ANALYSIS ONLY] ';
+      const explainMessage = {
+        role: 'user',
+        content: modePrefix + userInput,
+        ...(fileUrls.length > 0 && { file_urls: fileUrls })
+      };
+
+      await base44.agents.addMessage(conversation, explainMessage);
+      toast.success('Agent analyzing...');
     } catch (error) {
       console.error('Send error:', error);
       toast.error('Failed to send message');
-      const prevMessages = Array.isArray(messages) ? messages : [];
-      setMessages([...prevMessages, {
+      setMessages(prev => [...prev, {
         role: 'assistant',
         content: 'Error: ' + error.message
       }]);
@@ -465,12 +583,15 @@ export default function AgentBrainPanel() {
                 <div className="flex items-center justify-center min-h-[400px]">
                   <div className="text-center px-4 max-w-2xl">
                   <BrainCircuit className="w-12 h-12 md:w-16 md:h-16 text-blue-400 mx-auto mb-4 opacity-50 animate-pulse" />
-                  <h3 className="text-lg md:text-xl font-bold text-white mb-2">Autonomous Agent Ready</h3>
+                  <h3 className="text-lg md:text-xl font-bold text-white mb-2">🚀 Code Execution Agent Ready</h3>
                   <p className="text-sm md:text-base text-blue-300/80 mb-2">
                     Mode: <span className="font-bold">{modeConfig.label}</span> {modeConfig.icon}
                   </p>
-                  <p className="text-xs text-blue-400/60 mb-6">
-                    {modeConfig.desc}
+                  <p className="text-xs text-green-400/80 mb-2">
+                    ✅ Can generate real code for pages, components, entities, functions
+                  </p>
+                  <p className="text-xs text-amber-400/60 mb-6">
+                    ⚠️ Generated code requires manual deployment (copy to Base44 AI chat)
                   </p>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-left">
                   <div className="p-4 rounded-xl bg-cyan-500/10 border border-cyan-500/20 hover:bg-cyan-500/15 transition-colors">
