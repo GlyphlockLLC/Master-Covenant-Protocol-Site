@@ -324,8 +324,13 @@ export default function ControlBar({
                     <button
                       type="button"
                       onClick={() => {
+                        console.log('[ControlBar] Test Voice clicked with settings:', voiceSettings);
                         if (onVoiceSettingsChange?.playText) {
-                          onVoiceSettingsChange.playText("This is a voice test with your current settings.", voiceSettings);
+                          // Pass the CURRENT voiceSettings explicitly
+                          onVoiceSettingsChange.playText(
+                            "Hello! This is a test of your current voice settings. The emotion is " + (voiceSettings?.emotion || 'neutral') + " and the profile is " + (voiceSettings?.voiceProfile || 'neutral female') + ".",
+                            { ...voiceSettings }
+                          );
                         }
                       }}
                       style={{ touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent', pointerEvents: 'auto', minHeight: '44px' }}
