@@ -15,6 +15,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Progress } from "@/components/ui/progress";
 import { toast } from "sonner";
+import { 
+  useThreatDetection, 
+  ThreatAlert, 
+  ThreatConfigPanel, 
+  ThreatSummaryWidget,
+  THREAT_TYPES 
+} from "@/components/commandcenter/ThreatDetectionEngine";
 import {
   Shield, Key, Activity, Zap, Settings, Users, FileText, 
   TrendingUp, Clock, AlertTriangle, CheckCircle, Lock,
