@@ -186,6 +186,7 @@ export default function StructuredDataOrg() {
       ]
     };
 
+    // Inject Organization schema
     let script = document.getElementById('org-schema-enhanced');
     if (!script) {
       script = document.createElement('script');
@@ -194,6 +195,26 @@ export default function StructuredDataOrg() {
       document.head.appendChild(script);
     }
     script.textContent = JSON.stringify(orgSchema);
+
+    // Inject Master Covenant schema
+    let covenantScript = document.getElementById('covenant-schema');
+    if (!covenantScript) {
+      covenantScript = document.createElement('script');
+      covenantScript.id = 'covenant-schema';
+      covenantScript.type = 'application/ld+json';
+      document.head.appendChild(covenantScript);
+    }
+    covenantScript.textContent = JSON.stringify(masterCovenantSchema);
+
+    // Inject Case Studies schema
+    let caseScript = document.getElementById('case-studies-schema');
+    if (!caseScript) {
+      caseScript = document.createElement('script');
+      caseScript.id = 'case-studies-schema';
+      caseScript.type = 'application/ld+json';
+      document.head.appendChild(caseScript);
+    }
+    caseScript.textContent = JSON.stringify(caseStudiesSchema);
   }, []);
 
   return null;
