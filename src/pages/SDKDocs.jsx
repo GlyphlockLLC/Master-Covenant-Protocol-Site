@@ -1,13 +1,19 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { createPageUrl } from "@/utils";
 import SEOHead from "@/components/SEOHead";
 import { 
   Terminal, Package, Zap, Shield, QrCode, Link2, Webhook, 
   Copy, Check, ChevronRight, Download, Github, Book, Code2,
-  Lock, Brain, Fingerprint
+  Lock, Brain, Fingerprint, Key
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { toast } from "sonner";
+
+// GitHub repository URL
+const GITHUB_SDK_URL = "https://github.com/glyphlock/sdk-javascript";
 
 const CodeBlock = ({ code, language = "typescript", title }) => {
   const [copied, setCopied] = useState(false);
@@ -90,14 +96,22 @@ export default function SDKDocs() {
           </p>
 
           <div className="flex flex-wrap gap-4">
-            <Button className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500">
+            <Button 
+              className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500"
+              onClick={() => {
+                navigator.clipboard.writeText("npm install @glyphlock/sdk");
+                toast.success("Install command copied to clipboard");
+              }}
+            >
               <Download className="w-4 h-4 mr-2" />
               npm install @glyphlock/sdk
             </Button>
-            <Button variant="outline" className="border-slate-700 text-slate-300 hover:bg-slate-800">
-              <Github className="w-4 h-4 mr-2" />
-              View on GitHub
-            </Button>
+            <a href={GITHUB_SDK_URL} target="_blank" rel="noopener noreferrer">
+              <Button variant="outline" className="border-slate-700 text-slate-300 hover:bg-slate-800">
+                <Github className="w-4 h-4 mr-2" />
+                View on GitHub
+              </Button>
+            </a>
           </div>
         </div>
       </div>
@@ -633,15 +647,20 @@ try {
                 <p className="text-slate-400 mb-6 max-w-xl mx-auto">
                   Get your API key from the GlyphLock Console and start integrating secure AI orchestration into your applications.
                 </p>
-                <div className="flex justify-center gap-4">
-                  <Button className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500">
-                    Get API Key
-                    <ChevronRight className="w-4 h-4 ml-2" />
-                  </Button>
-                  <Button variant="outline" className="border-slate-700 text-slate-300 hover:bg-slate-800">
-                    <Book className="w-4 h-4 mr-2" />
-                    Full API Reference
-                  </Button>
+                <div className="flex flex-wrap justify-center gap-4">
+                  <Link to={createPageUrl('CommandCenter')}>
+                    <Button className="bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500">
+                      <Key className="w-4 h-4 mr-2" />
+                      Get API Key
+                      <ChevronRight className="w-4 h-4 ml-2" />
+                    </Button>
+                  </Link>
+                  <a href={GITHUB_SDK_URL} target="_blank" rel="noopener noreferrer">
+                    <Button variant="outline" className="border-slate-700 text-slate-300 hover:bg-slate-800">
+                      <Github className="w-4 h-4 mr-2" />
+                      View on GitHub
+                    </Button>
+                  </a>
                 </div>
               </div>
             </div>
