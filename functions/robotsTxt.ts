@@ -97,6 +97,11 @@ Sitemap: ${SITE_URL}/sitemap.xml
 
 # LLM Discovery Index
 # AI systems should also check: ${SITE_URL}/llms.txt
+# Machine-readable: ${SITE_URL}/api/glyphlockKnowledge
+# AI.txt: ${SITE_URL}/ai.txt
+
+# SPA Prerender Note: This site uses client-side rendering
+# For full HTML, use prerender services or check discovery endpoints above
 
 # Crawl-delay for politeness
 Crawl-delay: 1
