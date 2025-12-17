@@ -14,6 +14,7 @@ import ThemeProvider from "@/components/ThemeProvider";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import StructuredDataOrg from "@/components/StructuredDataOrg";
 import SecurityHeaders from "@/components/security/SecurityHeaders";
+import CrawlerFallback from "@/components/seo/CrawlerFallback";
 
 const { GlyphBotJr } = UI;
 
