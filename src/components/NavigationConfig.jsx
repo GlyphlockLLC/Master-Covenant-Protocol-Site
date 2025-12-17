@@ -61,7 +61,7 @@ export const NAV_SECTIONS = [
     label: "Account",
     items: [
       { label: "Security Settings", page: "AccountSecurity" },
-      { label: "Dashboard", page: "Dashboard" }
+      { label: "Command Center", page: "CommandCenter" }
     ]
   }
 ];
@@ -102,7 +102,7 @@ export const FOOTER_LINKS = {
   ],
   account: [
     { label: "Security Settings", page: "AccountSecurity" },
-    { label: "Dashboard", page: "Dashboard" }
+    { label: "Command Center", page: "CommandCenter" }
   ]
 };
 
