@@ -122,6 +122,10 @@ export default function ChatHistoryPanel({
     const success = await onDelete(chatId);
     if (success) {
       toast.success('Chat deleted');
+      // Always start a new chat after deletion
+      if (onNewChat) {
+        onNewChat();
+      }
       if (showArchived && onGetArchived) {
         const chats = await onGetArchived();
         setArchivedChats(chats || []);

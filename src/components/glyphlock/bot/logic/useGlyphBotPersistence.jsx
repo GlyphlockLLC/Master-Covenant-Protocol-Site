@@ -8,23 +8,13 @@ export function useGlyphBotPersistence(currentUser) {
   const [isLoading, setIsLoading] = useState(false);
   const [fullHistory, setFullHistory] = useState([]);
 
+  // Don't auto-load last chat - always start fresh
   useEffect(() => {
     if (currentUser?.email) {
-      base44.functions.invoke('loadGlyphBotChats', { includeArchived: false })
-        .then(({ data }) => {
-          if (data?.success && data.chats?.length > 0) {
-            const latest = data.chats[0];
-            const chatId = latest.id || latest._id || latest.entity_id;
-            setCurrentChatId(chatId);
-            try {
-              const msgs = JSON.parse(latest.fullHistory || '[]');
-              setFullHistory(msgs);
-            } catch {}
-          }
-        })
-        .catch(e => console.error('[AutoLoad]', e));
+      // Just load the list, don't auto-select
+      loadSavedChats();
     }
-  }, [currentUser?.email]);
+  }, [currentUser?.email, loadSavedChats]);
 
   const loadSavedChats = useCallback(async () => {
     if (!currentUser?.email) return;
@@ -228,14 +218,15 @@ export function useGlyphBotPersistence(currentUser) {
         throw new Error(response.data?.error || 'Delete failed');
       }
 
-      if (chatId === currentChatId) startNewChat();
+      // Always start fresh after delete
+      startNewChat();
       await loadSavedChats();
       return true;
     } catch (e) {
       console.error('[Persistence] Delete failed:', e);
       return false;
     }
-  }, [currentChatId, loadSavedChats, startNewChat]);
+  }, [loadSavedChats, startNewChat]);
 
   const getArchivedChats = useCallback(async () => {
     if (!currentUser?.email) return [];
