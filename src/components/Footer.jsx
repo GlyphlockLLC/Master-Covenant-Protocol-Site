@@ -148,6 +148,31 @@ export default function Footer() {
           </div>
         </div>
 
+        {/* Crawler Discovery Section - Static HTML for SEO */}
+        <div className="border-t border-white/10 pt-8 mb-12">
+          <details className="group">
+            <summary className="cursor-pointer text-center text-xs text-slate-500 tracking-wide mb-3 hover:text-cyan-400 transition-colors list-none">
+              <span className="inline-flex items-center gap-2">
+                🔍 Sitemap & Crawler Discovery
+                <svg className="w-4 h-4 transition-transform group-open:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+              </span>
+            </summary>
+            <nav aria-label="Sitemap Discovery" className="mt-4 p-4 bg-slate-900/50 rounded-xl border border-slate-800">
+              <p className="text-xs text-slate-400 mb-4 text-center">Machine-readable discovery endpoints for search engines and AI crawlers</p>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+                <a href="https://glyphlock.io/api/sitemap" className="text-cyan-400 hover:text-cyan-300 underline">sitemap.xml</a>
+                <a href="https://glyphlock.io/api/robotsTxt" className="text-cyan-400 hover:text-cyan-300 underline">robots.txt</a>
+                <a href="https://glyphlock.io/api/llmsTxt" className="text-cyan-400 hover:text-cyan-300 underline">llms.txt</a>
+                <a href="https://glyphlock.io/api/aiTxtEnhanced" className="text-cyan-400 hover:text-cyan-300 underline">ai.txt</a>
+                <a href="https://glyphlock.io/api/glyphlockKnowledge" className="text-cyan-400 hover:text-cyan-300 underline">knowledge.json</a>
+                <Link to={createPageUrl('Sitemap')} className="text-cyan-400 hover:text-cyan-300 underline">HTML Sitemap</Link>
+                <Link to={createPageUrl('CaseStudies')} className="text-cyan-400 hover:text-cyan-300 underline">Case Studies</Link>
+                <Link to={createPageUrl('MasterCovenant')} className="text-cyan-400 hover:text-cyan-300 underline">Master Covenant</Link>
+              </div>
+            </nav>
+          </details>
+        </div>
+
         {/* Compliance Disclosure */}
         <div className="border-t border-white/10 pt-8 mb-12">
           <p className="text-center text-xs text-slate-500 tracking-wide mb-3">
