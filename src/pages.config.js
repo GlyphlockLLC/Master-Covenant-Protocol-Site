@@ -66,6 +66,7 @@ import PartnerPortal from './pages/PartnerPortal';
 import TrustSecurity from './pages/TrustSecurity';
 import FullExport from './pages/FullExport';
 import EmergencyBackup from './pages/EmergencyBackup';
+import CaseStudyTruthStrike from './pages/CaseStudyTruthStrike';
 import __Layout from './Layout.jsx';
 
 
@@ -138,6 +139,7 @@ export const PAGES = {
     "TrustSecurity": TrustSecurity,
     "FullExport": FullExport,
     "EmergencyBackup": EmergencyBackup,
+    "CaseStudyTruthStrike": CaseStudyTruthStrike,
 }
 
 export const pagesConfig = {
