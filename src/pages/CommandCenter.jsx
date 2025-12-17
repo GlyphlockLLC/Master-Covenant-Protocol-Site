@@ -1481,7 +1481,7 @@ export default function CommandCenter() {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const tabParam = urlParams.get('tab');
-    if (tabParam && ['overview', 'resources', 'security', 'api-keys', 'analytics', 'tools', 'logs', 'settings'].includes(tabParam)) {
+    if (tabParam && ['overview', 'threats', 'resources', 'security', 'api-keys', 'analytics', 'tools', 'logs', 'settings'].includes(tabParam)) {
       setActiveTab(tabParam);
     }
   }, []);
