@@ -145,53 +145,72 @@ export default function ControlBar({
                       value={voiceSettings?.emotion || 'neutral'} 
                       onChange={(e) => {
                         const val = e.target.value;
-                        const preset = emotionPresets?.find(ep => ep.id === val);
-                        if (preset && onVoiceSettingsChange?.setVoiceSettings) {
-                          console.log('[Voice] Applying emotion preset:', preset);
-                          onVoiceSettingsChange.setVoiceSettings(prev => ({
-                            ...prev,
-                            emotion: val,
-                            pitch: preset.pitch || prev.pitch,
-                            speed: preset.speed || prev.speed,
-                            bass: preset.bass ?? prev.bass,
-                            clarity: preset.clarity ?? prev.clarity,
-                            volume: preset.volume ?? prev.volume
-                          }));
-                        } else {
-                          handleVoiceChange('emotion', val);
+                        console.log('[ControlBar] Emotion selected:', val);
+                        
+                        // Find the preset from available presets or use hardcoded values
+                        const presetMap = {
+                          neutral: { pitch: 1.0, speed: 1.0, bass: 0, clarity: 0, volume: 1.0 },
+                          energetic: { pitch: 1.2, speed: 1.2, bass: 0.3, clarity: 0.4, volume: 1.0 },
+                          calm: { pitch: 0.88, speed: 0.85, bass: 0.15, clarity: -0.05, volume: 0.9 },
+                          authoritative: { pitch: 0.82, speed: 0.92, bass: 0.5, clarity: 0.25, volume: 1.0 },
+                          friendly: { pitch: 1.12, speed: 1.08, bass: 0, clarity: 0.15, volume: 1.0 },
+                          whisper: { pitch: 0.95, speed: 0.8, bass: -0.2, clarity: -0.3, volume: 0.7 },
+                          intense: { pitch: 1.0, speed: 1.25, bass: 0.4, clarity: 0.5, volume: 1.0 }
+                        };
+                        
+                        const preset = emotionPresets?.find(ep => ep.id === val) || presetMap[val];
+                        
+                        if (onVoiceSettingsChange?.setVoiceSettings) {
+                          onVoiceSettingsChange.setVoiceSettings(prev => {
+                            const updated = {
+                              ...prev,
+                              emotion: val,
+                              pitch: preset?.pitch ?? prev.pitch,
+                              speed: preset?.speed ?? prev.speed,
+                              bass: preset?.bass ?? prev.bass,
+                              clarity: preset?.clarity ?? prev.clarity,
+                              volume: preset?.volume ?? prev.volume
+                            };
+                            console.log('[ControlBar] Emotion preset applied:', updated);
+                            return updated;
+                          });
                         }
                       }}
-                      className="w-full bg-slate-800 border border-slate-700 text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500/50"
-                      style={{ pointerEvents: 'auto', touchAction: 'manipulation' }}
+                      className="w-full bg-slate-800 border border-slate-700 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500/50 cursor-pointer"
+                      style={{ pointerEvents: 'auto', touchAction: 'manipulation', minHeight: '44px' }}
                     >
-                      {emotionPresets && emotionPresets.length > 0 ? emotionPresets.filter(e => e && e.id).map(e => (
-                        <option key={e.id} value={e.id}>{e.label}</option>
-                      )) : (
-                        <>
-                          <option value="neutral">Neutral</option>
-                          <option value="energetic">Energetic</option>
-                          <option value="calm">Calm</option>
-                          <option value="authoritative">Authoritative</option>
-                          <option value="friendly">Friendly</option>
-                          <option value="whisper">Whisper</option>
-                          <option value="intense">Intense</option>
-                        </>
-                      )}
+                      <option value="neutral">Neutral</option>
+                      <option value="energetic">Energetic</option>
+                      <option value="calm">Calm</option>
+                      <option value="authoritative">Authoritative</option>
+                      <option value="friendly">Friendly</option>
+                      <option value="whisper">Whisper</option>
+                      <option value="intense">Intense</option>
                     </select>
                   </div>
 
                   {/* Voice Profile - Native Select */}
                   <div className="space-y-2">
-                    <label className="text-xs text-slate-400">Voice Profile</label>
+                    <label className="text-xs text-slate-400 flex items-center justify-between">
+                      <span>Voice Profile</span>
+                      <span className="text-[9px] text-purple-400 font-mono">{voiceSettings?.voiceProfile || 'neutral_female'}</span>
+                    </label>
                     <select 
                       value={voiceSettings?.voiceProfile || 'neutral_female'} 
-                      onChange={(e) => handleVoiceChange('voiceProfile', e.target.value)}
-                      className="w-full bg-slate-800 border border-slate-700 text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500/50"
-                      style={{ pointerEvents: 'auto', touchAction: 'manipulation' }}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        console.log('[ControlBar] Voice profile selected:', val);
+                        handleVoiceChange('voiceProfile', val);
+                      }}
+                      className="w-full bg-slate-800 border border-slate-700 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500/50 cursor-pointer"
+                      style={{ pointerEvents: 'auto', touchAction: 'manipulation', minHeight: '44px' }}
                     >
-                      {Array.isArray(voiceProfiles) && voiceProfiles.length > 0 ? voiceProfiles.filter(v => v && v.id).map(v => (
-                        <option key={v.id} value={v.id}>{v.label}</option>
-                      )) : <option value="neutral_female">Neutral Female</option>}
+                      <option value="neutral_female">Nova (Neutral Female)</option>
+                      <option value="neutral_male">Onyx (Neutral Male)</option>
+                      <option value="warm_female">Shimmer (Warm Female)</option>
+                      <option value="warm_male">Echo (Warm Male)</option>
+                      <option value="professional_female">Alloy (Professional)</option>
+                      <option value="professional_male">Fable (Storyteller)</option>
                     </select>
                   </div>
 
