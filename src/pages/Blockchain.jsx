@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,8 +8,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Blocks, Hash, Shield, CheckCircle2, Copy, FileCheck, Lock, AlertTriangle, Clock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import FreeTrialGuard from "@/components/FreeTrialGuard";
-
 export default function Blockchain() {
   const [inputText, setInputText] = useState("");
   const [hashes, setHashes] = useState({});
@@ -186,7 +183,6 @@ export default function Blockchain() {
   };
 
   return (
-    <FreeTrialGuard serviceName="Blockchain">
       <div className="min-h-screen bg-black text-white py-20">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
@@ -698,6 +694,5 @@ export default function Blockchain() {
           </div>
         </div>
       </div>
-    </FreeTrialGuard>
   );
 }
