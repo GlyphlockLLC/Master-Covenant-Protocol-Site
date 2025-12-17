@@ -1234,6 +1234,15 @@ export default function CommandCenter() {
   const [activeTab, setActiveTab] = useState("overview");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  // Check URL params for tab selection
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const tabParam = urlParams.get('tab');
+    if (tabParam && ['overview', 'security', 'api-keys', 'analytics', 'tools', 'logs', 'settings'].includes(tabParam)) {
+      setActiveTab(tabParam);
+    }
+  }, []);
+
   useEffect(() => {
     (async () => {
       try {

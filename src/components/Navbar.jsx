@@ -166,7 +166,7 @@ export default function Navbar({ user, onLogin, onLogout }) {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild className="text-violet-200 focus:bg-indigo-500/20 focus:text-white rounded-lg cursor-pointer mb-1">
-                  <Link to={createPageUrl("AccountSecurity")}>
+                  <Link to={createPageUrl("CommandCenter") + "?tab=settings"}>
                     <User className="w-4 h-4 mr-2 text-indigo-400" />
                     Account Settings
                   </Link>
