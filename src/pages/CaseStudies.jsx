@@ -150,11 +150,17 @@ function CaseStudyCard({ study }) {
         </div>
 
         {/* Outcome Banner */}
-        <div className="bg-green-900/30 border-2 border-green-600 rounded-lg p-4">
+        <div className={`${study.outcomeColor || 'bg-green-900/30 border-green-600'} border-2 rounded-lg p-4`}>
           <div className="flex items-center gap-3">
-            <Trophy className="w-6 h-6 text-green-400" />
+            {study.outcomeIcon ? (
+              <study.outcomeIcon className={`w-6 h-6 ${study.outcomeIconColor || 'text-green-400'}`} />
+            ) : (
+              <Trophy className="w-6 h-6 text-green-400" />
+            )}
             <div>
-              <div className="text-sm text-green-300 font-medium">Final Outcome</div>
+              <div className={`text-sm font-medium ${study.outcomeColor ? 'text-amber-300' : 'text-green-300'}`}>
+                {study.outcomeColor ? 'Current Status' : 'Final Outcome'}
+              </div>
               <div className="text-lg font-bold text-white">{study.outcome}</div>
             </div>
           </div>
