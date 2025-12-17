@@ -60,7 +60,7 @@ export default function SitemapXml() {
             <span className="text-green-400 font-semibold">All sitemaps are production-ready</span>
           </div>
           <p className="text-gray-400 text-sm mt-1">
-            Access XML sitemaps via backend functions at <code className="text-cyan-300">/api/sitemapIndex</code>
+            Access XML sitemaps via backend functions at <code className="text-cyan-300">https://app.base44.com/api/apps/U5jDzdts3bd4p19I5hID/sitemap</code>
           </p>
         </div>
 
@@ -89,7 +89,7 @@ export default function SitemapXml() {
                     /{sitemap.file}
                   </code>
                   <a 
-                    href={`/api/${sitemap.endpoint}`}
+                    href={`https://app.base44.com/api/apps/U5jDzdts3bd4p19I5hID/${sitemap.endpoint}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-cyan-400 hover:text-cyan-300 transition-colors"
@@ -113,7 +113,7 @@ export default function SitemapXml() {
         {/* Action Buttons */}
         <div className="mt-6 flex flex-wrap gap-4">
           <a 
-            href="/api/sitemapIndex"
+            href="https://app.base44.com/api/apps/U5jDzdts3bd4p19I5hID/sitemap"
             target="_blank"
             rel="noopener noreferrer"
             className="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg text-sm transition-colors flex items-center gap-2"
@@ -122,7 +122,7 @@ export default function SitemapXml() {
             View Raw Sitemap Index
           </a>
           <a 
-            href="/api/robotsTxt"
+            href="https://app.base44.com/api/apps/U5jDzdts3bd4p19I5hID/robotsTxt"
             target="_blank"
             rel="noopener noreferrer"
             className="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-lg text-sm transition-colors flex items-center gap-2"
@@ -139,7 +139,7 @@ export default function SitemapXml() {
             Submit the following URL to Google Search Console:
           </p>
           <code className="block bg-black/50 text-cyan-300 p-3 rounded border border-cyan-500/20 text-sm">
-            https://glyphlock.io/sitemap.xml
+            https://app.base44.com/api/apps/U5jDzdts3bd4p19I5hID/sitemap
           </code>
           <p className="text-gray-500 text-xs mt-3">
             This index references all child sitemaps which are automatically updated.
