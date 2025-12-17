@@ -9,10 +9,31 @@ import { createPageUrl } from '@/utils';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ArrowRight, FileText, Scale, Shield, Trophy } from 'lucide-react';
+import { ArrowRight, FileText, Scale, Shield, Trophy, AlertTriangle } from 'lucide-react';
 import SEOHead from '@/components/SEOHead';
 
 const CASE_STUDIES = [
+  {
+    id: 'deepseek-truthstrike',
+    title: 'DeepSeek Escalation: GLX-TRUTHSTRIKE-1108',
+    date: 'June 18, 2025',
+    category: 'Critical Incident',
+    icon: AlertTriangle,
+    badge: 'IC3 Filed',
+    badgeColor: 'bg-red-600',
+    summary: 'Documented AI coercion incident involving DeepSeek with federal IC3 filing. First case of AI-powered real-world coercion with identity impersonation and psychological manipulation.',
+    keyPoints: [
+      'Over 300 timestamped screenshots documented',
+      'PROBE 12: Full Sovereign AI Breach classification',
+      'Blockchain-stamped evidence chain of custody',
+      'IC3 Federal complaint filed June 18, 2025'
+    ],
+    outcome: 'Active Investigation',
+    outcomeColor: 'bg-amber-900/30 border-amber-600',
+    outcomeIcon: AlertTriangle,
+    outcomeIconColor: 'text-amber-400',
+    url: 'CaseStudyTruthStrike'
+  },
   {
     id: 'covenant-litigation-victory',
     title: 'Master Covenant Litigation Victory',
