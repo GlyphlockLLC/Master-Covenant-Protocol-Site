@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Loader2, Sparkles, Layers, Image as ImageIcon, Database, Zap } from 'lucide-react';
 import { toast } from 'sonner';
-import PaywallGuard from '@/components/PaywallGuard';
+
 import SEOHead from '@/components/SEOHead';
 import { injectSoftwareSchema } from '@/components/utils/seoHelpers';
 import {
@@ -82,7 +82,7 @@ export default function ImageLab() {
   }
 
   return (
-    <PaywallGuard serviceName="Image Lab" requirePlan="professional">
+    <>
       <SEOHead
         title="GlyphLock Image Lab | Generate & Secure Interactive Images"
         description="Military-grade AI image generation with cryptographic security, interactive hotspots, and steganographic protection. Create, secure, and verify visual assets."
@@ -230,6 +230,6 @@ export default function ImageLab() {
           </Tabs>
         </div>
       </div>
-    </PaywallGuard>
+    </>
   );
 }
