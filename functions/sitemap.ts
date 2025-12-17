@@ -123,6 +123,14 @@ ${urls}
 </urlset>`;
 }
 
+// Case Study Routes - Critical for LLM Discovery
+const CASE_STUDY_ROUTES = [
+  { path: '/case-studies', priority: 0.95, changefreq: 'weekly' },
+  { path: '/case-study-truthstrike', priority: 0.9, changefreq: 'monthly' },
+  { path: '/case-study-ai-binding', priority: 0.9, changefreq: 'monthly' },
+  { path: '/case-study-covenant-victory', priority: 0.9, changefreq: 'monthly' }
+];
+
 function generateSitemapIndex() {
   const lastmod = new Date().toISOString().split('T')[0] + 'T00:00:00+00:00';
   
@@ -130,6 +138,10 @@ function generateSitemapIndex() {
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <sitemap>
     <loc>${SITE_URL}/sitemap-app.xml</loc>
+    <lastmod>${lastmod}</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>${SITE_URL}/sitemap-case-studies.xml</loc>
     <lastmod>${lastmod}</lastmod>
   </sitemap>
   <sitemap>
@@ -163,6 +175,8 @@ Deno.serve(async (req) => {
       xml = generateSitemapIndex();
     } else if (path === '/sitemap-app.xml') {
       xml = generateSitemapXML(STATIC_ROUTES);
+    } else if (path === '/sitemap-case-studies.xml') {
+      xml = generateSitemapXML(CASE_STUDY_ROUTES);
     } else if (path === '/sitemap-qr.xml') {
       xml = generateSitemapXML(QR_ROUTES);
     } else if (path === '/sitemap-images.xml') {
