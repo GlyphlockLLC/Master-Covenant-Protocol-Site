@@ -176,39 +176,55 @@ export default function Consultation() {
       <div className="container mx-auto px-4">
         <div className="max-w-7xl mx-auto">
           {/* Hero Header */}
-          <div className="text-center mb-20">
-            <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black mb-4 tracking-tight leading-tight">
-              GlyphLock Protocol Verification
-            </h1>
-            <p className="text-base md:text-lg text-slate-400 tracking-wide mb-8 md:mb-12">
-              Governed by the Master Covenant
-            </p>
-            
-            <div className="max-w-3xl mx-auto space-y-3 md:space-y-4 text-left mb-8 md:mb-12 px-4">
-              <p className="text-lg md:text-xl text-white leading-relaxed">This is not a SaaS product.</p>
-              <p className="text-lg md:text-xl text-white leading-relaxed">This is not a consultation.</p>
-              <p className="text-lg md:text-xl text-white leading-relaxed">This is not a sales call.</p>
-
-              <p className="text-lg md:text-xl text-white leading-relaxed mt-6 md:mt-8">GlyphLock operates as a protocol authority.</p>
-
-              <p className="text-base md:text-lg text-slate-300 leading-relaxed mt-6 md:mt-8">
-                This engagement exists to determine whether your system qualifies for credentialed enforcement under the Master Covenant.
-              </p>
+          <div className="text-center mb-16 md:mb-20">
+            {/* Floating Badge */}
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/20 mb-8">
+              <Shield className="w-4 h-4 text-cyan-400" />
+              <span className="text-sm text-cyan-300 font-medium">Master Covenant Governed</span>
             </div>
+            
+            <h1 className="text-3xl md:text-5xl lg:text-6xl font-black mb-6 tracking-tight leading-tight bg-gradient-to-r from-white via-cyan-100 to-white bg-clip-text text-transparent">
+              Protocol Verification
+            </h1>
+            <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto mb-12">
+              Determine if your system qualifies for credentialed enforcement under GlyphLock's security protocol.
+            </p>
 
-            <div className="inline-block border-2 border-slate-700 bg-slate-950/80 px-6 md:px-12 py-6 w-full md:w-auto">
-              <div className="text-sm text-slate-400 tracking-[0.2em] mb-2">ENGAGEMENT FEE</div>
-              <div className="text-4xl font-black text-white mb-4">$12,000 USD</div>
-              <div className="text-slate-400 space-y-1">
-                <div>One protocol.</div>
-                <div>One engagement.</div>
-                <div>One determination.</div>
-              </div>
-              <div className="text-slate-500 text-sm mt-6 space-y-1">
-                <div>No trials.</div>
-                <div>No demos.</div>
-                <div>No exploratory pricing.</div>
-              </div>
+            {/* Pricing Card */}
+            <div className="relative max-w-md mx-auto mb-16">
+              <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 via-blue-500/20 to-purple-500/20 rounded-2xl blur-xl" />
+              <Card className="relative bg-slate-900/80 backdrop-blur-xl border-2 border-cyan-500/30 overflow-hidden">
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500" />
+                <CardContent className="p-8">
+                  <div className="text-sm text-cyan-400 font-semibold tracking-wider mb-2">VERIFICATION ENGAGEMENT</div>
+                  <div className="text-5xl font-black text-white mb-2">$12,000</div>
+                  <div className="text-slate-400 text-sm mb-6">One-time comprehensive protocol analysis</div>
+                  
+                  <div className="grid grid-cols-3 gap-4 py-6 border-y border-slate-700/50">
+                    <div className="text-center">
+                      <div className="text-lg font-bold text-white">90</div>
+                      <div className="text-xs text-slate-500">Minutes</div>
+                    </div>
+                    <div className="text-center border-x border-slate-700/50">
+                      <div className="text-lg font-bold text-white">1:1</div>
+                      <div className="text-xs text-slate-500">Expert</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-lg font-bold text-white">Full</div>
+                      <div className="text-xs text-slate-500">Report</div>
+                    </div>
+                  </div>
+
+                  <div className="mt-6 space-y-2 text-left">
+                    {verificationScope.map((item, idx) => (
+                      <div key={idx} className="flex items-center gap-3 text-sm">
+                        <item.icon className="w-4 h-4 text-cyan-400 flex-shrink-0" />
+                        <span className="text-slate-300">{item.text}</span>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </div>
 
