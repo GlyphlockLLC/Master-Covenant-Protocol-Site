@@ -350,16 +350,31 @@ export default function useTTS(options = {}) {
           console.log('[TTS WebSpeech] Selected voice:', voice.name, 'for profile:', profile);
         }
 
-        // CRITICAL: Apply settings with emotion-based adjustments
-        const rate = normalizeSpeed(settings.speed);
-        const pitch = normalizePitch(settings.pitch);
+        // CRITICAL: Apply settings with voice profile pitch adjustments
+        let rate = normalizeSpeed(settings.speed);
+        let pitch = normalizePitch(settings.pitch);
         const volume = Math.max(0, Math.min(1, settings.volume || 1));
+        
+        // Additional pitch adjustment if we couldn't find the right gender voice
+        const isMaleProfile = profile.includes('male') && !profile.includes('female');
+        const selectedVoiceIsMale = maleKeywords.some(k => voice?.name?.toLowerCase().includes(k));
+        const selectedVoiceIsFemale = femaleKeywords.some(k => voice?.name?.toLowerCase().includes(k));
+        
+        if (isMaleProfile && !selectedVoiceIsMale && selectedVoiceIsFemale) {
+          // We wanted male but got female, lower the pitch
+          pitch = Math.max(0.5, pitch * 0.75);
+          console.log('[TTS WebSpeech] Pitch lowered for male profile with female voice:', pitch);
+        } else if (!isMaleProfile && !selectedVoiceIsFemale && selectedVoiceIsMale) {
+          // We wanted female but got male, raise the pitch
+          pitch = Math.min(2.0, pitch * 1.25);
+          console.log('[TTS WebSpeech] Pitch raised for female profile with male voice:', pitch);
+        }
         
         utterance.rate = rate;
         utterance.pitch = pitch;
         utterance.volume = volume;
 
-        console.log('[TTS WebSpeech] Final settings - Rate:', rate, 'Pitch:', pitch, 'Volume:', volume, 'Voice:', voice?.name);
+        console.log('[TTS WebSpeech] Final settings - Rate:', rate, 'Pitch:', pitch, 'Volume:', volume, 'Voice:', voice?.name, 'Profile:', profile);
 
         let hasStarted = false;
 
