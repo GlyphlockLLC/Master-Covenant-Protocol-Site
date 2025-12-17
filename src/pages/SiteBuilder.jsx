@@ -32,6 +32,7 @@ import SEOHead from '@/components/SEOHead';
 import ReactMarkdown from 'react-markdown';
 import DevModeLayout from '@/components/devengine/DevModeLayout';
 import AgentBrainPanel from '@/components/devengine/AgentBrainPanel';
+import DeployPanel from '@/components/devengine/DeployPanel';
 
 export default function SiteBuilder() {
   const [user, setUser] = useState(null);
@@ -269,6 +270,17 @@ export default function SiteBuilder() {
                       <Zap className="w-4 h-4" />
                       AGENT BRAIN
                     </button>
+                    <button
+                      onClick={() => setViewMode('deploy')}
+                      className={`px-4 py-2 rounded-md text-xs font-bold transition-all flex items-center gap-2 ${
+                        viewMode === 'deploy'
+                          ? 'bg-green-500 text-white shadow-[0_0_15px_rgba(34,197,94,0.5)]'
+                          : 'text-gray-400 hover:text-white'
+                      }`}
+                    >
+                      <Sparkles className="w-4 h-4" />
+                      DEPLOY
+                    </button>
                   </div>
                 )}
                 {/* Mode Selector */}
@@ -329,10 +341,14 @@ export default function SiteBuilder() {
             </div>
           </div>
         ) : viewMode === 'brain' && isAdmin ? (
-          <div className="container mx-auto px-4 pt-6 h-[calc(100vh-140px)]">
+          <div className="container mx-auto px-4 pt-6 pb-6 h-[calc(100vh-140px)]">
             <AgentBrainPanel />
           </div>
-        ) : viewMode === 'brain' && !isAdmin ? (
+        ) : viewMode === 'deploy' && isAdmin ? (
+          <div className="container mx-auto px-4 pt-6 pb-6 h-[calc(100vh-140px)]">
+            <DeployPanel />
+          </div>
+        ) : (viewMode === 'brain' || viewMode === 'deploy') && !isAdmin ? (
           <div className="min-h-screen flex items-center justify-center">
             <div className="text-center">
               <AlertCircle className="w-16 h-16 text-red-400 mx-auto mb-4" />

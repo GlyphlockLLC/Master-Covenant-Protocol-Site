@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
-import { BrainCircuit, Send, Loader2, CheckCircle2, AlertCircle, Clock, Zap, Paperclip, X, Image as ImageIcon, FileText, Upload, Save, FolderOpen, Trash2, Star, Play, Code, FileCode, Terminal } from 'lucide-react';
+import { BrainCircuit, Send, Loader2, CheckCircle2, AlertCircle, Clock, Zap, Paperclip, X, Image as ImageIcon, FileText, Upload, Save, FolderOpen, Trash2, Star, Play, Code, FileCode, Terminal, Copy } from 'lucide-react';
 import HoverTooltip from '@/components/ui/HoverTooltip';
 import { toast } from 'sonner';
 import ReactMarkdown from 'react-markdown';
@@ -654,31 +654,43 @@ export default function AgentBrainPanel() {
                 </div>
               )}
               
-              {/* Generated Code Preview */}
+              {/* Generated Code / Patch Bundle */}
               {generatedCode && (
-                <div className="p-4 rounded-xl bg-green-500/10 border border-green-500/30">
+                <div className="p-4 rounded-xl bg-green-500/10 border-2 border-green-500/30">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2">
                       <FileCode className="w-5 h-5 text-green-400" />
-                      <span className="text-sm font-bold text-green-300">Generated: {generatedCode.filePath}</span>
+                      <span className="text-sm font-bold text-green-300">
+                        {generatedCode.filePath === 'PATCH_BUNDLE' ? '📦 Deployment Package Ready' : `Generated: ${generatedCode.filePath}`}
+                      </span>
                     </div>
                     <Button
                       onClick={() => {
                         navigator.clipboard.writeText(generatedCode.code);
-                        toast.success('Code copied! Paste in Base44 AI chat to deploy.');
+                        toast.success(generatedCode.filePath === 'PATCH_BUNDLE' 
+                          ? '📦 Patch bundle copied! Paste to Base44 AI and say "apply these changes"' 
+                          : 'Copied! Paste to Base44 AI chat to deploy.');
                       }}
                       size="sm"
                       className="bg-green-500/20 text-green-300 hover:bg-green-500/30"
                     >
-                      <Code className="w-4 h-4 mr-1" /> Copy Code
+                      <Copy className="w-4 h-4 mr-1" /> Copy All
                     </Button>
                   </div>
-                  <pre className="text-xs text-green-400 bg-black/40 p-3 rounded-lg overflow-x-auto max-h-48">
-                    {generatedCode.code.slice(0, 1500)}{generatedCode.code.length > 1500 ? '\n...' : ''}
-                  </pre>
-                  <p className="text-xs text-amber-300 mt-2">
-                    💡 Copy this code, then tell the Base44 AI: "write this to {generatedCode.filePath}"
-                  </p>
+                  <ScrollArea className="max-h-96 bg-black/40 rounded-lg">
+                    <pre className="text-xs text-green-400 p-3">
+                      {generatedCode.code}
+                    </pre>
+                  </ScrollArea>
+                  <div className="mt-3 p-3 bg-blue-500/10 border border-blue-500/30 rounded-lg">
+                    <p className="text-xs text-blue-300 font-semibold mb-1">📋 Next Steps:</p>
+                    <ol className="text-xs text-blue-200 space-y-1 list-decimal list-inside">
+                      <li>Click "Copy All" button above</li>
+                      <li>Go to main Base44 AI chat (bottom right)</li>
+                      <li>Paste the entire bundle</li>
+                      <li>Say "apply these changes"</li>
+                    </ol>
+                  </div>
                 </div>
               )}
             </div>
