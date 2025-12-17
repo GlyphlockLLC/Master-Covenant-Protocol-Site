@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { createPageUrl } from "@/utils";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -10,6 +12,13 @@ import {
   Key, QrCode, BarChart3, Lock
 } from "lucide-react";
 import { JAVASCRIPT_SDK, PYTHON_SDK, GO_SDK, SDK_DOCS } from "@/components/sdk/SDKFiles";
+
+// GitHub repository URLs for each SDK
+const GITHUB_REPOS = {
+  javascript: "https://github.com/glyphlock/sdk-javascript",
+  python: "https://github.com/glyphlock/sdk-python",
+  go: "https://github.com/glyphlock/sdk-go"
+};
 
 // Language icons component
 function LanguageIcon({ lang, className = "w-6 h-6" }) {
@@ -170,10 +179,12 @@ export default function SDKDownloadCenter() {
                       <Download className="w-4 h-4 mr-2" />
                       Download SDK
                     </Button>
-                    <Button variant="outline" className="border-slate-700">
-                      <Github className="w-4 h-4 mr-2" />
-                      GitHub
-                    </Button>
+                    <a href={GITHUB_REPOS[key]} target="_blank" rel="noopener noreferrer">
+                      <Button variant="outline" className="border-slate-700">
+                        <Github className="w-4 h-4 mr-2" />
+                        GitHub
+                      </Button>
+                    </a>
                   </div>
                 </CardContent>
               </Card>
@@ -287,10 +298,38 @@ export default function SDKDownloadCenter() {
               <p className="text-slate-400">Complete API documentation with examples and schemas</p>
             </div>
           </div>
-          <Button className="bg-cyan-500 hover:bg-cyan-600">
-            View API Docs
-            <ExternalLink className="w-4 h-4 ml-2" />
-          </Button>
+          <Link to={createPageUrl('SDKDocs')}>
+            <Button className="bg-cyan-500 hover:bg-cyan-600">
+              View API Docs
+              <ExternalLink className="w-4 h-4 ml-2" />
+            </Button>
+          </Link>
+        </CardContent>
+      </Card>
+
+      {/* Get API Key CTA */}
+      <Card className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 border-purple-500/30">
+        <CardContent className="p-6 flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-4">
+            <Key className="w-10 h-10 text-purple-400" />
+            <div>
+              <h3 className="text-white font-bold text-lg">Ready to Build?</h3>
+              <p className="text-slate-400">Get your API key from the Command Center and start integrating</p>
+            </div>
+          </div>
+          <div className="flex gap-3">
+            <Link to={createPageUrl('CommandCenter')}>
+              <Button className="bg-purple-500 hover:bg-purple-600">
+                <Key className="w-4 h-4 mr-2" />
+                Get API Key
+              </Button>
+            </Link>
+            <Link to={createPageUrl('SDKDocs')}>
+              <Button variant="outline" className="border-purple-500/30 text-purple-400 hover:bg-purple-500/10">
+                Full API Reference
+              </Button>
+            </Link>
+          </div>
         </CardContent>
       </Card>
     </div>
