@@ -66,22 +66,22 @@ const NavItem = ({ section, isOpen, onToggle, index }) => {
       onMouseLeave={() => { setIsHovered(false); onToggle(null); }}
     >
       <button
-        className="relative flex items-center gap-1.5 text-gray-300 hover:text-white transition-all duration-300 py-3 px-4 text-sm font-semibold uppercase tracking-wider group"
+        className="relative flex items-center gap-1.5 text-blue-100 hover:text-white transition-all duration-300 py-3 px-4 text-sm font-semibold uppercase tracking-wider group"
       >
-        {/* Animated background pill */}
+        {/* Animated background pill - Royal Blue */}
         <motion.div
-          className="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-500/20 via-blue-500/20 to-violet-500/20"
+          className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500/25 via-blue-600/30 to-blue-500/25"
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: isHovered ? 1 : 0, opacity: isHovered ? 1 : 0 }}
           transition={{ duration: 0.3, ease: "easeOut" }}
         />
         
-        {/* Glowing dot indicator */}
+        {/* Glowing dot indicator - Royal Blue */}
         <motion.span
-          className="absolute -left-1 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-cyan-400"
+          className="absolute -left-1 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-blue-400"
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: isOpen ? 1 : 0, opacity: isOpen ? 1 : 0 }}
-          style={{ boxShadow: '0 0 10px #00E4FF, 0 0 20px #00E4FF' }}
+          style={{ boxShadow: '0 0 10px #3B82F6, 0 0 20px #3B82F6' }}
         />
         
         <span className="relative z-10">{section.label}</span>
@@ -90,7 +90,7 @@ const NavItem = ({ section, isOpen, onToggle, index }) => {
           animate={{ rotate: isOpen ? 180 : 0 }}
           transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
-          <ChevronDown size={14} className={isOpen ? 'text-cyan-400' : ''} />
+          <ChevronDown size={14} className={isOpen ? 'text-blue-400' : ''} />
         </motion.div>
       </button>
 
@@ -106,25 +106,28 @@ const NavItem = ({ section, isOpen, onToggle, index }) => {
             style={{ zIndex: 10001 }}
           >
             <div className="relative overflow-hidden rounded-2xl">
-              {/* Content container - Purple/Blue glass */}
-              <div className="relative bg-gradient-to-br from-blue-900/55 via-indigo-900/60 to-violet-900/55 backdrop-blur-2xl backdrop-saturate-150 border-2 border-indigo-400/35 rounded-2xl shadow-[0_0_50px_rgba(59,130,246,0.5),0_0_80px_rgba(139,92,246,0.3),inset_0_1px_0_rgba(255,255,255,0.18)] overflow-hidden">
-                {/* Top glow bar */}
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-indigo-500 to-violet-600 shadow-[0_0_12px_rgba(59,130,246,0.9)]"></div>
+              {/* Outer glow - Vivid Royal Blue */}
+              <div className="absolute -inset-2 bg-gradient-to-br from-blue-500/50 via-blue-600/40 to-indigo-500/50 rounded-2xl blur-xl"></div>
+              
+              {/* Content container - Deep Royal Blue glass */}
+              <div className="relative bg-gradient-to-br from-blue-950/90 via-slate-950/95 to-indigo-950/90 backdrop-blur-2xl backdrop-saturate-150 border-2 border-blue-400/50 rounded-2xl shadow-[0_0_60px_rgba(59,130,246,0.6),0_0_100px_rgba(37,99,235,0.4),inset_0_1px_0_rgba(96,165,250,0.3)] overflow-hidden">
+                {/* Top glow bar - Vivid */}
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 via-blue-500 to-blue-400 shadow-[0_0_20px_rgba(59,130,246,1)]"></div>
 
-                {/* Black glassmorphism underlay */}
-                <div className="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+                {/* Dark glassmorphism underlay */}
+                <div className="absolute inset-0 bg-slate-950/60 backdrop-blur-sm"></div>
 
-                {/* Grid pattern - purple/blue */}
-                <div className="absolute inset-0 opacity-10" style={{
+                {/* Grid pattern - Vivid Royal Blue */}
+                <div className="absolute inset-0 opacity-15" style={{
                   backgroundImage: `
-                    linear-gradient(rgba(59,130,246,0.5) 1px, transparent 1px),
-                    linear-gradient(90deg, rgba(139,92,246,0.5) 1px, transparent 1px)
+                    linear-gradient(rgba(59,130,246,0.7) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(37,99,235,0.7) 1px, transparent 1px)
                   `,
                   backgroundSize: '20px 20px'
                 }}></div>
 
-                {/* Ambient glow */}
-                <div className="absolute -inset-1 bg-gradient-to-br from-blue-500/25 via-indigo-500/20 to-violet-600/25 blur-xl -z-10"></div>
+                {/* Ambient glow - Brighter */}
+                <div className="absolute -inset-1 bg-gradient-to-br from-blue-500/30 via-blue-600/25 to-indigo-500/30 blur-xl -z-10"></div>
 
                 <div className="relative p-2">
                   {section.items.map((item, idx) => (
@@ -136,25 +139,25 @@ const NavItem = ({ section, isOpen, onToggle, index }) => {
                     >
                       <Link
                         to={createPageUrl(item.page)}
-                        className="group/item relative flex items-center justify-between px-4 py-3.5 rounded-lg text-violet-200 hover:text-white transition-all duration-300"
+                        className="group/item relative flex items-center justify-between px-4 py-3.5 rounded-lg text-blue-100 hover:text-white transition-all duration-300"
                       >
-                        {/* Hover background */}
+                        {/* Hover background - Royal Blue */}
                         <motion.div
-                          className="absolute inset-0 rounded-lg bg-gradient-to-r from-blue-500/15 via-indigo-500/25 to-violet-600/20"
+                          className="absolute inset-0 rounded-lg bg-gradient-to-r from-blue-500/20 via-blue-600/30 to-blue-500/20"
                           initial={{ opacity: 0 }}
                           whileHover={{ opacity: 1 }}
                           transition={{ duration: 0.2 }}
                         />
 
-                        {/* Hover border */}
-                        <div className="absolute inset-0 border border-blue-400/0 group-hover/item:border-blue-400/50 rounded-lg transition-all"></div>
+                        {/* Hover border - Vivid */}
+                        <div className="absolute inset-0 border border-blue-400/0 group-hover/item:border-blue-400/60 group-hover/item:shadow-[0_0_15px_rgba(59,130,246,0.4)] rounded-lg transition-all"></div>
 
-                        {/* Left accent bar */}
+                        {/* Left accent bar - Bright Royal Blue */}
                         <motion.div
-                          className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-0 bg-gradient-to-b from-blue-500 via-indigo-500 to-violet-600 rounded-r-full"
+                          className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-0 bg-gradient-to-b from-blue-400 via-blue-500 to-blue-400 rounded-r-full"
                           whileHover={{ height: "60%" }}
                           transition={{ duration: 0.2 }}
-                          style={{ boxShadow: '0 0 15px rgba(59,130,246,0.9)' }}
+                          style={{ boxShadow: '0 0 20px rgba(59,130,246,1)' }}
                         />
 
                         <span className="relative z-10 font-semibold text-sm group-hover/item:translate-x-1 transition-transform duration-200">
@@ -162,7 +165,7 @@ const NavItem = ({ section, isOpen, onToggle, index }) => {
                         </span>
                         
                         <motion.svg
-                          className="w-4 h-4 text-indigo-300"
+                          className="w-4 h-4 text-blue-400"
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
@@ -223,23 +226,23 @@ export default function Navbar({ user, onLogin, onLogout }) {
       transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
       className={`w-full text-white sticky top-0 transition-all duration-500 ${
         scrolled 
-          ? 'bg-gradient-to-r from-blue-900/40 via-indigo-900/50 to-violet-900/40 backdrop-blur-2xl shadow-[0_4px_60px_rgba(59,130,246,0.3)]' 
-          : 'bg-gradient-to-r from-blue-900/25 via-indigo-900/30 to-violet-900/25 backdrop-blur-xl'
+          ? 'bg-gradient-to-r from-blue-950/70 via-indigo-950/80 to-blue-950/70 backdrop-blur-2xl shadow-[0_4px_60px_rgba(59,130,246,0.5),0_0_100px_rgba(37,99,235,0.3)]' 
+          : 'bg-gradient-to-r from-blue-950/50 via-indigo-950/60 to-blue-950/50 backdrop-blur-xl'
       }`}
       style={{ 
         zIndex: 10000, 
         pointerEvents: 'auto',
-        borderBottom: scrolled ? '1px solid rgba(99,102,241,0.3)' : '1px solid rgba(99,102,241,0.2)'
+        borderBottom: scrolled ? '1px solid rgba(59,130,246,0.5)' : '1px solid rgba(59,130,246,0.3)'
       }}
     >
-      {/* Animated top line */}
+      {/* Animated top line - Vivid Royal Blue */}
       <motion.div
-        className="absolute top-0 left-0 right-0 h-[1px]"
+        className="absolute top-0 left-0 right-0 h-[2px] shadow-[0_0_15px_rgba(59,130,246,0.8)]"
         style={{
-          background: 'linear-gradient(90deg, transparent, rgba(0,228,255,0.5) 20%, rgba(139,92,246,0.5) 50%, rgba(0,228,255,0.5) 80%, transparent)'
+          background: 'linear-gradient(90deg, transparent, rgba(59,130,246,0.8) 20%, rgba(96,165,250,0.9) 50%, rgba(59,130,246,0.8) 80%, transparent)'
         }}
         animate={{
-          opacity: scrolled ? 0.8 : 0.4
+          opacity: scrolled ? 1 : 0.7
         }}
       />
 

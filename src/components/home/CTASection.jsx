@@ -110,11 +110,36 @@ export default function CTASection() {
       >
         {/* Main card with animated border */}
         <div className="relative rounded-3xl overflow-hidden">
-          {/* Animated gradient border - Royal Blue/Indigo */}
+          {/* VIVID Royal Blue Glow - Behind everything */}
+          <motion.div
+            className="absolute -inset-4 rounded-3xl blur-3xl"
+            style={{
+              background: 'radial-gradient(ellipse at center, rgba(59,130,246,0.7) 0%, rgba(37,99,235,0.5) 40%, rgba(29,78,216,0.3) 70%, transparent 100%)'
+            }}
+            animate={{
+              scale: [1, 1.05, 1],
+              opacity: [0.6, 0.9, 0.6]
+            }}
+            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+          />
+          
+          {/* Secondary glow pulse */}
+          <motion.div
+            className="absolute -inset-6 rounded-3xl blur-[60px]"
+            style={{
+              background: 'radial-gradient(ellipse at center, rgba(59,130,246,0.5) 0%, rgba(6,182,212,0.2) 50%, transparent 80%)'
+            }}
+            animate={{
+              opacity: isHovered ? 0.8 : 0.5
+            }}
+            transition={{ duration: 0.4 }}
+          />
+
+          {/* Animated gradient border - Vivid Royal Blue */}
           <motion.div
             className="absolute inset-0 rounded-3xl p-[2px]"
             style={{
-              background: 'linear-gradient(90deg, #3B82F6, #6366F1, #8B5CF6, #3B82F6)',
+              background: 'linear-gradient(90deg, #3B82F6, #2563EB, #1D4ED8, #3B82F6)',
               backgroundSize: '300% 100%'
             }}
             animate={{
@@ -122,38 +147,28 @@ export default function CTASection() {
             }}
             transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
           >
-            <div className="absolute inset-[2px] rounded-3xl bg-gradient-to-br from-blue-950/95 via-indigo-950/95 to-violet-950/95 backdrop-blur-2xl" />
+            <div className="absolute inset-[2px] rounded-3xl bg-gradient-to-br from-blue-950/90 via-slate-950/95 to-indigo-950/90 backdrop-blur-2xl" />
           </motion.div>
-
-          {/* Pulsing glow overlay - Royal Blue */}
-          <motion.div
-            className="absolute -inset-2 bg-gradient-to-r from-blue-600 via-indigo-500 to-violet-600 rounded-3xl blur-2xl"
-            style={{ opacity: glowOpacity }}
-            animate={{
-              opacity: isHovered ? 0.5 : 0.3
-            }}
-            transition={{ duration: 0.3 }}
-          />
           
-          {/* Content container - Royal Blue theme */}
-          <div className="relative bg-gradient-to-br from-blue-900/40 via-indigo-900/50 to-violet-900/40 backdrop-blur-2xl rounded-3xl p-8 md:p-14 overflow-hidden border border-indigo-500/30">
-            {/* Grid pattern overlay - Purple/Blue */}
-            <div className="absolute inset-0 opacity-10" style={{
+          {/* Content container - Deep Royal Blue glassmorphism */}
+          <div className="relative bg-gradient-to-br from-blue-900/30 via-slate-900/40 to-indigo-900/30 backdrop-blur-2xl rounded-3xl p-8 md:p-14 overflow-hidden border-2 border-blue-500/40 shadow-[inset_0_1px_0_rgba(59,130,246,0.3)]">
+            {/* Grid pattern overlay - Vivid Royal Blue */}
+            <div className="absolute inset-0 opacity-15" style={{
               backgroundImage: `
-                linear-gradient(rgba(59,130,246,0.5) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(139,92,246,0.5) 1px, transparent 1px)
+                linear-gradient(rgba(59,130,246,0.6) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(37,99,235,0.6) 1px, transparent 1px)
               `,
-              backgroundSize: '40px 40px'
+              backgroundSize: '30px 30px'
             }} />
 
-            {/* Top accent line - Royal Blue */}
+            {/* Top accent line - Vivid Royal Blue with glow */}
             <motion.div
-              className="absolute top-0 left-0 right-0 h-[2px]"
+              className="absolute top-0 left-0 right-0 h-[2px] shadow-[0_0_20px_rgba(59,130,246,0.8)]"
               initial={{ scaleX: 0 }}
               animate={isInView ? { scaleX: 1 } : { scaleX: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
               style={{
-                background: 'linear-gradient(90deg, transparent, #3B82F6 30%, #8B5CF6 70%, transparent)'
+                background: 'linear-gradient(90deg, transparent, #3B82F6 20%, #60A5FA 50%, #3B82F6 80%, transparent)'
               }}
             />
             
