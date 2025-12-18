@@ -150,7 +150,7 @@ export default function Footer() {
 
         {/* SEO Keywords & Meta Tags Section - Crawler Optimized */}
         <div className="border-t border-white/10 pt-8 mb-12">
-          <details className="group" open>
+          <details className="group">
             <summary className="cursor-pointer text-center text-xs text-slate-500 tracking-wide mb-3 hover:text-cyan-400 transition-colors list-none">
               <span className="inline-flex items-center gap-2">
                 🏷️ Keywords & SEO Metadata

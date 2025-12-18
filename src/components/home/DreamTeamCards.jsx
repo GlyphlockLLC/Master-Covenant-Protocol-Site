@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Trophy, Shield, Zap, Brain, Lock } from "lucide-react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import DreamTeamFlipCard from "@/components/DreamTeamFlipCard";
+import { motion, useInView } from "framer-motion";
 
 // Full Dream Team data with new basketball card images
 const DREAM_TEAM = [
@@ -150,35 +151,72 @@ const DREAM_TEAM = [
 ];
 
 export default function DreamTeamCards() {
+  const containerRef = useRef(null);
+  const isInView = useInView(containerRef, { once: true, amount: 0.2 });
+
   return (
-    <section className="py-12 md:py-24 relative overflow-hidden bg-black">
+    <section ref={containerRef} className="py-12 md:py-24 relative overflow-hidden bg-black">
       <div className="absolute inset-0 bg-gradient-to-b from-purple-500/5 via-transparent to-blue-500/5 z-0" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(244,114,182,0.15),transparent_50%),radial-gradient(circle_at_80%_70%,rgba(34,211,238,0.15),transparent_50%)]" />
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-8 md:mb-12">
-          <Badge className="mb-4 md:mb-6 bg-purple-500/20 text-purple-400 border-purple-500/50 px-4 md:px-6 py-1.5 md:py-2 text-xs md:text-sm backdrop-blur-md">
-            <Trophy className="w-3 h-3 md:w-4 md:h-4 mr-2" />
-            GlyphLock Dream Team
-          </Badge>
-          <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 px-4">
+          {/* Badge - Pop up with bounce */}
+          <motion.div
+            initial={{ opacity: 0, y: 40, scale: 0.5 }}
+            animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+            transition={{ duration: 0.6, type: "spring", stiffness: 200, damping: 15 }}
+          >
+            <Badge className="mb-4 md:mb-6 bg-purple-500/20 text-purple-400 border-purple-500/50 px-4 md:px-6 py-1.5 md:py-2 text-xs md:text-sm backdrop-blur-md">
+              <Trophy className="w-3 h-3 md:w-4 md:h-4 mr-2" />
+              GlyphLock Dream Team
+            </Badge>
+          </motion.div>
+          
+          {/* Title - Slide from left */}
+          <motion.h2 
+            initial={{ opacity: 0, x: -100, filter: "blur(15px)" }}
+            animate={isInView ? { opacity: 1, x: 0, filter: "blur(0px)" } : {}}
+            transition={{ duration: 0.7, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
+            className="text-3xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 px-4"
+          >
             <span className="bg-gradient-to-r from-fuchsia-400 via-pink-400 to-cyan-300 bg-clip-text text-transparent">
               AI Dream Team
             </span>
-          </h2>
-          <p className="text-base md:text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed px-4 mb-2">
+          </motion.h2>
+          
+          {/* Subtitle - Slide from right */}
+          <motion.p 
+            initial={{ opacity: 0, x: 100, filter: "blur(15px)" }}
+            animate={isInView ? { opacity: 1, x: 0, filter: "blur(0px)" } : {}}
+            transition={{ duration: 0.7, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+            className="text-base md:text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed px-4 mb-2"
+          >
             Cryptographically bound AI systems working under the Master Covenant
-          </p>
-          <div className="flex justify-center gap-4 mt-4">
-            <div className="flex items-center gap-1.5 text-xs text-slate-400">
+          </motion.p>
+          
+          {/* Badges - Pop in with stagger */}
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.5, delay: 0.35 }}
+            className="flex justify-center gap-4 mt-4"
+          >
+            <motion.div 
+              whileHover={{ scale: 1.1 }}
+              className="flex items-center gap-1.5 text-xs text-slate-400"
+            >
               <Lock className="w-3 h-3 text-green-400" />
               <span>Verified Signatures</span>
-            </div>
-            <div className="flex items-center gap-1.5 text-xs text-slate-400">
+            </motion.div>
+            <motion.div 
+              whileHover={{ scale: 1.1 }}
+              className="flex items-center gap-1.5 text-xs text-slate-400"
+            >
               <Shield className="w-3 h-3 text-cyan-400" />
               <span>BPAA Certified</span>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
           <p className="text-sm text-gray-500 mt-4 hidden md:block">Hover over cards to reveal binding details</p>
           <p className="text-sm text-gray-500 mt-4 md:hidden">Tap cards to reveal binding details</p>
         </div>
@@ -202,40 +240,83 @@ export default function DreamTeamCards() {
           </div>
         </div>
 
-        {/* Desktop 2-2-1 Layout */}
+        {/* Desktop 2-2-1 Layout with staggered animations */}
         <div className="hidden md:block max-w-5xl mx-auto mb-8">
           {/* Top Row - 2 cards */}
           <div className="grid grid-cols-2 gap-4 md:gap-6 mb-4 md:mb-6 max-w-3xl mx-auto">
-            <DreamTeamFlipCard card={DREAM_TEAM[0]} />
-            <DreamTeamFlipCard card={DREAM_TEAM[1]} />
+            <motion.div
+              initial={{ opacity: 0, x: -80, rotateY: -20 }}
+              animate={isInView ? { opacity: 1, x: 0, rotateY: 0 } : {}}
+              transition={{ duration: 0.7, delay: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+            >
+              <DreamTeamFlipCard card={DREAM_TEAM[0]} />
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, x: 80, rotateY: 20 }}
+              animate={isInView ? { opacity: 1, x: 0, rotateY: 0 } : {}}
+              transition={{ duration: 0.7, delay: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+            >
+              <DreamTeamFlipCard card={DREAM_TEAM[1]} />
+            </motion.div>
           </div>
           
           {/* Middle Row - 2 cards */}
           <div className="grid grid-cols-2 gap-4 md:gap-6 mb-4 md:mb-6 max-w-3xl mx-auto">
-            <DreamTeamFlipCard card={DREAM_TEAM[2]} />
-            <DreamTeamFlipCard card={DREAM_TEAM[3]} />
+            <motion.div
+              initial={{ opacity: 0, y: 60, scale: 0.8 }}
+              animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+              transition={{ duration: 0.6, delay: 0.6, type: "spring", stiffness: 150 }}
+            >
+              <DreamTeamFlipCard card={DREAM_TEAM[2]} />
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 60, scale: 0.8 }}
+              animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+              transition={{ duration: 0.6, delay: 0.7, type: "spring", stiffness: 150 }}
+            >
+              <DreamTeamFlipCard card={DREAM_TEAM[3]} />
+            </motion.div>
           </div>
           
           {/* Bottom Row - 1 card centered (Alfred - anchor) */}
-          <div className="flex justify-center">
+          <motion.div 
+            initial={{ opacity: 0, y: 80, scale: 0.7, rotateX: 20 }}
+            animate={isInView ? { opacity: 1, y: 0, scale: 1, rotateX: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.8, type: "spring", stiffness: 120 }}
+            className="flex justify-center"
+          >
             <div className="w-full max-w-[calc(50%-0.75rem)] md:max-w-[calc(50%-0.75rem)]">
               <DreamTeamFlipCard card={DREAM_TEAM[4]} />
             </div>
-          </div>
+          </motion.div>
         </div>
 
-        {/* CTA to Dream Team page */}
-        <div className="text-center">
-          <Link 
-            to={createPageUrl("DreamTeam")}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-fuchsia-600 to-cyan-600 text-white font-semibold hover:from-fuchsia-500 hover:to-cyan-500 transition-all hover:scale-105 shadow-[0_0_30px_rgba(244,114,182,0.4)]"
-          >
-            View Full Roster & Stats
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </Link>
-        </div>
+        {/* CTA to Dream Team page - Slide up with glow */}
+        <motion.div 
+          initial={{ opacity: 0, y: 50, scale: 0.9 }}
+          animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+          transition={{ duration: 0.6, delay: 0.9, type: "spring" }}
+          className="text-center"
+        >
+          <motion.div whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.95 }}>
+            <Link 
+              to={createPageUrl("DreamTeam")}
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-fuchsia-600 to-cyan-600 text-white font-semibold hover:from-fuchsia-500 hover:to-cyan-500 transition-all shadow-[0_0_30px_rgba(244,114,182,0.4)] hover:shadow-[0_0_50px_rgba(244,114,182,0.6)]"
+            >
+              View Full Roster & Stats
+              <motion.svg 
+                className="w-4 h-4" 
+                fill="none" 
+                viewBox="0 0 24 24" 
+                stroke="currentColor"
+                animate={{ x: [0, 5, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </motion.svg>
+            </Link>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );

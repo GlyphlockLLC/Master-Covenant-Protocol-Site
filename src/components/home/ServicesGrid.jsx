@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { Shield, Zap, Eye, Brain, Lock, FileCode, Image } from "lucide-react";
+import { motion, useInView } from "framer-motion";
 
 /**
  * PHASE 3B SERVICES GRID
@@ -55,38 +56,88 @@ const services = [
 ];
 
 export default function ServicesGrid() {
+  const containerRef = useRef(null);
+  const isInView = useInView(containerRef, { once: true, amount: 0.15 });
+
+  // Animation directions for each card
+  const cardAnimations = [
+    { x: -80, y: 0, rotate: -5 },
+    { x: 0, y: -60, rotate: 0 },
+    { x: 80, y: 0, rotate: 5 },
+    { x: -80, y: 40, rotate: 5 },
+    { x: 0, y: 60, rotate: 0 },
+    { x: 80, y: 40, rotate: -5 }
+  ];
+
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 pt-8 pb-16 relative" style={{ background: 'transparent', pointerEvents: 'auto' }}>
+    <div ref={containerRef} className="w-full max-w-7xl mx-auto px-4 pt-8 pb-16 relative" style={{ background: 'transparent', pointerEvents: 'auto' }}>
       <div className="text-center mb-12">
-        <h2 className="text-3xl md:text-5xl font-black text-white mb-4 drop-shadow-[0_0_25px_rgba(255,255,255,0.3)]">
+        {/* Title - Slide from left with blur */}
+        <motion.h2 
+          initial={{ opacity: 0, x: -100, filter: "blur(20px)" }}
+          animate={isInView ? { opacity: 1, x: 0, filter: "blur(0px)" } : {}}
+          transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
+          className="text-3xl md:text-5xl font-black text-white mb-4 drop-shadow-[0_0_25px_rgba(255,255,255,0.3)]"
+        >
           Credentialed Integrity <span className="bg-gradient-to-r from-[#1E40AF] via-[#3B82F6] to-[#60A5FA] bg-clip-text text-transparent">System</span>
-        </h2>
-        <p className="text-lg text-white/90">
+        </motion.h2>
+        
+        {/* Subtitle - Slide from right */}
+        <motion.p 
+          initial={{ opacity: 0, x: 100, filter: "blur(15px)" }}
+          animate={isInView ? { opacity: 1, x: 0, filter: "blur(0px)" } : {}}
+          transition={{ duration: 0.8, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
+          className="text-lg text-white/90"
+        >
           Protocol-governed modules restricted to provisioned access
-        </p>
+        </motion.p>
       </div>
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {services.map((service, idx) => (
-          <Link key={idx} to={createPageUrl(service.link)}>
-            <div className="backdrop-blur-md border-2 border-indigo-500/60 rounded-xl overflow-hidden group cursor-pointer hover:scale-[1.03] transition-all duration-600 ease-out h-full shadow-[0_0_30px_rgba(87,61,255,0.4)] hover:shadow-[0_0_60px_rgba(87,61,255,0.7)] hover:border-indigo-400/80" style={{ background: 'rgba(87,61,255,0.08)' }}>
-              <div className="relative h-48 overflow-hidden">
-                <img 
-                  src={service.image} 
-                  alt={service.title}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                />
-              </div>
-              <div className="p-6">
-                <div className="flex items-center gap-3 mb-3">
-                  <service.icon className="w-6 h-6 text-[#3B82F6] drop-shadow-[0_0_8px_rgba(59,130,246,0.8)]" />
-                  <h3 className="text-xl font-bold text-white">{service.title}</h3>
+        {services.map((service, idx) => {
+          const anim = cardAnimations[idx];
+          return (
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, x: anim.x, y: anim.y, rotate: anim.rotate, scale: 0.8 }}
+              animate={isInView ? { opacity: 1, x: 0, y: 0, rotate: 0, scale: 1 } : {}}
+              transition={{ 
+                duration: 0.7, 
+                delay: 0.2 + (idx * 0.1),
+                type: "spring",
+                stiffness: 120,
+                damping: 15
+              }}
+              whileHover={{ y: -10, scale: 1.03 }}
+            >
+              <Link to={createPageUrl(service.link)}>
+                <div className="backdrop-blur-md border-2 border-indigo-500/60 rounded-xl overflow-hidden group cursor-pointer transition-all duration-300 h-full shadow-[0_0_30px_rgba(87,61,255,0.4)] hover:shadow-[0_0_60px_rgba(87,61,255,0.7)] hover:border-indigo-400/80" style={{ background: 'rgba(87,61,255,0.08)' }}>
+                  <div className="relative h-48 overflow-hidden">
+                    <img 
+                      src={service.image} 
+                      alt={service.title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                    {/* Gradient overlay on hover */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-indigo-900/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  </div>
+                  <div className="p-6">
+                    <div className="flex items-center gap-3 mb-3">
+                      <motion.div
+                        whileHover={{ rotate: 360, scale: 1.2 }}
+                        transition={{ duration: 0.5 }}
+                      >
+                        <service.icon className="w-6 h-6 text-[#3B82F6] drop-shadow-[0_0_8px_rgba(59,130,246,0.8)]" />
+                      </motion.div>
+                      <h3 className="text-xl font-bold text-white">{service.title}</h3>
+                    </div>
+                    <p className="text-white/90">{service.description}</p>
+                  </div>
                 </div>
-                <p className="text-white/90">{service.description}</p>
-              </div>
-            </div>
-          </Link>
-        ))}
+              </Link>
+            </motion.div>
+          );
+        })}
       </div>
     </div>
   );

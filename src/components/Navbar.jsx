@@ -66,61 +66,86 @@ const NavItem = ({ section, isOpen, onToggle, index }) => {
       onMouseLeave={() => { setIsHovered(false); onToggle(null); }}
     >
       <motion.button
-        className="group relative flex items-center gap-1.5 text-blue-100 hover:text-white transition-all duration-300 py-3 px-5 text-sm font-semibold uppercase tracking-wider rounded-full overflow-hidden"
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.98 }}
+        className="group relative flex items-center gap-1.5 text-blue-100 hover:text-white transition-all duration-300 py-2.5 px-5 text-sm font-semibold uppercase tracking-wider rounded-xl overflow-hidden"
+        whileHover={{ scale: 1.05, y: -2 }}
+        whileTap={{ scale: 0.95 }}
       >
-        {/* Animated gradient border - like Get Started */}
+        {/* Animated gradient border - always visible, intensifies on hover */}
         <motion.div
-          className="absolute inset-0 rounded-full p-[1px] opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          className="absolute inset-0 rounded-xl p-[1.5px]"
           style={{
-            background: 'linear-gradient(90deg, #00E4FF, #3B82F6, #8B5CF6, #00E4FF)',
-            backgroundSize: '300% 100%'
+            background: 'linear-gradient(135deg, #00E4FF, #3B82F6, #8B5CF6, #A855F7, #00E4FF)',
+            backgroundSize: '400% 100%'
           }}
           animate={{
-            backgroundPosition: ['0% 50%', '100% 50%', '0% 50%']
+            backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
+            opacity: isHovered ? 1 : 0.6
           }}
-          transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+          transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
         >
-          <div className="absolute inset-[1px] rounded-full bg-slate-950/90 backdrop-blur-sm" />
+          <div className="absolute inset-[1.5px] rounded-xl bg-slate-950/95 backdrop-blur-md" />
         </motion.div>
 
-        {/* Glassmorphism background pill */}
+        {/* Inner glow layer */}
         <motion.div
-          className="absolute inset-0 rounded-full"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: isHovered ? 1 : 0 }}
+          className="absolute inset-[2px] rounded-xl"
+          animate={{
+            boxShadow: isHovered 
+              ? 'inset 0 0 20px rgba(139,92,246,0.4), inset 0 1px 0 rgba(255,255,255,0.15)' 
+              : 'inset 0 0 10px rgba(59,130,246,0.2), inset 0 1px 0 rgba(255,255,255,0.08)'
+          }}
+          transition={{ duration: 0.3 }}
+        />
+
+        {/* Glassmorphism background */}
+        <motion.div
+          className="absolute inset-[2px] rounded-xl"
+          initial={{ opacity: 0.4 }}
+          animate={{ opacity: isHovered ? 0.8 : 0.4 }}
           transition={{ duration: 0.3 }}
           style={{
-            background: 'linear-gradient(135deg, rgba(59,130,246,0.15) 0%, rgba(139,92,246,0.1) 50%, rgba(6,182,212,0.15) 100%)',
-            backdropFilter: 'blur(8px)',
-            boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.1), 0 0 20px rgba(59,130,246,0.3)'
+            background: 'linear-gradient(135deg, rgba(59,130,246,0.12) 0%, rgba(139,92,246,0.15) 50%, rgba(6,182,212,0.12) 100%)',
+            backdropFilter: 'blur(12px)'
           }}
         />
 
         {/* Shimmer sweep effect */}
         <motion.div
-          className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100"
+          className="absolute inset-0 rounded-xl"
           style={{
-            background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent)',
+            background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)',
             backgroundSize: '200% 100%'
           }}
           animate={{
-            backgroundPosition: ['200% 0', '-200% 0']
+            backgroundPosition: ['200% 0', '-200% 0'],
+            opacity: isHovered ? 1 : 0
           }}
-          transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+          transition={{ duration: 1.2, repeat: Infinity, ease: "linear" }}
+        />
+
+        {/* Outer glow on hover */}
+        <motion.div
+          className="absolute -inset-1 rounded-xl blur-md -z-10"
+          animate={{
+            opacity: isHovered ? 0.6 : 0,
+            background: isHovered 
+              ? 'linear-gradient(135deg, rgba(59,130,246,0.5), rgba(139,92,246,0.5))' 
+              : 'transparent'
+          }}
+          transition={{ duration: 0.3 }}
         />
         
         {/* Glowing dot indicator */}
         <motion.span
-          className="absolute -left-0.5 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-cyan-400"
+          className="absolute left-2 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full"
           initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: isOpen ? 1 : 0, opacity: isOpen ? 1 : 0 }}
-          style={{ boxShadow: '0 0 10px #00E4FF, 0 0 20px #00E4FF' }}
+          animate={{ 
+            scale: isOpen ? 1 : 0, 
+            opacity: isOpen ? 1 : 0,
+            background: isOpen ? 'linear-gradient(135deg, #00E4FF, #8B5CF6)' : '#00E4FF'
+          }}
+          style={{ boxShadow: '0 0 12px #00E4FF, 0 0 24px #8B5CF6' }}
         />
-
-        {/* Hover glow overlay */}
-        <div className="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-500/0 via-blue-500/10 to-violet-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         
         <span className="relative z-10 flex items-center gap-1.5">
           {section.label}
@@ -179,17 +204,29 @@ const NavItem = ({ section, isOpen, onToggle, index }) => {
                 <div className="absolute inset-0 bg-gradient-to-b from-white/[0.08] to-transparent pointer-events-none" />
                 <div className="absolute inset-0 bg-slate-950/50 backdrop-blur-sm"></div>
 
-                {/* Animated grid pattern */}
+                {/* Animated grid pattern with purple gradient glow */}
                 <motion.div 
-                  className="absolute inset-0 opacity-20"
-                  animate={{ opacity: [0.15, 0.25, 0.15] }}
+                  className="absolute inset-0 opacity-25"
+                  animate={{ opacity: [0.2, 0.35, 0.2] }}
                   transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                   style={{
                     backgroundImage: `
-                      linear-gradient(rgba(59,130,246,0.8) 1px, transparent 1px),
-                      linear-gradient(90deg, rgba(37,99,235,0.8) 1px, transparent 1px)
+                      linear-gradient(rgba(168,85,247,0.9) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(139,92,246,0.9) 1px, transparent 1px)
                     `,
-                    backgroundSize: '20px 20px'
+                    backgroundSize: '20px 20px',
+                    filter: 'drop-shadow(0 0 3px rgba(168,85,247,0.8))'
+                  }}
+                />
+                {/* Secondary blue grid overlay */}
+                <div 
+                  className="absolute inset-0 opacity-15"
+                  style={{
+                    backgroundImage: `
+                      linear-gradient(rgba(59,130,246,0.6) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(37,99,235,0.6) 1px, transparent 1px)
+                    `,
+                    backgroundSize: '40px 40px'
                   }}
                 />
 
