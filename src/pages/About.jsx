@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { Button } from "@/components/ui/button";
@@ -8,8 +8,25 @@ import {
   Globe, TrendingUp, Award
 } from "lucide-react";
 import SEOHead from "../components/SEOHead";
+import { motion, useInView } from "framer-motion";
 
 export default function About() {
+  const heroRef = useRef(null);
+  const originRef = useRef(null);
+  const missionRef = useRef(null);
+  const pivotRef = useRef(null);
+  const leadershipRef = useRef(null);
+  const techRef = useRef(null);
+  const ctaRef = useRef(null);
+  
+  const heroInView = useInView(heroRef, { once: true, amount: 0.4 });
+  const originInView = useInView(originRef, { once: true, amount: 0.3 });
+  const missionInView = useInView(missionRef, { once: true, amount: 0.3 });
+  const pivotInView = useInView(pivotRef, { once: true, amount: 0.3 });
+  const leadershipInView = useInView(leadershipRef, { once: true, amount: 0.2 });
+  const techInView = useInView(techRef, { once: true, amount: 0.3 });
+  const ctaInView = useInView(ctaRef, { once: true, amount: 0.4 });
+
   const leadership = [
     {
       name: "Carlo Rene Earl",
@@ -84,21 +101,42 @@ export default function About() {
         <div className="container mx-auto px-6 max-w-6xl relative z-10">
           
           {/* HERO */}
-          <div className="text-center mb-24">
-            <h1 className="text-5xl md:text-8xl font-black mb-8 tracking-tighter font-space">
+          <div ref={heroRef} className="text-center mb-24">
+            <motion.h1 
+              initial={{ opacity: 0, x: -100 }}
+              animate={heroInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+              className="text-5xl md:text-8xl font-black mb-8 tracking-tighter font-space"
+            >
               ABOUT <span className="text-transparent bg-gradient-to-r from-[#00E4FF] to-[#8C4BFF] bg-clip-text">GLYPHLOCK</span>
-            </h1>
-            <p className="text-2xl md:text-3xl text-[#00E4FF] font-bold max-w-4xl mx-auto leading-tight">
+            </motion.h1>
+            <motion.p 
+              initial={{ opacity: 0, x: 100 }}
+              animate={heroInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 1.1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="text-2xl md:text-3xl text-[#00E4FF] font-bold max-w-4xl mx-auto leading-tight"
+            >
               Quantum-Resistant Security for a World That's Already Under Attack
-            </p>
+            </motion.p>
           </div>
 
           {/* ORIGIN */}
-          <div className="glass-card rounded-2xl p-8 md:p-12 mb-12 border border-[#00E4FF]/20">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-8 flex items-center gap-4 font-space">
+          <motion.div 
+            ref={originRef}
+            initial={{ opacity: 0, y: 60 }}
+            animate={originInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            className="glass-card rounded-2xl p-8 md:p-12 mb-12 border border-[#00E4FF]/20"
+          >
+            <motion.h2 
+              initial={{ opacity: 0, x: -80 }}
+              animate={originInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="text-3xl md:text-4xl font-bold text-white mb-8 flex items-center gap-4 font-space"
+            >
               <Sparkles className="w-8 h-8 text-[#00E4FF]" />
               Our Origin
-            </h2>
+            </motion.h2>
             <div className="space-y-6 text-gray-300 leading-relaxed text-lg">
               <p>
                 GlyphLock began with a conversation that shouldn’t have mattered as much as it did — two friends in Arizona in early 2025 talking about camouflage, patterns, and military stealth. Collin mentioned how patterns hide people. Carlo pushed further and asked the question that changed everything: <span className="text-[#00E4FF] font-bold italic">“What if the pattern isn’t hiding you… what if the pattern itself is the intelligence?”</span> That moment cracked open an entirely new idea: imagery as encrypted communication, invisible data embedded inside everyday surfaces, information that could move, react, and protect itself.
@@ -116,11 +154,16 @@ export default function About() {
                 GlyphLock wasn’t built in a boardroom or funded by VCs. It was built through perseverance, real struggle, and the belief that the world needed a new way to protect identity, information, and integrity. The story isn’t glamorous — it’s earned. And that’s why GlyphLock exists today: because Carlo refused to let a world-changing idea die in silence.
               </p>
             </div>
-          </div>
+          </motion.div>
 
           {/* MISSION */}
-          <div className="grid md:grid-cols-2 gap-8 mb-12">
-            <div className="glass-card rounded-2xl p-8 border border-[#8C4BFF]/20 bg-gradient-to-br from-[#0A0F24] to-black">
+          <div ref={missionRef} className="grid md:grid-cols-2 gap-8 mb-12">
+            <motion.div 
+              initial={{ opacity: 0, x: -80 }}
+              animate={missionInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+              className="glass-card rounded-2xl p-8 border border-[#8C4BFF]/20 bg-gradient-to-br from-[#0A0F24] to-black"
+            >
               <h2 className="text-3xl font-bold text-white mb-6 flex items-center gap-3 font-space">
                 <Target className="w-8 h-8 text-[#8C4BFF]" />
                 Our Mission
@@ -136,9 +179,14 @@ export default function About() {
                 GlyphLock is not trendy security.<br/>
                 <span className="text-[#00E4FF]">It is survival-grade security.</span>
               </p>
-            </div>
+            </motion.div>
 
-            <div className="glass-card rounded-2xl p-8 border border-red-500/20 bg-gradient-to-br from-red-950/10 to-black">
+            <motion.div 
+              initial={{ opacity: 0, x: 80 }}
+              animate={missionInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 1, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+              className="glass-card rounded-2xl p-8 border border-red-500/20 bg-gradient-to-br from-red-950/10 to-black"
+            >
               <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
                 <Shield className="w-6 h-6 text-red-500" />
                 We Protect Against
@@ -162,15 +210,26 @@ export default function About() {
                   </div>
                 ))}
               </div>
-            </div>
+            </motion.div>
           </div>
 
           {/* THE PIVOT */}
-          <div className="glass-card rounded-2xl p-8 md:p-12 mb-12 border border-[#00E4FF]/20">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-8 flex items-center gap-4 font-space">
+          <motion.div 
+            ref={pivotRef}
+            initial={{ opacity: 0, y: 60 }}
+            animate={pivotInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            className="glass-card rounded-2xl p-8 md:p-12 mb-12 border border-[#00E4FF]/20"
+          >
+            <motion.h2 
+              initial={{ opacity: 0, x: -80 }}
+              animate={pivotInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="text-3xl md:text-4xl font-bold text-white mb-8 flex items-center gap-4 font-space"
+            >
               <Zap className="w-8 h-8 text-[#00E4FF]" />
               The Pivot
-            </h2>
+            </motion.h2>
             <p className="text-gray-300 leading-relaxed mb-8 text-lg">
               GlyphLock did <span className="font-bold text-white">not</span> start as a company. 
               It started as a simple interactive-image experiment. 
@@ -195,18 +254,29 @@ export default function About() {
                 Become the world's most advanced IP protection and digital truth system.
               </p>
             </div>
-          </div>
+          </motion.div>
 
           {/* LEADERSHIP */}
-          <div className="mb-24">
-            <h2 className="text-4xl md:text-5xl font-black text-white mb-12 text-center font-space">
+          <div ref={leadershipRef} className="mb-24">
+            <motion.h2 
+              initial={{ opacity: 0, y: 40 }}
+              animate={leadershipInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+              className="text-4xl md:text-5xl font-black text-white mb-12 text-center font-space"
+            >
               LEADERSHIP
-            </h2>
+            </motion.h2>
             <div className="grid gap-6">
               {leadership.map((leader, idx) => {
                 const Icon = leader.icon;
                 return (
-                  <div key={idx} className="glass-card rounded-xl p-8 border border-[#8C4BFF]/20 hover:border-[#8C4BFF]/50 transition-all">
+                  <motion.div 
+                    key={idx} 
+                    initial={{ opacity: 0, x: idx % 2 === 0 ? -80 : 80 }}
+                    animate={leadershipInView ? { opacity: 1, x: 0 } : {}}
+                    transition={{ duration: 1, delay: 0.2 + (idx * 0.15), ease: [0.16, 1, 0.3, 1] }}
+                    className="glass-card rounded-xl p-8 border border-[#8C4BFF]/20 hover:border-[#8C4BFF]/50 transition-all"
+                  >
                     <div className="flex flex-col md:flex-row gap-6 items-start">
                       <div className="w-20 h-20 bg-gradient-to-br from-[#00E4FF] to-[#8C4BFF] rounded-2xl flex items-center justify-center flex-shrink-0 shadow-[0_0_20px_rgba(140,75,255,0.3)]">
                         <Icon className="w-10 h-10 text-black" />
@@ -217,7 +287,7 @@ export default function About() {
                         <p className="text-gray-400 leading-relaxed">{leader.role}</p>
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
                 );
               })}
             </div>
@@ -226,38 +296,85 @@ export default function About() {
 
 
           {/* TECHNOLOGY STACK */}
-          <div className="glass-card rounded-2xl p-8 md:p-12 border border-[#00E4FF]/20 mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-8 flex items-center gap-4 font-space">
+          <motion.div 
+            ref={techRef}
+            initial={{ opacity: 0, y: 60 }}
+            animate={techInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            className="glass-card rounded-2xl p-8 md:p-12 border border-[#00E4FF]/20 mb-12"
+          >
+            <motion.h2 
+              initial={{ opacity: 0, x: -80 }}
+              animate={techInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="text-3xl md:text-4xl font-bold text-white mb-8 flex items-center gap-4 font-space"
+            >
               <Blocks className="w-8 h-8 text-[#00E4FF]" />
               The Technology Stack
-            </h2>
+            </motion.h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
               {technologies.map((tech, idx) => (
-                <div key={idx} className="flex items-center gap-3 bg-white/5 border border-white/10 rounded-lg p-4 hover:bg-[#00E4FF]/10 hover:border-[#00E4FF]/30 transition-colors">
+                <motion.div 
+                  key={idx} 
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={techInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.8, delay: 0.3 + (idx * 0.05), ease: [0.16, 1, 0.3, 1] }}
+                  className="flex items-center gap-3 bg-white/5 border border-white/10 rounded-lg p-4 hover:bg-[#00E4FF]/10 hover:border-[#00E4FF]/30 transition-colors"
+                >
                   <div className="w-2 h-2 bg-[#00E4FF] rounded-full flex-shrink-0" />
                   <span className="text-gray-200 font-medium">{tech}</span>
-                </div>
+                </motion.div>
               ))}
             </div>
-          </div>
+          </motion.div>
 
           {/* CTA */}
-          <div className="rounded-3xl p-12 text-center bg-gradient-to-b from-[#001F54] to-black border border-[#00E4FF]/30 relative overflow-hidden">
+          <motion.div 
+            ref={ctaRef}
+            initial={{ opacity: 0, y: 70, scale: 0.92 }}
+            animate={ctaInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+            transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+            className="rounded-3xl p-12 text-center bg-gradient-to-b from-[#001F54] to-black border border-[#00E4FF]/30 relative overflow-hidden"
+          >
             <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+            {/* Purple grid overlay */}
+            <div className="absolute inset-0 opacity-20" style={{
+              backgroundImage: `
+                linear-gradient(rgba(168,85,247,0.7) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(139,92,246,0.7) 1px, transparent 1px)
+              `,
+              backgroundSize: '30px 30px'
+            }} />
             <div className="relative z-10">
-              <h2 className="text-4xl md:text-5xl font-black text-white mb-6 font-space">
+              <motion.h2 
+                initial={{ opacity: 0, x: -100 }}
+                animate={ctaInView ? { opacity: 1, x: 0 } : {}}
+                transition={{ duration: 1.1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                className="text-4xl md:text-5xl font-black text-white mb-6 font-space"
+              >
                 READY TO DEPLOY CREDENTIALED VERIFICATION?
-              </h2>
-              <p className="text-gray-400 mb-10 text-xl max-w-2xl mx-auto">
+              </motion.h2>
+              <motion.p 
+                initial={{ opacity: 0, x: 100 }}
+                animate={ctaInView ? { opacity: 1, x: 0 } : {}}
+                transition={{ duration: 1.1, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                className="text-gray-400 mb-10 text-xl max-w-2xl mx-auto"
+              >
                 Initiate protocol-governed access with GlyphLock security specialists.
-              </p>
-              <Link to={createPageUrl("Consultation")}>
-                <Button className="bg-gradient-to-r from-[#00E4FF] to-[#8C4BFF] hover:scale-105 transition-transform text-white text-lg font-bold uppercase tracking-wide px-10 py-6 shadow-[0_0_30px_rgba(0,228,255,0.3)] border-none">
-                  Request Credentials
-                </Button>
-              </Link>
+              </motion.p>
+              <motion.div
+                initial={{ opacity: 0, y: 40, scale: 0.9 }}
+                animate={ctaInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+                transition={{ duration: 1, delay: 0.5, type: "spring", stiffness: 100 }}
+              >
+                <Link to={createPageUrl("Consultation")}>
+                  <Button className="bg-gradient-to-r from-[#00E4FF] to-[#8C4BFF] hover:scale-105 transition-transform text-white text-lg font-bold uppercase tracking-wide px-10 py-6 shadow-[0_0_30px_rgba(0,228,255,0.3)] border-none">
+                    Request Credentials
+                  </Button>
+                </Link>
+              </motion.div>
             </div>
-          </div>
+          </motion.div>
 
         </div>
       </div>
