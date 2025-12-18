@@ -10,7 +10,7 @@ export default function CTASection() {
   const [email, setEmail] = useState("");
   const [isHovered, setIsHovered] = useState(false);
   const containerRef = useRef(null);
-  const isInView = useInView(containerRef, { once: true, amount: 0.3 });
+  const isInView = useInView(containerRef, { once: true, amount: 0.5 });
   
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -175,9 +175,9 @@ export default function CTASection() {
             <div className="relative z-10 text-center">
               {/* Badge - Royal Blue with scale pop */}
               <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
-                transition={{ duration: 0.6, delay: 0.1, type: "spring", stiffness: 180 }}
+                initial={{ opacity: 0, scale: 0.6, y: 20 }}
+                animate={isInView ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.6, y: 20 }}
+                transition={{ duration: 0.9, delay: 0.2, type: "spring", stiffness: 120, damping: 14 }}
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/15 border border-blue-400/30 mb-6"
               >
                 <motion.div
@@ -191,9 +191,9 @@ export default function CTASection() {
 
               {/* Title - Slide from LEFT */}
               <motion.h2
-                initial={{ opacity: 0, x: -60 }}
-                animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -60 }}
-                transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+                initial={{ opacity: 0, x: -100 }}
+                animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -100 }}
+                transition={{ duration: 1.1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
                 className="text-3xl md:text-4xl lg:text-5xl font-black text-white mb-4 tracking-tight drop-shadow-[0_0_25px_rgba(255,255,255,0.4)]"
               >
                 READY TO SECURE YOUR{' '}
@@ -213,9 +213,9 @@ export default function CTASection() {
 
               {/* Subtitle - Slide from RIGHT */}
               <motion.p
-                initial={{ opacity: 0, x: 60 }}
-                animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 60 }}
-                transition={{ duration: 0.8, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+                initial={{ opacity: 0, x: 100 }}
+                animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 100 }}
+                transition={{ duration: 1.1, delay: 0.55, ease: [0.16, 1, 0.3, 1] }}
                 className="text-base md:text-xl text-gray-300 mb-8 max-w-2xl mx-auto font-medium"
               >
                 Protocol-governed verification for credentialed operators
@@ -223,9 +223,9 @@ export default function CTASection() {
 
               {/* Email form - Scale up with bounce */}
               <motion.div
-                initial={{ opacity: 0, y: 30, scale: 0.95 }}
-                animate={isInView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 30, scale: 0.95 }}
-                transition={{ duration: 0.7, delay: 0.4, type: "spring", stiffness: 150 }}
+                initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                animate={isInView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 50, scale: 0.9 }}
+                transition={{ duration: 1, delay: 0.7, type: "spring", stiffness: 100, damping: 14 }}
                 className="flex flex-col sm:flex-row gap-3 md:gap-4 max-w-lg mx-auto mb-10"
               >
                 <div className="flex-1 relative group">
@@ -278,12 +278,12 @@ export default function CTASection() {
                   return (
                     <motion.div
                       key={idx}
-                      initial={{ opacity: 0, y: 25 }}
-                      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 25 }}
+                      initial={{ opacity: 0, y: 40, scale: 0.9 }}
+                      animate={isInView ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 40, scale: 0.9 }}
                       transition={{ 
-                        duration: 0.6, 
-                        delay: 0.5 + (idx * 0.08), 
-                        ease: [0.25, 0.46, 0.45, 0.94] 
+                        duration: 0.9, 
+                        delay: 0.9 + (idx * 0.12), 
+                        ease: [0.16, 1, 0.3, 1] 
                       }}
                       whileHover={{ scale: 1.03, x: isLeft ? 8 : -8 }}
                       className="flex items-center gap-3 text-white font-medium p-3 rounded-xl bg-white/5 border border-white/10 hover:border-blue-400/50 hover:bg-blue-500/10 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all cursor-default"

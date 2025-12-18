@@ -74,9 +74,9 @@ export default function ServicesGrid() {
       <div className="text-center mb-12">
         {/* Title - Slide from left */}
         <motion.h2 
-          initial={{ opacity: 0, x: -60 }}
+          initial={{ opacity: 0, x: -100 }}
           animate={isInView ? { opacity: 1, x: 0 } : {}}
-          transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
+          transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
           className="text-3xl md:text-5xl font-black text-white mb-4 drop-shadow-[0_0_25px_rgba(255,255,255,0.3)]"
         >
           Credentialed Integrity <span className="bg-gradient-to-r from-[#1E40AF] via-[#3B82F6] to-[#60A5FA] bg-clip-text text-transparent">System</span>
@@ -84,9 +84,9 @@ export default function ServicesGrid() {
         
         {/* Subtitle - Slide from right */}
         <motion.p 
-          initial={{ opacity: 0, x: 60 }}
+          initial={{ opacity: 0, x: 100 }}
           animate={isInView ? { opacity: 1, x: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
+          transition={{ duration: 1.1, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
           className="text-lg text-white/90"
         >
           Protocol-governed modules restricted to provisioned access
@@ -99,14 +99,14 @@ export default function ServicesGrid() {
           return (
             <motion.div
               key={idx}
-              initial={{ opacity: 0, y: 40, scale: 0.9 }}
+              initial={{ opacity: 0, y: 60, scale: 0.85 }}
               animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
               transition={{ 
-                duration: 0.7, 
-                delay: 0.2 + (idx * 0.08),
+                duration: 1, 
+                delay: 0.3 + (idx * 0.12),
                 type: "spring",
-                stiffness: 150,
-                damping: 18
+                stiffness: 100,
+                damping: 14
               }}
               whileHover={{ y: -10, scale: 1.03 }}
             >

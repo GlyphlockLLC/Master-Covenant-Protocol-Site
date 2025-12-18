@@ -3,14 +3,14 @@ import { motion, useInView } from "framer-motion";
 
 export default function HeroSection() {
   const containerRef = useRef(null);
-  const isInView = useInView(containerRef, { once: true, amount: 0.3 });
+  const isInView = useInView(containerRef, { once: true, amount: 0.4 });
 
   return (
     <div ref={containerRef} className="w-full flex justify-center px-4 sm:px-6 py-8" style={{ background: 'transparent', pointerEvents: 'auto' }}>
       <motion.div 
-        initial={{ opacity: 0, y: 40, scale: 0.95 }}
+        initial={{ opacity: 0, y: 60, scale: 0.9 }}
         animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-        transition={{ duration: 0.9, ease: [0.25, 0.46, 0.45, 0.94] }}
+        transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
         className="relative w-full max-w-[1200px] group"
       >
         {/* Royal Blue Glow Effect with Pulse */}
@@ -40,9 +40,9 @@ export default function HeroSection() {
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent pointer-events-none z-[1]" />
           
           <motion.div 
-            initial={{ opacity: 0, x: 30 }}
+            initial={{ opacity: 0, x: 60 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.7, delay: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+            transition={{ duration: 1, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
             className="absolute z-10 bottom-1.5 right-1.5 sm:bottom-2 sm:right-2 md:bottom-3 md:right-3 lg:bottom-4 lg:right-4 flex items-center gap-2 md:gap-3"
           >
             <motion.span 
