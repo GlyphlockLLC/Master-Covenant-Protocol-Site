@@ -3,8 +3,6 @@ import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { Twitter, Linkedin, Instagram, Github, Mail, Phone } from "lucide-react";
 import { FOOTER_LINKS } from "@/components/NavigationConfig";
-import { SOC2Badge, ISO27001Badge, PCIDSSBadge, GDPRBadge, HIPAABadge } from "@/components/compliance/BadgeSVGs";
-
 /**
  * PHASE 3B FOOTER - FULLY CORRECTED
  * All links point to glyphlock.io routes ONLY
@@ -12,11 +10,11 @@ import { SOC2Badge, ISO27001Badge, PCIDSSBadge, GDPRBadge, HIPAABadge } from "@/
  */
 
 const certifications = [
-  { name: "SOC 2", subtitle: "PROGRAM IN PLACE", BadgeComponent: SOC2Badge, page: "TrustSecurity" },
-  { name: "ISO 27001", subtitle: "STANDARDS MET", BadgeComponent: ISO27001Badge, page: "TrustSecurity" },
-  { name: "PCI DSS", subtitle: "STANDARDS MET", BadgeComponent: PCIDSSBadge, page: "TrustSecurity" },
-  { name: "GDPR", subtitle: "COMPLIANT", BadgeComponent: GDPRBadge, page: "Privacy" },
-  { name: "HIPAA", subtitle: "COMPLIANT", BadgeComponent: HIPAABadge, page: "TrustSecurity" }
+  { name: "ISO 27001", subtitle: "STANDARDS MET", image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/0dfb7aa86_1766061731969.jpg", page: "TrustSecurity" },
+  { name: "SOC 2", subtitle: "PROGRAM IN PLACE", image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/ec8675dc5_1766064945798.jpg", page: "TrustSecurity" },
+  { name: "GDPR", subtitle: "COMPLIANT", image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/db009bbe8_1766062456894.jpg", page: "Privacy" },
+  { name: "HIPAA", subtitle: "COMPLIANT", image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/c848fdb95_1766062491421.jpg", page: "TrustSecurity" },
+  { name: "Post-Quantum", subtitle: "SECURED", image: "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/717da1754_1766062231110.jpg", page: "TrustSecurity" }
 ];
 
 export default function Footer() {
@@ -267,8 +265,8 @@ export default function Footer() {
                 to={createPageUrl(cert.page)}
                 className="group flex flex-col items-center gap-2 p-3 rounded-xl bg-white/5 border border-white/10 hover:border-cyan-500/30 hover:bg-cyan-500/5 transition-all duration-300"
               >
-                <div className="w-12 h-12 md:w-14 md:h-14 flex items-center justify-center opacity-80 group-hover:opacity-100 transition-opacity">
-                  <cert.BadgeComponent className="w-full h-full" />
+                <div className="w-16 h-16 md:w-20 md:h-20 flex items-center justify-center opacity-90 group-hover:opacity-100 transition-opacity group-hover:scale-105 duration-300">
+                  <img src={cert.image} alt={cert.name} className="w-full h-full object-contain filter drop-shadow-[0_0_8px_rgba(0,0,0,0.5)]" />
                 </div>
                 <div className="text-center">
                   <p className="text-xs font-bold text-white group-hover:text-cyan-400 transition-colors">{cert.name}</p>
