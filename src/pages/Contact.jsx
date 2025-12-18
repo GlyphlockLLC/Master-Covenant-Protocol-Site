@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { base44 } from "@/api/base44Client";
 import { useMutation } from "@tanstack/react-query";
 import { Mail, Phone, MapPin, Send, CheckCircle2, Globe } from "lucide-react";
@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import SEOHead from "@/components/SEOHead";
 import { GlyphInput, GlyphButton, GlyphFormPanel } from "@/components/ui/GlyphForm";
+import { motion, useInView } from "framer-motion";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -16,6 +17,14 @@ export default function Contact() {
     message: ""
   });
   const [submitted, setSubmitted] = useState(false);
+  
+  const heroRef = useRef(null);
+  const cardsRef = useRef(null);
+  const formRef = useRef(null);
+  
+  const heroInView = useInView(heroRef, { once: true, amount: 0.4 });
+  const cardsInView = useInView(cardsRef, { once: true, amount: 0.3 });
+  const formInView = useInView(formRef, { once: true, amount: 0.3 });
 
   const sendEmail = useMutation({
     mutationFn: async (data) => {
@@ -53,22 +62,38 @@ export default function Contact() {
         <div className="container mx-auto px-6 max-w-6xl relative z-10">
           
           {/* Hero */}
-          <div className="text-center mb-20">
-            <h1 className="text-5xl md:text-7xl font-black mb-6 tracking-tighter">
+          <div ref={heroRef} className="text-center mb-20">
+            <motion.h1 
+              initial={{ opacity: 0, x: -100 }}
+              animate={heroInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+              className="text-5xl md:text-7xl font-black mb-6 tracking-tighter"
+            >
               INITIATE <span className="text-transparent bg-gradient-to-r from-[#7C3AED] to-[#3B82F6] bg-clip-text drop-shadow-[0_0_30px_rgba(124,58,237,0.5)]">VERIFICATION</span>
-            </h1>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+            </motion.h1>
+            <motion.p 
+              initial={{ opacity: 0, x: 100 }}
+              animate={heroInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 1.1, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+              className="text-xl text-gray-400 max-w-2xl mx-auto"
+            >
               Establish credentialed communication channel with GlyphLock.
-            </p>
+            </motion.p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 mb-16">
+          <div ref={cardsRef} className="grid md:grid-cols-3 gap-8 mb-16">
             {[
               { icon: Mail, title: "Email", content: "glyphlock@gmail.com", href: "mailto:glyphlock@gmail.com", color: "text-[#3B82F6]" },
               { icon: Phone, title: "Phone", content: "(424) 246-6499", href: "tel:+14242466499", color: "text-[#8B5CF6]" },
               { icon: MapPin, title: "Location", content: "El Mirage, Arizona", color: "text-white" }
             ].map((item, idx) => (
-              <div key={idx} className="bg-slate-900/80 rounded-xl p-8 border-2 border-[#3B82F6]/30 text-center hover:border-[#3B82F6]/60 transition-all group shadow-[0_0_25px_rgba(59,130,246,0.2)] hover:shadow-[0_0_40px_rgba(59,130,246,0.4)]">
+              <motion.div 
+                key={idx} 
+                initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                animate={cardsInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+                transition={{ duration: 0.9, delay: 0.1 + (idx * 0.12), type: "spring", stiffness: 100 }}
+                className="bg-slate-900/80 rounded-xl p-8 border-2 border-[#3B82F6]/30 text-center hover:border-[#3B82F6]/60 transition-all group shadow-[0_0_25px_rgba(59,130,246,0.2)] hover:shadow-[0_0_40px_rgba(59,130,246,0.4)]"
+              >
                 <div className={`w-16 h-16 bg-slate-800/80 rounded-2xl flex items-center justify-center mx-auto mb-6 border-2 border-[#3B82F6]/40 group-hover:bg-[#3B82F6]/20 group-hover:border-[#3B82F6]/60 transition-all shadow-[0_0_15px_rgba(59,130,246,0.3)]`}>
                   <item.icon className={`w-8 h-8 ${item.color} drop-shadow-[0_0_8px_rgba(59,130,246,0.8)]`} />
                 </div>
@@ -80,12 +105,17 @@ export default function Contact() {
                 ) : (
                   <p className="text-gray-400 text-lg">{item.content}</p>
                 )}
-              </div>
+              </motion.div>
             ))}
           </div>
 
-          <div className="grid lg:grid-cols-[1fr_1fr] gap-12">
+          <div ref={formRef} className="grid lg:grid-cols-[1fr_1fr] gap-12">
             {/* Contact Form */}
+            <motion.div
+              initial={{ opacity: 0, x: -80 }}
+              animate={formInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            >
             <GlyphFormPanel title="" className="w-full">
               <div className="w-full">
                 <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
@@ -159,9 +189,15 @@ export default function Contact() {
                 </form>
               </div>
             </GlyphFormPanel>
+            </motion.div>
 
             {/* Side Info */}
-            <div className="space-y-8">
+            <motion.div 
+              initial={{ opacity: 0, x: 80 }}
+              animate={formInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 1, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+              className="space-y-8"
+            >
               <div className="bg-slate-900/80 rounded-2xl p-8 border-2 border-[#8B5CF6]/30 shadow-[0_0_25px_rgba(139,92,246,0.2)]">
                 <h3 className="text-2xl font-bold text-white mb-4">Global Operations</h3>
                 <p className="text-gray-400 leading-relaxed mb-6">
@@ -194,7 +230,7 @@ export default function Contact() {
                   </li>
                 </ul>
               </div>
-            </div>
+            </motion.div>
           </div>
 
         </div>

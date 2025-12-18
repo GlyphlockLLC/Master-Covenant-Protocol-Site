@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -8,7 +8,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Blocks, Hash, Shield, CheckCircle2, Copy, FileCheck, Lock, AlertTriangle, Clock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { motion, useInView } from "framer-motion";
 export default function Blockchain() {
+  const heroRef = useRef(null);
+  const featuresRef = useRef(null);
+  const heroInView = useInView(heroRef, { once: true, amount: 0.4 });
+  const featuresInView = useInView(featuresRef, { once: true, amount: 0.3 });
+
   const [inputText, setInputText] = useState("");
   const [hashes, setHashes] = useState({});
   const [merkleTree, setMerkleTree] = useState(null);
@@ -186,20 +192,40 @@ export default function Blockchain() {
       <div className="min-h-screen bg-black text-white py-20">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12">
-              <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center mx-auto mb-6">
+            <div ref={heroRef} className="text-center mb-12">
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.7 }}
+                animate={heroInView ? { opacity: 1, scale: 1 } : {}}
+                transition={{ duration: 0.9, type: "spring", stiffness: 120 }}
+                className="w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center mx-auto mb-6"
+              >
                 <Blocks className="w-8 h-8 text-white" />
-              </div>
-              <h1 className="text-4xl md:text-5xl font-bold mb-4">
+              </motion.div>
+              <motion.h1 
+                initial={{ opacity: 0, x: -100 }}
+                animate={heroInView ? { opacity: 1, x: 0 } : {}}
+                transition={{ duration: 1.1, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+                className="text-4xl md:text-5xl font-bold mb-4"
+              >
                 <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">Blockchain</span> Security Suite
-              </h1>
-              <p className="text-xl text-white mb-2">
+              </motion.h1>
+              <motion.p 
+                initial={{ opacity: 0, x: 100 }}
+                animate={heroInView ? { opacity: 1, x: 0 } : {}}
+                transition={{ duration: 1.1, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                className="text-xl text-white mb-2"
+              >
                 Enterprise-grade cryptographic verification and blockchain tools
-              </p>
-              <div className="flex items-center justify-center gap-2 text-sm text-blue-400">
+              </motion.p>
+              <motion.div 
+                initial={{ opacity: 0, y: 30 }}
+                animate={heroInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.9, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                className="flex items-center justify-center gap-2 text-sm text-blue-400"
+              >
                 <Shield className="w-4 h-4" />
                 <span>SHA-256/512, Merkle Trees, Block Mining & Integrity Verification</span>
-              </div>
+              </motion.div>
             </div>
 
             <Tabs defaultValue="hash" className="space-y-6">
@@ -661,35 +687,28 @@ export default function Blockchain() {
             </Tabs>
 
             {/* Features Grid */}
-            <div className="mt-12 grid md:grid-cols-4 gap-6">
-              <Card className="bg-gray-900 border-gray-800 text-center">
-                <CardContent className="pt-6">
-                  <Shield className="w-10 h-10 text-blue-400 mx-auto mb-3" />
-                  <h3 className="font-bold mb-2 text-white">Immutable</h3>
-                  <p className="text-sm text-white">Tamper-proof verification</p>
-                </CardContent>
-              </Card>
-              <Card className="bg-gray-900 border-gray-800 text-center">
-                <CardContent className="pt-6">
-                  <Hash className="w-10 h-10 text-blue-400 mx-auto mb-3" />
-                  <h3 className="font-bold mb-2 text-white">Cryptographic</h3>
-                  <p className="text-sm text-white">Industry-standard algorithms</p>
-                </CardContent>
-              </Card>
-              <Card className="bg-gray-900 border-gray-800 text-center">
-                <CardContent className="pt-6">
-                  <CheckCircle2 className="w-10 h-10 text-blue-400 mx-auto mb-3" />
-                  <h3 className="font-bold mb-2 text-white">Verified</h3>
-                  <p className="text-sm text-white">Mathematically proven</p>
-                </CardContent>
-              </Card>
-              <Card className="bg-gray-900 border-gray-800 text-center">
-                <CardContent className="pt-6">
-                  <Blocks className="w-10 h-10 text-blue-400 mx-auto mb-3" />
-                  <h3 className="font-bold mb-2 text-white">Merkle Trees</h3>
-                  <p className="text-sm text-white">Efficient data structures</p>
-                </CardContent>
-              </Card>
+            <div ref={featuresRef} className="mt-12 grid md:grid-cols-4 gap-6">
+              {[
+                { icon: Shield, title: "Immutable", desc: "Tamper-proof verification" },
+                { icon: Hash, title: "Cryptographic", desc: "Industry-standard algorithms" },
+                { icon: CheckCircle2, title: "Verified", desc: "Mathematically proven" },
+                { icon: Blocks, title: "Merkle Trees", desc: "Efficient data structures" }
+              ].map((item, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                  animate={featuresInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+                  transition={{ duration: 0.9, delay: 0.1 + (idx * 0.1), type: "spring", stiffness: 100 }}
+                >
+                  <Card className="bg-gray-900 border-gray-800 text-center">
+                    <CardContent className="pt-6">
+                      <item.icon className="w-10 h-10 text-blue-400 mx-auto mb-3" />
+                      <h3 className="font-bold mb-2 text-white">{item.title}</h3>
+                      <p className="text-sm text-white">{item.desc}</p>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
             </div>
           </div>
         </div>

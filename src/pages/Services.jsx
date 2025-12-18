@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -8,8 +8,21 @@ import {
   ShoppingCart, Brain, Globe, AlertCircle, CheckCircle2
 } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
+import { motion, useInView } from "framer-motion";
 
 export default function Services() {
+  const heroRef = useRef(null);
+  const servicesRef = useRef(null);
+  const industriesRef = useRef(null);
+  const techRef = useRef(null);
+  const ctaRef = useRef(null);
+  
+  const heroInView = useInView(heroRef, { once: true, amount: 0.4 });
+  const servicesInView = useInView(servicesRef, { once: true, amount: 0.2 });
+  const industriesInView = useInView(industriesRef, { once: true, amount: 0.3 });
+  const techInView = useInView(techRef, { once: true, amount: 0.4 });
+  const ctaInView = useInView(ctaRef, { once: true, amount: 0.4 });
+
   const services = [
     {
       id: "visual-cryptography",
@@ -153,28 +166,50 @@ export default function Services() {
       <div className="min-h-screen bg-black text-white py-20">
         <div className="container mx-auto px-4 max-w-7xl">
           {/* Header */}
-          <div className="text-center mb-12 md:mb-16 px-4">
-            <h1 className="text-3xl md:text-4xl lg:text-6xl font-bold mb-4 md:mb-6">
+          <div ref={heroRef} className="text-center mb-12 md:mb-16 px-4">
+            <motion.h1 
+              initial={{ opacity: 0, x: -100 }}
+              animate={heroInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+              className="text-3xl md:text-4xl lg:text-6xl font-bold mb-4 md:mb-6"
+            >
               <span className="bg-gradient-to-r from-blue-400 via-violet-500 to-emerald-400 bg-clip-text text-transparent">
                 GlyphLock System Modules
               </span>
-            </h1>
-            <p className="text-base md:text-xl text-white/70 max-w-3xl mx-auto mb-6 md:mb-8">
+            </motion.h1>
+            <motion.p 
+              initial={{ opacity: 0, x: 100 }}
+              animate={heroInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 1.1, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+              className="text-base md:text-xl text-white/70 max-w-3xl mx-auto mb-6 md:mb-8"
+            >
               Protocol-governed verification modules – credentialed integrity system operating under cryptographic governance.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
+            </motion.p>
+            <motion.div 
+              initial={{ opacity: 0, y: 40, scale: 0.9 }}
+              animate={heroInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+              transition={{ duration: 0.9, delay: 0.3, type: "spring", stiffness: 120 }}
+              className="flex flex-wrap justify-center gap-4"
+            >
               <Link to={createPageUrl("Consultation")}>
                 <Button className="bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-700 hover:to-violet-700 text-white">
                   Request Credentials
                 </Button>
               </Link>
-            </div>
+            </motion.div>
           </div>
 
           {/* Services Grid */}
-          <div className="space-y-8 md:space-y-12 mb-12 md:mb-16">
+          <div ref={servicesRef} className="space-y-8 md:space-y-12 mb-12 md:mb-16">
             {services.map((service, idx) => (
-              <div key={service.id} className="glass-card-dark border border-blue-500/30 rounded-xl p-6 md:p-8" style={{ background: 'rgba(30, 58, 138, 0.2)', backdropFilter: 'blur(16px)' }}>
+              <motion.div 
+                key={service.id} 
+                initial={{ opacity: 0, x: idx % 2 === 0 ? -80 : 80 }}
+                animate={servicesInView ? { opacity: 1, x: 0 } : {}}
+                transition={{ duration: 1, delay: 0.15 + (idx * 0.12), ease: [0.16, 1, 0.3, 1] }}
+                className="glass-card-dark border border-blue-500/30 rounded-xl p-6 md:p-8" 
+                style={{ background: 'rgba(30, 58, 138, 0.2)', backdropFilter: 'blur(16px)' }}
+              >
                 <div className="flex items-start gap-4 mb-6">
                   <div className="p-3 rounded-xl bg-blue-500/20 border border-blue-500/50">
                     <service.icon className="w-8 h-8 text-blue-400" />
@@ -197,35 +232,64 @@ export default function Services() {
                     Access Module
                   </Button>
                 </Link>
-              </div>
+              </motion.div>
             ))}
           </div>
 
           {/* Industries Served */}
-          <div className="mb-16">
-            <h2 className="text-3xl font-bold text-center mb-8">
+          <div ref={industriesRef} className="mb-16">
+            <motion.h2 
+              initial={{ opacity: 0, y: 40 }}
+              animate={industriesInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+              className="text-3xl font-bold text-center mb-8"
+            >
               <span className="text-white">Industries We </span>
               <span className="text-blue-400">Protect</span>
-            </h2>
+            </motion.h2>
             <div className="grid md:grid-cols-3 gap-6">
               {industries.map((industry, idx) => (
-                <div key={idx} className="glass-card-dark border border-blue-500/30 rounded-xl p-6" style={{ background: 'rgba(30, 58, 138, 0.2)', backdropFilter: 'blur(16px)' }}>
+                <motion.div 
+                  key={idx} 
+                  initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                  animate={industriesInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+                  transition={{ duration: 0.9, delay: 0.2 + (idx * 0.1), ease: [0.16, 1, 0.3, 1] }}
+                  className="glass-card-dark border border-blue-500/30 rounded-xl p-6" 
+                  style={{ background: 'rgba(30, 58, 138, 0.2)', backdropFilter: 'blur(16px)' }}
+                >
                   <h3 className="text-lg font-semibold text-white mb-2">{industry.name}</h3>
                   <p className="text-sm text-white/70">{industry.description}</p>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
 
           {/* Technology Stack */}
-          <div className="glass-card-dark border border-blue-500/30 rounded-xl p-8 text-center" style={{ background: 'rgba(30, 58, 138, 0.2)', backdropFilter: 'blur(16px)' }}>
-            <h2 className="text-3xl font-bold text-white mb-4">
+          <motion.div 
+            ref={techRef}
+            initial={{ opacity: 0, y: 60 }}
+            animate={techInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            className="glass-card-dark border border-blue-500/30 rounded-xl p-8 text-center" 
+            style={{ background: 'rgba(30, 58, 138, 0.2)', backdropFilter: 'blur(16px)' }}
+          >
+            <motion.h2 
+              initial={{ opacity: 0, x: -80 }}
+              animate={techInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 1, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+              className="text-3xl font-bold text-white mb-4"
+            >
               System-Enforced Verification Architecture
-            </h2>
-            <p className="text-white/70 mb-6 max-w-3xl mx-auto">
+            </motion.h2>
+            <motion.p 
+              initial={{ opacity: 0, x: 80 }}
+              animate={techInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 1, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+              className="text-white/70 mb-6 max-w-3xl mx-auto"
+            >
               Quantum-resistant cryptographic governance with autonomous threat suppression. 
               Protocol-enforced compliance with SOC 2, GDPR, ISO 27001, PCI DSS, and HIPAA.
-            </p>
+            </motion.p>
             <div className="flex flex-wrap justify-center gap-6 text-sm text-white/60">
               <div className="flex items-center gap-2">
                 <Lock className="w-4 h-4 text-blue-400" />
@@ -248,22 +312,44 @@ export default function Services() {
                 <span>Global Infrastructure</span>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* CTA */}
-          <div className="mt-16 text-center">
-            <h2 className="text-3xl font-bold text-white mb-4">
+          <motion.div 
+            ref={ctaRef}
+            initial={{ opacity: 0, y: 70, scale: 0.92 }}
+            animate={ctaInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+            transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-16 text-center"
+          >
+            <motion.h2 
+              initial={{ opacity: 0, x: -100 }}
+              animate={ctaInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 1.1, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+              className="text-3xl font-bold text-white mb-4"
+            >
               Ready to Deploy Protocol-Governed Verification?
-            </h2>
-            <p className="text-white/70 mb-8 max-w-2xl mx-auto">
+            </motion.h2>
+            <motion.p 
+              initial={{ opacity: 0, x: 100 }}
+              animate={ctaInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 1.1, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+              className="text-white/70 mb-8 max-w-2xl mx-auto"
+            >
               Initiate credentialed access verification with GlyphLock specialists to provision system-enforced capabilities.
-            </p>
-            <Link to={createPageUrl("Consultation")}>
-              <Button size="lg" className="bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-700 hover:to-violet-700 text-white">
-                Request Credentials
-              </Button>
-            </Link>
-          </div>
+            </motion.p>
+            <motion.div
+              initial={{ opacity: 0, y: 40, scale: 0.9 }}
+              animate={ctaInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+              transition={{ duration: 1, delay: 0.4, type: "spring", stiffness: 100 }}
+            >
+              <Link to={createPageUrl("Consultation")}>
+                <Button size="lg" className="bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-700 hover:to-violet-700 text-white">
+                  Request Credentials
+                </Button>
+              </Link>
+            </motion.div>
+          </motion.div>
         </div>
       </div>
     </>

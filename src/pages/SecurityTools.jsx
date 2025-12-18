@@ -1,12 +1,23 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ChevronRight, Shield, Lock, Eye, Zap, Server, Activity } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
+import { motion, useInView } from "framer-motion";
 
 export default function SecurityTools() {
+  const heroRef = useRef(null);
+  const toolsRef = useRef(null);
+  const whyRef = useRef(null);
+  const ctaRef = useRef(null);
+  
+  const heroInView = useInView(heroRef, { once: true, amount: 0.4 });
+  const toolsInView = useInView(toolsRef, { once: true, amount: 0.2 });
+  const whyInView = useInView(whyRef, { once: true, amount: 0.3 });
+  const ctaInView = useInView(ctaRef, { once: true, amount: 0.4 });
+
   const tools = [
     {
       title: "QR Verification Module",
@@ -58,7 +69,7 @@ export default function SecurityTools() {
         url="/security-tools"
       />
       <div className="text-white min-h-screen" style={{ background: 'transparent' }}>
-      <section className="relative py-20 overflow-hidden" style={{ background: 'transparent' }}>
+      <section ref={heroRef} className="relative py-20 overflow-hidden" style={{ background: 'transparent' }}>
         <div className="absolute inset-0 opacity-10" style={{
           backgroundImage: "linear-gradient(cyan 1px, transparent 1px), linear-gradient(90deg, cyan 1px, transparent 1px)",
           backgroundSize: "50px 50px"
@@ -66,24 +77,45 @@ export default function SecurityTools() {
         
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center mx-auto mb-6">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.7 }}
+              animate={heroInView ? { opacity: 1, scale: 1 } : {}}
+              transition={{ duration: 0.9, type: "spring", stiffness: 120 }}
+              className="w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center mx-auto mb-6"
+            >
               <Shield className="w-8 h-8 text-white" />
-            </div>
-            <h1 className="text-5xl md:text-6xl font-bold mb-6">
+            </motion.div>
+            <motion.h1 
+              initial={{ opacity: 0, x: -100 }}
+              animate={heroInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 1.1, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+              className="text-5xl md:text-6xl font-bold mb-6"
+            >
               Credentialed Verification <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">System</span>
-            </h1>
-            <p className="text-xl text-gray-300 mb-8 leading-relaxed">
+            </motion.h1>
+            <motion.p 
+              initial={{ opacity: 0, x: 100 }}
+              animate={heroInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 1.1, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+              className="text-xl text-gray-300 mb-8 leading-relaxed"
+            >
               Protocol-governed modules for cryptographic verification, blockchain integrity, and system-enforced monitoring.
-            </p>
+            </motion.p>
           </div>
         </div>
       </section>
 
-      <section className="py-20" style={{ background: 'transparent' }}>
+      <section ref={toolsRef} className="py-20" style={{ background: 'transparent' }}>
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
             {tools.map((tool, index) => (
-              <Link key={index} to={createPageUrl(tool.link)}>
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 60, scale: 0.9 }}
+                animate={toolsInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+                transition={{ duration: 0.9, delay: 0.1 + (index * 0.1), type: "spring", stiffness: 100 }}
+              >
+              <Link to={createPageUrl(tool.link)}>
                 <Card className="glass-card-dark border-blue-500/30 hover:border-blue-500/50 transition-all duration-300 h-full group cursor-pointer" style={{background: 'rgba(30, 58, 138, 0.2)', backdropFilter: 'blur(16px)'}}>
                   <div className="relative h-48 overflow-hidden rounded-t-lg">
                     <img 
@@ -116,58 +148,82 @@ export default function SecurityTools() {
                   </CardContent>
                 </Card>
               </Link>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="py-20" style={{ background: 'transparent' }}>
+      <section ref={whyRef} className="py-20" style={{ background: 'transparent' }}>
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl font-bold mb-4 text-white">
+            <motion.h2 
+              initial={{ opacity: 0, x: -80 }}
+              animate={whyInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+              className="text-4xl font-bold mb-4 text-white"
+            >
               Why Deploy <span className="text-blue-400">Protocol-Governed Verification?</span>
-            </h2>
-            <p className="text-gray-400 mb-12">
+            </motion.h2>
+            <motion.p 
+              initial={{ opacity: 0, x: 80 }}
+              animate={whyInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 1, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="text-gray-400 mb-12"
+            >
               System-enforced capabilities restricted to credentialed operators
-            </p>
+            </motion.p>
 
             <div className="grid md:grid-cols-3 gap-8">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-gradient-to-br from-green-600 to-emerald-700 rounded-lg flex items-center justify-center mx-auto mb-4">
-                  <Shield className="w-8 h-8 text-white" />
-                </div>
-                <h3 className="text-xl font-bold mb-2 text-white">System-Enforced Verification</h3>
-                <p className="text-gray-400">Quantum-resistant cryptographic governance</p>
-              </div>
-              <div className="text-center">
-                <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center mx-auto mb-4">
-                  <Eye className="w-8 h-8 text-white" />
-                </div>
-                <h3 className="text-xl font-bold mb-2 text-white">Autonomous Intelligence</h3>
-                <p className="text-gray-400">AI-driven threat suppression with protocol enforcement</p>
-              </div>
-              <div className="text-center">
-                <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-purple-700 rounded-lg flex items-center justify-center mx-auto mb-4">
-                  <Lock className="w-8 h-8 text-white" />
-                </div>
-                <h3 className="text-xl font-bold mb-2 text-white">Credentialed Integrity</h3>
-                <p className="text-gray-400">Protocol-governed modules with provisioned access</p>
-              </div>
+              {[
+                { icon: Shield, title: "System-Enforced Verification", desc: "Quantum-resistant cryptographic governance", gradient: "from-green-600 to-emerald-700" },
+                { icon: Eye, title: "Autonomous Intelligence", desc: "AI-driven threat suppression with protocol enforcement", gradient: "from-blue-600 to-blue-700" },
+                { icon: Lock, title: "Credentialed Integrity", desc: "Protocol-governed modules with provisioned access", gradient: "from-purple-600 to-purple-700" }
+              ].map((item, idx) => (
+                <motion.div 
+                  key={idx}
+                  initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                  animate={whyInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+                  transition={{ duration: 0.9, delay: 0.2 + (idx * 0.12), type: "spring", stiffness: 100 }}
+                  className="text-center"
+                >
+                  <div className={`w-16 h-16 bg-gradient-to-br ${item.gradient} rounded-lg flex items-center justify-center mx-auto mb-4`}>
+                    <item.icon className="w-8 h-8 text-white" />
+                  </div>
+                  <h3 className="text-xl font-bold mb-2 text-white">{item.title}</h3>
+                  <p className="text-gray-400">{item.desc}</p>
+                </motion.div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      <section className="py-20" style={{ background: 'transparent' }}>
+      <section ref={ctaRef} className="py-20" style={{ background: 'transparent' }}>
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-4xl font-bold mb-6 text-white">
+            <motion.h2 
+              initial={{ opacity: 0, x: -100 }}
+              animate={ctaInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+              className="text-4xl font-bold mb-6 text-white"
+            >
               Ready to Deploy Credentialed Verification?
-            </h2>
-            <p className="text-xl text-gray-400 mb-8">
+            </motion.h2>
+            <motion.p 
+              initial={{ opacity: 0, x: 100 }}
+              animate={ctaInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 1.1, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+              className="text-xl text-gray-400 mb-8"
+            >
               Initiate protocol-governed access to system-enforced modules
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            </motion.p>
+            <motion.div 
+              initial={{ opacity: 0, y: 40, scale: 0.9 }}
+              animate={ctaInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+              transition={{ duration: 1, delay: 0.3, type: "spring", stiffness: 100 }}
+              className="flex flex-col sm:flex-row gap-4 justify-center"
+            >
               <Link to={createPageUrl("Qr")}>
                 <Button size="lg" className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white">
                   Access QR Module
@@ -178,7 +234,7 @@ export default function SecurityTools() {
                   Request Credentials
                 </Button>
               </Link>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
