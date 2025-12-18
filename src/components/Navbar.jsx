@@ -106,25 +106,85 @@ const NavItem = ({ section, isOpen, onToggle, index }) => {
             style={{ zIndex: 10001 }}
           >
             <div className="relative overflow-hidden rounded-2xl">
-              {/* Outer glow - Vivid Royal Blue */}
-              <div className="absolute -inset-2 bg-gradient-to-br from-blue-500/50 via-blue-600/40 to-indigo-500/50 rounded-2xl blur-xl"></div>
+              {/* Outer glow - Vivid Royal Blue pulsing */}
+              <motion.div 
+                className="absolute -inset-3 bg-gradient-to-br from-blue-500/60 via-blue-600/50 to-indigo-500/60 rounded-2xl blur-2xl"
+                animate={{
+                  opacity: [0.5, 0.8, 0.5],
+                  scale: [1, 1.02, 1]
+                }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              />
               
               {/* Content container - Deep Royal Blue glass */}
-              <div className="relative bg-gradient-to-br from-blue-950/90 via-slate-950/95 to-indigo-950/90 backdrop-blur-2xl backdrop-saturate-150 border-2 border-blue-400/50 rounded-2xl shadow-[0_0_60px_rgba(59,130,246,0.6),0_0_100px_rgba(37,99,235,0.4),inset_0_1px_0_rgba(96,165,250,0.3)] overflow-hidden">
-                {/* Top glow bar - Vivid */}
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 via-blue-500 to-blue-400 shadow-[0_0_20px_rgba(59,130,246,1)]"></div>
+              <motion.div 
+                className="relative bg-gradient-to-br from-blue-950/90 via-slate-950/95 to-indigo-950/90 backdrop-blur-3xl backdrop-saturate-200 border-2 border-blue-400/50 rounded-2xl shadow-[0_0_60px_rgba(59,130,246,0.6),0_0_100px_rgba(37,99,235,0.4),inset_0_1px_0_rgba(96,165,250,0.4),inset_0_-1px_0_rgba(59,130,246,0.2)] overflow-hidden"
+                initial={{ backdropFilter: "blur(0px)" }}
+                animate={{ backdropFilter: "blur(24px)" }}
+                transition={{ duration: 0.3 }}
+              >
+                {/* Animated top glow bar */}
+                <motion.div 
+                  className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-400 to-transparent"
+                  animate={{
+                    backgroundPosition: ['0% 50%', '100% 50%', '0% 50%']
+                  }}
+                  style={{
+                    backgroundSize: '200% 100%',
+                    boxShadow: '0 0 25px rgba(59,130,246,1), 0 0 50px rgba(59,130,246,0.5)'
+                  }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                />
 
-                {/* Dark glassmorphism underlay */}
-                <div className="absolute inset-0 bg-slate-950/60 backdrop-blur-sm"></div>
+                {/* Glassmorphism layers */}
+                <div className="absolute inset-0 bg-gradient-to-b from-white/[0.08] to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-slate-950/50 backdrop-blur-sm"></div>
 
-                {/* Grid pattern - Vivid Royal Blue */}
-                <div className="absolute inset-0 opacity-15" style={{
-                  backgroundImage: `
-                    linear-gradient(rgba(59,130,246,0.7) 1px, transparent 1px),
-                    linear-gradient(90deg, rgba(37,99,235,0.7) 1px, transparent 1px)
-                  `,
-                  backgroundSize: '20px 20px'
-                }}></div>
+                {/* Animated grid pattern */}
+                <motion.div 
+                  className="absolute inset-0 opacity-20"
+                  animate={{ opacity: [0.15, 0.25, 0.15] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                  style={{
+                    backgroundImage: `
+                      linear-gradient(rgba(59,130,246,0.8) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(37,99,235,0.8) 1px, transparent 1px)
+                    `,
+                    backgroundSize: '20px 20px'
+                  }}
+                />
+
+                {/* Floating particles effect */}
+                <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                  {[...Array(6)].map((_, i) => (
+                    <motion.div
+                      key={i}
+                      className="absolute w-1 h-1 bg-blue-400 rounded-full"
+                      style={{
+                        left: `${15 + i * 15}%`,
+                        top: '50%',
+                        boxShadow: '0 0 6px rgba(59,130,246,0.8)'
+                      }}
+                      animate={{
+                        y: [-20, 20, -20],
+                        opacity: [0.3, 0.8, 0.3],
+                        scale: [0.8, 1.2, 0.8]
+                      }}
+                      transition={{
+                        duration: 3 + i * 0.5,
+                        repeat: Infinity,
+                        delay: i * 0.3,
+                        ease: "easeInOut"
+                      }}
+                    />
+                  ))}
+                </div>
+
+                {/* Corner accents */}
+                <div className="absolute top-0 left-0 w-8 h-8 border-l-2 border-t-2 border-blue-400/60 rounded-tl-2xl" />
+                <div className="absolute top-0 right-0 w-8 h-8 border-r-2 border-t-2 border-blue-400/60 rounded-tr-2xl" />
+                <div className="absolute bottom-0 left-0 w-8 h-8 border-l-2 border-b-2 border-blue-400/60 rounded-bl-2xl" />
+                <div className="absolute bottom-0 right-0 w-8 h-8 border-r-2 border-b-2 border-blue-400/60 rounded-br-2xl" />
 
                 {/* Ambient glow - Brighter */}
                 <div className="absolute -inset-1 bg-gradient-to-br from-blue-500/30 via-blue-600/25 to-indigo-500/30 blur-xl -z-10"></div>
@@ -133,48 +193,77 @@ const NavItem = ({ section, isOpen, onToggle, index }) => {
                   {section.items.map((item, idx) => (
                     <motion.div
                       key={item.page}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: idx * 0.05, duration: 0.3, ease: "easeOut" }}
+                      initial={{ opacity: 0, x: -30, filter: "blur(8px)" }}
+                      animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+                      transition={{ delay: idx * 0.06, duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
                     >
                       <Link
                         to={createPageUrl(item.page)}
-                        className="group/item relative flex items-center justify-between px-4 py-3.5 rounded-lg text-blue-100 hover:text-white transition-all duration-300"
+                        className="group/item relative flex items-center justify-between px-4 py-3.5 rounded-lg text-blue-100 hover:text-white transition-all duration-300 overflow-hidden"
                       >
-                        {/* Hover background - Royal Blue */}
+                        {/* Animated hover background sweep */}
                         <motion.div
-                          className="absolute inset-0 rounded-lg bg-gradient-to-r from-blue-500/20 via-blue-600/30 to-blue-500/20"
-                          initial={{ opacity: 0 }}
-                          whileHover={{ opacity: 1 }}
-                          transition={{ duration: 0.2 }}
+                          className="absolute inset-0 rounded-lg"
+                          initial={{ x: "-100%", opacity: 0 }}
+                          whileHover={{ x: 0, opacity: 1 }}
+                          transition={{ duration: 0.3, ease: "easeOut" }}
+                          style={{
+                            background: 'linear-gradient(90deg, transparent, rgba(59,130,246,0.2) 20%, rgba(59,130,246,0.3) 50%, rgba(59,130,246,0.2) 80%, transparent)'
+                          }}
                         />
 
-                        {/* Hover border - Vivid */}
-                        <div className="absolute inset-0 border border-blue-400/0 group-hover/item:border-blue-400/60 group-hover/item:shadow-[0_0_15px_rgba(59,130,246,0.4)] rounded-lg transition-all"></div>
-
-                        {/* Left accent bar - Bright Royal Blue */}
+                        {/* Shimmer effect on hover */}
                         <motion.div
-                          className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-0 bg-gradient-to-b from-blue-400 via-blue-500 to-blue-400 rounded-r-full"
-                          whileHover={{ height: "60%" }}
-                          transition={{ duration: 0.2 }}
-                          style={{ boxShadow: '0 0 20px rgba(59,130,246,1)' }}
+                          className="absolute inset-0 rounded-lg opacity-0 group-hover/item:opacity-100"
+                          style={{
+                            background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent)',
+                            backgroundSize: '200% 100%'
+                          }}
+                          animate={{
+                            backgroundPosition: ['200% 0', '-200% 0']
+                          }}
+                          transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
                         />
 
-                        <span className="relative z-10 font-semibold text-sm group-hover/item:translate-x-1 transition-transform duration-200">
+                        {/* Hover border glow */}
+                        <div className="absolute inset-0 border border-blue-400/0 group-hover/item:border-blue-400/70 group-hover/item:shadow-[0_0_20px_rgba(59,130,246,0.5),inset_0_0_20px_rgba(59,130,246,0.1)] rounded-lg transition-all duration-300"></div>
+
+                        {/* Left accent bar with glow trail */}
+                        <motion.div
+                          className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-0 rounded-r-full"
+                          style={{
+                            background: 'linear-gradient(to bottom, #60A5FA, #3B82F6, #60A5FA)',
+                            boxShadow: '0 0 20px rgba(59,130,246,1), 0 0 40px rgba(59,130,246,0.5)'
+                          }}
+                          whileHover={{ height: "70%" }}
+                          transition={{ duration: 0.25, ease: "easeOut" }}
+                        />
+
+                        <span className="relative z-10 font-semibold text-sm group-hover/item:translate-x-2 transition-transform duration-300">
                           {item.label}
                         </span>
                         
-                        <motion.svg
-                          className="w-4 h-4 text-blue-400"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          initial={{ x: -5, opacity: 0 }}
+                        <motion.div
+                          className="flex items-center gap-1"
+                          initial={{ x: -10, opacity: 0 }}
                           whileHover={{ x: 0, opacity: 1 }}
-                          transition={{ duration: 0.2 }}
+                          transition={{ duration: 0.25 }}
                         >
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </motion.svg>
+                          <motion.div
+                            className="w-1.5 h-1.5 bg-blue-400 rounded-full"
+                            animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }}
+                            transition={{ duration: 1, repeat: Infinity }}
+                            style={{ boxShadow: '0 0 8px rgba(59,130,246,0.8)' }}
+                          />
+                          <svg
+                            className="w-4 h-4 text-blue-400"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          </svg>
+                        </motion.div>
                       </Link>
                     </motion.div>
                   ))}
