@@ -192,9 +192,9 @@ export default function TechnologyMarquee() {
       <div className="text-center mb-12">
         {/* Title - Slide from left */}
         <motion.h2 
-          initial={{ opacity: 0, x: -80, filter: "blur(15px)" }}
-          animate={isInView ? { opacity: 1, x: 0, filter: "blur(0px)" } : {}}
-          transition={{ duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+          initial={{ opacity: 0, x: -50 }}
+          animate={isInView ? { opacity: 1, x: 0 } : {}}
+          transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
           className="text-2xl md:text-3xl font-bold text-white mb-4"
         >
           Enterprise Engineering Excellence
@@ -202,9 +202,9 @@ export default function TechnologyMarquee() {
         
         {/* Subtitle - Slide from right */}
         <motion.p 
-          initial={{ opacity: 0, x: 80, filter: "blur(15px)" }}
-          animate={isInView ? { opacity: 1, x: 0, filter: "blur(0px)" } : {}}
-          transition={{ duration: 1.2, delay: 0.15, ease: [0.25, 0.46, 0.45, 0.94] }}
+          initial={{ opacity: 0, x: 50 }}
+          animate={isInView ? { opacity: 1, x: 0 } : {}}
+          transition={{ duration: 0.8, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
           className="text-lg md:text-xl text-white/90 max-w-4xl mx-auto"
         >
           Engineered under the Triple-E Standard — enterprise best practices amplified and aligned with the same high-integrity benchmarks that leading global platforms refuse to compromise on.
@@ -212,9 +212,9 @@ export default function TechnologyMarquee() {
       </div>
 
       <motion.div 
-        initial={{ opacity: 0, y: 40 }}
+        initial={{ opacity: 0, y: 25 }}
         animate={isInView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 1, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+        transition={{ duration: 0.7, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
         className="space-y-1 relative overflow-hidden"
       >
         {/* Row 1: 107 logos - scroll left */}

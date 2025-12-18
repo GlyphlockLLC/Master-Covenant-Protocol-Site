@@ -43,9 +43,9 @@ export default function FeaturesSection() {
         <div className="text-center mb-16">
           {/* Title - Slide from left */}
           <motion.h2 
-            initial={{ opacity: 0, x: -100, filter: "blur(20px)" }}
-            animate={isInView ? { opacity: 1, x: 0, filter: "blur(0px)" } : {}}
-            transition={{ duration: 1.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+            initial={{ opacity: 0, x: -60 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
             className="text-4xl md:text-5xl font-bold mb-6 text-white"
           >
             Why Choose <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">GlyphLock</span>
@@ -53,9 +53,9 @@ export default function FeaturesSection() {
           
           {/* Subtitle - Slide from right */}
           <motion.p 
-            initial={{ opacity: 0, x: 100, filter: "blur(15px)" }}
-            animate={isInView ? { opacity: 1, x: 0, filter: "blur(0px)" } : {}}
-            transition={{ duration: 1.4, delay: 0.25, ease: [0.25, 0.46, 0.45, 0.94] }}
+            initial={{ opacity: 0, x: 60 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
             className="text-xl text-white/70 max-w-3xl mx-auto"
           >
             Military-grade security that adapts to emerging threats
@@ -69,11 +69,11 @@ export default function FeaturesSection() {
             return (
               <motion.div 
                 key={idx} 
-                initial={{ opacity: 0, x: dir.x, y: dir.y, rotate: dir.rotate, scale: 0.85 }}
-                animate={isInView ? { opacity: 1, x: 0, y: 0, rotate: 0, scale: 1 } : {}}
+                initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
                 transition={{ 
-                  duration: 1.2, 
-                  delay: 0.5 + (idx * 0.2),
+                  duration: 0.7, 
+                  delay: 0.2 + (idx * 0.1),
                   ease: [0.25, 0.46, 0.45, 0.94]
                 }}
                 whileHover={{ y: -10, scale: 1.05, boxShadow: "0 0 50px rgba(6,182,212,0.4)" }}
@@ -106,11 +106,11 @@ export default function FeaturesSection() {
             return (
               <motion.div 
                 key={idx}
-                initial={{ opacity: 0, x: dir.x || 0, y: dir.y || 0, rotate: dir.rotate, scale: 0.85 }}
-                animate={isInView ? { opacity: 1, x: 0, y: 0, rotate: 0, scale: 1 } : {}}
+                initial={{ opacity: 0, y: 40, scale: 0.9 }}
+                animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
                 transition={{ 
-                  duration: 1.3, 
-                  delay: 1.4 + (idx * 0.25),
+                  duration: 0.8, 
+                  delay: 0.6 + (idx * 0.12),
                   ease: [0.25, 0.46, 0.45, 0.94]
                 }}
                 whileHover={{ y: -12, scale: 1.03 }}

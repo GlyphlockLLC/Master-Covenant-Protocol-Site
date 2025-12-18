@@ -163,9 +163,9 @@ export default function DreamTeamCards() {
         <div className="text-center mb-8 md:mb-12">
           {/* Badge - Pop up with bounce */}
           <motion.div
-            initial={{ opacity: 0, y: 40, scale: 0.5 }}
+            initial={{ opacity: 0, y: 25, scale: 0.85 }}
             animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-            transition={{ duration: 1, type: "spring", stiffness: 120, damping: 15 }}
+            transition={{ duration: 0.6, type: "spring", stiffness: 180, damping: 18 }}
           >
             <Badge className="mb-4 md:mb-6 bg-purple-500/20 text-purple-400 border-purple-500/50 px-4 md:px-6 py-1.5 md:py-2 text-xs md:text-sm backdrop-blur-md">
               <Trophy className="w-3 h-3 md:w-4 md:h-4 mr-2" />
@@ -175,9 +175,9 @@ export default function DreamTeamCards() {
           
           {/* Title - Slide from left */}
           <motion.h2 
-            initial={{ opacity: 0, x: -100, filter: "blur(15px)" }}
-            animate={isInView ? { opacity: 1, x: 0, filter: "blur(0px)" } : {}}
-            transition={{ duration: 1.2, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+            initial={{ opacity: 0, x: -60 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
             className="text-3xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 px-4"
           >
             <span className="bg-gradient-to-r from-fuchsia-400 via-pink-400 to-cyan-300 bg-clip-text text-transparent">
@@ -187,9 +187,9 @@ export default function DreamTeamCards() {
           
           {/* Subtitle - Slide from right */}
           <motion.p 
-            initial={{ opacity: 0, x: 100, filter: "blur(15px)" }}
-            animate={isInView ? { opacity: 1, x: 0, filter: "blur(0px)" } : {}}
-            transition={{ duration: 1.2, delay: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+            initial={{ opacity: 0, x: 60 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
             className="text-base md:text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed px-4 mb-2"
           >
             Cryptographically bound AI systems working under the Master Covenant
@@ -197,9 +197,9 @@ export default function DreamTeamCards() {
           
           {/* Badges - Pop in with stagger */}
           <motion.div 
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.6 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
             className="flex justify-center gap-4 mt-4"
           >
             <motion.div 
@@ -280,9 +280,9 @@ export default function DreamTeamCards() {
           
           {/* Bottom Row - 1 card centered (Alfred - anchor) */}
           <motion.div 
-            initial={{ opacity: 0, y: 80, scale: 0.7, rotateX: 20 }}
+            initial={{ opacity: 0, y: 40, scale: 0.85, rotateX: 10 }}
             animate={isInView ? { opacity: 1, y: 0, scale: 1, rotateX: 0 } : {}}
-            transition={{ duration: 1.2, delay: 1.6, type: "spring", stiffness: 80 }}
+            transition={{ duration: 0.8, delay: 0.8, type: "spring", stiffness: 120 }}
             className="flex justify-center"
           >
             <div className="w-full max-w-[calc(50%-0.75rem)] md:max-w-[calc(50%-0.75rem)]">
@@ -293,9 +293,9 @@ export default function DreamTeamCards() {
 
         {/* CTA to Dream Team page - Slide up with glow */}
         <motion.div 
-          initial={{ opacity: 0, y: 50, scale: 0.9 }}
+          initial={{ opacity: 0, y: 30, scale: 0.95 }}
           animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-          transition={{ duration: 1, delay: 1.8, type: "spring", stiffness: 80 }}
+          transition={{ duration: 0.7, delay: 0.9, type: "spring", stiffness: 150 }}
           className="text-center"
         >
           <motion.div whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.95 }}>

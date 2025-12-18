@@ -12,11 +12,11 @@ export default function HomeDreamTeamCTA() {
       
       {/* HERO TEXT - ABOVE COURT */}
       <div className="text-center px-8 mb-8 max-w-5xl">
-        {/* Title - Slide from left with blur */}
+        {/* Title - Slide from left */}
         <motion.h2 
-          initial={{ opacity: 0, x: -100, filter: "blur(20px)" }}
-          animate={isInView ? { opacity: 1, x: 0, filter: "blur(0px)" } : {}}
-          transition={{ duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+          initial={{ opacity: 0, x: -60 }}
+          animate={isInView ? { opacity: 1, x: 0 } : {}}
+          transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
           className="text-white text-4xl md:text-5xl font-black mb-6 leading-tight drop-shadow-[0_4px_12px_rgba(0,0,0,1)]"
         >
           <span className="text-blue-400">DREAM TEAM AI</span>, NOT STREETBALL TRICKS
@@ -24,9 +24,9 @@ export default function HomeDreamTeamCTA() {
         
         {/* Subtitle - Slide from right */}
         <motion.div 
-          initial={{ opacity: 0, x: 100, filter: "blur(15px)" }}
-          animate={isInView ? { opacity: 1, x: 0, filter: "blur(0px)" } : {}}
-          transition={{ duration: 1.2, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+          initial={{ opacity: 0, x: 60 }}
+          animate={isInView ? { opacity: 1, x: 0 } : {}}
+          transition={{ duration: 0.8, delay: 0.15, ease: [0.25, 0.46, 0.45, 0.94] }}
           className="text-xl md:text-2xl leading-relaxed font-black drop-shadow-[0_4px_12px_rgba(0,0,0,1)] space-y-4"
         >
           <p className="text-white">Other stacks do mixtape moves.<br />GlyphLock runs the Olympic playbook—<span className="text-blue-400">'92 talent, real sets, no solo highlights.</span></p>
@@ -45,9 +45,9 @@ export default function HomeDreamTeamCTA() {
 
       {/* COURT IMAGE WITH BUTTON OVERLAY */}
       <motion.section 
-        initial={{ opacity: 0, y: 60, scale: 0.9 }}
+        initial={{ opacity: 0, y: 40, scale: 0.95 }}
         animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-        transition={{ duration: 1.4, delay: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+        transition={{ duration: 0.9, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
         className="relative w-full mx-auto max-w-5xl rounded-3xl shadow-[0_0_80px_rgba(79,70,229,0.6)] overflow-hidden"
       >
         
@@ -148,11 +148,11 @@ export default function HomeDreamTeamCTA() {
           return (
             <motion.div 
               key={idx} 
-              initial={{ opacity: 0, x: dir.x, y: dir.y, scale: 0.85 }}
-              animate={isInView ? { opacity: 1, x: 0, y: 0, scale: 1 } : {}}
+              initial={{ opacity: 0, y: 30, scale: 0.92 }}
+              animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
               transition={{ 
-                duration: 1, 
-                delay: 0.8 + (idx * 0.15),
+                duration: 0.7, 
+                delay: 0.5 + (idx * 0.08),
                 ease: [0.25, 0.46, 0.45, 0.94]
               }}
               whileHover={{ y: -8, scale: 1.03, boxShadow: "0 0 40px rgba(59,130,246,0.5)" }}

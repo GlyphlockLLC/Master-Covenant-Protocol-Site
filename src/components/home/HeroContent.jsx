@@ -13,21 +13,21 @@ export default function HeroContent() {
   return (
     <section ref={containerRef} className="w-full max-w-7xl mx-auto px-4 py-16 relative" style={{ background: 'transparent', pointerEvents: 'auto' }}>
       <div className="text-center mb-16">
-        {/* Title - Slide from left with blur */}
+        {/* Title - Slide from left */}
         <motion.h1 
-          initial={{ opacity: 0, x: -120, filter: "blur(20px)" }}
-          animate={isInView ? { opacity: 1, x: 0, filter: "blur(0px)" } : {}}
-          transition={{ duration: 1.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+          initial={{ opacity: 0, x: -80 }}
+          animate={isInView ? { opacity: 1, x: 0 } : {}}
+          transition={{ duration: 0.9, ease: [0.25, 0.46, 0.45, 0.94] }}
           className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black mb-4 md:mb-6 text-white tracking-tight drop-shadow-[0_0_30px_rgba(255,255,255,0.3)] leading-tight px-2"
         >
           THE FUTURE OF SECURITY ISN'T COMING — <span className="bg-gradient-to-r from-indigo-500 via-purple-500 to-violet-600 bg-clip-text text-transparent drop-shadow-[0_0_40px_rgba(139,92,246,0.9)] animate-pulse">IT'S ALREADY HERE.</span>
         </motion.h1>
         
-        {/* Subtitle - Slide from right with blur */}
+        {/* Subtitle - Slide from right */}
         <motion.p 
-          initial={{ opacity: 0, x: 120, filter: "blur(20px)" }}
-          animate={isInView ? { opacity: 1, x: 0, filter: "blur(0px)" } : {}}
-          transition={{ duration: 1.4, delay: 0.25, ease: [0.25, 0.46, 0.45, 0.94] }}
+          initial={{ opacity: 0, x: 80 }}
+          animate={isInView ? { opacity: 1, x: 0 } : {}}
+          transition={{ duration: 0.9, delay: 0.15, ease: [0.25, 0.46, 0.45, 0.94] }}
           className="text-base sm:text-lg md:text-xl lg:text-2xl text-white max-w-4xl mx-auto mb-4 md:mb-6 font-medium leading-relaxed px-4"
         >
           Quantum-immune authentication, autonomous threat suppression, and AI-driven audit intelligence designed for infrastructures that cannot afford to fail.
@@ -35,9 +35,9 @@ export default function HeroContent() {
         
         {/* Badge - Pop up with bounce */}
         <motion.div
-          initial={{ opacity: 0, y: 50, scale: 0.5 }}
+          initial={{ opacity: 0, y: 30, scale: 0.8 }}
           animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-          transition={{ duration: 1, delay: 0.5, type: "spring", stiffness: 120, damping: 15 }}
+          transition={{ duration: 0.7, delay: 0.3, type: "spring", stiffness: 150, damping: 18 }}
         >
           <Badge className="mb-10 bg-blue-600/10 backdrop-blur-md border-2 border-cyan-400/40 text-white px-6 py-2 shadow-[0_0_30px_rgba(6,182,212,0.5)]">
             <span className="font-black tracking-[0.2em] text-sm">PQC-HARDENED | ZERO-TRUST AI | SUB-MILLISECOND RESPONSE</span>
@@ -47,9 +47,9 @@ export default function HeroContent() {
         {/* Security badges - Alternating pop from different directions */}
         <div className="flex items-center justify-center gap-6 mb-12">
           <motion.div 
-            initial={{ opacity: 0, x: -80, rotateY: -45 }}
+            initial={{ opacity: 0, x: -50, rotateY: -25 }}
             animate={isInView ? { opacity: 1, x: 0, rotateY: 0 } : {}}
-            transition={{ duration: 1.1, delay: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
+            transition={{ duration: 0.8, delay: 0.45, ease: [0.25, 0.46, 0.45, 0.94] }}
             whileHover={{ scale: 1.08, rotateY: 10 }}
             className="bg-gradient-to-br from-blue-600/20 via-cyan-500/15 to-indigo-500/20 backdrop-blur-md border border-cyan-400/20 px-6 py-4 rounded-xl shadow-[0_0_35px_rgba(6,182,212,0.4)] hover:shadow-[0_0_55px_rgba(6,182,212,0.6)] hover:border-cyan-400/40 transition-all duration-600 ease-out"
           >
@@ -57,9 +57,9 @@ export default function HeroContent() {
             <div className="text-sm text-white font-bold tracking-wider">AES-256</div>
           </motion.div>
           <motion.div 
-            initial={{ opacity: 0, x: 80, rotateY: 45 }}
+            initial={{ opacity: 0, x: 50, rotateY: 25 }}
             animate={isInView ? { opacity: 1, x: 0, rotateY: 0 } : {}}
-            transition={{ duration: 1.1, delay: 0.9, ease: [0.25, 0.46, 0.45, 0.94] }}
+            transition={{ duration: 0.8, delay: 0.55, ease: [0.25, 0.46, 0.45, 0.94] }}
             whileHover={{ scale: 1.08, rotateY: -10 }}
             className="bg-gradient-to-br from-indigo-600/20 via-blue-500/15 to-cyan-500/20 backdrop-blur-md border border-blue-400/20 px-6 py-4 rounded-xl shadow-[0_0_35px_rgba(59,130,246,0.4)] hover:shadow-[0_0_55px_rgba(59,130,246,0.6)] hover:border-blue-400/40 transition-all duration-600 ease-out"
           >
@@ -71,9 +71,9 @@ export default function HeroContent() {
         {/* CTA Buttons - Slide in from opposite sides */}
         <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center px-4">
           <motion.div
-            initial={{ opacity: 0, x: -100, scale: 0.8 }}
+            initial={{ opacity: 0, x: -60, scale: 0.9 }}
             animate={isInView ? { opacity: 1, x: 0, scale: 1 } : {}}
-            transition={{ duration: 1.1, delay: 1.1, type: "spring", stiffness: 80 }}
+            transition={{ duration: 0.8, delay: 0.65, type: "spring", stiffness: 120 }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -100,9 +100,9 @@ export default function HeroContent() {
           </motion.div>
           
           <motion.div
-            initial={{ opacity: 0, x: 100, scale: 0.8 }}
+            initial={{ opacity: 0, x: 60, scale: 0.9 }}
             animate={isInView ? { opacity: 1, x: 0, scale: 1 } : {}}
-            transition={{ duration: 1.1, delay: 1.3, type: "spring", stiffness: 80 }}
+            transition={{ duration: 0.8, delay: 0.75, type: "spring", stiffness: 120 }}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -146,14 +146,14 @@ export default function HeroContent() {
           return (
             <motion.div 
               key={idx} 
-              initial={{ opacity: 0, x: dir.x, y: dir.y, rotate: dir.rotate, scale: 0.7 }}
-              animate={isInView ? { opacity: 1, x: 0, y: 0, rotate: 0, scale: 1 } : {}}
+              initial={{ opacity: 0, y: 40, scale: 0.85 }}
+              animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
               transition={{ 
-                duration: 1, 
-                delay: 1.5 + (idx * 0.2),
+                duration: 0.7, 
+                delay: 0.85 + (idx * 0.1),
                 type: "spring",
-                stiffness: 100,
-                damping: 15
+                stiffness: 140,
+                damping: 18
               }}
               whileHover={{ 
                 scale: 1.08, 
@@ -170,9 +170,9 @@ export default function HeroContent() {
               </motion.div>
               <motion.div 
                 className="text-3xl font-black text-white mb-2 tracking-tight drop-shadow-[0_0_20px_rgba(255,255,255,0.5)]"
-                initial={{ opacity: 0, scale: 0.5 }}
+                initial={{ opacity: 0, scale: 0.7 }}
                 animate={isInView ? { opacity: 1, scale: 1 } : {}}
-                transition={{ duration: 0.8, delay: 1.8 + (idx * 0.2), type: "spring" }}
+                transition={{ duration: 0.5, delay: 0.95 + (idx * 0.1), type: "spring" }}
               >
                 {stat.value}
               </motion.div>

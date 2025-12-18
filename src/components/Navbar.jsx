@@ -113,14 +113,14 @@ const NavItem = ({ section, isOpen, onToggle, index }) => {
         <motion.div
           className="absolute inset-0 rounded-xl"
           style={{
-            background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)',
+            background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent)',
             backgroundSize: '200% 100%'
           }}
           animate={{
             backgroundPosition: ['200% 0', '-200% 0'],
             opacity: isHovered ? 1 : 0
           }}
-          transition={{ duration: 1.2, repeat: Infinity, ease: "linear" }}
+          transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
         />
 
         {/* Outer glow on hover */}
