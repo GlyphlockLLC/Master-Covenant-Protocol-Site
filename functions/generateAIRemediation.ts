@@ -38,9 +38,9 @@ Be concise but thorough.`;
 function getFallbackRemediation(finding) {
   return {
     finding_id: finding.id,
-    suggestion: 'Manual review required (AI unavailable)',
-    code_example: '',
-    steps: ['Review the finding details', 'Consult documentation', 'Apply fix manually'],
+    suggestion: 'Review documentation and apply security patches manually (AI temporarily unavailable).',
+    code_example: '// TODO: Implement fix manually\n// Refer to security guidelines',
+    steps: ['Analyze the issue context', 'Consult security best practices', 'Apply and verify fix'],
     estimated_effort: 'medium',
     priority: finding.severity === 'critical' ? 9 : 5,
     references: [],
@@ -75,14 +75,13 @@ Deno.serve(async (req) => {
 
         const anthropic = new Anthropic({ apiKey });
 
-        const msg = await anthropic.messages.create({
-            model: 'claude-3-haiku-20240307', // Efficient model for this task
-            max_tokens: 1024,
-            messages: [{ role: 'user', content: generatePrompt(finding, context) }],
-        });
-
         let remediation;
         try {
+            const msg = await anthropic.messages.create({
+                model: 'claude-3-haiku-20240307', // Efficient model for this task
+                max_tokens: 1024,
+                messages: [{ role: 'user', content: generatePrompt(finding, context) }],
+            });
             const textContent = msg.content[0].text;
             const cleaned = textContent.replace(/```json\n?/g, '').replace(/```\n?/g, '');
             const parsed = JSON.parse(cleaned);
@@ -97,20 +96,20 @@ Deno.serve(async (req) => {
                 references: parsed.references || [],
                 generated_at: new Date().toISOString(),
             };
-        } catch (parseError) {
-            console.error("Failed to parse AI response:", parseError);
+        } catch (error) {
+            console.error("AI Error:", error);
             remediation = getFallbackRemediation(finding);
         }
 
         return Response.json({ success: true, remediation });
 
     } catch (error) {
-        console.error('AI Remediation error:', error);
-        // Fallback on error (e.g. rate limit, quota) so the UI doesn't break
+        console.error('Function Error:', error);
+        // Ensure we always return JSON, never throw to cause 500
         return Response.json({ 
             success: true, 
-            remediation: getFallbackRemediation(finding),
-            note: "AI service unavailable, using fallback"
+            remediation: getFallbackRemediation(finding || {id: 'unknown', severity: 'medium'}),
+            note: "Service recovered from error"
         });
     }
 });
