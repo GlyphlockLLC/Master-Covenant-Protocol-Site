@@ -19,11 +19,26 @@ Deno.serve(async (req) => {
     try {
         const base44 = createClientFromRequest(req);
         const { scan_id } = await req.json();
+        
+        // Use service role
+        const adminBase44 = base44.asServiceRole;
+        
         const counts = { ok: 0, warning: 0, critical: 0 };
 
         for (const type of SITEMAP_TYPES) {
-            const humanPath = `/sitemap-${type}`;
-            const xmlPath = `/sitemap-${type}.xml`;
+            // Note: sitemap-xml isn't a type, it's just sitemap.xml. But we follow the pattern.
+            // Actually, mapped endpoints are likely:
+            // /sitemap.xml (general)
+            // /sitemap-qr.xml
+            // etc.
+            
+            let humanPath = `/sitemap-${type}`;
+            let xmlPath = `/sitemap-${type}.xml`;
+            
+            if (type === "xml") {
+                 humanPath = "/SitemapXml"; // Matches the page we created
+                 xmlPath = "/sitemap.xml";
+            }
 
             const humanProbe = await httpProbe(humanPath);
             const xmlProbe = await httpProbe(xmlPath);
@@ -61,7 +76,7 @@ Deno.serve(async (req) => {
             else if (severity === "warning") counts.warning++;
             else counts.critical++;
 
-            await base44.entities.SitemapAuditRow.create({
+            await adminBase44.entities.SitemapAuditRow.create({
                 scan_run_id: scan_id,
                 sitemap_type: type,
                 url: humanPath,

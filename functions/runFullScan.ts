@@ -4,8 +4,11 @@ Deno.serve(async (req) => {
     try {
         const base44 = createClientFromRequest(req);
         
+        // Use service role for writing ScanRun
+        const adminBase44 = base44.asServiceRole;
+        
         // Create ScanRun
-        const scanRun = await base44.entities.ScanRun.create({
+        const scanRun = await adminBase44.entities.ScanRun.create({
             scan_id: crypto.randomUUID(),
             started_at: new Date().toISOString(),
             status: "running"
@@ -27,9 +30,6 @@ Deno.serve(async (req) => {
         const sitemap = sitemapRes.data || { ok: 0, warning: 0, critical: 0 };
         const backend = backendRes.data || { ok: 0, warning: 0, critical: 0 };
 
-        // Extensions (Placeholder calls - would be similar)
-        // const perf = await base44.functions.invoke("scanPerformance", { scan_id });
-        
         // Update ScanRun
         const totalCritical = nav.critical + route.critical + sitemap.critical + backend.critical;
         const totalWarning = nav.warning + route.warning + sitemap.warning + backend.warning;
@@ -38,7 +38,7 @@ Deno.serve(async (req) => {
         if (totalWarning > 0) finalStatus = "warning";
         if (totalCritical > 0) finalStatus = "critical";
 
-        await base44.entities.ScanRun.update(scanRun.id, {
+        await adminBase44.entities.ScanRun.update(scanRun.id, {
             completed_at: new Date().toISOString(),
             status: finalStatus,
             nav_ok_count: nav.ok,
@@ -58,6 +58,7 @@ Deno.serve(async (req) => {
         return Response.json({ scan_id, status: finalStatus });
 
     } catch (error) {
+        console.error("Run full scan error:", error);
         return Response.json({ error: error.message }, { status: 500 });
     }
 });

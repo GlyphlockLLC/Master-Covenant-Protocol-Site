@@ -2,11 +2,41 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.4';
 
 const SITE_URL = "https://glyphlock.io"; // Canonical
 
+// Hardcoded Navigation Config (Mirror of components/NavigationConfig.js)
+const NAV_CONFIG = [
+    { label: "Home", path: "/", visibility: "public" },
+    { label: "Dream Team", path: "/DreamTeam", visibility: "public" },
+    { label: "GlyphBot", path: "/GlyphBot", visibility: "public" },
+    { label: "Media Hub", path: "/VideoUpload", visibility: "public" },
+    { label: "Command Center", path: "/CommandCenter", visibility: "public" },
+    { label: "Protocol Verification", path: "/Consultation", visibility: "public" },
+    // From NAV_SECTIONS flattened
+    { label: "About Us", path: "/About", visibility: "public" },
+    { label: "Partners", path: "/Partners", visibility: "public" },
+    { label: "Contact", path: "/Contact", visibility: "public" },
+    { label: "Accessibility", path: "/Accessibility", visibility: "public" },
+    { label: "QR Verification", path: "/Qr", visibility: "public" },
+    { label: "Image Processing", path: "/ImageLab", visibility: "public" },
+    { label: "NUPS Transaction Verification", path: "/NUPSLogin", visibility: "public" },
+    { label: "Security Modules", path: "/SecurityTools", visibility: "public" },
+    { label: "SDK Documentation", path: "/SDKDocs", visibility: "public" },
+    { label: "Site Intelligence", path: "/Sie", visibility: "admin" },
+    { label: "Master Covenant", path: "/GovernanceHub", visibility: "public" },
+    { label: "Trust & Security", path: "/TrustSecurity", visibility: "public" },
+    { label: "NIST Challenge", path: "/NISTChallenge", visibility: "public" },
+    { label: "Case Studies", path: "/CaseStudies", visibility: "public" },
+    { label: "Documentation", path: "/SecurityDocs", visibility: "public" },
+    { label: "FAQ", path: "/FAQ", visibility: "public" },
+    { label: "Roadmap", path: "/Roadmap", visibility: "public" },
+    { label: "Site Map", path: "/SitemapXml", visibility: "public" },
+    { label: "Security Settings", path: "/AccountSecurity", visibility: "public" }
+];
+
 const httpProbe = async (path) => {
     const url = path.startsWith('http') ? path : `${SITE_URL}${path}`;
     const start = Date.now();
     try {
-        const res = await fetch(url, { redirect: 'manual' }); // Don't follow redirects to detect chains
+        const res = await fetch(url, { redirect: 'manual' }); 
         return {
             status_code: res.status,
             response_time: Date.now() - start,
@@ -27,40 +57,13 @@ Deno.serve(async (req) => {
         const base44 = createClientFromRequest(req);
         const { scan_id } = await req.json();
 
-        // 1. Read Navigation Config
-        // We'll attempt to read the file. If complex, we might need a better way, but for now we regex.
-        let navContent = "";
-        try {
-            navContent = await Deno.readTextFile("components/NavigationConfig.js");
-        } catch (e) {
-            return Response.json({ error: "Could not read NavigationConfig.js" }, { status: 500 });
-        }
-
-        // Regex to find "path" or "page" or "href"
-        // This is a heuristic. Ideally we'd have a structured data source.
-        const matches = [...navContent.matchAll(/(?:page|href|path):\s*["']([^"']+)["']/g)];
-        const navItems = matches.map(m => m[1]);
-        
-        // Also look for label
-        // We will simplify and just find unique paths
-        const uniquePaths = [...new Set(navItems)];
+        // Use service role for writing audit rows
+        const adminBase44 = base44.asServiceRole;
 
         let counts = { ok: 0, warning: 0, critical: 0 };
 
-        for (const path of uniquePaths) {
-            // Determine visibility (heuristic)
-            let visibility = "public";
-            if (path.toLowerCase().includes("admin") || path.toLowerCase().includes("dashboard")) visibility = "admin";
-            
-            // Fix path
-            let realPath = path;
-            if (!path.startsWith('/') && !path.startsWith('http')) {
-                // If it's a page name like "Home", convert to /
-                if (path === "Home") realPath = "/";
-                else realPath = "/" + path;
-            }
-
-            const probe = await httpProbe(realPath);
+        for (const item of NAV_CONFIG) {
+            const probe = await httpProbe(item.path);
             
             // Rules
             const violations = [];
@@ -69,17 +72,9 @@ Deno.serve(async (req) => {
             let action = "none";
 
             // NAV_001
-            if (visibility === "public" && probe.status_code === 404) {
+            if (item.visibility === "public" && probe.status_code === 404) {
                 violations.push("NAV_001");
-                messages.push(`Public nav item ${realPath} returns 404`);
-                severity = "critical";
-                action = "fix_route";
-            }
-
-            // NAV_004
-            if (realPath.includes("/editor/preview") || realPath.includes("/apps/")) {
-                violations.push("NAV_004");
-                messages.push("Preview URL detected");
+                messages.push(`Public nav item ${item.path} returns 404`);
                 severity = "critical";
                 action = "fix_route";
             }
@@ -96,14 +91,14 @@ Deno.serve(async (req) => {
             else if (severity === "warning") counts.warning++;
             else counts.critical++;
 
-            await base44.entities.NavAuditRow.create({
+            await adminBase44.entities.NavAuditRow.create({
                 scan_run_id: scan_id,
-                label: path,
-                path: realPath,
-                visibility,
+                label: item.label,
+                path: item.path,
+                visibility: item.visibility,
                 http_status: probe.status_code,
-                page_exists: probe.status_code !== 404, // Approximation
-                backend_exists: true, // Placeholder
+                page_exists: probe.status_code !== 404,
+                backend_exists: true, 
                 violation_ids: JSON.stringify(violations),
                 violation_messages: JSON.stringify(messages),
                 severity,

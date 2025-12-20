@@ -17,28 +17,36 @@ Deno.serve(async (req) => {
         const base44 = createClientFromRequest(req);
         const { scan_id } = await req.json();
 
-        // 1. Scan pages/ directory
-        const counts = { ok: 0, warning: 0, critical: 0 };
-        
-        let files = [];
+        // Use service role
+        const adminBase44 = base44.asServiceRole;
+
+        // 1. Fetch Sitemap to discover routes
+        let routes = [];
         try {
-            for await (const entry of Deno.readDir("pages")) {
-                if (entry.isFile && (entry.name.endsWith(".js") || entry.name.endsWith(".jsx"))) {
-                    files.push(entry.name);
-                }
+            // Invoke the sitemap function directly to get the XML
+            // We can assume sitemapXml function exists
+            const sitemapRes = await fetch(`${SITE_URL}/api/apps/functions/sitemapXml`);
+            if (sitemapRes.ok) {
+                const xml = await sitemapRes.text();
+                // Extract <loc> URLs
+                const matches = [...xml.matchAll(/<loc>(.*?)<\/loc>/g)];
+                routes = matches.map(m => m[1].replace(SITE_URL, ""));
+            } else {
+                // Fallback to basic list if sitemap fails
+                 routes = ["/", "/About", "/Contact", "/DreamTeam", "/GlyphBot"];
             }
-        } catch(e) {
-             return Response.json({ error: "Could not read pages directory" }, { status: 500 });
+        } catch (e) {
+             routes = ["/", "/About", "/Contact", "/DreamTeam", "/GlyphBot"];
         }
 
-        for (const file of files) {
-            const name = file.replace(/\.jsx?$/, "");
-            const path = name === "Home" ? "/" : "/" + name;
-            
-            // Basic auth check logic could go here by reading file content for "withAuth" etc.
-            // For now we just probe.
-            
-            const probe = await httpProbe(path);
+        const counts = { ok: 0, warning: 0, critical: 0 };
+
+        for (const path of routes) {
+            // Clean path
+            const cleanPath = path.trim();
+            if (!cleanPath) continue;
+
+            const probe = await httpProbe(cleanPath);
             
             let severity = "ok";
             let violations = [];
@@ -52,18 +60,26 @@ Deno.serve(async (req) => {
                 messages.push("Page returns 500");
                 action = "fix_route";
             }
+            
+            // Check for 404s on supposed sitemap routes
+            if (probe.status_code === 404) {
+                severity = "warning";
+                violations.push("ROUTE_MISSING");
+                messages.push("Route in sitemap but returns 404");
+                action = "fix_route";
+            }
 
             if (severity === "ok") counts.ok++;
             else if (severity === "warning") counts.warning++;
             else counts.critical++;
 
-            await base44.entities.RouteAuditRow.create({
+            await adminBase44.entities.RouteAuditRow.create({
                 scan_run_id: scan_id,
-                route_path: path,
-                component_name: file,
-                is_public: true, // Default assumption
+                route_path: cleanPath,
+                component_name: "Unknown", // Can't determine without FS access
+                is_public: true, 
                 http_status: probe.status_code,
-                has_auth_guard: false, // Need deeper analysis to know
+                has_auth_guard: false, 
                 violation_ids: JSON.stringify(violations),
                 violation_messages: JSON.stringify(messages),
                 severity,
