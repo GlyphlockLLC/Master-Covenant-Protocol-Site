@@ -1843,9 +1843,58 @@ function DomainHealthCheck() {
                 <p className="text-xs text-slate-500 ml-6 italic">No CNAME (www) found</p>
               )}
             </div>
-          </div>
+            </div>
 
-          <div className="mt-4 pt-3 border-t border-slate-800 bg-slate-900/50 p-3 rounded-md">
+            {/* Routing & Propagation Section */}
+            {result.routing && (
+            <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-slate-800 pt-4">
+              <div className="bg-slate-950/50 p-3 rounded-lg border border-slate-800">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <Activity className="w-4 h-4 text-purple-400" />
+                    <span className="text-xs font-bold text-white uppercase">Routing: Root (@)</span>
+                  </div>
+                  {result.routing.root.status === 200 ? (
+                    <Badge className="bg-green-500/20 text-green-400 border-green-500/30 text-[10px]">Active (200)</Badge>
+                  ) : result.routing.root.status === 301 || result.routing.root.status === 302 || result.routing.root.status === 308 ? (
+                    <Badge className="bg-blue-500/20 text-blue-400 border-blue-500/30 text-[10px]">Redirect ({result.routing.root.status})</Badge>
+                  ) : result.routing.root.status === 403 ? (
+                    <Badge className="bg-yellow-500/20 text-yellow-400 border-yellow-500/30 text-[10px]">Configuring (403)</Badge>
+                  ) : (
+                    <Badge className="bg-red-500/20 text-red-400 border-red-500/30 text-[10px]">{result.routing.root.status || 'Unreachable'}</Badge>
+                  )}
+                </div>
+                <div className="flex items-center gap-2 text-xs text-slate-400">
+                  <div className={`w-2 h-2 rounded-full ${result.propagation?.root ? 'bg-green-400' : 'bg-yellow-400 animate-pulse'}`} />
+                  <span>DNS Propagation: {result.propagation?.root ? 'Complete' : 'Pending'}</span>
+                </div>
+              </div>
+
+              <div className="bg-slate-950/50 p-3 rounded-lg border border-slate-800">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <Activity className="w-4 h-4 text-cyan-400" />
+                    <span className="text-xs font-bold text-white uppercase">Routing: WWW</span>
+                  </div>
+                  {result.routing.www.status === 200 ? (
+                    <Badge className="bg-green-500/20 text-green-400 border-green-500/30 text-[10px]">Active (200)</Badge>
+                  ) : result.routing.www.status === 301 || result.routing.www.status === 302 || result.routing.www.status === 308 ? (
+                    <Badge className="bg-blue-500/20 text-blue-400 border-blue-500/30 text-[10px]">Redirect ({result.routing.www.status})</Badge>
+                  ) : result.routing.www.status === 403 ? (
+                    <Badge className="bg-yellow-500/20 text-yellow-400 border-yellow-500/30 text-[10px]">Configuring (403)</Badge>
+                  ) : (
+                    <Badge className="bg-red-500/20 text-red-400 border-red-500/30 text-[10px]">{result.routing.www.status || 'Unreachable'}</Badge>
+                  )}
+                </div>
+                <div className="flex items-center gap-2 text-xs text-slate-400">
+                  <div className={`w-2 h-2 rounded-full ${result.propagation?.www ? 'bg-green-400' : 'bg-yellow-400 animate-pulse'}`} />
+                  <span>DNS Propagation: {result.propagation?.www ? 'Complete' : 'Pending'}</span>
+                </div>
+              </div>
+            </div>
+            )}
+
+            <div className="mt-4 pt-3 border-t border-slate-800 bg-slate-900/50 p-3 rounded-md">
             {result.a_records?.includes("216.24.57.1") ? (
               <div className="space-y-3">
                 <h4 className="text-sm font-bold text-green-400 flex items-center gap-2">
