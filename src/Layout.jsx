@@ -41,6 +41,16 @@ export default function Layout({ children, currentPageName }) {
   }, []);
 
   useEffect(() => {
+    // Enforce HTTPS
+    if (
+      typeof window !== 'undefined' && 
+      window.location.protocol === 'http:' && 
+      window.location.hostname !== 'localhost' && 
+      window.location.hostname !== '127.0.0.1'
+    ) {
+      window.location.href = window.location.href.replace('http:', 'https:');
+    }
+
     // Initialize mobile scaling system
     if (typeof window !== 'undefined') {
       new MobileScalingSystem();

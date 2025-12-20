@@ -12,7 +12,8 @@ export default function SecurityHeaders() {
       { name: 'referrer', content: 'strict-origin-when-cross-origin' },
       { httpEquiv: 'X-Content-Type-Options', content: 'nosniff' },
       { httpEquiv: 'X-Frame-Options', content: 'DENY' },
-      { httpEquiv: 'X-XSS-Protection', content: '1; mode=block' }
+      { httpEquiv: 'X-XSS-Protection', content: '1; mode=block' },
+      { httpEquiv: 'Content-Security-Policy', content: 'upgrade-insecure-requests' }
     ];
 
     const addedElements = [];
