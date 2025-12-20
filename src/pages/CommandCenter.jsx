@@ -1793,8 +1793,12 @@ function DomainHealthCheck() {
                  result.a_records.map(ip => (
                    <div key={ip} className="flex items-center gap-2 font-mono text-sm text-slate-300 ml-6">
                      <span>{ip}</span>
-                     {result.suggested_type === "CNAME" && (
-                       <Badge variant="destructive" className="ml-2 text-[10px] h-5">MUST DELETE</Badge>
+                     {ip === "216.24.57.1" ? (
+                       <Badge className="ml-2 text-[10px] h-5 bg-green-500/20 text-green-400 hover:bg-green-500/30 border-green-500/50">Correct (Alt)</Badge>
+                     ) : (
+                       result.suggested_type === "CNAME" && (
+                         <Badge variant="destructive" className="ml-2 text-[10px] h-5">MUST DELETE</Badge>
+                       )
                      )}
                    </div>
                  ))
@@ -1842,55 +1846,75 @@ function DomainHealthCheck() {
           </div>
 
           <div className="mt-4 pt-3 border-t border-slate-800 bg-slate-900/50 p-3 rounded-md">
-            <h4 className="text-sm font-bold text-white mb-2 flex items-center gap-2">
-              <Settings className="w-4 h-4 text-cyan-400" />
-              How to Fix Connection
-            </h4>
-            
-            {result.suggested_target && (
-              <div className="mb-3 p-2 bg-green-900/20 border border-green-500/30 rounded flex items-center justify-between">
-                <div>
-                  <span className="text-xs text-slate-400 block">Suggested {result.suggested_type} Record (Detected)</span>
-                  <code className="text-sm font-mono text-green-400">{result.suggested_target}</code>
+            {result.a_records?.includes("216.24.57.1") ? (
+              <div className="space-y-3">
+                <h4 className="text-sm font-bold text-green-400 flex items-center gap-2">
+                  <CheckCircle className="w-4 h-4" />
+                  Configuration Correct (GoDaddy/Legacy)
+                </h4>
+                <div className="p-3 bg-green-900/10 border border-green-500/20 rounded-md">
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    Your domain is correctly pointing to the Render IP (<code>216.24.57.1</code>). 
+                    This is the required setup for DNS providers like GoDaddy that do not support CNAME/ALIAS on the root domain.
+                  </p>
+                  <p className="text-xs text-slate-400 mt-2">
+                    <strong>Next Step:</strong> Ensure <code>www.{result.domain}</code> is set as your <strong>Primary Domain</strong> in Base44 settings.
+                  </p>
                 </div>
-                <Button size="sm" variant="ghost" onClick={() => { navigator.clipboard.writeText(result.suggested_target); toast.success("Target copied"); }}>
-                  <Copy className="w-4 h-4" />
-                </Button>
               </div>
+            ) : (
+              <>
+                <h4 className="text-sm font-bold text-white mb-2 flex items-center gap-2">
+                  <Settings className="w-4 h-4 text-cyan-400" />
+                  How to Fix Connection
+                </h4>
+                
+                {result.suggested_target && (
+                  <div className="mb-3 p-2 bg-green-900/20 border border-green-500/30 rounded flex items-center justify-between">
+                    <div>
+                      <span className="text-xs text-slate-400 block">Suggested {result.suggested_type} Record (Detected)</span>
+                      <code className="text-sm font-mono text-green-400">{result.suggested_target}</code>
+                    </div>
+                    <Button size="sm" variant="ghost" onClick={() => { navigator.clipboard.writeText(result.suggested_target); toast.success("Target copied"); }}>
+                      <Copy className="w-4 h-4" />
+                    </Button>
+                  </div>
+                )}
+
+                <div className="bg-slate-950/50 p-3 rounded border border-slate-800 mb-3">
+                  <p className="text-xs text-yellow-400 font-bold mb-1 flex items-center gap-1">
+                    <AlertTriangle className="w-3 h-3" /> IMPORTANT:
+                  </p>
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    You cannot paste a hostname (like <code>base44.onrender.com</code>) into an <strong>A Record</strong> value. 
+                    You MUST use a <strong>CNAME Record</strong> type.
+                  </p>
+                </div>
+
+                <ol className="text-xs text-slate-300 space-y-3 list-decimal list-inside">
+                  <li>Go to your <strong>GoDaddy DNS Management</strong> page.</li>
+                  <li>
+                    <span className="text-red-400 font-bold">DELETE</span> any existing <strong>A</strong> records with name <strong>@</strong>.
+                    <span className="block text-[10px] text-slate-500 ml-4 mt-1">If you don't delete the A record first, GoDaddy will show an error.</span>
+                  </li>
+                  <li>
+                    Click <strong>Add New Record</strong> and select:
+                    <ul className="pl-4 mt-2 space-y-1 text-slate-400 border-l-2 border-cyan-500/30 ml-2 py-1">
+                      <li>Type: <strong className="text-cyan-400 text-sm">CNAME</strong> <span className="text-[10px] text-slate-500">(Not A!)</span></li>
+                      <li>Name: <strong className="text-white">@</strong></li>
+                      <li>Value: <strong className="text-green-400">{result.suggested_target || "base44.onrender.com"}</strong></li>
+                      <li>TTL: <strong>600 seconds</strong> (Custom)</li>
+                    </ul>
+                  </li>
+                  <li>Click <strong>Save</strong>.</li>
+                </ol>
+                
+                <div className="mt-3 flex items-center gap-2 text-[10px] text-slate-500">
+                  <RefreshCw className="w-3 h-3" />
+                  <span>It may take a few minutes for changes to reflect here.</span>
+                </div>
+              </>
             )}
-
-            <div className="bg-slate-950/50 p-3 rounded border border-slate-800 mb-3">
-              <p className="text-xs text-yellow-400 font-bold mb-1 flex items-center gap-1">
-                <AlertTriangle className="w-3 h-3" /> IMPORTANT:
-              </p>
-              <p className="text-xs text-slate-300 leading-relaxed">
-                You cannot paste a hostname (like <code>base44.onrender.com</code>) into an <strong>A Record</strong> value. 
-                You MUST use a <strong>CNAME Record</strong> type.
-              </p>
-            </div>
-
-            <ol className="text-xs text-slate-300 space-y-3 list-decimal list-inside">
-              <li>Go to your <strong>GoDaddy DNS Management</strong> page.</li>
-              <li>
-                <span className="text-red-400 font-bold">DELETE</span> any existing <strong>A</strong> records with name <strong>@</strong>.
-                <span className="block text-[10px] text-slate-500 ml-4 mt-1">If you don't delete the A record first, GoDaddy will show an error.</span>
-              </li>
-              <li>
-                Click <strong>Add New Record</strong> and select:
-                <ul className="pl-4 mt-2 space-y-1 text-slate-400 border-l-2 border-cyan-500/30 ml-2 py-1">
-                  <li>Type: <strong className="text-cyan-400 text-sm">CNAME</strong> <span className="text-[10px] text-slate-500">(Not A!)</span></li>
-                  <li>Name: <strong className="text-white">@</strong></li>
-                  <li>Value: <strong className="text-green-400">{result.suggested_target || "base44.onrender.com"}</strong></li>
-                  <li>TTL: <strong>600 seconds</strong> (Custom)</li>
-                </ul>
-              </li>
-              <li>Click <strong>Save</strong>.</li>
-            </ol>
-            
-            <div className="mt-3 flex items-center gap-2 text-[10px] text-slate-500">
-              <RefreshCw className="w-3 h-3" />
-              <span>It may take a few minutes for changes to reflect here.</span>
-            </div>
           </div>
         </div>
       )}
