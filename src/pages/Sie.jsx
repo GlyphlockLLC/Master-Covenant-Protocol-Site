@@ -47,10 +47,7 @@ export default function Sie() {
       const res = await base44.functions.invoke("runFullScan");
       console.log("Scan started (OMEGA):", res);
 
-      if (res.data?.status === "started") {
-        // Enforce OMEGA Wait Protocol
-        // We wait briefly for the async backend process to initialize the first writes
-        await new Promise(r => setTimeout(r, 1500));
+      if (res.data?.status === "started" || res.data?.status === "success" || res.data?.status === "warning" || res.data?.status === "critical") {
         await fetchLatestScan();
       } else {
         console.warn("Unexpected scan response:", res);

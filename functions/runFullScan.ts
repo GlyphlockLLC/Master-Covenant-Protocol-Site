@@ -40,95 +40,89 @@ export default async function runFullScan(req) {
             status: "started"
         };
 
-        // --- STEP 3: ASYNC EXECUTION (FIRE & FORGET) ---
-        // We do not await this promise tree in the main flow to ensure fast return
-        (async () => {
+        // --- STEP 3: EXECUTE ALL AUDITS AND AGGREGATE RESULTS ---
+        let finalStatus = "failed"; // Default to failed
+
+        try {
+            // Execute Sub-Scans Parallel
+            const [navRes, routeRes, sitemapRes, backendRes] = await Promise.all([
+                base44.functions.invoke("scanNavigation", { scan_id }),
+                base44.functions.invoke("scanRoutes", { scan_id }),
+                base44.functions.invoke("scanSitemaps", { scan_id }),
+                base44.functions.invoke("scanBackends", { scan_id })
+            ]);
+
+            // Helper to extract data
+            const getCounts = (res) => res?.data || { ok: 0, warning: 0, critical: 0 };
+            const nav = getCounts(navRes);
+            const route = getCounts(routeRes);
+            const sitemap = getCounts(sitemapRes);
+            const backend = getCounts(backendRes);
+
+            // --- STEP 4: AGGREGATION & UPDATE ---
+            const totalCrit = nav.critical + route.critical + sitemap.critical + backend.critical;
+            const totalWarn = nav.warning + route.warning + sitemap.warning + backend.warning;
+
+            finalStatus = "success";
+            if (totalWarn > 0) finalStatus = "warning";
+            if (totalCrit > 0) finalStatus = "critical";
+
+            await adminBase44.entities.ScanRun.update(scanRun.id, {
+                status: finalStatus,
+                completed_at: new Date().toISOString(),
+                nav_ok_count: nav.ok, nav_warning_count: nav.warning, nav_critical_count: nav.critical,
+                route_ok_count: route.ok, route_warning_count: route.warning, route_critical_count: route.critical,
+                sitemap_ok_count: sitemap.ok, sitemap_warning_count: sitemap.warning, sitemap_critical_count: sitemap.critical,
+                backend_ok_count: backend.ok, backend_warning_count: backend.warning, backend_critical_count: backend.critical
+            });
+
+            // Log Completion
+            await adminBase44.entities.SIEActionLog.create({
+                action_id: crypto.randomUUID(),
+                scan_run_id: scan_id,
+                actor: "system",
+                action_type: "SCAN_COMPLETED",
+                target_entity: "ScanRun",
+                details: `Scan finished with status: ${finalStatus}`,
+                timestamp: new Date().toISOString()
+            });
+
+            // --- STEP 5: AI ENRICHMENT (OPTIONAL) ---
             try {
-                // Execute Sub-Scans Parallel
-                const [navRes, routeRes, sitemapRes, backendRes] = await Promise.all([
-                    base44.functions.invoke("scanNavigation", { scan_id }),
-                    base44.functions.invoke("scanRoutes", { scan_id }),
-                    base44.functions.invoke("scanSitemaps", { scan_id }),
-                    base44.functions.invoke("scanBackends", { scan_id })
-                ]);
+                // Await AI enrichment so it's ready when we return
+                await base44.functions.invoke("enrichScanWithAI", { scan_id });
+            } catch (aiErr) {
+                console.error("AI Enrichment Failed:", aiErr);
+                // Non-critical failure
+            }
 
-                // Helper to extract data
-                const getCounts = (res) => res?.data || { ok: 0, warning: 0, critical: 0 };
-                const nav = getCounts(navRes);
-                const route = getCounts(routeRes);
-                const sitemap = getCounts(sitemapRes);
-                const backend = getCounts(backendRes);
-
-                // --- STEP 4: AGGREGATION & UPDATE ---
-                const totalCrit = nav.critical + route.critical + sitemap.critical + backend.critical;
-                const totalWarn = nav.warning + route.warning + sitemap.warning + backend.warning;
-
-                let finalStatus = "success";
-                if (totalWarn > 0) finalStatus = "warning";
-                if (totalCrit > 0) finalStatus = "critical";
-
+        } catch (err) {
+            console.error("OMEGA Scan Execution Error:", err);
+            
+            // Attempt to update status to failed
+            try {
                 await adminBase44.entities.ScanRun.update(scanRun.id, {
-                    status: finalStatus,
-                    completed_at: new Date().toISOString(),
-                    nav_ok_count: nav.ok, nav_warning_count: nav.warning, nav_critical_count: nav.critical,
-                    route_ok_count: route.ok, route_warning_count: route.warning, route_critical_count: route.critical,
-                    sitemap_ok_count: sitemap.ok, sitemap_warning_count: sitemap.warning, sitemap_critical_count: sitemap.critical,
-                    backend_ok_count: backend.ok, backend_warning_count: backend.warning, backend_critical_count: backend.critical
+                    status: "failed",
+                    error_message: String(err)
                 });
 
-                // Log Completion
                 await adminBase44.entities.SIEActionLog.create({
                     action_id: crypto.randomUUID(),
                     scan_run_id: scan_id,
                     actor: "system",
-                    action_type: "SCAN_COMPLETED",
+                    action_type: "SCAN_FAILED",
                     target_entity: "ScanRun",
-                    details: `Scan finished with status: ${finalStatus}`,
+                    details: String(err),
                     timestamp: new Date().toISOString()
                 });
-
-                // --- STEP 5: AI ENRICHMENT (OPTIONAL) ---
-                try {
-                    // Trigger AI enrichment silently
-                    // We don't await this to keep the 'completed' status intact, 
-                    // or we await it if we want the data ready immediately.
-                    // Given 'reliability' focus, let's fire and forget or await safely.
-                    // Since the scan is marked 'success', UI might refresh. 
-                    // Let's await it so the initial fetch has AI data if it's fast enough, 
-                    // but wrap in separate try/catch so it doesn't fail the scan.
-                    await base44.functions.invoke("enrichScanWithAI", { scan_id });
-                } catch (aiErr) {
-                    console.error("AI Enrichment Failed:", aiErr);
-                    // Non-critical failure
-                }
-
-            } catch (err) {
-                console.error("OMEGA Scan Background Error:", err);
-                
-                // Attempt to update status to failed
-                try {
-                    await adminBase44.entities.ScanRun.update(scanRun.id, {
-                        status: "failed",
-                        error_message: String(err)
-                    });
-
-                    await adminBase44.entities.SIEActionLog.create({
-                        action_id: crypto.randomUUID(),
-                        scan_run_id: scan_id,
-                        actor: "system",
-                        action_type: "SCAN_FAILED",
-                        target_entity: "ScanRun",
-                        details: String(err),
-                        timestamp: new Date().toISOString()
-                    });
-                } catch (e) {
-                    console.error("Critical Failure: Could not update failed scan status", e);
-                }
+            } catch (e) {
+                console.error("Critical Failure: Could not update failed scan status", e);
             }
-        })();
+            finalStatus = "failed";
+        }
 
-        // Return immediately to UI
-        return Response.json(responsePayload);
+        // Return finalized response
+        return Response.json({ ...responsePayload, status: finalStatus });
 
     } catch (e) {
         console.error("OMEGA Init Error:", e);
