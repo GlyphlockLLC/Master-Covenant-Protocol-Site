@@ -24,31 +24,34 @@ Deno.serve(async (req) => {
         const aRecords = data.Answer ? data.Answer.map(r => r.data) : [];
         
         // Also check CNAME for www
-        const wwwResponse = await fetch(`https://dns.google/resolve?name=www.${domain}&type=A`); // A record lookup for CNAME follows chain
+        // Check CNAME for root (@) - unusual but possible (e.g. CNAME flattening)
+        const cnameResponse = await fetch(`https://dns.google/resolve?name=${domain}&type=CNAME`);
+        const cnameData = await cnameResponse.json();
+        const cnameRecords = cnameData.Answer ? cnameData.Answer.map(r => r.data) : [];
+
+        // Check CNAME for www
+        const wwwResponse = await fetch(`https://dns.google/resolve?name=www.${domain}&type=CNAME`);
         const wwwData = await wwwResponse.json();
         const wwwRecords = wwwData.Answer ? wwwData.Answer.map(r => r.data) : [];
 
-        // Attempt to find correct IP from current Origin (if running on base44.app domain)
-        let suggestedIP = null;
+        // Attempt to find correct Target from current Origin
+        let suggestedTarget = null;
+        let suggestedType = "A";
+
         const origin = req.headers.get("origin");
         if (origin && origin.includes("base44.app")) {
-            try {
-                const originHost = new URL(origin).hostname;
-                const originRes = await fetch(`https://dns.google/resolve?name=${originHost}&type=A`);
-                const originData = await originRes.json();
-                if (originData.Answer && originData.Answer.length > 0) {
-                    suggestedIP = originData.Answer[0].data;
-                }
-            } catch (e) {
-                console.error("Failed to resolve origin IP:", e);
-            }
+            // For base44.app domains (Render hosted), we prefer CNAME to base44.onrender.com
+            suggestedTarget = "base44.onrender.com";
+            suggestedType = "CNAME";
         }
 
         return Response.json({
             domain,
             a_records: aRecords,
+            cname_records: cnameRecords,
             www_records: wwwRecords,
-            suggested_ip: suggestedIP,
+            suggested_target: suggestedTarget,
+            suggested_type: suggestedType,
             status: "success",
             timestamp: new Date().toISOString(),
             provider: "Google DNS"
