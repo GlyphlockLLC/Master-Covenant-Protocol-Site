@@ -37,7 +37,6 @@ export const NAV_SECTIONS = [
       { label: "NUPS Transaction Verification", page: "NUPSLogin", visibility: "public" },
       { label: "Security Modules", page: "SecurityTools", visibility: "public" },
       { label: "Media Processing Hub", page: "VideoUpload", visibility: "public" },
-      { label: "QR Sitemap", page: "sitemap-qr", visibility: "public" },
       { label: "SDK Documentation", page: "SDKDocs", visibility: "public" },
       { label: "Site Intelligence", page: "Sie", visibility: "admin" } // New SIE module
     ]
@@ -102,7 +101,7 @@ export const FOOTER_LINKS = {
     { label: "Dream Team", page: "DreamTeam", visibility: "public" },
     { label: "FAQ", page: "FAQ", visibility: "public" },
     { label: "Roadmap", page: "Roadmap", visibility: "public" },
-    { label: "Sitemap Index", page: "SitemapXml", visibility: "public" }
+    { label: "Site Map", page: "SitemapXml", visibility: "public" }
   ],
   legal: [
     { label: "Privacy Policy", page: "Privacy", visibility: "public" },
