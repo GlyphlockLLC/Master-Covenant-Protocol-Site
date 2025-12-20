@@ -1851,6 +1851,22 @@ function DomainHealthCheck() {
             </div>
             </div>
 
+            {/* SSL & Proxy Diagnostic */}
+            {result.detected_proxy && (
+              <div className="mt-4 p-3 bg-orange-950/30 border border-orange-500/30 rounded-lg">
+                <div className="flex items-center gap-2 mb-2">
+                  <AlertTriangle className="w-5 h-5 text-orange-400" />
+                  <span className="font-bold text-orange-400 text-sm">Cloudflare Proxy Detected</span>
+                </div>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  Your domain is resolving to Cloudflare IPs (Orange Cloud). This often causes <code className="bg-black/30 px-1 rounded text-orange-300">ERR_SSL_VERSION_OR_CIPHER_MISMATCH</code> because Render cannot provision an SSL certificate through the proxy.
+                </p>
+                <div className="mt-3 text-xs bg-black/30 p-2 rounded border border-orange-500/20">
+                  <span className="text-orange-300 font-bold">FIX:</span> Go to Cloudflare DNS and toggle the "Proxy Status" from <span className="text-orange-400">Proxied</span> to <span className="text-slate-400">DNS Only</span> (Grey Cloud) for your A/CNAME records.
+                </div>
+              </div>
+            )}
+
             {/* Routing & Propagation Section */}
             {result.routing && (
             <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-slate-800 pt-4">
@@ -1874,6 +1890,11 @@ function DomainHealthCheck() {
                   <div className={`w-2 h-2 rounded-full ${result.propagation?.root ? 'bg-green-400' : 'bg-yellow-400 animate-pulse'}`} />
                   <span>DNS Propagation: {result.propagation?.root ? 'Complete' : 'Pending'}</span>
                 </div>
+                {result.routing.root.error && (
+                  <p className="text-[10px] text-red-400 mt-2 font-mono bg-red-950/30 p-1 rounded border border-red-900/50">
+                    {result.routing.root.error}
+                  </p>
+                )}
               </div>
 
               <div className="bg-slate-950/50 p-3 rounded-lg border border-slate-800">
@@ -1896,6 +1917,11 @@ function DomainHealthCheck() {
                   <div className={`w-2 h-2 rounded-full ${result.propagation?.www ? 'bg-green-400' : 'bg-yellow-400 animate-pulse'}`} />
                   <span>DNS Propagation: {result.propagation?.www ? 'Complete' : 'Pending'}</span>
                 </div>
+                {result.routing.www.error && (
+                  <p className="text-[10px] text-red-400 mt-2 font-mono bg-red-950/30 p-1 rounded border border-red-900/50">
+                    {result.routing.www.error}
+                  </p>
+                )}
               </div>
             </div>
             )}

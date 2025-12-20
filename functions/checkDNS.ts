@@ -68,6 +68,20 @@ Deno.serve(async (req) => {
         const expectedIP = "216.24.57.1";
         const rootPropagated = aRecords.includes(expectedIP);
         
+        // Check for Cloudflare Proxy (common cause of SSL Mismatch)
+        const isCloudflareIP = (ip) => {
+            if (!ip) return false;
+            // Common Cloudflare ranges
+            return ip.startsWith("104.") || 
+                   ip.startsWith("172.") || 
+                   ip.startsWith("162.") || 
+                   ip.startsWith("188.") ||
+                   ip.startsWith("198.41.") ||
+                   ip.startsWith("190.93.");
+        };
+
+        const detectedProxy = aRecords.some(isCloudflareIP);
+
         // For WWW, check if it points to something that looks like render or base44
         const wwwPropagated = wwwRecords.some(r => 
             r.includes("base44.onrender.com") || 
@@ -97,6 +111,7 @@ Deno.serve(async (req) => {
             },
             suggested_target: suggestedTarget,
             suggested_type: suggestedType,
+            detected_proxy: detectedProxy,
             status: "success",
             timestamp: new Date().toISOString(),
             provider: "Google DNS + Live Probe"
