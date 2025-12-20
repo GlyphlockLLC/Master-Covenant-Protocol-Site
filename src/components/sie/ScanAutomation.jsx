@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+
+import React from 'react';
 import { base44 } from '@/api/base44Client';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -9,43 +10,9 @@ import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
 import { Copy } from "lucide-react";
 
-export default function ScanAutomation() {
-    const [config, setConfig] = useState({
-        schedule_type: "manual",
-        trigger_on_deploy: false,
-        trigger_on_sitemap: false,
-        webhook_secret: "",
-        is_active: true
-    });
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        loadConfig();
-    }, []);
-
-    const loadConfig = async () => {
-        const res = await base44.entities.ScanConfig.list({ limit: 1 });
-        if (res.data && res.data.length > 0) {
-            setConfig(res.data[0]);
-        } else {
-            // Set default secret
-            setConfig(prev => ({ ...prev, webhook_secret: crypto.randomUUID() }));
-        }
-        setLoading(false);
-    };
-
-    const saveConfig = async () => {
-        try {
-            if (config.id) {
-                await base44.entities.ScanConfig.update(config.id, config);
-            } else {
-                await base44.entities.ScanConfig.create(config);
-            }
-            toast.success("Automation settings saved");
-        } catch (e) {
-            toast.error("Failed to save settings");
-        }
-    };
+export default function ScanAutomation({ config, onConfigChange, onSave }) {
+    // Config and handlers are now managed by the parent via middleware
+    if (!config) return null;
 
     const webhookUrl = `${window.location.origin}/api/apps/functions/triggerSieScan`;
 
@@ -63,7 +30,7 @@ export default function ScanAutomation() {
                     </div>
                     <Switch 
                         checked={config.is_active}
-                        onCheckedChange={(c) => setConfig({ ...config, is_active: c })}
+                        onCheckedChange={(c) => onConfigChange({ ...config, is_active: c })}
                     />
                 </div>
 
@@ -71,7 +38,7 @@ export default function ScanAutomation() {
                     <Label className="text-white">Schedule</Label>
                     <Select 
                         value={config.schedule_type} 
-                        onValueChange={(v) => setConfig({ ...config, schedule_type: v })}
+                        onValueChange={(v) => onConfigChange({ ...config, schedule_type: v })}
                     >
                         <SelectTrigger className="bg-slate-950 border-slate-800 text-white">
                             <SelectValue placeholder="Select schedule" />
@@ -91,7 +58,7 @@ export default function ScanAutomation() {
                         <Label className="text-slate-300">Run on Deployment</Label>
                         <Switch 
                             checked={config.trigger_on_deploy}
-                            onCheckedChange={(c) => setConfig({ ...config, trigger_on_deploy: c })}
+                            onCheckedChange={(c) => onConfigChange({ ...config, trigger_on_deploy: c })}
                         />
                     </div>
                     
@@ -99,7 +66,7 @@ export default function ScanAutomation() {
                         <Label className="text-slate-300">Run on Sitemap Change</Label>
                         <Switch 
                             checked={config.trigger_on_sitemap}
-                            onCheckedChange={(c) => setConfig({ ...config, trigger_on_sitemap: c })}
+                            onCheckedChange={(c) => onConfigChange({ ...config, trigger_on_sitemap: c })}
                         />
                     </div>
                 </div>
@@ -125,14 +92,14 @@ export default function ScanAutomation() {
                                 readOnly
                                 className="bg-slate-950 border-slate-800 text-slate-400 font-mono text-xs"
                             />
-                             <Button variant="outline" size="icon" onClick={() => setConfig({ ...config, webhook_secret: crypto.randomUUID() })}>
+                             <Button variant="outline" size="icon" onClick={() => onConfigChange({ ...config, webhook_secret: crypto.randomUUID() })}>
                                 <span className="text-xs">Gen</span>
                             </Button>
                         </div>
                     </div>
                 </div>
 
-                <Button onClick={saveConfig} className="w-full bg-blue-600 hover:bg-blue-700">
+                <Button onClick={onSave} className="w-full bg-blue-600 hover:bg-blue-700">
                     Save Configuration
                 </Button>
             </CardContent>

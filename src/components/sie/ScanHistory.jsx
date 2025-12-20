@@ -6,15 +6,8 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Eye, ArrowRight } from "lucide-react";
 
-export default function ScanHistory({ onSelectScan }) {
-    const [history, setHistory] = useState([]);
-
-    useEffect(() => {
-        base44.entities.ScanRun.list({ sort: { started_at: -1 }, limit: 20 }).then(res => {
-            setHistory(res.data);
-        });
-    }, []);
-
+export default function ScanHistory({ history, onSelectScan }) {
+    // History is now passed as a prop from the parent, fetched via middleware
     return (
         <Card className="bg-slate-900 border-slate-800">
             <CardHeader>

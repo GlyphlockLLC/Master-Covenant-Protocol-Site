@@ -5,59 +5,108 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { AlertCircle, CheckCircle2, AlertTriangle, RefreshCw, History, Settings, Bot } from "lucide-react";
+import { AlertCircle, CheckCircle2, AlertTriangle, RefreshCw, History, Settings, Bot, Loader2 } from "lucide-react";
+import { toast } from "sonner";
 import ScanHistory from "@/components/sie/ScanHistory";
 import ScanAutomation from "@/components/sie/ScanAutomation";
 
 export default function Sie() {
   const [scanRun, setScanRun] = useState(null);
+  const [history, setHistory] = useState([]);
+  const [config, setConfig] = useState(null);
+  
   const [navRows, setNavRows] = useState([]);
   const [routeRows, setRouteRows] = useState([]);
   const [sitemapRows, setSitemapRows] = useState([]);
   const [backendRows, setBackendRows] = useState([]);
+  
   const [loading, setLoading] = useState(false);
+  const [initializing, setInitializing] = useState(true);
 
-  const fetchScanDetails = async (run) => {
-    setScanRun(run);
-    const scanId = run.scan_id;
-    const nav = await base44.entities.NavAuditRow.list({ filter: { scan_run_id: scanId } });
-    setNavRows(nav.data);
-    const routes = await base44.entities.RouteAuditRow.list({ filter: { scan_run_id: scanId } });
-    setRouteRows(routes.data);
-    const sitemaps = await base44.entities.SitemapAuditRow.list({ filter: { scan_run_id: scanId } });
-    setSitemapRows(sitemaps.data);
-    const backends = await base44.entities.BackendAuditRow.list({ filter: { scan_run_id: scanId } });
-    setBackendRows(backends.data);
-  };
+  // Initial Data Load via Middleware
+  useEffect(() => {
+    loadDashboardData();
+  }, []);
 
-  const fetchLatestScan = async () => {
-    const res = await base44.entities.ScanRun.list({ sort: { started_at: -1 }, limit: 1 });
-    if (res.data && res.data.length > 0) {
-      await fetchScanDetails(res.data[0]);
+  const loadDashboardData = async () => {
+    try {
+      // Use the unified middleware to fetch all dashboard data
+      const res = await base44.functions.invoke("sieOps", { action: "get_dashboard" });
+      const { history: fetchedHistory, config: fetchedConfig } = res.data;
+      
+      setHistory(fetchedHistory || []);
+      setConfig(fetchedConfig);
+
+      if (fetchedHistory && fetchedHistory.length > 0) {
+        // Load details for the latest scan
+        await loadScanDetails(fetchedHistory[0]);
+      }
+    } catch (e) {
+      console.error("Failed to load dashboard:", e);
+      toast.error("Failed to connect to SIE Backend");
+    } finally {
+      setInitializing(false);
     }
   };
 
-  useEffect(() => {
-    fetchLatestScan();
-  }, []);
+  const loadScanDetails = async (run) => {
+    setScanRun(run);
+    try {
+      const res = await base44.functions.invoke("sieOps", { 
+        action: "get_scan_details", 
+        payload: { scan_id: run.scan_id } // scan_id matches the foreign key
+      });
+      
+      const { nav, routes, sitemaps, backend } = res.data;
+      setNavRows(nav);
+      setRouteRows(routes);
+      setSitemapRows(sitemaps);
+      setBackendRows(backend);
+    } catch (e) {
+      console.error("Failed to load scan details:", e);
+      toast.error("Could not load scan details");
+    }
+  };
 
   const runScan = async () => {
     setLoading(true);
     try {
       const res = await base44.functions.invoke("runFullScan");
-      console.log("Scan started (OMEGA):", res);
-
-      if (res.data?.status === "started" || res.data?.status === "success" || res.data?.status === "warning" || res.data?.status === "critical") {
-        await fetchLatestScan();
+      
+      if (res.data?.status === "success" || res.data?.status === "warning" || res.data?.status === "critical") {
+        toast.success("Scan completed successfully");
+        await loadDashboardData(); // Refresh everything
+      } else if (res.data?.status === "failed") {
+        toast.error("Scan failed to complete");
       } else {
-        console.warn("Unexpected scan response:", res);
+        toast.warning("Scan started but status is unknown");
+        await loadDashboardData();
       }
     } catch (e) {
       console.error("Scan execution failed:", e);
+      toast.error("Scan execution failed");
     } finally {
       setLoading(false);
     }
   };
+
+  const handleSaveConfig = async () => {
+    try {
+      await base44.functions.invoke("sieOps", { 
+        action: "save_config", 
+        payload: { config } 
+      });
+      toast.success("Configuration saved");
+    } catch (e) {
+      toast.error("Failed to save configuration");
+    }
+  };
+
+  if (initializing) {
+    return <div className="min-h-screen flex items-center justify-center bg-slate-950 text-white">
+      <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
+    </div>;
+  }
 
   return (
     <div className="container mx-auto p-6 space-y-6">
@@ -69,31 +118,23 @@ export default function Sie() {
           </div>
           <div className="flex gap-4 items-center">
             {scanRun && (
-              <div className="text-right">
+              <div className="text-right hidden md:block">
                 <p className="text-sm text-slate-400">Last Scan</p>
                 <p className="font-mono">{new Date(scanRun.started_at).toLocaleString()}</p>
               </div>
             )}
-            {scanRun?.status === 'running' && (
-              <Badge className="bg-blue-500/20 text-blue-400 border-blue-500/30 animate-pulse">
-                Running...
-              </Badge>
-            )}
             <Button 
               onClick={runScan} 
-              disabled={loading || scanRun?.status === 'running'} 
+              disabled={loading} 
               className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loading || scanRun?.status === 'running' ? 
-                <RefreshCw className="mr-2 h-4 w-4 animate-spin" /> : 
-                <RefreshCw className="mr-2 h-4 w-4" />
-              }
-              Run Full Scan
+              {loading ? <RefreshCw className="mr-2 h-4 w-4 animate-spin" /> : <RefreshCw className="mr-2 h-4 w-4" />}
+              {loading ? "Scanning..." : "Run Full Scan"}
             </Button>
           </div>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-4 gap-4 mb-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
             <StatusCard label="Navigation" ok={scanRun?.nav_ok_count} warn={scanRun?.nav_warning_count} crit={scanRun?.nav_critical_count} />
             <StatusCard label="Routes" ok={scanRun?.route_ok_count} warn={scanRun?.route_warning_count} crit={scanRun?.route_critical_count} />
             <StatusCard label="Sitemaps" ok={scanRun?.sitemap_ok_count} warn={scanRun?.sitemap_warning_count} crit={scanRun?.sitemap_critical_count} />
@@ -116,10 +157,10 @@ export default function Sie() {
                 <CardContent className="pt-6">
                   <h3 className="text-lg font-semibold mb-4 text-white">System Status</h3>
                   <div className="flex items-center gap-2">
-                    {scanRun?.status === 'success' ? <CheckCircle2 className="text-green-500 h-8 w-8" /> :
-                     scanRun?.status === 'warning' ? <AlertTriangle className="text-yellow-500 h-8 w-8" /> :
-                     <AlertCircle className="text-red-500 h-8 w-8" />}
-                    <span className="text-xl capitalize text-white">{scanRun?.status || 'Unknown'}</span>
+                    {!scanRun ? <span className="text-slate-500">No scan data available</span> :
+                     scanRun.status === 'success' ? <><CheckCircle2 className="text-green-500 h-8 w-8" /><span className="text-xl capitalize text-white">Secure</span></> :
+                     scanRun.status === 'warning' ? <><AlertTriangle className="text-yellow-500 h-8 w-8" /><span className="text-xl capitalize text-white">Warning</span></> :
+                     <><AlertCircle className="text-red-500 h-8 w-8" /><span className="text-xl capitalize text-white">Critical</span></>}
                   </div>
                 </CardContent>
               </Card>
@@ -166,8 +207,8 @@ export default function Sie() {
                 renderRow={(row) => (
                   <TableRow key={row.id}>
                     <TableCell className="capitalize text-white">{row.sitemap_type}</TableCell>
-                    <TableCell><a href={row.human_readable_url} className="text-blue-400 hover:underline">{row.human_readable_url}</a></TableCell>
-                    <TableCell><a href={row.xml_url} className="text-blue-400 hover:underline">XML</a></TableCell>
+                    <TableCell><a href={row.human_readable_url} className="text-blue-400 hover:underline" target="_blank">{row.human_readable_url}</a></TableCell>
+                    <TableCell><a href={row.xml_url} className="text-blue-400 hover:underline" target="_blank">XML</a></TableCell>
                     <TableCell>{row.human_exists && row.xml_exists ? 'Yes' : 'No'}</TableCell>
                     <TableCell><SeverityBadge severity={row.severity} /></TableCell>
                     <TableCell className="text-white">{row.required_action}</TableCell>
@@ -203,11 +244,11 @@ export default function Sie() {
             </TabsContent>
 
             <TabsContent value="history">
-              <ScanHistory onSelectScan={fetchScanDetails} />
+              <ScanHistory history={history} onSelectScan={loadScanDetails} />
             </TabsContent>
 
             <TabsContent value="automation">
-              <ScanAutomation />
+              <ScanAutomation config={config} onConfigChange={setConfig} onSave={handleSaveConfig} />
             </TabsContent>
           </Tabs>
         </CardContent>
@@ -223,15 +264,15 @@ function StatusCard({ label, ok = 0, warn = 0, crit = 0 }) {
         <p className="text-sm text-slate-400 mb-2">{label}</p>
         <div className="flex gap-3">
           <div className="text-center">
-            <p className="text-lg font-bold text-green-500">{ok}</p>
+            <p className="text-lg font-bold text-green-500">{ok || 0}</p>
             <p className="text-xs text-slate-500">OK</p>
           </div>
           <div className="text-center">
-            <p className="text-lg font-bold text-yellow-500">{warn}</p>
+            <p className="text-lg font-bold text-yellow-500">{warn || 0}</p>
             <p className="text-xs text-slate-500">Warn</p>
           </div>
           <div className="text-center">
-            <p className="text-lg font-bold text-red-500">{crit}</p>
+            <p className="text-lg font-bold text-red-500">{crit || 0}</p>
             <p className="text-xs text-slate-500">Crit</p>
           </div>
         </div>
@@ -260,7 +301,7 @@ function DataTable({ columns, data, renderRow }) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data.length === 0 ? (
+            {!data || data.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={columns.length} className="text-center text-slate-500 h-24">No data available</TableCell>
               </TableRow>
