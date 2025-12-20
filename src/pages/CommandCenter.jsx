@@ -1782,39 +1782,60 @@ function DomainHealthCheck() {
 
       {result && (
         <div className="p-4 rounded-lg bg-slate-900 border border-slate-800 space-y-3">
-          <div>
-            <div className="flex items-center gap-2 mb-1">
-              <Globe className="w-4 h-4 text-cyan-400" />
-              <p className="text-xs font-bold text-white uppercase">Current A Record (@)</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* A Record Status */}
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <Globe className="w-4 h-4 text-cyan-400" />
+                <p className="text-xs font-bold text-white uppercase">Current A Record (@)</p>
+              </div>
+              {result.a_records && result.a_records.length > 0 ? (
+                 result.a_records.map(ip => (
+                   <div key={ip} className="flex items-center gap-2 font-mono text-sm text-slate-300 ml-6">
+                     <span>{ip}</span>
+                     {(ip === "198.12.238.234" || ip === "216.24.57.1") && (
+                       <Badge variant="destructive" className="ml-2 text-[10px] h-5">Incorrect</Badge>
+                     )}
+                   </div>
+                 ))
+              ) : (
+                <p className="text-xs text-slate-500 ml-6 italic">No A records found (Good for CNAME setup)</p>
+              )}
             </div>
-            {result.a_records && result.a_records.length > 0 ? (
-               result.a_records.map(ip => (
-                 <div key={ip} className="flex items-center gap-2 font-mono text-sm text-slate-300 ml-6">
-                   <span>{ip}</span>
-                   {ip === "198.12.238.234" && (
-                     <Badge variant="destructive" className="ml-2 text-[10px] h-5">Potentially Incorrect (GoDaddy Parking?)</Badge>
-                   )}
-                 </div>
-               ))
-            ) : (
-              <p className="text-xs text-red-400 ml-6">No A records found</p>
-            )}
-          </div>
-          
-          <div>
-            <div className="flex items-center gap-2 mb-1">
-              <Globe className="w-4 h-4 text-purple-400" />
-              <p className="text-xs font-bold text-white uppercase">Current CNAME (www)</p>
+            
+            {/* CNAME Root Status */}
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <Globe className="w-4 h-4 text-purple-400" />
+                <p className="text-xs font-bold text-white uppercase">Current CNAME (@)</p>
+              </div>
+               {result.cname_records && result.cname_records.length > 0 ? (
+                 result.cname_records.map(rec => (
+                   <div key={rec} className="flex items-center gap-2 font-mono text-sm text-slate-300 ml-6">
+                     <span>{rec}</span>
+                   </div>
+                 ))
+              ) : (
+                <p className="text-xs text-slate-500 ml-6 italic">No CNAME (@) found</p>
+              )}
             </div>
-             {result.www_records && result.www_records.length > 0 ? (
-               result.www_records.map(ip => (
-                 <div key={ip} className="flex items-center gap-2 font-mono text-sm text-slate-300 ml-6">
-                   <span>{ip}</span>
-                 </div>
-               ))
-            ) : (
-              <p className="text-xs text-slate-500 ml-6">No records found for www</p>
-            )}
+
+            {/* CNAME WWW Status */}
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <Globe className="w-4 h-4 text-blue-400" />
+                <p className="text-xs font-bold text-white uppercase">Current CNAME (www)</p>
+              </div>
+               {result.www_records && result.www_records.length > 0 ? (
+                 result.www_records.map(rec => (
+                   <div key={rec} className="flex items-center gap-2 font-mono text-sm text-slate-300 ml-6">
+                     <span>{rec}</span>
+                   </div>
+                 ))
+              ) : (
+                <p className="text-xs text-slate-500 ml-6 italic">No CNAME (www) found</p>
+              )}
+            </div>
           </div>
 
           <div className="mt-4 pt-3 border-t border-slate-800 bg-slate-900/50 p-3 rounded-md">
@@ -1823,32 +1844,36 @@ function DomainHealthCheck() {
               How to Fix Connection
             </h4>
             
-            {result.suggested_ip && (
+            {result.suggested_target && (
               <div className="mb-3 p-2 bg-green-900/20 border border-green-500/30 rounded flex items-center justify-between">
                 <div>
-                  <span className="text-xs text-slate-400 block">Suggested A Record (Detected)</span>
-                  <code className="text-sm font-mono text-green-400">{result.suggested_ip}</code>
+                  <span className="text-xs text-slate-400 block">Suggested {result.suggested_type} Record (Detected)</span>
+                  <code className="text-sm font-mono text-green-400">{result.suggested_target}</code>
                 </div>
-                <Button size="sm" variant="ghost" onClick={() => { navigator.clipboard.writeText(result.suggested_ip); toast.success("IP copied"); }}>
+                <Button size="sm" variant="ghost" onClick={() => { navigator.clipboard.writeText(result.suggested_target); toast.success("Target copied"); }}>
                   <Copy className="w-4 h-4" />
                 </Button>
               </div>
             )}
 
             <ol className="text-xs text-slate-300 space-y-2 list-decimal list-inside">
-              <li>Go to your <strong>GoDaddy DNS Management</strong> page for {result.domain}.</li>
-              <li>Locate the <strong>A</strong> record with name <strong>@</strong> (currently 198.12.238.234).</li>
-              <li>Click <strong>Edit</strong> (pencil icon).</li>
-              <li>Change the <strong>Value</strong> to the IP Address shown in your Base44 Dashboard (Settings &rarr; Domains).
-                {result.suggested_ip && <span className="text-green-400"> (Likely: {result.suggested_ip})</span>}
+              <li>Go to your <strong>GoDaddy DNS Management</strong> page.</li>
+              <li><strong>Delete</strong> any existing <strong>A</strong> records with name <strong>@</strong>.</li>
+              <li>Create a new record:
+                <ul className="pl-4 mt-1 space-y-1 text-slate-400 border-l border-slate-700 ml-2">
+                  <li>Type: <strong className="text-white">{result.suggested_type || 'CNAME'}</strong></li>
+                  <li>Name: <strong className="text-white">@</strong></li>
+                  <li>Value: <strong className="text-green-400">{result.suggested_target || "base44.onrender.com"}</strong></li>
+                  <li>TTL: <strong>600 seconds</strong> (Custom)</li>
+                </ul>
               </li>
-              <li>Set TTL to <strong>600 seconds</strong> (or shortest available) for faster propagation.</li>
+              <li>Ensure <strong>www</strong> CNAME also points to <strong className="text-green-400">{result.suggested_target || "base44.onrender.com"}</strong>.</li>
               <li>Click <strong>Save</strong>.</li>
             </ol>
             
             <div className="mt-3 flex items-center gap-2 text-[10px] text-slate-500">
               <AlertTriangle className="w-3 h-3" />
-              <span>DNS propagation can take up to 48 hours, but usually happens within minutes.</span>
+              <span>DNS propagation can take up to 48 hours.</span>
             </div>
           </div>
         </div>
