@@ -291,6 +291,68 @@ export default function TrustSecurity() {
             </div>
           </div>
 
+          {/* Security Standards & Compliance Detail */}
+          <div className="mb-16">
+            <h2 className="text-3xl font-bold text-white mb-8">Compliance Frameworks</h2>
+            <div className="space-y-4">
+              {[
+                {
+                  id: "iso27001",
+                  title: "ISO 27001",
+                  status: "Aligned",
+                  desc: "Information security management system (ISMS) implementation covering personnel, physical, and logical security controls.",
+                  specs: ["Annex A Controls", "Risk Treatment Plan", "Internal Audit Cycle"]
+                },
+                {
+                  id: "soc2",
+                  title: "SOC 2 Type II",
+                  status: "In Progress",
+                  desc: "Service Organization Control evaluation for Security, Availability, and Confidentiality trust principles.",
+                  specs: ["Control Environment", "Risk Assessment", "Monitoring Activities"]
+                },
+                {
+                  id: "gdpr",
+                  title: "GDPR",
+                  status: "Compliant",
+                  desc: "European Union data protection regulation compliance including data subject rights and processing records.",
+                  specs: ["DPA in Place", "Data Minimization", "Right to Erasure"]
+                },
+                {
+                  id: "pci",
+                  title: "PCI DSS",
+                  status: "Level 4",
+                  desc: "Payment Card Industry Data Security Standard for secure handling of credit card information.",
+                  specs: ["SAQ A Completed", "TLS 1.3 Enforcement", "No Card Data Retention"]
+                }
+              ].map((std, idx) => (
+                <div key={idx} className="glass-card rounded-xl border border-white/10 p-6 hover:border-cyan-500/30 transition-all">
+                  <div className="flex flex-col md:flex-row md:items-center gap-4 mb-4">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3">
+                        <h3 className="text-xl font-bold text-white">{std.title}</h3>
+                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wide ${
+                          std.status === "Compliant" ? "bg-green-500/10 text-green-400" :
+                          std.status === "Aligned" ? "bg-blue-500/10 text-blue-400" :
+                          "bg-amber-500/10 text-amber-400"
+                        }`}>
+                          {std.status}
+                        </span>
+                      </div>
+                      <p className="text-sm text-slate-400 mt-1">{std.desc}</p>
+                    </div>
+                    <div className="flex gap-2">
+                       {std.specs.map((spec, i) => (
+                         <span key={i} className="px-2 py-1 rounded bg-white/5 border border-white/5 text-[10px] text-slate-300">
+                           {spec}
+                         </span>
+                       ))}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
           {/* Security Inquiries */}
           <div className="glass-card rounded-2xl border border-[#00E4FF]/30 p-6 md:p-8 lg:p-12 text-center">
             <Lock className="w-12 h-12 text-[#00E4FF] mx-auto mb-6" />
