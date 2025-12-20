@@ -61,7 +61,7 @@ export const NAV_SECTIONS = [
       { label: "Dream Team", page: "DreamTeam", visibility: "public" },
       { label: "FAQ", page: "FAQ", visibility: "public" },
       { label: "Roadmap", page: "Roadmap", visibility: "public" },
-      { label: "Sitemap Index", page: "SitemapXml", visibility: "public" } // Added
+      { label: "Site Map", page: "SitemapXml", visibility: "public" }
     ]
   },
   {
