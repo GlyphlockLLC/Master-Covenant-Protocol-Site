@@ -5,7 +5,8 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Loader2, FileText, CheckCircle, XCircle, Shield, Download } from 'lucide-react';
-import { jsPDF } from 'jspdf'; // Assuming installed or available, if not I'll just simulate print
+import { jsPDF } from 'jspdf';
+import html2canvas from 'html2canvas';
 
 export default function ComplianceReport() {
   const { data: report, isLoading, error } = useQuery({
@@ -13,9 +14,34 @@ export default function ComplianceReport() {
     queryFn: () => base44.functions.invoke('reports/generateCompliance').then(r => r.data)
   });
 
-  const downloadPDF = () => {
-    // Simple print implementation for now as jsPDF might need specific config
-    window.print();
+  const downloadPDF = async () => {
+    const element = document.getElementById('report-content');
+    if (!element) return;
+    
+    try {
+      const canvas = await html2canvas(element, {
+        scale: 2,
+        logging: false,
+        useCORS: true
+      });
+      
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4'
+      });
+      
+      const imgProps = pdf.getImageProperties(imgData);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+      
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      pdf.save(`glyphlock-compliance-${new Date().toISOString().split('T')[0]}.pdf`);
+    } catch (err) {
+      console.error("PDF generation failed:", err);
+      window.print(); // Fallback
+    }
   };
 
   if (isLoading) return <div className="flex justify-center p-20"><Loader2 className="w-10 h-10 animate-spin text-cyan-400" /></div>;
@@ -35,6 +61,7 @@ export default function ComplianceReport() {
           </Button>
         </div>
 
+        <div id="report-content" className="p-4 bg-white">
         {/* Report Header (Visible in Print) */}
         <div className="border-b-2 border-slate-900 pb-6 mb-8">
             <div className="flex justify-between items-center mb-4">
@@ -156,6 +183,7 @@ export default function ComplianceReport() {
         
         <div className="mt-12 pt-8 border-t border-slate-200 text-center text-xs text-slate-400">
             <p>GlyphLock System Generated Report • Confidential • Internal Use Only</p>
+        </div>
         </div>
       </div>
     </div>

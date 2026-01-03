@@ -10,6 +10,7 @@ import CaseStudyAIBinding from './pages/CaseStudyAIBinding';
 import CaseStudyCovenantVictory from './pages/CaseStudyCovenantVictory';
 import CaseStudyTruthStrike from './pages/CaseStudyTruthStrike';
 import CommandCenter from './pages/CommandCenter';
+import ComplianceReport from './pages/ComplianceReport';
 import Consultation from './pages/Consultation';
 import ConsultationSuccess from './pages/ConsultationSuccess';
 import Contact from './pages/Contact';
@@ -72,7 +73,6 @@ import TrustSecurity from './pages/TrustSecurity';
 import VIPContract from './pages/VIPContract';
 import VideoUpload from './pages/VideoUpload';
 import sitemapQr from './pages/sitemap-qr';
-import ComplianceReport from './pages/ComplianceReport';
 import __Layout from './Layout.jsx';
 
 
@@ -89,6 +89,7 @@ export const PAGES = {
     "CaseStudyCovenantVictory": CaseStudyCovenantVictory,
     "CaseStudyTruthStrike": CaseStudyTruthStrike,
     "CommandCenter": CommandCenter,
+    "ComplianceReport": ComplianceReport,
     "Consultation": Consultation,
     "ConsultationSuccess": ConsultationSuccess,
     "Contact": Contact,
@@ -151,7 +152,6 @@ export const PAGES = {
     "VIPContract": VIPContract,
     "VideoUpload": VideoUpload,
     "sitemap-qr": sitemapQr,
-    "ComplianceReport": ComplianceReport,
 }
 
 export const pagesConfig = {
