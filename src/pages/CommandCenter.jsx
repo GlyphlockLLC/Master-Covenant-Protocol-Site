@@ -25,7 +25,7 @@ import {
 } from "@/components/commandcenter/ThreatDetectionEngine";
 import KeyManagement from "@/components/admin/KeyManagement";
 import {
-  Shield, Key, Activity, Zap, Settings, Users, FileText, 
+  Shield, Key, Activity, Zap, Settings, Users, FileText, FileCheck, 
   TrendingUp, Clock, AlertTriangle, CheckCircle, Lock,
   Copy, Eye, EyeOff, RefreshCw, Plus, Trash2, Download,
   Menu, X, Home, LogOut, ChevronRight, Server, Database,
