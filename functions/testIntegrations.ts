@@ -25,7 +25,8 @@ Deno.serve(async (req) => {
             const details = await fn();
             testResults.tests.push({ name, status: 'PASS', details });
         } catch (error) {
-            testResults.tests.push({ name, status: 'FAIL', error: error.message });
+            const errorMsg = error.response?.data ? JSON.stringify(error.response.data) : error.message;
+            testResults.tests.push({ name, status: 'FAIL', error: errorMsg });
         }
     };
 
