@@ -27,6 +27,28 @@ Deno.serve(async (req) => {
     if (!user.mfaEnabled) {
       return Response.json({ error: 'MFA not enabled' }, { status: 400 });
     }
+
+    // Rate Limiting: Check recent failures (5 attempts in 15 minutes)
+    const fifteenMinutesAgo = new Date(Date.now() - 15 * 60 * 1000).toISOString();
+    const recentFailures = await base44.entities.SystemAuditLog.filter({
+      actor_email: user.email,
+      event_type: 'MFA_VERIFY_FAILURE',
+      created_date: { $gte: fifteenMinutesAgo }
+    });
+
+    if (recentFailures.length >= 5) {
+      // Log the rate limit hit
+      await base44.entities.SystemAuditLog.create({
+        event_type: 'MFA_RATE_LIMIT_HIT',
+        description: 'User exceeded MFA verification attempts',
+        actor_email: user.email,
+        ip_address: req.headers.get('x-forwarded-for') || 'unknown',
+        status: 'security_action',
+        severity: 'medium',
+        threat_type: 'brute_force_prevention'
+      });
+      return Response.json({ error: 'Too many failed attempts. Please try again later.' }, { status: 429 });
+    }
     
     let isValid = false;
     let usedRecoveryCodeIndex = -1;
@@ -58,8 +80,29 @@ Deno.serve(async (req) => {
     
     // CRITICAL: Generic error message
     if (!isValid) {
+      // Log failure
+      await base44.entities.SystemAuditLog.create({
+        event_type: 'MFA_VERIFY_FAILURE',
+        description: 'Failed MFA verification attempt',
+        actor_email: user.email,
+        ip_address: req.headers.get('x-forwarded-for') || 'unknown',
+        status: 'failure',
+        severity: 'low',
+        metadata: { method: totpCode ? 'totp' : 'recovery_code' }
+      });
       return Response.json({ error: 'Invalid verification code' }, { status: 401 });
     }
+
+    // Log success
+    await base44.entities.SystemAuditLog.create({
+      event_type: 'MFA_VERIFY_SUCCESS',
+      description: 'Successful MFA verification',
+      actor_email: user.email,
+      ip_address: req.headers.get('x-forwarded-for') || 'unknown',
+      status: 'success',
+      severity: 'low',
+      metadata: { method: totpCode ? 'totp' : 'recovery_code' }
+    });
     
     // PHASE A: Set session-level MFA verification flag
     const headers = new Headers();

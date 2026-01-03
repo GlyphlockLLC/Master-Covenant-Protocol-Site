@@ -48,6 +48,14 @@ Deno.serve(async (req) => {
     }
     
     if (!isValid) {
+      await base44.entities.SystemAuditLog.create({
+        event_type: 'MFA_DISABLE_FAILURE',
+        description: 'Failed attempt to disable MFA',
+        actor_email: user.email,
+        ip_address: req.headers.get('x-forwarded-for') || 'unknown',
+        status: 'failure',
+        severity: 'medium'
+      });
       return Response.json({ error: 'Invalid verification code' }, { status: 400 });
     }
     
@@ -56,6 +64,16 @@ Deno.serve(async (req) => {
       mfaEnabled: false,
       mfaSecretEncrypted: null,
       mfaRecoveryCodes: []
+    });
+
+    // Audit Log Success
+    await base44.entities.SystemAuditLog.create({
+      event_type: 'MFA_DISABLED',
+      description: 'MFA disabled for user',
+      actor_email: user.email,
+      ip_address: req.headers.get('x-forwarded-for') || 'unknown',
+      status: 'alert',
+      severity: 'high'
     });
     
     // Clear MFA cookie

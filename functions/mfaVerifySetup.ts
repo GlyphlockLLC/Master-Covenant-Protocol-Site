@@ -27,6 +27,15 @@ Deno.serve(async (req) => {
     const isValid = verifyTotpCode(tempSecret, code);
     
     if (!isValid) {
+      // Audit Log Failure
+      await base44.entities.SystemAuditLog.create({
+        event_type: 'MFA_SETUP_FAILURE',
+        description: 'Failed MFA setup verification',
+        actor_email: user.email,
+        ip_address: req.headers.get('x-forwarded-for') || 'unknown',
+        status: 'failure',
+        severity: 'low'
+      });
       return Response.json({ error: 'Invalid verification code' }, { status: 400 });
     }
     
@@ -42,6 +51,16 @@ Deno.serve(async (req) => {
       mfaEnabled: true,
       mfaSecretEncrypted: encryptedSecret,
       mfaRecoveryCodes: hashedCodes
+    });
+
+    // Audit Log
+    await base44.entities.SystemAuditLog.create({
+      event_type: 'MFA_ENABLED',
+      description: 'MFA enabled for user',
+      actor_email: user.email,
+      ip_address: req.headers.get('x-forwarded-for') || 'unknown',
+      status: 'success',
+      severity: 'medium'
     });
     
     // Return recovery codes (only time they're shown in plain text)

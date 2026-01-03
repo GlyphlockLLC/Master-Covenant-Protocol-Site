@@ -46,6 +46,16 @@ Deno.serve(async (req) => {
     await base44.entities.User.update(userData.id, {
       mfaRecoveryCodes: hashedCodes
     });
+
+    // Audit Log
+    await base44.entities.SystemAuditLog.create({
+      event_type: 'MFA_RECOVERY_CODES_REGENERATED',
+      description: 'Recovery codes regenerated',
+      actor_email: user.email,
+      ip_address: req.headers.get('x-forwarded-for') || 'unknown',
+      status: 'success',
+      severity: 'medium'
+    });
     
     return Response.json({
       success: true,

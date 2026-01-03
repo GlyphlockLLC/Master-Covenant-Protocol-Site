@@ -36,6 +36,16 @@ Deno.serve(async (req) => {
     await base44.entities.User.update(userData.id, {
       trustedDevices: updatedDevices
     });
+
+    // Audit Log
+    await base44.entities.SystemAuditLog.create({
+      event_type: 'MFA_DEVICE_REVOKED',
+      description: `Trusted device revoked: ${deviceIdPrefix}...`,
+      actor_email: user.email,
+      ip_address: req.headers.get('x-forwarded-for') || 'unknown',
+      status: 'success',
+      severity: 'low'
+    });
     
     return Response.json({ 
       success: true,
