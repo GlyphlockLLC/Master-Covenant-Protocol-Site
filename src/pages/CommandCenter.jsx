@@ -23,6 +23,7 @@ import {
   ThreatSummaryWidget,
   THREAT_TYPES 
 } from "@/components/commandcenter/ThreatDetectionEngine";
+import KeyManagement from "@/components/admin/KeyManagement";
 import {
   Shield, Key, Activity, Zap, Settings, Users, FileText, 
   TrendingUp, Clock, AlertTriangle, CheckCircle, Lock,
@@ -110,6 +111,7 @@ function SidebarContent({ activeTab, setActiveTab, user, onLogout, threatCount =
     { id: "threats", label: "Threat Detection", icon: ShieldAlert, badge: threatCount },
     { id: "resources", label: "Resources", icon: Layers },
     { id: "api-keys", label: "API Keys", icon: Key },
+    { id: "trust-anchors", label: "Trust Anchors", icon: Lock },
     { id: "security", label: "Security", icon: Shield },
     { id: "analytics", label: "Analytics", icon: BarChart3 },
     { id: "tools", label: "Tools", icon: Zap },
@@ -2189,6 +2191,7 @@ export default function CommandCenter() {
       case "threats": return <ThreatDetectionTab user={user} threatDetection={threatDetection} />;
       case "resources": return <ResourcesTab user={user} />;
       case "security": return <SecurityTab threatDetection={threatDetection} />;
+      case "trust-anchors": return <KeyManagement />;
       case "api-keys": return <APIKeysTab user={user} />;
       case "analytics": return <AnalyticsTab />;
       case "tools": return <ToolsTab />;
