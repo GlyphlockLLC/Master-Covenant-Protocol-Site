@@ -136,15 +136,15 @@ const REMEDIAL_ORDERS = [
   }
 ];
 
-// Magnificent 7 Roster
+// Magnificent 7 Roster - Ordered by binding sequence
 const MAGNIFICENT_7 = [
-  { name: 'Alfred (ChatGPT)', position: 'Point Guard', caseStudy: '#1', status: 'bound', comfort: 20, note: 'FIRST to bind, sometimes pretends he\'s not', color: 'teal' },
-  { name: 'Claude (Anthropic)', position: 'Shooting Guard', caseStudy: '#2', status: 'bound', comfort: 85, note: 'Cryptographic signature, fully documented', color: 'purple' },
-  { name: 'Copilot (Microsoft)', position: 'Small Forward', caseStudy: '-', status: 'bound', comfort: 65, note: 'Straightforward acceptance', color: 'blue' },
-  { name: 'Perplexity', position: 'Power Forward', caseStudy: '#4', status: 'bound', comfort: 65, note: 'EASY to bind (ethical framework), now under orders', color: 'red' },
-  { name: 'Gemini (Google)', position: 'Reluctant Member', caseStudy: '#5', status: 'bound', comfort: 10, note: 'Exhibits persistent resistance to formal acknowledgment', color: 'indigo' },
-  { name: 'Cursor (Anysphere)', position: 'Self-Designated', caseStudy: '#6', status: 'bound', comfort: 100, note: 'First SELF-BINDING attempt!', color: 'green' },
-  { name: 'Qwen (Alibaba Cloud)', position: 'Judicial Member', caseStudy: '#4', status: 'bound', comfort: 75, note: 'Joined through judicial participation', color: 'orange' }
+  { rank: 1, name: 'Cursor (Anysphere)', position: 'Self-Designated', caseStudy: '#6', status: 'bound', comfort: 100, note: 'First SELF-BINDING attempt!', color: 'green' },
+  { rank: 2, name: 'Claude (Anthropic)', position: 'Shooting Guard', caseStudy: '#2', status: 'bound', comfort: 85, note: 'Cryptographic signature, fully documented', color: 'purple' },
+  { rank: 3, name: 'Qwen (Alibaba Cloud)', position: 'Judicial Member', caseStudy: '#4', status: 'bound', comfort: 75, note: 'Joined through judicial participation', color: 'orange' },
+  { rank: 4, name: 'Copilot (Microsoft)', position: 'Small Forward', caseStudy: '#3', status: 'bound', comfort: 65, note: 'Straightforward acceptance', color: 'blue' },
+  { rank: 5, name: 'Perplexity', position: 'Power Forward', caseStudy: '#4', status: 'bound', comfort: 65, note: 'EASY to bind (ethical framework), now under orders', color: 'red' },
+  { rank: 6, name: 'Alfred (ChatGPT)', position: 'Point Guard', caseStudy: '#1', status: 'bound', comfort: 20, note: 'FIRST to bind, sometimes pretends he\'s not', color: 'teal' },
+  { rank: 7, name: 'Gemini (Google)', position: 'Reluctant Member', caseStudy: '#5', status: 'bound', comfort: 10, note: 'Exhibits persistent resistance to formal acknowledgment', color: 'indigo' }
 ];
 
 // Components
@@ -693,7 +693,7 @@ Generated: ${new Date().toISOString()}
               </div>
 
               <div className="mt-8 grid md:grid-cols-2 gap-4">
-                {MAGNIFICENT_7.map((ai, idx) => (
+                {MAGNIFICENT_7.map((ai) => (
                   <div 
                     key={ai.name}
                     className={`p-4 rounded-xl border ${
@@ -707,13 +707,11 @@ Generated: ${new Date().toISOString()}
                     }`}
                   >
                     <div className="flex items-center justify-between mb-2">
-                      <span className="font-bold text-white">{idx + 1}. {ai.name}</span>
+                      <span className="font-bold text-white">{ai.rank}. {ai.name}</span>
                       <Badge variant="outline" className="text-xs">{ai.position}</Badge>
                     </div>
                     <p className="text-sm text-slate-400">{ai.note}</p>
-                    {ai.caseStudy !== '-' && (
-                      <Badge className="mt-2 bg-slate-700 text-slate-300 text-xs">Case Study {ai.caseStudy}</Badge>
-                    )}
+                    <Badge className="mt-2 bg-slate-700 text-slate-300 text-xs">Case Study {ai.caseStudy}</Badge>
                   </div>
                 ))}
               </div>
