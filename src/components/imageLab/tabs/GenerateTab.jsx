@@ -6,7 +6,14 @@ import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
-import { Loader2, Wand2, Download, Maximize2, Upload, ChevronDown, Check, Save } from 'lucide-react';
+import { Slider } from '@/components/ui/slider';
+import { Switch } from '@/components/ui/switch';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { 
+  Loader2, Wand2, Download, Maximize2, Upload, ChevronDown, Check, Save, 
+  Sparkles, Palette, Settings2, Zap, RefreshCw, Copy, Share2, Layers,
+  ArrowUpRight, Image as ImageIcon, Brain, Scissors, Paintbrush, ScanLine
+} from 'lucide-react';
 import { toast } from 'sonner';
 import {
   GlyphImageCard,
@@ -17,187 +24,67 @@ import {
   GlyphImagePanel,
 } from '../design/GlyphImageDesignSystem';
 
-// SVG Icons for Style Presets
-const StyleIcons = {
-  photorealistic: (
-    <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5">
-      <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="2"/>
-      <circle cx="8.5" cy="8.5" r="1.5" fill="currentColor"/>
-      <path d="M21 15l-5-5L5 21" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-    </svg>
-  ),
-  cyberpunk: (
-    <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5">
-      <path d="M12 2L2 7v10l10 5 10-5V7L12 2z" stroke="currentColor" strokeWidth="2"/>
-      <path d="M12 22V12M2 7l10 5 10-5" stroke="currentColor" strokeWidth="2"/>
-      <circle cx="12" cy="12" r="2" fill="currentColor"/>
-    </svg>
-  ),
-  watercolor: (
-    <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5">
-      <path d="M12 2c-5.5 6 -8 10-8 14a8 8 0 1016 0c0-4-2.5-8-8-14z" stroke="currentColor" strokeWidth="2"/>
-      <path d="M12 18c-2.2 0-4-1.8-4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-    </svg>
-  ),
-  oilPainting: (
-    <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5">
-      <path d="M18 10l-4-4-8 8v4h4l8-8z" stroke="currentColor" strokeWidth="2"/>
-      <path d="M14 6l4 4" stroke="currentColor" strokeWidth="2"/>
-      <path d="M3 21h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-    </svg>
-  ),
-  anime: (
-    <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5">
-      <circle cx="12" cy="10" r="7" stroke="currentColor" strokeWidth="2"/>
-      <circle cx="9" cy="9" r="1.5" fill="currentColor"/>
-      <circle cx="15" cy="9" r="1.5" fill="currentColor"/>
-      <path d="M9 13c1.5 1 4.5 1 6 0" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-      <path d="M8 3l2 3M16 3l-2 3" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-    </svg>
-  ),
-  minimalist: (
-    <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5">
-      <rect x="4" y="4" width="16" height="16" stroke="currentColor" strokeWidth="2"/>
-      <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2"/>
-    </svg>
-  ),
-  surreal: (
-    <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5">
-      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2"/>
-      <path d="M12 3c-3 3-3 6 0 9s3 6 0 9" stroke="currentColor" strokeWidth="2"/>
-      <ellipse cx="8" cy="10" rx="1" ry="2" fill="currentColor"/>
-      <ellipse cx="16" cy="10" rx="1" ry="2" fill="currentColor"/>
-    </svg>
-  ),
-  neon: (
-    <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5">
-      <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-      <circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="2"/>
-    </svg>
-  ),
-  vintage: (
-    <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5">
-      <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" strokeWidth="2"/>
-      <circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="2"/>
-      <circle cx="18" cy="8" r="1" fill="currentColor"/>
-    </svg>
-  ),
-  pencilSketch: (
-    <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5">
-      <path d="M17 3l4 4-14 14H3v-4L17 3z" stroke="currentColor" strokeWidth="2"/>
-      <path d="M15 5l4 4" stroke="currentColor" strokeWidth="2"/>
-    </svg>
-  ),
-  popArt: (
-    <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5">
-      <rect x="3" y="3" width="8" height="8" fill="currentColor" opacity="0.5"/>
-      <rect x="13" y="3" width="8" height="8" stroke="currentColor" strokeWidth="2"/>
-      <rect x="3" y="13" width="8" height="8" stroke="currentColor" strokeWidth="2"/>
-      <rect x="13" y="13" width="8" height="8" fill="currentColor" opacity="0.5"/>
-    </svg>
-  ),
-  sciFi: (
-    <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5">
-      <path d="M12 2l3 6h6l-5 4 2 7-6-4-6 4 2-7-5-4h6l3-6z" stroke="currentColor" strokeWidth="2"/>
-    </svg>
-  ),
-  gothic: (
-    <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5">
-      <path d="M12 2L8 8v8l4 6 4-6V8l-4-6z" stroke="currentColor" strokeWidth="2"/>
-      <path d="M8 12h8" stroke="currentColor" strokeWidth="2"/>
-      <circle cx="12" cy="8" r="1" fill="currentColor"/>
-    </svg>
-  ),
-  impressionist: (
-    <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5">
-      <circle cx="6" cy="8" r="2" fill="currentColor" opacity="0.7"/>
-      <circle cx="12" cy="6" r="2" fill="currentColor" opacity="0.5"/>
-      <circle cx="18" cy="9" r="2" fill="currentColor" opacity="0.6"/>
-      <circle cx="8" cy="14" r="2" fill="currentColor" opacity="0.4"/>
-      <circle cx="14" cy="13" r="2" fill="currentColor" opacity="0.8"/>
-      <circle cx="10" cy="19" r="2" fill="currentColor" opacity="0.5"/>
-      <circle cx="17" cy="17" r="2" fill="currentColor" opacity="0.6"/>
-    </svg>
-  ),
-  lowPoly: (
-    <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5">
-      <path d="M12 2l10 7-4 13H6L2 9l10-7z" stroke="currentColor" strokeWidth="2"/>
-      <path d="M12 2v20M2 9h20M6 22l6-13 6 13" stroke="currentColor" strokeWidth="1" opacity="0.5"/>
-    </svg>
-  ),
-  steampunk: (
-    <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5">
-      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2"/>
-      <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2"/>
-      <path d="M12 3v3M12 18v3M3 12h3M18 12h3" stroke="currentColor" strokeWidth="2"/>
-      <circle cx="12" cy="12" r="1" fill="currentColor"/>
-    </svg>
-  ),
-  vaporwave: (
-    <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5">
-      <path d="M2 20L12 4l10 16H2z" stroke="currentColor" strokeWidth="2"/>
-      <path d="M6 20l6-10 6 10" stroke="currentColor" strokeWidth="1" opacity="0.5"/>
-      <circle cx="12" cy="8" r="2" fill="currentColor"/>
-    </svg>
-  ),
-  artDeco: (
-    <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5">
-      <path d="M12 2v20M7 2v20M17 2v20" stroke="currentColor" strokeWidth="2"/>
-      <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" strokeWidth="1"/>
-      <circle cx="12" cy="12" r="3" fill="currentColor"/>
-    </svg>
-  ),
-};
-
+// Style Presets with enhanced metadata
 const STYLE_PRESETS = [
-  { id: 'photorealistic', label: 'Photorealistic', desc: 'True-to-life imagery', color: 'from-slate-600 to-slate-800' },
-  { id: 'cyberpunk', label: 'Cyberpunk', desc: 'Neon-lit futuristic', color: 'from-pink-600 to-purple-800' },
-  { id: 'watercolor', label: 'Watercolor', desc: 'Soft painted look', color: 'from-blue-400 to-cyan-600' },
-  { id: 'oilPainting', label: 'Oil Painting', desc: 'Classic fine art', color: 'from-amber-600 to-orange-800' },
-  { id: 'anime', label: 'Anime', desc: 'Japanese animation', color: 'from-rose-500 to-pink-700' },
-  { id: 'minimalist', label: 'Minimalist', desc: 'Clean and simple', color: 'from-gray-400 to-gray-600' },
-  { id: 'surreal', label: 'Surreal', desc: 'Dreamlike fantasy', color: 'from-violet-600 to-indigo-800' },
-  { id: 'neon', label: 'Neon', desc: 'Glowing lights', color: 'from-cyan-500 to-blue-700' },
-  { id: 'vintage', label: 'Vintage', desc: 'Retro aesthetic', color: 'from-yellow-700 to-amber-900' },
-  { id: 'pencilSketch', label: 'Pencil Sketch', desc: 'Hand-drawn look', color: 'from-zinc-500 to-zinc-700' },
-  { id: 'popArt', label: 'Pop Art', desc: 'Bold comic style', color: 'from-red-500 to-yellow-500' },
-  { id: 'sciFi', label: 'Sci-Fi', desc: 'Space and tech', color: 'from-blue-600 to-purple-800' },
-  { id: 'gothic', label: 'Gothic', desc: 'Dark and moody', color: 'from-gray-800 to-black' },
-  { id: 'impressionist', label: 'Impressionist', desc: 'Monet-inspired', color: 'from-green-500 to-teal-700' },
-  { id: 'lowPoly', label: 'Low Poly', desc: '3D geometric', color: 'from-emerald-500 to-cyan-700' },
-  { id: 'steampunk', label: 'Steampunk', desc: 'Victorian meets tech', color: 'from-amber-700 to-stone-800' },
-  { id: 'vaporwave', label: 'Vaporwave', desc: '80s retro future', color: 'from-fuchsia-500 to-cyan-500' },
-  { id: 'artDeco', label: 'Art Deco', desc: '1920s elegance', color: 'from-yellow-500 to-amber-700' },
+  { id: 'photorealistic', label: 'Photorealistic', desc: 'True-to-life imagery', color: 'from-slate-600 to-slate-800', icon: '📷' },
+  { id: 'cinematic', label: 'Cinematic', desc: 'Movie-quality shots', color: 'from-amber-700 to-red-900', icon: '🎬' },
+  { id: 'cyberpunk', label: 'Cyberpunk', desc: 'Neon-lit futuristic', color: 'from-pink-600 to-purple-800', icon: '🌃' },
+  { id: 'anime', label: 'Anime', desc: 'Japanese animation', color: 'from-rose-500 to-pink-700', icon: '🎨' },
+  { id: 'watercolor', label: 'Watercolor', desc: 'Soft painted look', color: 'from-blue-400 to-cyan-600', icon: '💧' },
+  { id: 'oilPainting', label: 'Oil Painting', desc: 'Classic fine art', color: 'from-amber-600 to-orange-800', icon: '🖼️' },
+  { id: 'portrait', label: 'Portrait', desc: 'Professional portraits', color: 'from-neutral-600 to-neutral-800', icon: '👤' },
+  { id: 'abstract', label: 'Abstract', desc: 'Expressive art', color: 'from-violet-600 to-fuchsia-700', icon: '🎭' },
+  { id: 'minimalist', label: 'Minimalist', desc: 'Clean and simple', color: 'from-gray-400 to-gray-600', icon: '⬜' },
+  { id: 'surreal', label: 'Surreal', desc: 'Dreamlike fantasy', color: 'from-violet-600 to-indigo-800', icon: '🌙' },
+  { id: 'neon', label: 'Neon', desc: 'Glowing lights', color: 'from-cyan-500 to-blue-700', icon: '💡' },
+  { id: 'vintage', label: 'Vintage', desc: 'Retro aesthetic', color: 'from-yellow-700 to-amber-900', icon: '📻' },
+  { id: 'pencilSketch', label: 'Pencil Sketch', desc: 'Hand-drawn look', color: 'from-zinc-500 to-zinc-700', icon: '✏️' },
+  { id: 'sciFi', label: 'Sci-Fi', desc: 'Space and tech', color: 'from-blue-600 to-purple-800', icon: '🚀' },
+  { id: 'gothic', label: 'Gothic', desc: 'Dark and moody', color: 'from-gray-800 to-black', icon: '🦇' },
+  { id: 'impressionist', label: 'Impressionist', desc: 'Monet-inspired', color: 'from-green-500 to-teal-700', icon: '🌸' },
+  { id: 'lowPoly', label: 'Low Poly', desc: '3D geometric', color: 'from-emerald-500 to-cyan-700', icon: '💎' },
+  { id: 'steampunk', label: 'Steampunk', desc: 'Victorian meets tech', color: 'from-amber-700 to-stone-800', icon: '⚙️' },
+  { id: 'vaporwave', label: 'Vaporwave', desc: '80s retro future', color: 'from-fuchsia-500 to-cyan-500', icon: '🌴' },
+  { id: 'artDeco', label: 'Art Deco', desc: '1920s elegance', color: 'from-yellow-500 to-amber-700', icon: '🏛️' },
+];
+
+const ASPECT_RATIOS = [
+  { id: '1:1', label: 'Square (1:1)', desc: 'Instagram, Profile pics' },
+  { id: '16:9', label: 'Landscape (16:9)', desc: 'YouTube, Presentations' },
+  { id: '9:16', label: 'Portrait (9:16)', desc: 'Stories, TikTok' },
+  { id: '4:3', label: 'Standard (4:3)', desc: 'Traditional photos' },
+  { id: '3:2', label: 'Photo (3:2)', desc: 'DSLR cameras' },
+  { id: '21:9', label: 'Ultrawide (21:9)', desc: 'Cinematic banners' },
 ];
 
 export default function GenerateTab({ user, userPrefs, onImageGenerated }) {
   const [prompt, setPrompt] = useState('');
+  const [negativePrompt, setNegativePrompt] = useState('');
   const [selectedStyle, setSelectedStyle] = useState(userPrefs?.imageLabSettings?.defaultStyle || 'photorealistic');
+  const [aspectRatio, setAspectRatio] = useState('1:1');
+  const [quality, setQuality] = useState(userPrefs?.imageLabSettings?.defaultQuality || 'HD');
+  const [creativity, setCreativity] = useState(70);
   const [batchCount, setBatchCount] = useState(1);
+  const [seed, setSeed] = useState(Math.floor(Math.random() * 1000000));
+  const [seedLocked, setSeedLocked] = useState(false);
+  const [autoEnhance, setAutoEnhance] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [enhancing, setEnhancing] = useState(false);
   const [images, setImages] = useState([]);
   const [fullscreenImage, setFullscreenImage] = useState(null);
   const [referenceImage, setReferenceImage] = useState(null);
+  const [styleStrength, setStyleStrength] = useState(75);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [activeSubTab, setActiveSubTab] = useState('generate');
+  const [enhancedPrompt, setEnhancedPrompt] = useState('');
+  const [promptSuggestions, setPromptSuggestions] = useState([]);
   const dropdownRef = useRef(null);
 
-  const [controls, setControls] = useState({
-    aspectRatio: '1:1',
-    modelStrength: 75,
-    sharpness: 50,
-    creativity: 70,
-    guidanceScale: 7.5,
-    seed: Math.floor(Math.random() * 1000000),
-    seedLocked: false,
-    qualityMode: userPrefs?.imageLabSettings?.defaultQuality || 'Standard',
-    negativePrompt: '',
-  });
-
-  // Load User Preferences on mount/change
+  // Load User Preferences
   useEffect(() => {
     if (userPrefs?.imageLabSettings) {
       if (userPrefs.imageLabSettings.defaultStyle) setSelectedStyle(userPrefs.imageLabSettings.defaultStyle);
-      if (userPrefs.imageLabSettings.defaultQuality) setControls(prev => ({ ...prev, qualityMode: userPrefs.imageLabSettings.defaultQuality }));
+      if (userPrefs.imageLabSettings.defaultQuality) setQuality(userPrefs.imageLabSettings.defaultQuality);
     }
   }, [userPrefs]);
 
@@ -206,16 +93,16 @@ export default function GenerateTab({ user, userPrefs, onImageGenerated }) {
     const handleKeyDown = (e) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'g') {
         e.preventDefault();
-        if (prompt.trim() && !loading) {
-          handleGenerate();
-        } else if (!prompt.trim()) {
-          toast.error('Please enter a prompt first');
-        }
+        if (prompt.trim() && !loading) handleGenerate();
+      }
+      if ((e.metaKey || e.ctrlKey) && e.key === 'e') {
+        e.preventDefault();
+        if (prompt.trim() && !enhancing) handleEnhancePrompt();
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [prompt, loading]); // Dependencies needed for closure
+  }, [prompt, loading, enhancing]);
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -230,33 +117,35 @@ export default function GenerateTab({ user, userPrefs, onImageGenerated }) {
 
   const selectedStyleData = STYLE_PRESETS.find(s => s.id === selectedStyle);
 
-  const saveDefaults = async () => {
+  // Enhanced prompt generation via backend
+  const handleEnhancePrompt = async () => {
+    if (!prompt.trim()) {
+      toast.error('Enter a prompt first');
+      return;
+    }
+
+    setEnhancing(true);
     try {
-      toast.loading('Saving defaults...');
-      if (userPrefs?.id) {
-        await base44.entities.UserPreferences.update(userPrefs.id, {
-          imageLabSettings: {
-            ...userPrefs.imageLabSettings,
-            defaultStyle: selectedStyle,
-            defaultQuality: controls.qualityMode
-          }
-        });
-      } else {
-        await base44.entities.UserPreferences.create({
-          imageLabSettings: {
-            defaultStyle: selectedStyle,
-            defaultQuality: controls.qualityMode
-          }
-        });
+      const response = await base44.functions.invoke('imageLabOps', {
+        operation: 'enhancePrompt',
+        prompt,
+        style: selectedStyle
+      });
+
+      if (response.data.success) {
+        setEnhancedPrompt(response.data.enhanced);
+        setPromptSuggestions(response.data.suggestions || []);
+        toast.success('Prompt enhanced!');
       }
-      toast.dismiss();
-      toast.success('Defaults saved!');
     } catch (error) {
-      toast.dismiss();
-      toast.error('Failed to save defaults');
+      console.error('Enhance error:', error);
+      toast.error('Failed to enhance prompt');
+    } finally {
+      setEnhancing(false);
     }
   };
 
+  // Main generation via backend
   const handleGenerate = async () => {
     if (!prompt.trim()) {
       toast.error('Please enter a prompt');
@@ -267,44 +156,119 @@ export default function GenerateTab({ user, userPrefs, onImageGenerated }) {
     setImages([]);
 
     try {
-      const styleLabel = selectedStyleData?.label || selectedStyle;
-      const enhancedPrompt = `${prompt}${selectedStyle !== 'photorealistic' ? `, ${styleLabel} style` : ''}, ${controls.qualityMode.toLowerCase()} quality, highly detailed`;
-
-      const promises = Array.from({ length: batchCount }, async () => {
-        const result = await base44.integrations.Core.GenerateImage({
-          prompt: enhancedPrompt,
-        });
-
-        const savedImage = await base44.entities.InteractiveImage.create({
-          name: `Generated: ${prompt.substring(0, 50)}`,
-          fileUrl: result.url,
+      if (batchCount > 1) {
+        // Batch generation
+        const response = await base44.functions.invoke('imageLabOps', {
+          operation: 'batchGenerate',
           prompt,
           style: selectedStyle,
-          generationSettings: controls,
-          source: 'generated',
-          status: 'draft',
-          ownerEmail: user?.email || 'guest',
+          quality,
+          count: batchCount
         });
 
-        return { url: result.url, id: savedImage.id, ...savedImage };
-      });
+        if (response.data.success) {
+          setImages(response.data.results.map(r => ({ url: r.url, id: r.id, prompt: r.prompt })));
+          if (response.data.results.length > 0 && onImageGenerated) {
+            onImageGenerated(response.data.results[0]);
+          }
+          toast.success(`Generated ${response.data.generated} image${response.data.generated > 1 ? 's' : ''}!`);
+        }
+      } else {
+        // Single advanced generation
+        const response = await base44.functions.invoke('imageLabOps', {
+          operation: 'generateAdvanced',
+          prompt,
+          negativePrompt,
+          style: selectedStyle,
+          aspectRatio,
+          quality,
+          creativity,
+          seed: seedLocked ? seed : undefined,
+          referenceImageUrl: referenceImage,
+          styleStrength,
+          enhancePrompt: autoEnhance
+        });
 
-      const results = await Promise.all(promises);
-      setImages(results);
-
-      if (results.length > 0 && onImageGenerated) {
-        onImageGenerated(results[0]);
+        if (response.data.success) {
+          const img = response.data.image;
+          setImages([{ url: img.url, id: img.id, prompt: img.prompt, enhancedPrompt: img.enhancedPrompt }]);
+          if (onImageGenerated) onImageGenerated(img);
+          toast.success('Image generated!');
+        }
       }
-
-      toast.success(`Generated ${results.length} image${results.length > 1 ? 's' : ''}!`);
     } catch (error) {
-      console.error('Error generating images:', error);
-      toast.error(`Failed to generate images: ${error.message}`);
+      console.error('Generation error:', error);
+      toast.error(`Failed: ${error.message}`);
     } finally {
       setLoading(false);
-      if (!controls.seedLocked) {
-        setControls((prev) => ({ ...prev, seed: Math.floor(Math.random() * 1000000) }));
+      if (!seedLocked) setSeed(Math.floor(Math.random() * 1000000));
+    }
+  };
+
+  // Style transfer
+  const handleStyleTransfer = async () => {
+    if (!referenceImage) {
+      toast.error('Upload a reference image first');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await base44.functions.invoke('imageLabOps', {
+        operation: 'styleTransfer',
+        imageUrl: referenceImage,
+        targetStyle: selectedStyle
+      });
+
+      if (response.data.success) {
+        setImages([{ url: response.data.styledUrl, style: selectedStyle }]);
+        toast.success(`Applied ${selectedStyle} style!`);
       }
+    } catch (error) {
+      toast.error('Style transfer failed');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Upscale image
+  const handleUpscale = async (imageUrl) => {
+    setLoading(true);
+    try {
+      const response = await base44.functions.invoke('imageLabOps', {
+        operation: 'upscale',
+        imageUrl,
+        scale: 2
+      });
+
+      if (response.data.success) {
+        setImages(prev => [...prev, { url: response.data.upscaledUrl, isUpscaled: true }]);
+        toast.success('Image upscaled!');
+      }
+    } catch (error) {
+      toast.error('Upscale failed');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Remove background
+  const handleRemoveBackground = async (imageUrl) => {
+    setLoading(true);
+    try {
+      const response = await base44.functions.invoke('imageLabOps', {
+        operation: 'removeBackground',
+        imageUrl
+      });
+
+      if (response.data.success) {
+        setImages(prev => [...prev, { url: response.data.processedUrl, bgRemoved: true }]);
+        toast.success('Background removed!');
+      }
+    } catch (error) {
+      toast.error('Background removal failed');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -315,12 +279,12 @@ export default function GenerateTab({ user, userPrefs, onImageGenerated }) {
       const downloadUrl = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = downloadUrl;
-      a.download = `glyphlock-image-${Date.now()}-${index + 1}.png`;
+      a.download = `glyphlock-${selectedStyle}-${Date.now()}-${index + 1}.png`;
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(downloadUrl);
       a.remove();
-      toast.success('Downloaded image');
+      toast.success('Downloaded!');
     } catch (error) {
       window.open(url, '_blank');
     }
@@ -331,276 +295,497 @@ export default function GenerateTab({ user, userPrefs, onImageGenerated }) {
     if (!file) return;
 
     if (!file.type.startsWith('image/')) {
-      toast.error('Please select an image file');
-      return;
-    }
-
-    if (file.size > 10 * 1024 * 1024) {
-      toast.error('Image must be less than 10MB');
+      toast.error('Please select an image');
       return;
     }
 
     try {
-      toast.loading('Uploading image...');
+      toast.loading('Uploading...');
       const result = await base44.integrations.Core.UploadFile({ file });
       setReferenceImage(result.file_url);
       toast.dismiss();
-      toast.success('Reference image uploaded');
+      toast.success('Reference uploaded');
     } catch (error) {
       toast.dismiss();
       toast.error('Upload failed');
     }
   };
 
-  return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      {/* Left Column - Controls */}
-      <div className="lg:col-span-2 space-y-6">
-        {/* Prompt Panel */}
-        <Card className={`${GlyphImageCard.premium} ${GlyphImageShadows.depth.lg}`}>
-          <CardHeader className="border-b border-purple-500/20">
-            <CardTitle className={`${GlyphImageTypography.heading.lg} text-white flex items-center gap-2`}>
-              <Wand2 className="w-5 h-5 text-cyan-400" />
-              Prompt & Style
-            </CardTitle>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={saveDefaults}
-              className="text-xs text-purple-300 hover:text-white hover:bg-purple-500/20 gap-1 ml-auto"
-              title="Save current style and quality as default"
-            >
-              <Save className="w-3 h-3" />
-              Save Defaults
-            </Button>
-          </CardHeader>
-          <CardContent className={GlyphImagePanel.primary}>
-            <div className="space-y-2">
-              <Label htmlFor="prompt" className="text-gray-300 font-semibold">
-                Describe what you want to create
-              </Label>
-              <Textarea
-                id="prompt"
-                value={prompt}
-                onChange={(e) => setPrompt(e.target.value)}
-                placeholder="A futuristic cityscape with neon lights and flying vehicles..."
-                className={`${GlyphImageInput.glow} min-h-[120px]`}
-              />
-            </div>
+  const saveDefaults = async () => {
+    try {
+      if (userPrefs?.id) {
+        await base44.entities.UserPreferences.update(userPrefs.id, {
+          imageLabSettings: { ...userPrefs.imageLabSettings, defaultStyle: selectedStyle, defaultQuality: quality }
+        });
+      } else {
+        await base44.entities.UserPreferences.create({
+          imageLabSettings: { defaultStyle: selectedStyle, defaultQuality: quality }
+        });
+      }
+      toast.success('Defaults saved!');
+    } catch (error) {
+      toast.error('Failed to save');
+    }
+  };
 
-            {/* Style Dropdown */}
-            <div className="space-y-2">
-              <Label className="text-gray-300 font-semibold">Style Preset</Label>
-              <div className="relative" ref={dropdownRef}>
-                <button
-                  onClick={() => setDropdownOpen(!dropdownOpen)}
-                  className={`w-full flex items-center justify-between p-4 rounded-xl bg-gradient-to-r ${selectedStyleData?.color || 'from-slate-700 to-slate-800'} border-2 border-white/20 hover:border-cyan-400/50 transition-all duration-300 group`}
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="text-white">
-                      {StyleIcons[selectedStyle] || StyleIcons.photorealistic}
+  return (
+    <div className="space-y-6">
+      {/* Sub-tabs for different modes */}
+      <Tabs value={activeSubTab} onValueChange={setActiveSubTab}>
+        <TabsList className="bg-black/60 border border-purple-500/30 p-1">
+          <TabsTrigger value="generate" className="data-[state=active]:bg-purple-600 data-[state=active]:text-white">
+            <Wand2 className="w-4 h-4 mr-2" />
+            Generate
+          </TabsTrigger>
+          <TabsTrigger value="transform" className="data-[state=active]:bg-cyan-600 data-[state=active]:text-white">
+            <Paintbrush className="w-4 h-4 mr-2" />
+            Transform
+          </TabsTrigger>
+          <TabsTrigger value="tools" className="data-[state=active]:bg-green-600 data-[state=active]:text-white">
+            <Scissors className="w-4 h-4 mr-2" />
+            Tools
+          </TabsTrigger>
+        </TabsList>
+
+        {/* GENERATE TAB */}
+        <TabsContent value="generate">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Left Column - Controls */}
+            <div className="lg:col-span-2 space-y-6">
+              {/* Prompt Panel */}
+              <Card className={`${GlyphImageCard.premium} ${GlyphImageShadows.depth.lg}`}>
+                <CardHeader className="border-b border-purple-500/20 flex flex-row items-center justify-between">
+                  <CardTitle className={`${GlyphImageTypography.heading.lg} text-white flex items-center gap-2`}>
+                    <Brain className="w-5 h-5 text-purple-400" />
+                    AI Prompt Studio
+                  </CardTitle>
+                  <Button variant="ghost" size="sm" onClick={saveDefaults} className="text-xs text-purple-300 hover:text-white gap-1">
+                    <Save className="w-3 h-3" /> Save Defaults
+                  </Button>
+                </CardHeader>
+                <CardContent className={GlyphImagePanel.primary}>
+                  {/* Main Prompt */}
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <Label className="text-gray-300 font-semibold">Describe your vision</Label>
+                      <Button
+                        size="sm"
+                        onClick={handleEnhancePrompt}
+                        disabled={enhancing || !prompt.trim()}
+                        className="text-xs bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500"
+                      >
+                        {enhancing ? <Loader2 className="w-3 h-3 animate-spin mr-1" /> : <Sparkles className="w-3 h-3 mr-1" />}
+                        Enhance (⌘E)
+                      </Button>
                     </div>
-                    <div className="text-left">
-                      <div className="text-white font-semibold">{selectedStyleData?.label}</div>
-                      <div className="text-white/60 text-xs">{selectedStyleData?.desc}</div>
+                    <Textarea
+                      value={prompt}
+                      onChange={(e) => setPrompt(e.target.value)}
+                      placeholder="A futuristic cityscape with neon lights, flying vehicles, rain reflections on the streets..."
+                      className={`${GlyphImageInput.glow} min-h-[120px]`}
+                    />
+                    
+                    {/* Enhanced prompt display */}
+                    {enhancedPrompt && (
+                      <div className="p-3 bg-purple-500/10 border border-purple-500/30 rounded-lg">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-xs text-purple-400 font-semibold">AI Enhanced:</span>
+                          <Button size="sm" variant="ghost" onClick={() => setPrompt(enhancedPrompt)} className="text-xs text-purple-300">
+                            <Copy className="w-3 h-3 mr-1" /> Use This
+                          </Button>
+                        </div>
+                        <p className="text-sm text-gray-300">{enhancedPrompt}</p>
+                      </div>
+                    )}
+
+                    {/* Prompt suggestions */}
+                    {promptSuggestions.length > 0 && (
+                      <div className="space-y-2">
+                        <span className="text-xs text-gray-500">Variations:</span>
+                        <div className="flex flex-wrap gap-2">
+                          {promptSuggestions.slice(0, 3).map((sug, i) => (
+                            <button
+                              key={i}
+                              onClick={() => setPrompt(sug)}
+                              className="text-xs px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-gray-300 rounded-full border border-slate-700 transition-all"
+                            >
+                              {sug.substring(0, 50)}...
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Negative Prompt (collapsible) */}
+                  <details className="group">
+                    <summary className="cursor-pointer text-sm text-gray-400 hover:text-gray-300 flex items-center gap-2">
+                      <ChevronDown className="w-4 h-4 group-open:rotate-180 transition-transform" />
+                      Negative Prompt (what to avoid)
+                    </summary>
+                    <Textarea
+                      value={negativePrompt}
+                      onChange={(e) => setNegativePrompt(e.target.value)}
+                      placeholder="blurry, low quality, distorted, ugly, deformed..."
+                      className={`${GlyphImageInput.base} mt-2 min-h-[60px]`}
+                    />
+                  </details>
+
+                  {/* Style Dropdown */}
+                  <div className="space-y-2">
+                    <Label className="text-gray-300 font-semibold">Style Preset</Label>
+                    <div className="relative" ref={dropdownRef}>
+                      <button
+                        onClick={() => setDropdownOpen(!dropdownOpen)}
+                        className={`w-full flex items-center justify-between p-4 rounded-xl bg-gradient-to-r ${selectedStyleData?.color || 'from-slate-700 to-slate-800'} border-2 border-white/20 hover:border-cyan-400/50 transition-all duration-300`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <span className="text-2xl">{selectedStyleData?.icon}</span>
+                          <div className="text-left">
+                            <div className="text-white font-semibold">{selectedStyleData?.label}</div>
+                            <div className="text-white/60 text-xs">{selectedStyleData?.desc}</div>
+                          </div>
+                        </div>
+                        <ChevronDown className={`w-5 h-5 text-white transition-transform duration-300 ${dropdownOpen ? 'rotate-180' : ''}`} />
+                      </button>
+
+                      <div className={`absolute z-50 w-full mt-2 bg-slate-900/98 backdrop-blur-xl border-2 border-purple-500/30 rounded-xl shadow-2xl overflow-hidden transition-all duration-300 origin-top ${
+                        dropdownOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'
+                      }`}>
+                        <div className="max-h-[400px] overflow-y-auto p-2 grid grid-cols-2 gap-1">
+                          {STYLE_PRESETS.map((style) => (
+                            <button
+                              key={style.id}
+                              onClick={() => { setSelectedStyle(style.id); setDropdownOpen(false); }}
+                              className={`flex items-center gap-2 p-3 rounded-lg transition-all ${
+                                selectedStyle === style.id
+                                  ? `bg-gradient-to-r ${style.color} border border-cyan-400/50`
+                                  : 'hover:bg-slate-800/80 border border-transparent'
+                              }`}
+                            >
+                              <span className="text-xl">{style.icon}</span>
+                              <div className="flex-1 text-left">
+                                <div className="text-white text-sm font-medium">{style.label}</div>
+                              </div>
+                              {selectedStyle === style.id && <Check className="w-4 h-4 text-cyan-400" />}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <ChevronDown className={`w-5 h-5 text-white transition-transform duration-300 ${dropdownOpen ? 'rotate-180' : ''}`} />
-                </button>
 
-                {/* Dropdown Menu */}
-                <div className={`absolute z-50 w-full mt-2 bg-slate-900/98 backdrop-blur-xl border-2 border-purple-500/30 rounded-xl shadow-2xl overflow-hidden transition-all duration-300 origin-top ${
-                  dropdownOpen 
-                    ? 'opacity-100 scale-100 translate-y-0' 
-                    : 'opacity-0 scale-95 -translate-y-2 pointer-events-none'
-                }`}>
-                  <div className="max-h-[400px] overflow-y-auto p-2 space-y-1">
+                  {/* Settings Grid */}
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div className="space-y-2">
+                      <Label className="text-gray-400 text-xs">Aspect Ratio</Label>
+                      <Select value={aspectRatio} onValueChange={setAspectRatio}>
+                        <SelectTrigger className={GlyphImageInput.base}>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="bg-slate-900 border-slate-700">
+                          {ASPECT_RATIOS.map(ar => (
+                            <SelectItem key={ar.id} value={ar.id}>{ar.label}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label className="text-gray-400 text-xs">Quality</Label>
+                      <Select value={quality} onValueChange={setQuality}>
+                        <SelectTrigger className={GlyphImageInput.base}>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="bg-slate-900 border-slate-700">
+                          <SelectItem value="Draft">Draft</SelectItem>
+                          <SelectItem value="Standard">Standard</SelectItem>
+                          <SelectItem value="HD">HD</SelectItem>
+                          <SelectItem value="Ultra">Ultra</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label className="text-gray-400 text-xs">Batch ({batchCount})</Label>
+                      <Input
+                        type="number"
+                        min="1"
+                        max="8"
+                        value={batchCount}
+                        onChange={(e) => setBatchCount(Math.min(8, Math.max(1, parseInt(e.target.value) || 1)))}
+                        className={GlyphImageInput.base}
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label className="text-gray-400 text-xs flex items-center gap-2">
+                        Seed
+                        <button onClick={() => setSeedLocked(!seedLocked)} className={seedLocked ? 'text-cyan-400' : 'text-gray-600'}>
+                          {seedLocked ? '🔒' : '🎲'}
+                        </button>
+                      </Label>
+                      <Input
+                        type="number"
+                        value={seed}
+                        onChange={(e) => setSeed(parseInt(e.target.value) || 0)}
+                        disabled={!seedLocked}
+                        className={GlyphImageInput.base}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Sliders */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <Label className="text-gray-400 text-xs">Creativity</Label>
+                        <span className="text-xs text-cyan-400">{creativity}%</span>
+                      </div>
+                      <Slider
+                        value={[creativity]}
+                        onValueChange={([v]) => setCreativity(v)}
+                        min={0}
+                        max={100}
+                        step={5}
+                        className="w-full"
+                      />
+                    </div>
+
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <Label className="text-gray-400 text-xs">Style Strength</Label>
+                        <span className="text-xs text-purple-400">{styleStrength}%</span>
+                      </div>
+                      <Slider
+                        value={[styleStrength]}
+                        onValueChange={([v]) => setStyleStrength(v)}
+                        min={0}
+                        max={100}
+                        step={5}
+                        className="w-full"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Auto-enhance toggle */}
+                  <div className="flex items-center justify-between p-3 bg-purple-500/10 rounded-lg border border-purple-500/30">
+                    <div>
+                      <Label className="text-white font-medium">AI Auto-Enhance</Label>
+                      <p className="text-xs text-gray-400">Automatically improve your prompt for better results</p>
+                    </div>
+                    <Switch checked={autoEnhance} onCheckedChange={setAutoEnhance} />
+                  </div>
+
+                  {/* Reference Image */}
+                  <div className="space-y-2">
+                    <Label className="text-gray-300 text-sm">Reference Image (Optional)</Label>
+                    <div className="flex items-center gap-4">
+                      <input type="file" accept="image/*" onChange={handleReferenceUpload} className="hidden" id="ref-upload" />
+                      <Button type="button" onClick={() => document.getElementById('ref-upload')?.click()} className={GlyphImageButton.secondary}>
+                        <Upload className="w-4 h-4 mr-2" /> Upload
+                      </Button>
+                      {referenceImage && (
+                        <div className="relative">
+                          <img src={referenceImage} alt="Reference" className="h-16 rounded-lg border border-cyan-500/30 object-cover" />
+                          <button onClick={() => setReferenceImage(null)} className="absolute -top-2 -right-2 w-5 h-5 bg-red-500 rounded-full text-white text-xs flex items-center justify-center">×</button>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Generate Button */}
+                  <Button
+                    onClick={handleGenerate}
+                    disabled={loading || !prompt.trim()}
+                    className={`${GlyphImageButton.primary} w-full h-14 text-lg ${GlyphImageShadows.neonPurple}`}
+                  >
+                    {loading ? (
+                      <><Loader2 className="w-5 h-5 mr-2 animate-spin" /> Generating {batchCount > 1 ? `${batchCount} images` : ''}...</>
+                    ) : (
+                      <><Zap className="w-5 h-5 mr-2" /> Generate {batchCount > 1 ? `${batchCount} Images` : 'Image'} (⌘G)</>
+                    )}
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Right Column - Preview */}
+            <div>
+              <Card className={`${GlyphImageCard.premium} ${GlyphImageShadows.depth.lg} sticky top-24`}>
+                <CardHeader className="border-b border-purple-500/20">
+                  <CardTitle className={`${GlyphImageTypography.heading.md} text-white flex items-center gap-2`}>
+                    <ImageIcon className="w-5 h-5 text-cyan-400" />
+                    Generated Images
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className={GlyphImagePanel.primary}>
+                  {loading && (
+                    <div className="flex flex-col items-center justify-center py-12">
+                      <div className="relative">
+                        <Loader2 className="w-16 h-16 animate-spin text-cyan-400" />
+                        <Sparkles className="w-6 h-6 text-purple-400 absolute top-0 right-0 animate-pulse" />
+                      </div>
+                      <p className="text-gray-400 mt-4">Crafting your vision...</p>
+                      <p className="text-xs text-gray-600 mt-1">This may take 10-30 seconds</p>
+                    </div>
+                  )}
+
+                  {!loading && images.length === 0 && (
+                    <div className="text-center py-12">
+                      <Wand2 className="w-16 h-16 mx-auto mb-4 text-gray-600" />
+                      <p className="text-gray-400">Your creations will appear here</p>
+                      <p className="text-xs text-gray-600 mt-1">Enter a prompt and click Generate</p>
+                    </div>
+                  )}
+
+                  <div className="grid grid-cols-1 gap-4">
+                    {images.map((img, idx) => (
+                      <div key={idx} className="group relative">
+                        <img
+                          src={img.url}
+                          alt={`Generated ${idx + 1}`}
+                          className="w-full rounded-lg border border-purple-500/30 cursor-pointer hover:border-cyan-500 transition-all"
+                          onClick={() => setFullscreenImage(img.url)}
+                        />
+                        
+                        {/* Action overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-lg">
+                          <div className="absolute bottom-3 left-3 right-3 flex justify-between items-center">
+                            <div className="flex gap-2">
+                              <Button size="sm" onClick={() => handleDownload(img.url, idx)} className="bg-white/10 backdrop-blur-sm hover:bg-white/20">
+                                <Download className="w-4 h-4" />
+                              </Button>
+                              <Button size="sm" onClick={() => setFullscreenImage(img.url)} className="bg-white/10 backdrop-blur-sm hover:bg-white/20">
+                                <Maximize2 className="w-4 h-4" />
+                              </Button>
+                              <Button size="sm" onClick={() => handleUpscale(img.url)} className="bg-cyan-500/20 backdrop-blur-sm hover:bg-cyan-500/30" title="Upscale">
+                                <ArrowUpRight className="w-4 h-4" />
+                              </Button>
+                              <Button size="sm" onClick={() => handleRemoveBackground(img.url)} className="bg-green-500/20 backdrop-blur-sm hover:bg-green-500/30" title="Remove BG">
+                                <Scissors className="w-4 h-4" />
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Badges */}
+                        <div className="absolute top-2 right-2 flex gap-1">
+                          {img.isUpscaled && <span className="text-[10px] px-2 py-0.5 bg-cyan-500/80 text-white rounded-full">2x</span>}
+                          {img.bgRemoved && <span className="text-[10px] px-2 py-0.5 bg-green-500/80 text-white rounded-full">No BG</span>}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </TabsContent>
+
+        {/* TRANSFORM TAB */}
+        <TabsContent value="transform">
+          <Card className={`${GlyphImageCard.premium} ${GlyphImageShadows.depth.lg}`}>
+            <CardHeader className="border-b border-cyan-500/20">
+              <CardTitle className="text-white flex items-center gap-2">
+                <Paintbrush className="w-5 h-5 text-cyan-400" />
+                Style Transfer
+              </CardTitle>
+            </CardHeader>
+            <CardContent className={GlyphImagePanel.primary}>
+              <p className="text-gray-400 mb-4">Upload an image and apply any style preset to transform it.</p>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-4">
+                  <input type="file" accept="image/*" onChange={handleReferenceUpload} className="hidden" id="transform-upload" />
+                  <Button onClick={() => document.getElementById('transform-upload')?.click()} className={`${GlyphImageButton.secondary} w-full`}>
+                    <Upload className="w-4 h-4 mr-2" /> Upload Image
+                  </Button>
+                  
+                  {referenceImage && (
+                    <img src={referenceImage} alt="Source" className="w-full rounded-lg border border-cyan-500/30" />
+                  )}
+                </div>
+
+                <div className="space-y-4">
+                  <Label className="text-gray-300">Select Target Style</Label>
+                  <div className="grid grid-cols-3 gap-2 max-h-[300px] overflow-y-auto">
                     {STYLE_PRESETS.map((style) => (
                       <button
                         key={style.id}
-                        onClick={() => {
-                          setSelectedStyle(style.id);
-                          setDropdownOpen(false);
-                        }}
-                        className={`w-full flex items-center gap-3 p-3 rounded-lg transition-all duration-200 group ${
+                        onClick={() => setSelectedStyle(style.id)}
+                        className={`p-3 rounded-lg transition-all text-center ${
                           selectedStyle === style.id
-                            ? `bg-gradient-to-r ${style.color} border border-cyan-400/50`
-                            : 'hover:bg-slate-800/80 border border-transparent'
+                            ? `bg-gradient-to-r ${style.color} border border-cyan-400`
+                            : 'bg-slate-800 hover:bg-slate-700 border border-transparent'
                         }`}
                       >
-                        <div className={`p-2 rounded-lg bg-gradient-to-br ${style.color} text-white`}>
-                          {StyleIcons[style.id] || StyleIcons.photorealistic}
-                        </div>
-                        <div className="flex-1 text-left">
-                          <div className="text-white font-medium">{style.label}</div>
-                          <div className="text-gray-400 text-xs">{style.desc}</div>
-                        </div>
-                        {selectedStyle === style.id && (
-                          <Check className="w-5 h-5 text-cyan-400" />
-                        )}
+                        <span className="text-2xl block">{style.icon}</span>
+                        <span className="text-xs text-white">{style.label}</span>
                       </button>
                     ))}
                   </div>
+
+                  <Button
+                    onClick={handleStyleTransfer}
+                    disabled={loading || !referenceImage}
+                    className={`${GlyphImageButton.primary} w-full`}
+                  >
+                    {loading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Paintbrush className="w-4 h-4 mr-2" />}
+                    Apply Style
+                  </Button>
                 </div>
               </div>
-            </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label className="text-gray-300">Batch Count</Label>
-                <Input
-                  type="number"
-                  min="1"
-                  max="4"
-                  value={batchCount}
-                  onChange={(e) => setBatchCount(parseInt(e.target.value) || 1)}
-                  className={GlyphImageInput.base}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label className="text-gray-300">Quality Mode</Label>
-                <Select value={controls.qualityMode} onValueChange={(val) => setControls({ ...controls, qualityMode: val })}>
-                  <SelectTrigger className={GlyphImageInput.base}>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="bg-slate-900 border-slate-700">
-                    <SelectItem value="Standard">Standard</SelectItem>
-                    <SelectItem value="HD">HD</SelectItem>
-                    <SelectItem value="Ultra">Ultra</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
+        {/* TOOLS TAB */}
+        <TabsContent value="tools">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Upscale Tool */}
+            <Card className={`${GlyphImageCard.glass}`}>
+              <CardContent className="p-6 text-center">
+                <ArrowUpRight className="w-12 h-12 mx-auto mb-4 text-cyan-400" />
+                <h3 className="text-lg font-bold text-white mb-2">Upscale</h3>
+                <p className="text-gray-400 text-sm mb-4">Enhance resolution and detail</p>
+                <p className="text-xs text-gray-500">Generate an image first, then click the upscale button</p>
+              </CardContent>
+            </Card>
 
-            <Button
-              onClick={handleGenerate}
-              disabled={loading || !prompt.trim()}
-              className={`${GlyphImageButton.primary} w-full ${GlyphImageShadows.neonPurple}`}
-            >
-              {loading ? (
-                <>
-                  <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                  Generating {batchCount > 1 ? `${batchCount} images` : 'image'}...
-                </>
-              ) : (
-                <>
-                  <Wand2 className="w-5 h-5 mr-2" />
-                  Generate {batchCount > 1 ? `${batchCount} Images` : 'Image'}
-                </>
-              )}
-            </Button>
-          </CardContent>
-        </Card>
+            {/* Background Removal */}
+            <Card className={`${GlyphImageCard.glass}`}>
+              <CardContent className="p-6 text-center">
+                <Scissors className="w-12 h-12 mx-auto mb-4 text-green-400" />
+                <h3 className="text-lg font-bold text-white mb-2">Remove Background</h3>
+                <p className="text-gray-400 text-sm mb-4">Isolate subjects cleanly</p>
+                <p className="text-xs text-gray-500">Generate an image first, then click the scissors button</p>
+              </CardContent>
+            </Card>
 
-        {/* Reference Upload */}
-        <Card className={`${GlyphImageCard.glass}`}>
-          <CardHeader>
-            <CardTitle className={`${GlyphImageTypography.heading.md} text-white`}>
-              Reference Image (Optional)
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex items-center gap-4">
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleReferenceUpload}
-                className="hidden"
-                id="reference-upload"
-              />
-              <Button
-                type="button"
-                onClick={() => document.getElementById('reference-upload')?.click()}
-                className={GlyphImageButton.secondary}
-              >
-                <Upload className="w-4 h-4 mr-2" />
-                Upload Reference
-              </Button>
-              {referenceImage && (
-                <div className="flex-1">
-                  <img 
-                    src={referenceImage} 
-                    alt="Reference" 
-                    className="h-20 rounded-lg border border-cyan-500/30 object-cover"
-                  />
-                </div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Right Column - Preview */}
-      <div>
-        <Card className={`${GlyphImageCard.premium} ${GlyphImageShadows.depth.lg}`}>
-          <CardHeader className="border-b border-purple-500/20">
-            <CardTitle className={`${GlyphImageTypography.heading.md} text-white`}>Generated Images</CardTitle>
-          </CardHeader>
-          <CardContent className={GlyphImagePanel.primary}>
-            {loading && (
-              <div className="flex flex-col items-center justify-center py-12">
-                <Loader2 className="w-12 h-12 animate-spin text-cyan-400 mb-4" />
-                <p className="text-gray-400">Crafting your vision...</p>
-              </div>
-            )}
-
-            {!loading && images.length === 0 && (
-              <div className="text-center py-12">
-                <Wand2 className="w-16 h-16 mx-auto mb-4 text-gray-600" />
-                <p className="text-gray-400">Your generated images will appear here</p>
-              </div>
-            )}
-
-            <div className="grid grid-cols-1 gap-4">
-              {images.map((img, idx) => (
-                <div key={idx} className="group relative">
-                  <img
-                    src={img.url}
-                    alt={`Generated ${idx + 1}`}
-                    className="w-full rounded-lg border border-purple-500/30 cursor-pointer hover:border-cyan-500 transition-all"
-                    onClick={() => setFullscreenImage(img.url)}
-                  />
-                  <div className="absolute bottom-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Button
-                      size="sm"
-                      onClick={() => handleDownload(img.url, idx)}
-                      className={GlyphImageButton.ghost}
-                    >
-                      <Download className="w-4 h-4" />
-                    </Button>
-                    <Button
-                      size="sm"
-                      onClick={() => setFullscreenImage(img.url)}
-                      className={GlyphImageButton.ghost}
-                    >
-                      <Maximize2 className="w-4 h-4" />
-                    </Button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+            {/* Image Analysis */}
+            <Card className={`${GlyphImageCard.glass}`}>
+              <CardContent className="p-6 text-center">
+                <ScanLine className="w-12 h-12 mx-auto mb-4 text-purple-400" />
+                <h3 className="text-lg font-bold text-white mb-2">AI Analysis</h3>
+                <p className="text-gray-400 text-sm mb-4">Detect objects and composition</p>
+                <p className="text-xs text-gray-500">Available in Interactive tab</p>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+      </Tabs>
 
       {/* Fullscreen Lightbox */}
       {fullscreenImage && (
-        <div
-          className="fixed inset-0 z-50 bg-black/95 backdrop-blur-xl flex items-center justify-center p-4"
-          onClick={() => setFullscreenImage(null)}
-        >
-          <img
-            src={fullscreenImage}
-            alt="Fullscreen"
-            className="max-w-full max-h-full rounded-lg shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-          />
-          <Button
-            onClick={() => setFullscreenImage(null)}
-            className="absolute top-4 right-4 bg-gray-900/80 hover:bg-gray-800"
-          >
-            Close
-          </Button>
+        <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-xl flex items-center justify-center p-4" onClick={() => setFullscreenImage(null)}>
+          <img src={fullscreenImage} alt="Fullscreen" className="max-w-full max-h-full rounded-lg shadow-2xl" onClick={(e) => e.stopPropagation()} />
+          <div className="absolute top-4 right-4 flex gap-2">
+            <Button onClick={() => handleDownload(fullscreenImage)} className="bg-gray-900/80 hover:bg-gray-800">
+              <Download className="w-4 h-4 mr-2" /> Download
+            </Button>
+            <Button onClick={() => setFullscreenImage(null)} className="bg-gray-900/80 hover:bg-gray-800">Close</Button>
+          </div>
         </div>
       )}
     </div>
