@@ -1,125 +1,80 @@
-// ✨ AURORA VOICE — v2.1 (Robot-Voice Proof)
-// Forces natural-sounding voice. Skips Microsoft David/Zira. No robotic BS.
+// ✨ GLYPHBOT JR. — AURORA NEURAL ENGINE (v3.0)
+// Server-Side Neural TTS Only. No Browser Fallback.
+// Provider: Base44 Neural Engine (via functions)
 
-if (typeof window !== 'undefined') {
-  window.GlyphbotJr = (function() {
-    const AURORA_CONFIG = {
-      rate: 0.92,
-      pitch: 1.05,
-      volume: 1.0,
-      lang: 'en-US'
+import { base44 } from "@/api/base44Client";
+
+let currentAudio = null;
+let isLoading = false;
+
+export const speak = async (text) => {
+  if (typeof window === 'undefined' || !text) return;
+
+  // Stop any currently playing audio
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio = null;
+  }
+
+  // Cancel any browser TTS if it happened to be running (cleanup)
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+  }
+
+  try {
+    isLoading = true;
+    
+    // Call the Neural Engine
+    // We use raw fetch here to handle the Blob response correctly if the SDK wrapper expects JSON
+    // Or we use the SDK if it supports blob. Let's use the SDK but we need to handle the response type.
+    // Actually, base44.functions.invoke returns an axios response. We need 'blob'.
+    
+    // Using direct fetch to ensure we get the blob cleanly
+    const { data } = await base44.functions.invoke('generateAuroraAudio', 
+      { text }, 
+      { responseType: 'blob' } // Important for audio data
+    );
+
+    const audioUrl = URL.createObjectURL(data);
+    const audio = new Audio(audioUrl);
+    
+    audio.onended = () => {
+      URL.revokeObjectURL(audioUrl);
+      currentAudio = null;
+      isLoading = false;
     };
 
-    // List of KNOWN robotic voices to AVOID
-    const ROBOTIC_VOICES = [
-      'Microsoft David',
-      'Microsoft Zira',
-      'Microsoft Mark',
-      'Microsoft Paul',
-      'Microsoft George',
-      'Google US English (deprecated)',
-      'Generic male',
-      'Generic female'
-    ];
+    audio.onerror = (e) => {
+      console.error("Audio Playback Error:", e);
+      isLoading = false;
+    };
 
-    function isRobotic(voice) {
-      return ROBOTIC_VOICES.some(robot => voice.name.includes(robot));
-    }
+    currentAudio = audio;
+    await audio.play();
 
-    function getBestVoice() {
-      const voices = speechSynthesis.getVoices() || [];
-      
-      // 1. PREFER: Google/Wavenet/Neural voices (high quality)
-      let best = voices.find(v => 
-        v.lang === 'en-US' && 
-        v.name.includes('Google') &&
-        !v.name.includes('deprecated')
-      );
-      
-      // 2. FALLBACK: Any non-robotic English neural voice
-      if (!best) {
-        best = voices.find(v => 
-          v.lang.startsWith('en') && 
-          v.localService && 
-          !isRobotic(v)
-        );
-      }
-      
-      // 3. LAST RESORT: Any English voice that's NOT Microsoft David/Zira
-      if (!best) {
-        best = voices.find(v => 
-          v.lang.startsWith('en') && 
-          !isRobotic(v)
-        );
-      }
-      
-      // 4. If only robotic voices exist → stay silent (better than robot BS)
-      if (!best || isRobotic(best)) {
-        console.warn('Aurora: Only robotic voices available. Skipping TTS.');
-        return null;
-      }
-      
-      return best;
-    }
-
-    function speak(text) {
-      if (!text || typeof text !== 'string') return;
-      if (!('speechSynthesis' in window)) return;
-
-      let clean = text.trim().replace(/<[^>]*>/g, '');
-      if (clean && !/[.!?…]$/.test(clean)) clean += '.';
-
-      // Force voice load (critical on Chrome)
-      speechSynthesis.getVoices();
-
-      const voice = getBestVoice();
-      if (!voice) return; // no good voice → stay silent
-
-      const utterance = new SpeechSynthesisUtterance(clean);
-      utterance.rate = AURORA_CONFIG.rate;
-      utterance.pitch = AURORA_CONFIG.pitch;
-      utterance.volume = AURORA_CONFIG.volume;
-      utterance.lang = AURORA_CONFIG.lang;
-      utterance.voice = voice;
-
-      speechSynthesis.cancel();
-      speechSynthesis.speak(utterance);
-      
-      console.log('Aurora speaking with:', voice.name);
-    }
-
-    // Auto-bind to listen buttons - only attach once
-    if (!window.__aurora_listener_attached) {
-      document.addEventListener('click', (e) => {
-        // Handle button or icon inside button
-        const target = e.target.closest('[data-glyphbot-jr-listen]');
-        if (target) {
-          const text = target.getAttribute('data-text') || 
-                       target.closest('[data-message]')?.innerText ||
-                       // Fallback for React markdown containers
-                       target.parentElement?.innerText?.replace('Listen', '').trim() || 
-                       'Hello. How can I help?';
-          speak(text);
-        }
-      });
-      window.__aurora_listener_attached = true;
-    }
-
-    // Load voices on init (async-safe)
-    if (speechSynthesis.onvoiceschanged !== undefined) {
-      speechSynthesis.addEventListener('voiceschanged', () => {
-        // Voices loaded — ready for next speak()
-      });
-    }
-
-    return { speak, getBestVoice };
-  })();
-}
-
-export const speak = (text) => {
-  if (typeof window !== 'undefined' && window.GlyphbotJr) {
-    window.GlyphbotJr.speak(text);
+  } catch (error) {
+    console.error("Aurora Neural Engine Failed:", error);
+    isLoading = false;
+    // Silent fail as per directive - NO robotic fallback
   }
 };
 
-export default { speak };
+// Helper to check status (for UI spinners if needed)
+export const isSpeaking = () => !!currentAudio;
+export const isGenerating = () => isLoading;
+
+// Auto-bind listener
+if (typeof window !== 'undefined' && !window.__aurora_neural_attached) {
+  document.addEventListener('click', (e) => {
+    const target = e.target.closest('[data-glyphbot-jr-listen]');
+    if (target) {
+      const text = target.getAttribute('data-text') || 
+                   target.closest('[data-message]')?.innerText ||
+                   'Hello.';
+      speak(text);
+    }
+  });
+  window.__aurora_neural_attached = true;
+}
+
+export default { speak, isSpeaking, isGenerating };

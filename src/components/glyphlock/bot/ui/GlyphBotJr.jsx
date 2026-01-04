@@ -3,7 +3,7 @@ import { base44 } from "@/api/base44Client";
 import { Sparkles, Send, Loader2, Volume2 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { PERSONAS } from '../config';
-import { speak } from '@/components/utils/auroraVoice';
+import { speak, isGenerating } from '@/components/utils/auroraVoice';
 
 export default function GlyphBotJr() {
   const jrPersona = PERSONAS.find(p => p.id === "glyphbot_jr") || PERSONAS[4];
@@ -188,14 +188,16 @@ When answering questions, use the knowledge bases to provide accurate informatio
               
               {msg.role === "assistant" && (
                 <button
-                  data-glyphbot-jr-listen
-                  data-text={msg.text}
-                  className="mt-3 text-xs bg-blue-600/30 hover:bg-blue-600/50 px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5 border border-blue-400/30"
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent double trigger if data-attribute listener catches it
+                    speak(msg.text);
+                  }}
+                  className="mt-3 text-xs bg-blue-600/30 hover:bg-blue-600/50 px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5 border border-blue-400/30 group"
                   style={{ boxShadow: '0 0 10px rgba(37, 99, 235, 0.2)' }}
                   aria-label="Listen"
                 >
-                  <Volume2 className="w-3 h-3" />
-                  Listen
+                  <Volume2 className="w-3 h-3 group-active:scale-95 transition-transform" />
+                  Listen (Neural)
                 </button>
               )}
             </div>
