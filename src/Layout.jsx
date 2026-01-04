@@ -53,11 +53,11 @@ export default function Layout({ children, currentPageName }) {
           return;
         }
         
-        // 2. Force HTTPS
-        if (window.location.protocol === 'http:') {
-          window.location.replace(window.location.href.replace('http:', 'https:'));
-          return;
-        }
+        // 2. Force HTTPS - Disabled to prevent loops on custom domains without SSL
+        // if (window.location.protocol === 'http:') {
+        //   window.location.replace(window.location.href.replace('http:', 'https:'));
+        //   return;
+        // }
       }
 
       // Initialize mobile scaling system
