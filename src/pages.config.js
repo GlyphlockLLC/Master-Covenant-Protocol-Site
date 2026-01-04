@@ -75,9 +75,9 @@ import TrustSecurity from './pages/TrustSecurity';
 import UserSettings from './pages/UserSettings';
 import VIPContract from './pages/VIPContract';
 import VideoUpload from './pages/VideoUpload';
-import imageLab from './pages/image-lab';
-import sitemapQr from './pages/sitemap-qr';
 import ViewInteractive from './pages/ViewInteractive';
+import sitemapQr from './pages/sitemap-qr';
+import ImageLab from './pages/ImageLab';
 import __Layout from './Layout.jsx';
 
 
@@ -159,9 +159,9 @@ export const PAGES = {
     "UserSettings": UserSettings,
     "VIPContract": VIPContract,
     "VideoUpload": VideoUpload,
-    "image-lab": imageLab,
-    "sitemap-qr": sitemapQr,
     "ViewInteractive": ViewInteractive,
+    "sitemap-qr": sitemapQr,
+    "ImageLab": ImageLab,
 }
 
 export const pagesConfig = {

@@ -66,7 +66,7 @@ export default function ImageLab() {
 
   const HELP_STEPS = [
     { title: 'Enter a prompt', description: 'Describe what you want to create in detail' },
-    { title: 'Select a style', description: 'Choose from 18+ artistic styles' },
+    { title: 'Select a style', description: 'Choose from 20+ artistic styles' },
     { title: 'Generate', description: 'Click Generate or press Cmd+G' },
     { title: 'Add hotspots', description: 'Click Interactive tab to add clickable zones' },
     { title: 'Share', description: 'Share your interactive image with a link' }
@@ -74,6 +74,7 @@ export default function ImageLab() {
 
   const SHORTCUTS = [
     { action: 'Generate image', keys: 'Cmd/Ctrl + G' },
+    { action: 'Enhance prompt', keys: 'Cmd/Ctrl + E' },
     { action: 'Generate tab', keys: 'Cmd/Ctrl + 1' },
     { action: 'Interactive tab', keys: 'Cmd/Ctrl + 2' },
     { action: 'Gallery tab', keys: 'Cmd/Ctrl + 3' }
@@ -81,9 +82,11 @@ export default function ImageLab() {
 
   const TIPS = [
     'Be specific in your prompts for better results',
+    'Use the AI Enhance button to improve your prompts',
     'Use reference images for style consistency',
     'AI detects objects automatically when you click',
-    'Save defaults to speed up your workflow'
+    'Try batch generation for multiple variations',
+    'Use style transfer to apply any style to existing images'
   ];
 
   useEffect(() => {
@@ -98,16 +101,13 @@ export default function ImageLab() {
           const prefs = await base44.entities.UserPreferences.filter({ created_by: userData.email });
           if (prefs && prefs.length > 0) {
             setUserPrefs(prefs[0]);
-            // Check if we should show tour - check new structure first, then legacy
             if (prefs[0].toursSeen?.imageLab !== true && prefs[0].imageLabSettings?.showOnboarding !== false) {
               setShowTour(true);
             }
           } else {
-            // No prefs record yet, show tour for new user
             setShowTour(true);
           }
         } else {
-          // Guest user - check local storage
           const tourSeen = localStorage.getItem('glyphlock_imagelab_tour_seen');
           if (!tourSeen) setShowTour(true);
         }
@@ -122,7 +122,6 @@ export default function ImageLab() {
   // Global Keyboard Shortcuts
   useEffect(() => {
     const handleKeyDown = (e) => {
-      // Ignore if input/textarea is focused
       if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
 
       if ((e.metaKey || e.ctrlKey)) {
@@ -147,14 +146,16 @@ export default function ImageLab() {
     const cleanup = injectSoftwareSchema(
       'GlyphLock Image Lab',
       'AI image generation with cryptographic security, interactive hotspots, and steganographic protection',
-      '/image-lab',
+      '/ImageLab',
       [
         'AI Image Generation',
         'Interactive Hotspot Editor',
         'Blockchain Verification',
         'Steganography Tools',
         'Secure Media Storage',
-        'Copyright Protection'
+        'Style Transfer',
+        'Background Removal',
+        'Image Upscaling'
       ]
     );
     return cleanup;
@@ -167,7 +168,7 @@ export default function ImageLab() {
         if (userPrefs) {
           await base44.entities.UserPreferences.update(userPrefs.id, {
             toursSeen: { ...userPrefs.toursSeen, imageLab: true },
-            imageLabSettings: { ...userPrefs.imageLabSettings, showOnboarding: false } // Legacy support
+            imageLabSettings: { ...userPrefs.imageLabSettings, showOnboarding: false }
           });
         } else {
           await base44.entities.UserPreferences.create({
@@ -208,7 +209,7 @@ export default function ImageLab() {
         title="GlyphLock Image Lab | Generate & Secure Interactive Images"
         description="Military-grade AI image generation with cryptographic security, interactive hotspots, and steganographic protection. Create, secure, and verify visual assets."
         keywords="AI image generation, interactive images, steganography, secure media, GlyphLock, cryptographic images, hotspot editor"
-        url="/image-lab"
+        url="/ImageLab"
       />
 
       <PageHeader
