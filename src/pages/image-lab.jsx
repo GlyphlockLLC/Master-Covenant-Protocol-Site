@@ -20,7 +20,7 @@ import {
 import GenerateTab from '@/components/imageLab/tabs/GenerateTab.jsx';
 import InteractiveTab from '@/components/imageLab/tabs/InteractiveTab.jsx';
 import GalleryTab from '@/components/imageLab/tabs/GalleryTab.jsx';
-import OnboardingTour from '@/components/imageLab/OnboardingTour.jsx';
+import GuidedTour from '@/components/shared/GuidedTour.jsx';
 
 export default function ImageLab() {
   const [activeTab, setActiveTab] = useState('generate');
@@ -42,8 +42,8 @@ export default function ImageLab() {
           const prefs = await base44.entities.UserPreferences.filter({ created_by: userData.email });
           if (prefs && prefs.length > 0) {
             setUserPrefs(prefs[0]);
-            // Check if we should show tour
-            if (prefs[0].imageLabSettings?.showOnboarding !== false) {
+            // Check if we should show tour - check new structure first, then legacy
+            if (prefs[0].toursSeen?.imageLab !== true && prefs[0].imageLabSettings?.showOnboarding !== false) {
               setShowTour(true);
             }
           } else {
@@ -93,10 +93,12 @@ export default function ImageLab() {
       try {
         if (userPrefs) {
           await base44.entities.UserPreferences.update(userPrefs.id, {
-            imageLabSettings: { ...userPrefs.imageLabSettings, showOnboarding: false }
+            toursSeen: { ...userPrefs.toursSeen, imageLab: true },
+            imageLabSettings: { ...userPrefs.imageLabSettings, showOnboarding: false } // Legacy support
           });
         } else {
           await base44.entities.UserPreferences.create({
+            toursSeen: { imageLab: true },
             imageLabSettings: { showOnboarding: false }
           });
         }
@@ -105,6 +107,39 @@ export default function ImageLab() {
       localStorage.setItem('glyphlock_imagelab_tour_seen', 'true');
     }
   };
+
+  const TOUR_STEPS = [
+    {
+      id: 'welcome',
+      title: 'Welcome to Image Lab',
+      content: 'Create stunning AI art, secure it with steganography, and make it interactive with hotspots.',
+      target: null,
+    },
+    {
+      id: 'generate',
+      title: 'Generate',
+      content: 'Start here. Describe your vision, choose a style, and let our AI engine create it.',
+      target: '[data-tour="generate-tab"]',
+    },
+    {
+      id: 'interactive',
+      title: 'Interactive',
+      content: 'Add clickable hotspots to your images to link products, info, or other media.',
+      target: '[data-tour="interactive-tab"]',
+    },
+    {
+      id: 'gallery',
+      title: 'Gallery',
+      content: 'Manage your creations and secured assets in your personal vault.',
+      target: '[data-tour="gallery-tab"]',
+    },
+    {
+      id: 'shortcuts',
+      title: 'Pro Tip: Shortcuts',
+      content: 'Use Cmd/Ctrl + G to generate instantly, and Cmd/Ctrl + 1-3 to switch tabs.',
+      target: null,
+    }
+  ];
 
   useEffect(() => {
     const cleanup = injectSoftwareSchema(
@@ -306,10 +341,11 @@ export default function ImageLab() {
           </Tabs>
         </div>
       </div>
-      <OnboardingTour 
+      <GuidedTour 
         isOpen={showTour} 
         onComplete={handleTourComplete} 
-        onSkip={handleTourComplete} 
+        onSkip={handleTourComplete}
+        steps={TOUR_STEPS}
       />
     </>
   );
