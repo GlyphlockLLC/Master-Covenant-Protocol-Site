@@ -11,7 +11,7 @@ import {
 } from './config/PayloadTypesCatalog';
 import { GlyphCard, GlyphInput, GlyphTypography } from './design/GlyphQrDesignSystem';
 
-export default function PayloadTypeSelector({ value, onChange, onTypeSelect }) {
+export default function PayloadTypeSelector({ value, onChange, onTypeSelect, isUnlocked = false }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
 
@@ -110,11 +110,20 @@ export default function PayloadTypeSelector({ value, onChange, onTypeSelect }) {
             return (
               <button
                 key={type.id}
-                onClick={() => handleTypeSelect(type)}
+                onClick={() => {
+                  if (type.premium && !isUnlocked) {
+                    // Optional: Show upgrade modal trigger here
+                    return;
+                  }
+                  handleTypeSelect(type);
+                }}
+                disabled={type.premium && !isUnlocked}
                 className={`p-4 rounded-xl border-2 transition-all text-left min-h-[100px] ${
                   isSelected
                     ? 'bg-cyan-500/10 border-cyan-500 shadow-lg shadow-cyan-500/20'
-                    : 'bg-gray-800/30 border-gray-700 hover:bg-gray-800/50 hover:border-gray-600'
+                    : (type.premium && !isUnlocked) 
+                      ? 'bg-gray-900/50 border-gray-800 opacity-60 cursor-not-allowed grayscale' 
+                      : 'bg-gray-800/30 border-gray-700 hover:bg-gray-800/50 hover:border-gray-600'
                 }`}
               >
                 <div className="flex items-start gap-3">
@@ -127,7 +136,17 @@ export default function PayloadTypeSelector({ value, onChange, onTypeSelect }) {
                         {type.label}
                       </h4>
                       {type.premium && (
-                        <Lock className="w-3 h-3 text-purple-400 flex-shrink-0" />
+                        isUnlocked ? (
+                          <div className="flex items-center gap-1 text-xs text-green-400">
+                            <Sparkles className="w-3 h-3" />
+                            <span>Unlocked</span>
+                          </div>
+                        ) : (
+                          <div className="flex items-center gap-1 text-xs text-purple-400">
+                            <Lock className="w-3 h-3" />
+                            <span>Locked</span>
+                          </div>
+                        )
                       )}
                     </div>
                     <p className="text-xs text-gray-400 line-clamp-2">{type.description}</p>

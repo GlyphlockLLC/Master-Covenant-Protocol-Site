@@ -38,6 +38,7 @@ export default function QrStudio({ initialTab = 'create' }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [vaultedItems, setVaultedItems] = useState([]);
   const [vaultLoading, setVaultLoading] = useState(false);
+  const [isUnlocked, setIsUnlocked] = useState(false);
 
   // Load current user
   useEffect(() => {
@@ -47,6 +48,18 @@ export default function QrStudio({ initialTab = 'create' }) {
         if (isAuth) {
           const user = await base44.auth.me();
           setCurrentUser(user);
+          
+          // Protocol Verification Check
+          const BYPASS_EMAILS = ['admin@glyphlock.io', 'test@glyphlock.io', 'carloearl@gmail.com', 'glyphlock@gmail.com'];
+          const hasAccess = 
+            user.role === 'admin' ||
+            BYPASS_EMAILS.includes(user.email?.toLowerCase()) ||
+            user.credentialed === true || 
+            user.verified === true || 
+            user.protocol_verified === true ||
+            user.subscription_status === 'active';
+            
+          setIsUnlocked(hasAccess);
         }
       } catch (err) {
         console.error('Auth check failed:', err);
@@ -167,7 +180,8 @@ export default function QrStudio({ initialTab = 'create' }) {
     wifiSSID: "", wifiPassword: "", wifiEncryption: "WPA", wifiHidden: false,
     vcardFirstName: "", vcardLastName: "", vcardOrganization: "", vcardPhone: "", vcardEmail: "", vcardWebsite: "", vcardAddress: "",
     latitude: "", longitude: "",
-    eventTitle: "", eventLocation: "", eventStartDate: "", eventStartTime: "", eventEndDate: "", eventEndTime: "", eventDescription: ""
+    eventTitle: "", eventLocation: "", eventStartDate: "", eventStartTime: "", eventEndDate: "", eventEndTime: "", eventDescription: "",
+    customPayload: ""
   });
   const [size, setSize] = useState(512);
   const [errorCorrectionLevel, setErrorCorrectionLevel] = useState('H');
@@ -211,6 +225,8 @@ export default function QrStudio({ initialTab = 'create' }) {
         const startDateTime = `${qrData.eventStartDate}T${qrData.eventStartTime}:00`;
         const endDateTime = `${qrData.eventEndDate}T${qrData.eventEndTime}:00`;
         return `BEGIN:VEVENT\nSUMMARY:${qrData.eventTitle}\nLOCATION:${qrData.eventLocation}\nDTSTART:${startDateTime.replace(/[-:]/g, '')}\nDTEND:${endDateTime.replace(/[-:]/g, '')}\nDESCRIPTION:${qrData.eventDescription}\nEND:VEVENT`;
+      case "custom":
+        return qrData.customPayload || "";
       default: return "";
     }
   };
@@ -650,6 +666,7 @@ export default function QrStudio({ initialTab = 'create' }) {
                   <CardContent className="pt-4">
                     <PayloadTypeSelector
                       value={payloadType}
+                      isUnlocked={isUnlocked}
                       onChange={(newType) => {
                         setPayloadType(newType);
                         const typeMapping = {
@@ -658,7 +675,18 @@ export default function QrStudio({ initialTab = 'create' }) {
                           'tap_call': 'phone', 'tap_text': 'sms', 'email_template': 'email',
                           'wifi_config': 'wifi', 'data_json': 'text', 'data_base64': 'text'
                         };
-                        if (typeMapping[newType]) setQrType(typeMapping[newType]);
+
+                        // If standard mapping exists, use it. Otherwise use 'custom' to trigger generic form
+                        if (typeMapping[newType]) {
+                          setQrType(typeMapping[newType]);
+                        } else {
+                          setQrType('custom');
+                          // Pre-fill generic text with placeholder if available
+                          const pType = PAYLOAD_TYPES.find(t => t.id === newType);
+                          if (pType?.placeholder) {
+                            setQrData(prev => ({ ...prev, customPayload: pType.placeholder }));
+                          }
+                        }
                       }}
                     />
                   </CardContent>
@@ -715,7 +743,12 @@ export default function QrStudio({ initialTab = 'create' }) {
                         </Select>
                       </div>
                       
-                      <QRTypeForm qrType={qrType} qrData={qrData} setQrData={setQrData} />
+                      <QRTypeForm 
+                        qrType={qrType} 
+                        qrData={qrData} 
+                        setQrData={setQrData} 
+                        selectedPayloadType={selectedPayloadType}
+                      />
 
                       {/* Size */}
                       <div className="touch-target-safe">
