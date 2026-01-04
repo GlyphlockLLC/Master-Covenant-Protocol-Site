@@ -523,9 +523,9 @@ export default function Navbar({ user, onLogin, onLogout }) {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild className="text-gray-300 focus:bg-blue-500/10 focus:text-white rounded-lg cursor-pointer mb-1">
-                  <Link to={createPageUrl("CommandCenter") + "?tab=settings"} className="flex items-center gap-2">
+                  <Link to={createPageUrl("UserSettings")} className="flex items-center gap-2">
                     <User className="w-4 h-4 text-blue-400" />
-                    Account Settings
+                    User Settings
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator className="bg-white/10 my-1" />

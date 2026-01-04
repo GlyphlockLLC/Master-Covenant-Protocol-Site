@@ -14,6 +14,11 @@ import {
   saveChatHistory,
   getSessionId
 } from '../logic/memoryService';
+import { 
+  buildContextAwarePrompt, 
+  getProactiveSuggestion, 
+  detectIntentRedirect 
+} from '../logic/contextService';
 
 // 🎙️ AURORA LISTEN BUTTON — Plays TTS from agent response
 function ListenButton({ text }) {
@@ -107,8 +112,16 @@ export default function GlyphBotJr() {
   const [memory, setMemory] = useState(null);
   const [lastTopic, setLastTopic] = useState(null);
   const [sessionId] = useState(() => getSessionId());
+  const [currentPage, setCurrentPage] = useState(null);
   const messagesEndRef = useRef(null);
   const initializedRef = useRef(false);
+  
+  // Track current page for context-aware responses
+  useEffect(() => {
+    const path = window.location.pathname;
+    const pageName = path.split('/').pop() || 'Home';
+    setCurrentPage(pageName);
+  }, [isOpen]);
 
   // Load user, memory, and history on mount
   useEffect(() => {
@@ -214,27 +227,35 @@ User Context:
         content: msg.text
       })).concat([{ role: "user", content: userMessage }]);
 
-      const systemPrompt = `${jrPersona.system}
+      // Check for intent to redirect
+      const suggestedPage = detectIntentRedirect(userMessage);
 
-${memoryContext}
+      const systemPrompt = buildContextAwarePrompt(
+        `${jrPersona.system}
 
-QR Studio Knowledge Base:
-${QR_KNOWLEDGE_BASE}
+      ${memoryContext}
 
-Image Lab Knowledge Base:
-${JSON.stringify(IMAGE_LAB_KNOWLEDGE, null, 2)}
+      QR Studio Knowledge Base:
+      ${QR_KNOWLEDGE_BASE}
 
-GlyphLock FAQ Knowledge Base:
-${faqContext}
+      Image Lab Knowledge Base:
+      ${JSON.stringify(IMAGE_LAB_KNOWLEDGE, null, 2)}
 
-${sitemapContext}
+      GlyphLock FAQ Knowledge Base:
+      ${faqContext}
 
-IMPORTANT: After answering, if relevant, suggest a next step the user might want to take. For example:
-- After QR discussion: "Want to try our Image Lab next?"
-- After pricing questions: "Ready to start your free trial?"
-- After security topics: "Would you like me to explain our encryption?"
+      ${sitemapContext}
 
-Be friendly, helpful, and explain things simply!`;
+      IMPORTANT: After answering, if relevant, suggest a next step the user might want to take. For example:
+      - After QR discussion: "Want to try our Image Lab next?"
+      - After pricing questions: "Ready to start your free trial?"
+      - After security topics: "Would you like me to explain our encryption?"
+      ${suggestedPage ? `\nThe user seems interested in ${suggestedPage}. Consider mentioning they can visit /${suggestedPage} for more details.` : ''}
+
+      Be friendly, helpful, and explain things simply!`,
+        currentPage,
+        memory?.topics_discussed || []
+      );
 
       const { data } = await base44.functions.invoke('glyphBotJrChat', {
         action: 'chat',
