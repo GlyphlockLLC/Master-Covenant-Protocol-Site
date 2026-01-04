@@ -31,6 +31,61 @@ export default function ImageLab() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [showTour, setShowTour] = useState(false);
 
+  const TOUR_STEPS = [
+    {
+      id: 'welcome',
+      title: 'Welcome to Image Lab',
+      content: 'Create stunning AI art, secure it with steganography, and make it interactive with hotspots.',
+      target: null,
+    },
+    {
+      id: 'generate',
+      title: 'Generate',
+      content: 'Start here. Describe your vision, choose a style, and let our AI engine create it.',
+      target: '[data-tour="generate-tab"]',
+    },
+    {
+      id: 'interactive',
+      title: 'Interactive',
+      content: 'Add clickable hotspots to your images to link products, info, or other media.',
+      target: '[data-tour="interactive-tab"]',
+    },
+    {
+      id: 'gallery',
+      title: 'Gallery',
+      content: 'Manage your creations and secured assets in your personal vault.',
+      target: '[data-tour="gallery-tab"]',
+    },
+    {
+      id: 'shortcuts',
+      title: 'Pro Tip: Shortcuts',
+      content: 'Use Cmd/Ctrl + G to generate instantly, and Cmd/Ctrl + 1-3 to switch tabs.',
+      target: null,
+    }
+  ];
+
+  const HELP_STEPS = [
+    { title: 'Enter a prompt', description: 'Describe what you want to create in detail' },
+    { title: 'Select a style', description: 'Choose from 18+ artistic styles' },
+    { title: 'Generate', description: 'Click Generate or press Cmd+G' },
+    { title: 'Add hotspots', description: 'Click Interactive tab to add clickable zones' },
+    { title: 'Share', description: 'Share your interactive image with a link' }
+  ];
+
+  const SHORTCUTS = [
+    { action: 'Generate image', keys: 'Cmd/Ctrl + G' },
+    { action: 'Generate tab', keys: 'Cmd/Ctrl + 1' },
+    { action: 'Interactive tab', keys: 'Cmd/Ctrl + 2' },
+    { action: 'Gallery tab', keys: 'Cmd/Ctrl + 3' }
+  ];
+
+  const TIPS = [
+    'Be specific in your prompts for better results',
+    'Use reference images for style consistency',
+    'AI detects objects automatically when you click',
+    'Save defaults to speed up your workflow'
+  ];
+
   useEffect(() => {
     (async () => {
       try {
@@ -88,6 +143,23 @@ export default function ImageLab() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
+  useEffect(() => {
+    const cleanup = injectSoftwareSchema(
+      'GlyphLock Image Lab',
+      'AI image generation with cryptographic security, interactive hotspots, and steganographic protection',
+      '/image-lab',
+      [
+        'AI Image Generation',
+        'Interactive Hotspot Editor',
+        'Blockchain Verification',
+        'Steganography Tools',
+        'Secure Media Storage',
+        'Copyright Protection'
+      ]
+    );
+    return cleanup;
+  }, []);
+
   const handleTourComplete = async () => {
     setShowTour(false);
     if (user) {
@@ -108,78 +180,6 @@ export default function ImageLab() {
       localStorage.setItem('glyphlock_imagelab_tour_seen', 'true');
     }
   };
-
-  const TOUR_STEPS = [
-    {
-      id: 'welcome',
-      title: 'Welcome to Image Lab',
-      content: 'Create stunning AI art, secure it with steganography, and make it interactive with hotspots.',
-      target: null,
-    },
-    {
-      id: 'generate',
-      title: 'Generate',
-      content: 'Start here. Describe your vision, choose a style, and let our AI engine create it.',
-      target: '[data-tour="generate-tab"]',
-    },
-    {
-      id: 'interactive',
-      title: 'Interactive',
-      content: 'Add clickable hotspots to your images to link products, info, or other media.',
-      target: '[data-tour="interactive-tab"]',
-    },
-    {
-      id: 'gallery',
-      title: 'Gallery',
-      content: 'Manage your creations and secured assets in your personal vault.',
-      target: '[data-tour="gallery-tab"]',
-    },
-    {
-      id: 'shortcuts',
-      title: 'Pro Tip: Shortcuts',
-      content: 'Use Cmd/Ctrl + G to generate instantly, and Cmd/Ctrl + 1-3 to switch tabs.',
-      target: null,
-    }
-  ];
-
-  const HELP_STEPS = [
-    { title: 'Enter a prompt', description: 'Describe what you want to create in detail' },
-    { title: 'Select a style', description: 'Choose from 18+ artistic styles' },
-    { title: 'Generate', description: 'Click Generate or press Cmd+G' },
-    { title: 'Add hotspots', description: 'Click Interactive tab to add clickable zones' },
-    { title: 'Share', description: 'Share your interactive image with a link' }
-  ];
-
-  const SHORTCUTS = [
-    { action: 'Generate image', keys: 'Cmd/Ctrl + G' },
-    { action: 'Generate tab', keys: 'Cmd/Ctrl + 1' },
-    { action: 'Interactive tab', keys: 'Cmd/Ctrl + 2' },
-    { action: 'Gallery tab', keys: 'Cmd/Ctrl + 3' }
-  ];
-
-  const TIPS = [
-    'Be specific in your prompts for better results',
-    'Use reference images for style consistency',
-    'AI detects objects automatically when you click',
-    'Save defaults to speed up your workflow'
-  ];
-
-  useEffect(() => {
-    const cleanup = injectSoftwareSchema(
-      'GlyphLock Image Lab',
-      'AI image generation with cryptographic security, interactive hotspots, and steganographic protection',
-      '/image-lab',
-      [
-        'AI Image Generation',
-        'Interactive Hotspot Editor',
-        'Blockchain Verification',
-        'Steganography Tools',
-        'Secure Media Storage',
-        'Copyright Protection'
-      ]
-    );
-    return cleanup;
-  }, []);
 
   const handleImageGenerated = (image) => {
     setSelectedImage(image);
