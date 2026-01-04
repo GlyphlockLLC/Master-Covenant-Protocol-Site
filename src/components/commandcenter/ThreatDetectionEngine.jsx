@@ -36,49 +36,54 @@ const THREAT_TYPES = {
   API_KEY_ABUSE: { severity: 'critical', label: 'API Key Abuse', icon: ShieldAlert }
 };
 
-// Analyze activity patterns
+// Analyze activity patterns - Enhanced AI-Powered Detection
 function analyzePatterns(logs, apiKeys, assets, thresholds) {
   const threats = [];
   const now = new Date();
   const oneHourAgo = new Date(now - 60 * 60 * 1000);
+  const fiveMinutesAgo = new Date(now - 5 * 60 * 1000);
   const oneMinuteAgo = new Date(now - 60 * 1000);
 
-  // Get recent logs
-  const recentLogs = logs.filter(l => new Date(l.created_date) > oneHourAgo);
-  const veryRecentLogs = logs.filter(l => new Date(l.created_date) > oneMinuteAgo);
+  // Get recent logs with null checks
+  const recentLogs = (logs || []).filter(l => l?.created_date && new Date(l.created_date) > oneHourAgo);
+  const veryRecentLogs = (logs || []).filter(l => l?.created_date && new Date(l.created_date) > oneMinuteAgo);
+  const fiveMinLogs = (logs || []).filter(l => l?.created_date && new Date(l.created_date) > fiveMinutesAgo);
 
-  // 1. Check API call rate (per minute)
-  if (veryRecentLogs.length > thresholds.apiCallsPerMinute * (thresholds.sensitivityLevel / 100)) {
+  // 1. Check API call rate (per minute) - adjusted sensitivity
+  const adjustedThreshold = Math.ceil(thresholds.apiCallsPerMinute * (thresholds.sensitivityLevel / 100));
+  if (veryRecentLogs.length > adjustedThreshold && veryRecentLogs.length > 5) {
     threats.push({
       type: 'RATE_LIMIT_EXCEEDED',
-      details: `${veryRecentLogs.length} API calls in last minute (threshold: ${thresholds.apiCallsPerMinute})`,
+      details: `${veryRecentLogs.length} API calls in last minute (threshold: ${adjustedThreshold})`,
       timestamp: now,
-      data: { count: veryRecentLogs.length, threshold: thresholds.apiCallsPerMinute }
+      data: { count: veryRecentLogs.length, threshold: adjustedThreshold }
     });
   }
 
-  // 2. Check failed auth attempts
+  // 2. Check failed auth attempts - expanded detection
   const failedAuths = recentLogs.filter(l => 
-    l.event_type?.toLowerCase().includes('auth') && 
-    l.status === 'failure'
+    (l.event_type?.toLowerCase().includes('auth') || 
+     l.event_type?.toLowerCase().includes('login') ||
+     l.event_type?.toLowerCase().includes('mfa')) && 
+    (l.status === 'failure' || l.status === 'failed')
   );
   if (failedAuths.length >= thresholds.failedAuthAttempts) {
     threats.push({
       type: 'FAILED_AUTH_SPIKE',
       details: `${failedAuths.length} failed authentication attempts in last hour`,
       timestamp: now,
-      data: { count: failedAuths.length, threshold: thresholds.failedAuthAttempts }
+      data: { count: failedAuths.length, threshold: thresholds.failedAuthAttempts, events: failedAuths.slice(0, 5) }
     });
   }
 
   // 3. Check unusual hours (2am - 5am local time)
   if (thresholds.unusualHourActivity) {
     const hour = now.getHours();
-    const unusualHourLogs = recentLogs.filter(l => {
+    const unusualHourLogs = fiveMinLogs.filter(l => {
       const logHour = new Date(l.created_date).getHours();
       return logHour >= 2 && logHour <= 5;
     });
-    if (unusualHourLogs.length > 5 && hour >= 2 && hour <= 5) {
+    if (unusualHourLogs.length > 3 && hour >= 2 && hour <= 5) {
       threats.push({
         type: 'UNUSUAL_HOUR',
         details: `${unusualHourLogs.length} activities detected during unusual hours (2am-5am)`,
@@ -88,50 +93,77 @@ function analyzePatterns(logs, apiKeys, assets, thresholds) {
     }
   }
 
-  // 4. Rapid asset creation
-  const recentAssets = assets.filter(a => new Date(a.created_date) > oneHourAgo);
-  if (recentAssets.length > thresholds.rapidAssetCreation * (thresholds.sensitivityLevel / 100)) {
+  // 4. Rapid asset creation - with adjusted threshold
+  const recentAssets = (assets || []).filter(a => a?.created_date && new Date(a.created_date) > oneHourAgo);
+  const assetThreshold = Math.ceil(thresholds.rapidAssetCreation * (thresholds.sensitivityLevel / 100));
+  if (recentAssets.length > assetThreshold && recentAssets.length > 10) {
     threats.push({
       type: 'RAPID_ASSET_CREATION',
-      details: `${recentAssets.length} assets created in last hour (threshold: ${thresholds.rapidAssetCreation})`,
+      details: `${recentAssets.length} assets created in last hour (threshold: ${assetThreshold})`,
       timestamp: now,
-      data: { count: recentAssets.length, threshold: thresholds.rapidAssetCreation }
+      data: { count: recentAssets.length, threshold: assetThreshold }
     });
   }
 
-  // 5. API Key abuse patterns
-  apiKeys.forEach(key => {
-    const keyLogs = recentLogs.filter(l => l.api_key_id === key.id);
-    const errorRate = keyLogs.filter(l => l.status === 'failure').length / (keyLogs.length || 1);
+  // 5. API Key abuse patterns - improved detection
+  (apiKeys || []).forEach(key => {
+    if (!key?.id) return;
+    const keyLogs = recentLogs.filter(l => l.resource_id === key.id || l.metadata?.includes(key.id));
+    if (keyLogs.length < 5) return; // Need minimum data
     
-    if (errorRate > 0.5 && keyLogs.length > 10) {
+    const errorCount = keyLogs.filter(l => l.status === 'failure' || l.status === 'error').length;
+    const errorRate = errorCount / keyLogs.length;
+    
+    if (errorRate > 0.4 && keyLogs.length >= 5) {
       threats.push({
         type: 'API_KEY_ABUSE',
-        details: `API Key "${key.name}" has ${Math.round(errorRate * 100)}% error rate`,
+        details: `API Key "${key.name || 'Unknown'}" has ${Math.round(errorRate * 100)}% error rate (${errorCount}/${keyLogs.length} calls)`,
         timestamp: now,
-        data: { keyId: key.id, keyName: key.name, errorRate }
+        data: { keyId: key.id, keyName: key.name, errorRate, errorCount, totalCalls: keyLogs.length }
       });
     }
   });
 
   // 6. Suspicious patterns - burst followed by silence
-  const logsByHour = {};
-  recentLogs.forEach(l => {
-    const hour = new Date(l.created_date).getHours();
-    logsByHour[hour] = (logsByHour[hour] || 0) + 1;
-  });
-  const hourCounts = Object.values(logsByHour);
-  if (hourCounts.length > 1) {
-    const max = Math.max(...hourCounts);
-    const min = Math.min(...hourCounts);
-    if (max > 50 && min < 5 && max / (min || 1) > 10) {
-      threats.push({
-        type: 'SUSPICIOUS_PATTERN',
-        details: 'Detected burst activity pattern followed by silence',
-        timestamp: now,
-        data: { maxActivity: max, minActivity: min }
-      });
+  if (recentLogs.length > 20) {
+    const logsByHour = {};
+    recentLogs.forEach(l => {
+      const hour = new Date(l.created_date).getHours();
+      logsByHour[hour] = (logsByHour[hour] || 0) + 1;
+    });
+    const hourCounts = Object.values(logsByHour);
+    if (hourCounts.length > 1) {
+      const max = Math.max(...hourCounts);
+      const min = Math.min(...hourCounts);
+      if (max > 30 && min < 3 && max / (min || 1) > 8) {
+        threats.push({
+          type: 'SUSPICIOUS_PATTERN',
+          details: `Detected burst activity pattern: ${max} events vs ${min} events (${Math.round(max/min)}x spike)`,
+          timestamp: now,
+          data: { maxActivity: max, minActivity: min, ratio: Math.round(max/min) }
+        });
+      }
     }
+  }
+
+  // 7. NEW: Detect threat-related log entries
+  const threatLogs = recentLogs.filter(l => 
+    l.event_type?.toLowerCase().includes('threat') ||
+    l.event_type?.toLowerCase().includes('security') ||
+    l.event_type?.toLowerCase().includes('attack') ||
+    l.status === 'alert' ||
+    l.severity === 'critical' ||
+    l.severity === 'high'
+  );
+  if (threatLogs.length > 0) {
+    threatLogs.forEach(log => {
+      threats.push({
+        type: log.severity === 'critical' ? 'FAILED_AUTH_SPIKE' : 'SUSPICIOUS_PATTERN',
+        details: log.description || log.event_type || 'Security event detected',
+        timestamp: new Date(log.created_date),
+        data: { logId: log.id, eventType: log.event_type, severity: log.severity }
+      });
+    });
   }
 
   return threats;
