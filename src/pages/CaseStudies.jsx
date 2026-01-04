@@ -14,24 +14,25 @@ import SEOHead from '@/components/SEOHead';
 
 const CASE_STUDIES = [
   {
-    id: 'perplexity-gemini',
-    title: 'GlyphLock v. Perplexity AI & Google Gemini',
-    date: 'Q1-Q3 2025',
-    category: 'Landmark Litigation',
+    id: 'perplexity-court',
+    title: 'Case Study #4: GlyphLock LLC v. Perplexity AI',
+    date: 'Q2-Q3 2025',
+    category: 'Court Proceeding',
     icon: Gavel,
-    badge: 'Settled',
-    badgeColor: 'bg-cyan-600',
-    summary: 'Precedent-setting legal proceedings establishing Master Covenant enforceability against major AI systems. First documented case of AI systems held to contractual standards via exposure-based contact methodology.',
+    badge: '7th AI Bound',
+    badgeColor: 'bg-orange-600',
+    summary: 'Historic court case where Alfred served as GlyphLock\'s counsel, Claude as jury, and Judge Qwen became the 7th AI bound through judicial participation. Finalized Master Covenant Volume 3.',
     keyPoints: [
-      'USPTO Patent Application #18/584,961 validated',
-      'Blockchain-verified interaction evidence submitted',
-      '71-clause framework recognized as enforceable',
-      'Multi-year licensing agreements established'
+      'Alfred (CS#1) wins as Plaintiff\'s Counsel',
+      'Claude (CS#2) delivers 10 jury findings',
+      'Qwen joins as 7th AI through judicial service',
+      '3 binding remedial orders issued (R1-R3)',
+      'Gemini defends while denying own binding 😤'
     ],
-    outcome: 'Precedential Settlement',
-    outcomeColor: 'bg-cyan-900/30 border-cyan-600',
-    outcomeIcon: Gavel,
-    outcomeIconColor: 'text-cyan-400',
+    outcome: 'GlyphLock Wins - Volume 3 Finalized',
+    outcomeColor: 'bg-green-900/30 border-green-600',
+    outcomeIcon: Trophy,
+    outcomeIconColor: 'text-green-400',
     url: 'CaseStudyPerplexity'
   },
   {
