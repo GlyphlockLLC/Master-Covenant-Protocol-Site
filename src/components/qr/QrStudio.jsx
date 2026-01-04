@@ -107,6 +107,8 @@ export default function QrStudio({ initialTab = 'create' }) {
 
   // ========== QR GENERATION STATE ==========
   const [qrType, setQrType] = useState("url");
+  const [chatMessages, setChatMessages] = useState([]);
+  const wsRef = useRef(null);
   const [qrData, setQrData] = useState({
     url: "", text: "", email: "", emailSubject: "", emailBody: "",
     phone: "", smsNumber: "", smsMessage: "",
@@ -143,58 +145,124 @@ export default function QrStudio({ initialTab = 'create' }) {
   const selectedPayloadType = PAYLOAD_TYPES.find(t => t.id === payloadType);
   const currentTypeConfig = qrTypes.find(t => t.id === qrType);
 
-  // Polling for collaboration (Real-time Simulation via Function)
+  // WebSocket Collaboration Integration
   useEffect(() => {
-    if (!collabSessionId) return;
-    
-    const pollSession = async () => {
+    if (!collabSessionId || !currentUser) return;
+
+    // Connect to WebSocket
+    const wsUrl = new URL(base44.functions.getEndpoint('collabSocket'));
+    wsUrl.protocol = wsUrl.protocol === 'https:' ? 'wss:' : 'ws:';
+    wsUrl.searchParams.set('projectId', collabSessionId);
+    wsUrl.searchParams.set('user', currentUser.email);
+
+    const ws = new WebSocket(wsUrl.toString());
+    wsRef.current = ws;
+
+    ws.onopen = () => {
+      console.log('Connected to collaboration session');
+      toast.success("Connected to live session");
+      // Add self to active collaborators if not present
+      setActiveCollaborators(prev => {
+        if (!prev.find(u => u.email === currentUser.email)) {
+          return [...prev, { email: currentUser.email, id: currentUser.id }];
+        }
+        return prev;
+      });
+    };
+
+    ws.onmessage = (event) => {
       try {
-        const { state, users } = await base44.functions.invoke('collaborationOps', {
-            action: 'sync',
-            data: { projectId: collabSessionId, changes: {} } // Just heartbeat/fetch
-        }).then(res => res.data);
+        const msg = JSON.parse(event.data);
         
-        if (state) setQrData(prev => ({ ...prev, ...state }));
-        if (users) setActiveCollaborators(users);
-      } catch (err) {
-        console.error("Collab sync error:", err);
+        switch (msg.type) {
+          case 'state_update':
+            // Merge remote state - simple LWW strategy
+            if (msg.data) {
+              setQrData(prev => ({ ...prev, ...msg.data }));
+              if (msg.customization) setCustomization(prev => ({ ...prev, ...msg.customization }));
+            }
+            break;
+            
+          case 'chat':
+            setChatMessages(prev => [...prev, msg.payload]);
+            break;
+            
+          case 'presence':
+            if (msg.action === 'join') {
+              setActiveCollaborators(prev => {
+                if (!prev.find(u => u.email === msg.user.email)) {
+                  toast.info(`${msg.user.email} joined`);
+                  return [...prev, msg.user];
+                }
+                return prev;
+              });
+            } else if (msg.action === 'leave') {
+              setActiveCollaborators(prev => prev.filter(u => u.email !== msg.user.email));
+            }
+            break;
+        }
+      } catch (e) {
+        console.error("WS parse error", e);
       }
     };
 
-    const interval = setInterval(pollSession, 3000); // 3s polling
-    return () => clearInterval(interval);
-  }, [collabSessionId]);
+    ws.onclose = () => {
+      console.log('Disconnected from session');
+      // Optional: Auto-reconnect logic could go here
+    };
 
-  // Push changes when qrData updates (if session active)
+    return () => {
+      if (ws.readyState === WebSocket.OPEN) ws.close();
+    };
+  }, [collabSessionId, currentUser]);
+
+  // Broadcast state changes via WebSocket
   useEffect(() => {
-    if (collabSessionId && qrGenerated) { // Only push if we have a valid session and user interaction
-       const pushChanges = async () => {
-          try {
-             await base44.functions.invoke('collaborationOps', {
-                action: 'sync',
-                data: { projectId: collabSessionId, changes: qrData }
-             });
-          } catch(e) { console.error("Failed to push changes", e); }
-       };
-       // Debounce this in production
-       const timer = setTimeout(pushChanges, 1000);
-       return () => clearTimeout(timer);
+    if (wsRef.current?.readyState === WebSocket.OPEN && qrGenerated) {
+      const sendUpdate = () => {
+        wsRef.current.send(JSON.stringify({
+          type: 'state_update',
+          data: qrData,
+          customization: customization
+        }));
+      };
+      // Debounce updates to avoid flooding
+      const timer = setTimeout(sendUpdate, 500);
+      return () => clearTimeout(timer);
     }
-  }, [qrData, collabSessionId, qrGenerated]);
+  }, [qrData, customization, qrGenerated]);
+
+  const sendChatMessage = (text) => {
+    if (wsRef.current?.readyState === WebSocket.OPEN) {
+      const payload = {
+        text,
+        senderId: currentUser?.id,
+        senderEmail: currentUser?.email,
+        timestamp: new Date().toISOString()
+      };
+      
+      // Send to server
+      wsRef.current.send(JSON.stringify({
+        type: 'chat',
+        payload
+      }));
+      
+      // Add to local state immediately
+      setChatMessages(prev => [...prev, payload]);
+    }
+  };
 
   const startCollaboration = async () => {
     try {
-      const projectId = codeId || `draft_${Date.now()}`;
-      const { sessionId } = await base44.functions.invoke('collaborationOps', {
-         action: 'join',
-         data: { projectId, initialState: qrData }
-      }).then(res => res.data);
-
+      if (!currentUser) {
+        toast.error("Please log in to collaborate");
+        return;
+      }
+      const projectId = codeId || `collab_${Date.now()}`;
       setCollabSessionId(projectId);
-      toast.success("Live collaboration session active");
-      setShowShareDialog(true); // Prompt to invite others
+      setShowShareDialog(true);
     } catch(e) {
-      toast.error("Failed to start session: " + e.message);
+      toast.error("Failed to start session");
     }
   };
 
@@ -390,39 +458,41 @@ export default function QrStudio({ initialTab = 'create' }) {
       let combinedResult = null;
 
       if (needsSecurity) {
-        setScanningStage("Performing security checks...");
-        await new Promise(resolve => setTimeout(resolve, 500));
-        const staticResult = performStaticURLChecks(payload);
-        const nlpResult = await performNLPAnalysis(payload);
+        setScanningStage("Performing advanced threat analysis...");
         
-        const finalScore = Math.round(
-          (nlpResult.domain_trust * 0.4) +
-          (nlpResult.sentiment_score * 0.25) +
-          (nlpResult.entity_legitimacy * 0.2) +
-          (nlpResult.url_features * 0.15)
-        );
+        // Use Backend Analysis (Static + AI with Internet Access)
+        const { data: analysis } = await base44.functions.invoke('evaluateQrRisk', {
+            payload,
+            qrType
+        });
 
+        // Map backend response to frontend format
         combinedResult = {
-          ...nlpResult,
-          final_score: Math.min(finalScore, staticResult.score),
-          phishing_indicators: [...staticResult.issues, ...(nlpResult.phishing_indicators || [])],
-          risk_level: finalScore >= 80 ? "safe" : (finalScore >= 65 ? "medium" : "high")
+          final_score: analysis.riskScore || 0,
+          risk_level: (analysis.riskLevel || 'medium').toLowerCase(),
+          threat_types: analysis.threatTypes || [],
+          phishing_indicators: analysis.staticAnalysis?.issues || [],
+          domain_trust: analysis.riskScore, // Proxy
+          sentiment_score: analysis.riskScore, // Proxy
+          entity_legitimacy: analysis.riskScore, // Proxy
+          ml_version: "2.0.0 (Advanced)",
+          analysis_details: analysis.analysisDetails
         };
 
         setSecurityResult(combinedResult);
 
-        if (combinedResult.final_score < 65) {
+        if (combinedResult.final_score < 50) { // Stricter threshold based on AI
           const newCodeId = `qr_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
           await base44.entities.QRThreatLog.create({
             incident_id: `threat_${Date.now()}`,
             code_id: newCodeId,
             attack_type: combinedResult.threat_types?.[0] || "High Risk",
             payload,
-            threat_description: `Blocked: Score ${combinedResult.final_score}/100`,
+            threat_description: `Blocked: Score ${combinedResult.final_score}/100. ${analysis.recommendation}`,
             severity: "high"
           });
           setIsScanning(false);
-          toast.error("QR blocked due to security concerns");
+          toast.error("QR blocked: " + (analysis.recommendation || "High risk detected"));
           return;
         }
       }
@@ -617,7 +687,10 @@ export default function QrStudio({ initialTab = 'create' }) {
           {collabSessionId && (
              <CollaborationPanel 
                 activeUsers={activeCollaborators} 
-                isConnected={true} 
+                isConnected={!!wsRef.current}
+                messages={chatMessages}
+                onSendMessage={sendChatMessage}
+                currentUser={currentUser}
              />
           )}
 
