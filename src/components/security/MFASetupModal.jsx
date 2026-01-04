@@ -114,6 +114,8 @@ export default function MFASetupModal({ isOpen, onClose, onSuccess }) {
     setStep('qr');
     setVerificationCode('');
     setRecoveryCodes([]);
+    setSetupToken('');
+    setTimeRemaining(0);
   };
 
   return (
