@@ -331,6 +331,7 @@ export default function GalleryTab({ user, onImageSelect }) {
                   </div>
 
                   {!selectionMode && (
+                    <>
                     <div className="grid grid-cols-3 gap-2">
                       <Button
                         size="sm"
