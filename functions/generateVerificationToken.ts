@@ -29,10 +29,17 @@ Deno.serve(async (req) => {
     const allowedOrigins = [
       "https://glyphlock.io",
       "http://localhost:3000",
+      "https://base44.onrender.com",
       Deno.env.get("APP_URL")
     ].filter(Boolean);
 
-    if (!allowedOrigins.includes(origin)) {
+    // Allow all base44 preview URLs and localhost
+    const isAllowed = allowedOrigins.includes(origin) || 
+                      origin.includes("base44.onrender.com") || 
+                      origin.includes("localhost");
+
+    if (!isAllowed) {
+      console.log("Blocked origin:", origin);
       return Response.json({ error: "Invalid origin" }, { status: 403 });
     }
 

@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { CheckCircle, XCircle, Loader2, Eye, FileCode, Brain, Lock, Shield, Zap, Check, Download, AlertCircle, CreditCard, RefreshCw, ShieldAlert, KeyRound } from 'lucide-react';
+import { CheckCircle, XCircle, Loader2, Eye, FileCode, Brain, Lock, Shield, Zap, Check, Download, AlertCircle, CreditCard, RefreshCw, ShieldAlert, KeyRound, QrCode } from 'lucide-react';
+import QRCode from 'qrcode';
 import { toast } from 'sonner';
 import { Skeleton } from '@/components/ui/skeleton';
 import glyphLockAPI from '@/components/api/glyphLockAPI';
@@ -58,6 +59,14 @@ export default function BillingAndPayments({ user: propUser }) {
   const [updatingPayment, setUpdatingPayment] = useState(false);
   const [currentUser, setCurrentUser] = useState(propUser || null);
   const [checkingAuth, setCheckingAuth] = useState(!propUser);
+  const [venmoQr, setVenmoQr] = useState('');
+
+  useEffect(() => {
+    // Generate Venmo QR Code
+    QRCode.toDataURL('https://venmo.com/code?user_id=GlyphLock')
+      .then(url => setVenmoQr(url))
+      .catch(err => console.error('QR Gen Error', err));
+  }, []);
 
   // Fetch current user if not provided
   useEffect(() => {
@@ -463,6 +472,42 @@ export default function BillingAndPayments({ user: propUser }) {
               Request Protocol Verification
             </Button>
           </Link>
+        </CardContent>
+      </Card>
+
+      {/* Alternative Payment - Venmo */}
+      <Card className="bg-[#008CFF]/10 border-[#008CFF]/30 backdrop-blur-xl mt-8">
+        <CardHeader>
+          <CardTitle className="text-2xl font-bold text-[#00E4FF] flex items-center gap-2">
+            <QrCode className="h-6 w-6" />
+            Alternative Payment
+          </CardTitle>
+          <CardDescription className="text-slate-300">
+            Having trouble with Stripe? Use Venmo for immediate manual verification.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="flex flex-col md:flex-row items-center gap-8">
+          <div className="bg-white p-4 rounded-xl">
+            {venmoQr ? (
+              <img src={venmoQr} alt="Venmo QR Code" className="w-48 h-48" />
+            ) : (
+              <div className="w-48 h-48 flex items-center justify-center text-black">Loading QR...</div>
+            )}
+          </div>
+          <div className="space-y-4">
+            <div>
+              <h4 className="text-white font-semibold text-lg">Venmo: @GlyphLock</h4>
+              <p className="text-slate-400 text-sm">Scan to pay directly. Include your email in the note.</p>
+            </div>
+            <div className="bg-slate-900/50 p-4 rounded-lg border border-slate-700">
+              <p className="text-cyan-400 text-sm font-mono">Status: Manual Verification Required</p>
+              <p className="text-slate-500 text-xs mt-1">Send screenshot to <span className="text-white">payments@glyphlock.io</span> after transfer.</p>
+            </div>
+            <Button variant="outline" className="border-[#008CFF]/50 text-[#008CFF] hover:bg-[#008CFF]/10">
+              <Download className="h-4 w-4 mr-2" />
+              Save Payment Details
+            </Button>
+          </div>
         </CardContent>
       </Card>
     </div>
