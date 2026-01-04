@@ -31,7 +31,7 @@ export const NAV_SECTIONS = [
     visibility: "public",
     items: [
       { label: "QR Verification", page: "Qr", visibility: "public" },
-      { label: "Image Processing", page: "ImageLab", visibility: "public" },
+      { label: "Image Processing", page: "image-lab", visibility: "public" },
       { label: "GlyphBot Intelligence", page: "GlyphBot", visibility: "public" },
       { label: "Site Builder", page: "SiteBuilder", visibility: "admin" }, // Admin only
       { label: "NUPS Transaction Verification", page: "NUPSLogin", visibility: "public" },
@@ -84,7 +84,7 @@ export const FOOTER_LINKS = {
   ],
   modules: [
     { label: "QR Verification", page: "Qr", visibility: "public" },
-    { label: "Image Processing", page: "ImageLab", visibility: "public" },
+    { label: "Image Processing", page: "image-lab", visibility: "public" },
     { label: "GlyphBot Intelligence", page: "GlyphBot", visibility: "public" },
     { label: "NUPS Transaction Verification", page: "NUPSLogin", visibility: "public" },
     { label: "Security Modules", page: "SecurityTools", visibility: "public" },
