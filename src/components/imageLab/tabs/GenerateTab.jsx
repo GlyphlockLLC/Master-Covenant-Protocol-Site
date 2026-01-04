@@ -57,6 +57,385 @@ const ASPECT_RATIOS = [
   { id: '21:9', label: 'Ultrawide (21:9)', desc: 'Cinematic banners' },
 ];
 
+// AI Tools Section Component
+function AIToolsSection({ isMobile, loading, setLoading, images, setImages, toast }) {
+  const [toolImage, setToolImage] = useState(null);
+  const [activeTool, setActiveTool] = useState(null);
+  const [upscaleLevel, setUpscaleLevel] = useState(2);
+  const [inpaintPrompt, setInpaintPrompt] = useState('');
+  const [styleTarget, setStyleTarget] = useState('van_gogh');
+  const [styleIntensity, setStyleIntensity] = useState(80);
+  const [processedImage, setProcessedImage] = useState(null);
+
+  const handleToolUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    try {
+      toast.loading('Uploading...');
+      const result = await base44.integrations.Core.UploadFile({ file });
+      setToolImage(result.file_url);
+      setProcessedImage(null);
+      toast.dismiss();
+      toast.success('Image uploaded!');
+    } catch (err) {
+      toast.dismiss();
+      toast.error('Upload failed');
+    }
+  };
+
+  const handleUpscale = async () => {
+    if (!toolImage) return toast.error('Upload an image first');
+    setLoading(true);
+    setActiveTool('upscale');
+    try {
+      const response = await base44.functions.invoke('imageLabOps', {
+        operation: 'upscale',
+        imageUrl: toolImage,
+        scale: upscaleLevel
+      });
+      if (response.data.success) {
+        setProcessedImage(response.data.upscaledUrl);
+        setImages(prev => [...prev, { url: response.data.upscaledUrl, isUpscaled: true, scale: upscaleLevel }]);
+        toast.success(`Upscaled to ${upscaleLevel}x!`);
+      }
+    } catch (err) {
+      toast.error('Upscale failed: ' + err.message);
+    } finally {
+      setLoading(false);
+      setActiveTool(null);
+    }
+  };
+
+  const handleInpaint = async () => {
+    if (!toolImage) return toast.error('Upload an image first');
+    if (!inpaintPrompt.trim()) return toast.error('Enter edit instructions');
+    setLoading(true);
+    setActiveTool('inpaint');
+    try {
+      const response = await base44.functions.invoke('imageLabOps', {
+        operation: 'inpaint',
+        imageUrl: toolImage,
+        editPrompt: inpaintPrompt
+      });
+      if (response.data.success) {
+        setProcessedImage(response.data.editedUrl);
+        setImages(prev => [...prev, { url: response.data.editedUrl, inpainted: true, prompt: inpaintPrompt }]);
+        toast.success('Edit applied!');
+      }
+    } catch (err) {
+      toast.error('Inpaint failed: ' + err.message);
+    } finally {
+      setLoading(false);
+      setActiveTool(null);
+    }
+  };
+
+  const handleStyleTransfer = async () => {
+    if (!toolImage) return toast.error('Upload an image first');
+    setLoading(true);
+    setActiveTool('style');
+    try {
+      const response = await base44.functions.invoke('imageLabOps', {
+        operation: 'styleTransfer',
+        imageUrl: toolImage,
+        targetStyle: styleTarget,
+        intensity: styleIntensity
+      });
+      if (response.data.success) {
+        setProcessedImage(response.data.styledUrl);
+        setImages(prev => [...prev, { url: response.data.styledUrl, style: styleTarget }]);
+        toast.success(`${styleTarget} style applied!`);
+      }
+    } catch (err) {
+      toast.error('Style transfer failed: ' + err.message);
+    } finally {
+      setLoading(false);
+      setActiveTool(null);
+    }
+  };
+
+  const handleRemoveBackground = async () => {
+    if (!toolImage) return toast.error('Upload an image first');
+    setLoading(true);
+    setActiveTool('bgremove');
+    try {
+      const response = await base44.functions.invoke('imageLabOps', {
+        operation: 'removeBackground',
+        imageUrl: toolImage
+      });
+      if (response.data.success) {
+        setProcessedImage(response.data.processedUrl);
+        setImages(prev => [...prev, { url: response.data.processedUrl, bgRemoved: true }]);
+        toast.success('Background removed!');
+      }
+    } catch (err) {
+      toast.error('Background removal failed: ' + err.message);
+    } finally {
+      setLoading(false);
+      setActiveTool(null);
+    }
+  };
+
+  const STYLE_OPTIONS = [
+    { id: 'van_gogh', label: 'Van Gogh', icon: '🌻' },
+    { id: 'monet', label: 'Monet', icon: '💐' },
+    { id: 'picasso', label: 'Picasso', icon: '🎨' },
+    { id: 'anime', label: 'Anime', icon: '🌸' },
+    { id: 'comic', label: 'Comic', icon: '💥' },
+    { id: 'pixel', label: 'Pixel Art', icon: '👾' },
+    { id: 'watercolor', label: 'Watercolor', icon: '💧' },
+    { id: 'oil', label: 'Oil Paint', icon: '🖼️' },
+    { id: 'sketch', label: 'Sketch', icon: '✏️' },
+    { id: 'cyberpunk', label: 'Cyberpunk', icon: '🌃' },
+    { id: 'neon', label: 'Neon', icon: '💡' },
+    { id: 'vintage', label: 'Vintage', icon: '📻' },
+  ];
+
+  return (
+    <div className={`grid ${isMobile ? 'grid-cols-1 gap-4' : 'grid-cols-1 lg:grid-cols-2 gap-6'}`}>
+      {/* Upload Section */}
+      <Card className={`${GlyphImageCard.premium} ${GlyphImageShadows.depth.lg}`}>
+        <CardHeader className="border-b border-green-500/20">
+          <CardTitle className="text-white flex items-center gap-2">
+            <Upload className="w-5 h-5 text-green-400" />
+            Source Image
+          </CardTitle>
+        </CardHeader>
+        <CardContent className={GlyphImagePanel.primary}>
+          <input type="file" accept="image/*" onChange={handleToolUpload} className="hidden" id="tool-upload" />
+          
+          {!toolImage ? (
+            <div 
+              onClick={() => document.getElementById('tool-upload')?.click()}
+              className="border-2 border-dashed border-green-500/30 rounded-xl p-12 text-center cursor-pointer hover:border-green-500/60 transition-all"
+            >
+              <Upload className="w-12 h-12 mx-auto mb-4 text-gray-500" />
+              <p className="text-gray-400">Click or drag to upload image</p>
+              <p className="text-xs text-gray-600 mt-2">PNG, JPG up to 10MB</p>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              <div className="relative">
+                <img src={toolImage} alt="Source" className="w-full rounded-lg border border-green-500/30" />
+                <button 
+                  onClick={() => { setToolImage(null); setProcessedImage(null); }}
+                  className="absolute top-2 right-2 w-8 h-8 bg-red-500/80 rounded-full text-white flex items-center justify-center hover:bg-red-500"
+                >×</button>
+              </div>
+              <Button 
+                onClick={() => document.getElementById('tool-upload')?.click()}
+                className={`${GlyphImageButton.secondary} w-full`}
+              >
+                <RefreshCw className="w-4 h-4 mr-2" /> Replace Image
+              </Button>
+            </div>
+          )}
+
+          {/* Result Preview */}
+          {processedImage && (
+            <div className="mt-6 space-y-3">
+              <Label className="text-green-400 font-semibold flex items-center gap-2">
+                <Sparkles className="w-4 h-4" /> Processed Result
+              </Label>
+              <div className="relative">
+                <img src={processedImage} alt="Processed" className="w-full rounded-lg border border-cyan-500/50" />
+                <div className="absolute bottom-2 right-2 flex gap-2">
+                  <Button 
+                    size="sm" 
+                    onClick={() => {
+                      const a = document.createElement('a');
+                      a.href = processedImage;
+                      a.download = `glyphlock-processed-${Date.now()}.png`;
+                      a.click();
+                    }}
+                    className="bg-white/10 backdrop-blur-sm"
+                  >
+                    <Download className="w-4 h-4" />
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Tools Panel */}
+      <div className="space-y-4">
+        {/* AI Upscale */}
+        <Card className={`${GlyphImageCard.glass} border-cyan-500/30`}>
+          <CardContent className="p-5">
+            <div className="flex items-start justify-between mb-4">
+              <div>
+                <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                  <ArrowUpRight className="w-5 h-5 text-cyan-400" />
+                  AI Upscale
+                </h3>
+                <p className="text-gray-400 text-sm">Enhance resolution with AI reconstruction</p>
+              </div>
+            </div>
+            <div className="space-y-4">
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <Label className="text-gray-400 text-xs">Scale Factor</Label>
+                  <span className="text-cyan-400 text-sm font-bold">{upscaleLevel}x</span>
+                </div>
+                <Slider
+                  value={[upscaleLevel]}
+                  onValueChange={([v]) => setUpscaleLevel(v)}
+                  min={2}
+                  max={4}
+                  step={1}
+                  className="w-full"
+                />
+                <div className="flex justify-between text-xs text-gray-600 mt-1">
+                  <span>2x</span>
+                  <span>3x</span>
+                  <span>4x</span>
+                </div>
+              </div>
+              <Button
+                onClick={handleUpscale}
+                disabled={loading || !toolImage}
+                className={`${GlyphImageButton.primary} w-full`}
+              >
+                {loading && activeTool === 'upscale' ? (
+                  <><Loader2 className="w-4 h-4 animate-spin mr-2" /> Upscaling...</>
+                ) : (
+                  <><ArrowUpRight className="w-4 h-4 mr-2" /> Upscale Image</>
+                )}
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* AI Inpaint */}
+        <Card className={`${GlyphImageCard.glass} border-purple-500/30`}>
+          <CardContent className="p-5">
+            <div className="flex items-start justify-between mb-4">
+              <div>
+                <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                  <Wand2 className="w-5 h-5 text-purple-400" />
+                  AI Inpaint / Edit
+                </h3>
+                <p className="text-gray-400 text-sm">Modify or replace parts of your image</p>
+              </div>
+            </div>
+            <div className="space-y-4">
+              <div>
+                <Label className="text-gray-400 text-xs mb-2 block">Edit Instructions</Label>
+                <Textarea
+                  value={inpaintPrompt}
+                  onChange={(e) => setInpaintPrompt(e.target.value)}
+                  placeholder="Remove the person in the background, add a sunset, change the sky to starry night..."
+                  className={`${GlyphImageInput.base} min-h-[80px]`}
+                />
+              </div>
+              <Button
+                onClick={handleInpaint}
+                disabled={loading || !toolImage || !inpaintPrompt.trim()}
+                className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white"
+              >
+                {loading && activeTool === 'inpaint' ? (
+                  <><Loader2 className="w-4 h-4 animate-spin mr-2" /> Processing...</>
+                ) : (
+                  <><Wand2 className="w-4 h-4 mr-2" /> Apply Edit</>
+                )}
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* AI Style Transfer */}
+        <Card className={`${GlyphImageCard.glass} border-amber-500/30`}>
+          <CardContent className="p-5">
+            <div className="flex items-start justify-between mb-4">
+              <div>
+                <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                  <Paintbrush className="w-5 h-5 text-amber-400" />
+                  AI Style Transfer
+                </h3>
+                <p className="text-gray-400 text-sm">Apply artistic styles to your image</p>
+              </div>
+            </div>
+            <div className="space-y-4">
+              <div>
+                <Label className="text-gray-400 text-xs mb-2 block">Select Style</Label>
+                <div className={`grid ${isMobile ? 'grid-cols-4' : 'grid-cols-6'} gap-2`}>
+                  {STYLE_OPTIONS.map((style) => (
+                    <button
+                      key={style.id}
+                      onClick={() => setStyleTarget(style.id)}
+                      className={`p-2 rounded-lg text-center transition-all ${
+                        styleTarget === style.id
+                          ? 'bg-amber-500/30 border-2 border-amber-400'
+                          : 'bg-slate-800 hover:bg-slate-700 border border-transparent'
+                      }`}
+                    >
+                      <span className="text-xl block">{style.icon}</span>
+                      <span className="text-[10px] text-white">{style.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <Label className="text-gray-400 text-xs">Style Intensity</Label>
+                  <span className="text-amber-400 text-sm font-bold">{styleIntensity}%</span>
+                </div>
+                <Slider
+                  value={[styleIntensity]}
+                  onValueChange={([v]) => setStyleIntensity(v)}
+                  min={20}
+                  max={100}
+                  step={10}
+                  className="w-full"
+                />
+              </div>
+              <Button
+                onClick={handleStyleTransfer}
+                disabled={loading || !toolImage}
+                className="w-full bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white"
+              >
+                {loading && activeTool === 'style' ? (
+                  <><Loader2 className="w-4 h-4 animate-spin mr-2" /> Applying Style...</>
+                ) : (
+                  <><Paintbrush className="w-4 h-4 mr-2" /> Apply Style</>
+                )}
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Background Removal */}
+        <Card className={`${GlyphImageCard.glass} border-green-500/30`}>
+          <CardContent className="p-5">
+            <div className="flex items-start justify-between mb-4">
+              <div>
+                <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                  <Scissors className="w-5 h-5 text-green-400" />
+                  Remove Background
+                </h3>
+                <p className="text-gray-400 text-sm">Isolate subject with AI precision</p>
+              </div>
+            </div>
+            <Button
+              onClick={handleRemoveBackground}
+              disabled={loading || !toolImage}
+              className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white"
+            >
+              {loading && activeTool === 'bgremove' ? (
+                <><Loader2 className="w-4 h-4 animate-spin mr-2" /> Removing...</>
+              ) : (
+                <><Scissors className="w-4 h-4 mr-2" /> Remove Background</>
+              )}
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}
+
 export default function GenerateTab({ user, userPrefs, onImageGenerated }) {
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
   const [prompt, setPrompt] = useState('');
@@ -743,37 +1122,14 @@ export default function GenerateTab({ user, userPrefs, onImageGenerated }) {
 
         {/* TOOLS TAB */}
         <TabsContent value="tools">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Upscale Tool */}
-            <Card className={`${GlyphImageCard.glass}`}>
-              <CardContent className="p-6 text-center">
-                <ArrowUpRight className="w-12 h-12 mx-auto mb-4 text-cyan-400" />
-                <h3 className="text-lg font-bold text-white mb-2">Upscale</h3>
-                <p className="text-gray-400 text-sm mb-4">Enhance resolution and detail</p>
-                <p className="text-xs text-gray-500">Generate an image first, then click the upscale button</p>
-              </CardContent>
-            </Card>
-
-            {/* Background Removal */}
-            <Card className={`${GlyphImageCard.glass}`}>
-              <CardContent className="p-6 text-center">
-                <Scissors className="w-12 h-12 mx-auto mb-4 text-green-400" />
-                <h3 className="text-lg font-bold text-white mb-2">Remove Background</h3>
-                <p className="text-gray-400 text-sm mb-4">Isolate subjects cleanly</p>
-                <p className="text-xs text-gray-500">Generate an image first, then click the scissors button</p>
-              </CardContent>
-            </Card>
-
-            {/* Image Analysis */}
-            <Card className={`${GlyphImageCard.glass}`}>
-              <CardContent className="p-6 text-center">
-                <ScanLine className="w-12 h-12 mx-auto mb-4 text-purple-400" />
-                <h3 className="text-lg font-bold text-white mb-2">AI Analysis</h3>
-                <p className="text-gray-400 text-sm mb-4">Detect objects and composition</p>
-                <p className="text-xs text-gray-500">Available in Interactive tab</p>
-              </CardContent>
-            </Card>
-          </div>
+          <AIToolsSection 
+            isMobile={isMobile}
+            loading={loading}
+            setLoading={setLoading}
+            images={images}
+            setImages={setImages}
+            toast={toast}
+          />
         </TabsContent>
       </Tabs>
 
