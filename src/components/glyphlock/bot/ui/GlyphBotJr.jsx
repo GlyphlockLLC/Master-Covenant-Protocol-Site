@@ -194,28 +194,27 @@ When answering questions, use the knowledge bases to provide accurate informatio
                   onClick={async (e) => {
                     e.stopPropagation();
                     try {
-                      // Trigger agent "listen" action
+                      // Trigger Base44 agent "listen" action (Aurora replay)
                       const { data } = await base44.functions.invoke('glyphBotJrChat', {
                         action: 'listen',
                         text: msg.text
                       });
                       
-                      // Execute speak instruction
-                      if (data.speak?.enabled) {
-                        speak(data.text);
+                      // Execute Aurora speech if authorized by agent
+                      if (data.speak?.enabled && data.speak?.text) {
+                        speak(data.speak.text);
                       }
                     } catch (err) {
-                      console.error("Listen action failed:", err);
-                      // Fallback just in case
-                      speak(msg.text);
+                      console.error('[GlyphBot Jr.] Listen failed:', err);
                     }
                   }}
-                  className="mt-3 text-xs bg-blue-600/30 hover:bg-blue-600/50 px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5 border border-blue-400/30 group"
+                  disabled={isGenerating()}
+                  className="mt-3 text-xs bg-blue-600/30 hover:bg-blue-600/50 disabled:opacity-50 px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5 border border-blue-400/30 group"
                   style={{ boxShadow: '0 0 10px rgba(37, 99, 235, 0.2)' }}
-                  aria-label="Listen"
+                  aria-label="Listen with Aurora voice"
                 >
                   <Volume2 className="w-3 h-3 group-active:scale-95 transition-transform" />
-                  Listen (Neural)
+                  🎙️ Aurora
                 </button>
               )}
             </div>
