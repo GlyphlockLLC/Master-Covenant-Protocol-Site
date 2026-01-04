@@ -73,11 +73,12 @@ Deno.serve(async (req) => {
         });
 
     } catch (error) {
-        console.error('[GlyphBot Jr. Error]:', error.message);
+        console.error('[GlyphBot Jr. Error]:', error.message, error.stack);
         return Response.json({
             text: "Sorry, I'm having trouble right now. Please try again!",
             speak: { enabled: false },
-            error: true
+            error: true,
+            debug: error.message
         }, { status: 200 });
     }
 });
