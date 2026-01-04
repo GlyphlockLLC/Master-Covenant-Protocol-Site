@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { Loader2, Upload, Save, Lock, Trash2, Sparkles, MousePointer, Link2, ExternalLink, Share2, Users, Send } from 'lucide-react';
+import { Loader2, Upload, Save, Lock, Trash2, Sparkles, MousePointer, Link2, ExternalLink, Share2, Users, Send, ScanLine, Layers, Zap } from 'lucide-react';
 import { toast } from 'sonner';
 import {
   GlyphImageCard,
@@ -66,6 +66,50 @@ export default function InteractiveTab({ user, selectedImage, onImageSelect }) {
     toast.success("Collaboration session started! Others can join using this Image ID.");
   };
 
+  // Auto-detect all objects in the image
+  const handleAutoDetectAll = async () => {
+    if (!imageAsset?.fileUrl) return;
+    
+    setAnalyzing(true);
+    try {
+      const response = await base44.functions.invoke('imageLabOps', {
+        operation: 'detectObjects',
+        imageUrl: imageAsset.fileUrl
+      });
+
+      if (response.data.success && response.data.objects?.length > 0) {
+        const newHotspots = response.data.objects
+          .filter(obj => obj.is_clickable && obj.confidence > 50)
+          .map((obj, idx) => ({
+            id: `hz_auto_${Date.now()}_${idx}`,
+            x: obj.bounding_box?.x ?? 0,
+            y: obj.bounding_box?.y ?? 0,
+            width: obj.bounding_box?.width ?? 10,
+            height: obj.bounding_box?.height ?? 10,
+            shape: 'rect',
+            label: obj.object_name || `Object ${idx + 1}`,
+            description: obj.object_name,
+            actionType: obj.suggested_action || 'openUrl',
+            actionValue: '',
+            payload: { type: obj.suggested_action || 'openUrl', value: '', metadata: {} },
+            aiDetected: true,
+            confidence: obj.confidence || 0,
+            autoDetected: true
+          }));
+
+        setHotspots(prev => [...prev, ...newHotspots]);
+        toast.success(`Detected ${newHotspots.length} interactive objects!`);
+      } else {
+        toast.info('No clickable objects detected');
+      }
+    } catch (error) {
+      console.error('Auto-detect error:', error);
+      toast.error('Failed to detect objects');
+    } finally {
+      setAnalyzing(false);
+    }
+  };
+
   const handleImageUpload = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -93,7 +137,7 @@ export default function InteractiveTab({ user, selectedImage, onImageSelect }) {
     }
   };
 
-  // AI-powered click detection
+  // AI-powered click detection via backend
   const handleCanvasClick = async (e) => {
     if (!imageAsset?.fileUrl || analyzing) return;
 
@@ -113,72 +157,51 @@ export default function InteractiveTab({ user, selectedImage, onImageSelect }) {
       return;
     }
 
-    // New click - analyze with AI
+    // New click - analyze with AI via backend
     setPendingClick({ x: clickX, y: clickY });
     setAnalyzing(true);
 
     try {
-      // Use AI to detect what's at the click location
-      const response = await base44.integrations.Core.InvokeLLM({
-        prompt: `Analyze this image and identify what object or element is located at approximately ${Math.round(clickX)}% from the left and ${Math.round(clickY)}% from the top.
-
-Return a JSON object with:
-- "detected_object": what the user likely clicked on (be specific: "red button", "company logo", "person's face", "product image", etc.)
-- "suggested_label": a short label for this hotspot (2-4 words max)
-- "bounding_box": estimate the object's bounds as percentages {x, y, width, height} - x/y is top-left corner
-- "confidence": 0-100 how confident you are
-- "suggested_action": what action makes sense ("openUrl", "showModal", "playAudio")
-
-Be precise with the bounding box - make it fit the detected object tightly but include the whole object.`,
-        file_urls: [imageAsset.fileUrl],
-        response_json_schema: {
-          type: "object",
-          properties: {
-            detected_object: { type: "string" },
-            suggested_label: { type: "string" },
-            bounding_box: {
-              type: "object",
-              properties: {
-                x: { type: "number" },
-                y: { type: "number" },
-                width: { type: "number" },
-                height: { type: "number" }
-              }
-            },
-            confidence: { type: "number" },
-            suggested_action: { type: "string" }
-          }
-        }
+      const response = await base44.functions.invoke('imageLabOps', {
+        operation: 'createHotzone',
+        imageId: imageAsset.id,
+        imageUrl: imageAsset.fileUrl,
+        clickX,
+        clickY
       });
 
-      const aiResult = response;
-      
-      // Create hotspot from AI detection
-      const newHotspot = {
-        id: Date.now().toString(),
-        x: aiResult.bounding_box?.x ?? Math.max(0, clickX - 5),
-        y: aiResult.bounding_box?.y ?? Math.max(0, clickY - 5),
-        width: aiResult.bounding_box?.width ?? 10,
-        height: aiResult.bounding_box?.height ?? 10,
-        shape: 'rect',
-        label: aiResult.suggested_label || `Hotspot ${hotspots.length + 1}`,
-        description: aiResult.detected_object || '',
-        actionType: aiResult.suggested_action || 'openUrl',
-        actionValue: '',
-        aiDetected: true,
-        confidence: aiResult.confidence || 0
-      };
+      if (response.data.success) {
+        const hz = response.data.hotzone;
+        
+        // Create hotspot from backend response
+        const newHotspot = {
+          id: hz.id,
+          x: hz.x,
+          y: hz.y,
+          width: hz.width,
+          height: hz.height,
+          shape: hz.shape || 'rect',
+          label: hz.label,
+          description: hz.description || hz.detectedObject || '',
+          actionType: hz.actionType || 'openUrl',
+          actionValue: hz.actionValue || '',
+          payload: hz.payload || { type: 'openUrl', value: '', metadata: {} },
+          aiDetected: true,
+          detectedObject: hz.detectedObject,
+          confidence: hz.confidence || 0,
+          createdAt: hz.createdAt
+        };
 
-      setHotspots([...hotspots, newHotspot]);
-      setSelectedHotspot(newHotspot);
-      toast.success(`Detected: ${aiResult.detected_object || 'Object'}`);
-
+        setHotspots([...hotspots, newHotspot]);
+        setSelectedHotspot(newHotspot);
+        toast.success(`Detected: ${response.data.detected || 'Object'} (${response.data.confidence || 0}% confidence)`);
+      }
     } catch (error) {
       console.error('AI detection error:', error);
       
       // Fallback: create a simple hotspot at click location
       const fallbackHotspot = {
-        id: Date.now().toString(),
+        id: `hz_${Date.now()}`,
         x: Math.max(0, clickX - 5),
         y: Math.max(0, clickY - 5),
         width: 10,
@@ -188,6 +211,7 @@ Be precise with the bounding box - make it fit the detected object tightly but i
         description: '',
         actionType: 'openUrl',
         actionValue: '',
+        payload: { type: 'openUrl', value: '', metadata: {} },
         aiDetected: false
       };
 
@@ -319,7 +343,7 @@ Be precise with the bounding box - make it fit the detected object tightly but i
           <CardHeader className="border-b border-cyan-500/20 pb-3">
             <CardTitle className={`${GlyphImageTypography.heading.md} text-white flex items-center gap-2`}>
               <Sparkles className="w-5 h-5 text-cyan-400" />
-              AI-Powered Hotspots
+              AI-Powered Hotzones
             </CardTitle>
           </CardHeader>
           <CardContent className="pt-4">
@@ -328,24 +352,34 @@ Be precise with the bounding box - make it fit the detected object tightly but i
                 <MousePointer className="w-5 h-5 text-cyan-400 mt-0.5 flex-shrink-0" />
                 <div>
                   <p className="text-white font-medium">Click anywhere on the image</p>
-                  <p className="text-gray-400 text-xs mt-1">AI will detect what you clicked and create a zone around it</p>
+                  <p className="text-gray-400 text-xs mt-1">AI detects objects and creates intelligent bounding zones</p>
                 </div>
               </div>
               <div className="flex items-start gap-3 p-3 bg-purple-500/10 rounded-lg border border-purple-500/30">
-                <Link2 className="w-5 h-5 text-purple-400 mt-0.5 flex-shrink-0" />
+                <Zap className="w-5 h-5 text-purple-400 mt-0.5 flex-shrink-0" />
                 <div>
-                  <p className="text-white font-medium">Add your URL/payload</p>
-                  <p className="text-gray-400 text-xs mt-1">Set the action that triggers when users click/tap the zone</p>
+                  <p className="text-white font-medium">Configure payload actions</p>
+                  <p className="text-gray-400 text-xs mt-1">URLs, modals, audio, agents, access verification</p>
                 </div>
               </div>
               <div className="flex items-start gap-3 p-3 bg-green-500/10 rounded-lg border border-green-500/30">
                 <ExternalLink className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
                 <div>
-                  <p className="text-white font-medium">Test it live</p>
-                  <p className="text-gray-400 text-xs mt-1">Click hotspots to trigger the action instantly</p>
+                  <p className="text-white font-medium">Test & share</p>
+                  <p className="text-gray-400 text-xs mt-1">Preview actions live, then share your interactive image</p>
                 </div>
               </div>
             </div>
+
+            {/* Auto-detect all objects button */}
+            <Button
+              onClick={handleAutoDetectAll}
+              disabled={analyzing || !imageAsset}
+              className="w-full mt-4 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500"
+            >
+              <ScanLine className="w-4 h-4 mr-2" />
+              Auto-Detect All Objects
+            </Button>
           </CardContent>
         </Card>
 
@@ -398,9 +432,28 @@ Be precise with the bounding box - make it fit the detected object tightly but i
                       <SelectItem value="showModal">Show Modal</SelectItem>
                       <SelectItem value="invokeAgent">Invoke Agent</SelectItem>
                       <SelectItem value="verifyAccess">Verify Access</SelectItem>
+                      <SelectItem value="downloadFile">Download File</SelectItem>
+                      <SelectItem value="shareLink">Share Link</SelectItem>
+                      <SelectItem value="zoomIn">Zoom In</SelectItem>
+                      <SelectItem value="showInfo">Show Info Tooltip</SelectItem>
+                      <SelectItem value="triggerWebhook">Trigger Webhook</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
+                
+                {/* Confidence badge if AI detected */}
+                {selectedHotspot.aiDetected && selectedHotspot.confidence > 0 && (
+                  <div className="flex items-center gap-2 text-xs">
+                    <span className="text-gray-500">AI Confidence:</span>
+                    <span className={`px-2 py-0.5 rounded-full ${
+                      selectedHotspot.confidence > 80 ? 'bg-green-500/20 text-green-400' :
+                      selectedHotspot.confidence > 50 ? 'bg-yellow-500/20 text-yellow-400' :
+                      'bg-red-500/20 text-red-400'
+                    }`}>
+                      {selectedHotspot.confidence}%
+                    </span>
+                  </div>
+                )}
                 <div>
                   <Label className="text-gray-300 text-sm font-semibold flex items-center gap-2">
                     <Link2 className="w-4 h-4 text-cyan-400" />
