@@ -297,6 +297,11 @@ export default function ImageLab() {
           </Tabs>
         </div>
       </div>
+      <OnboardingTour 
+        isOpen={showTour} 
+        onComplete={handleTourComplete} 
+        onSkip={handleTourComplete} 
+      />
     </>
   );
 }
