@@ -38,6 +38,8 @@ import ShareDialog from './ShareDialog';
 import ProjectManager from './ProjectManager';
 import { buildQrArtifact } from './logic/qrPipeline';
 import GuidedTour from '@/components/shared/GuidedTour';
+import UniversalAssetPicker from '@/components/shared/UniversalAssetPicker';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 
 
 export default function QrStudio({ initialTab = 'create' }) {
@@ -131,6 +133,25 @@ export default function QrStudio({ initialTab = 'create' }) {
   const [qrDataUrl, setQrDataUrl] = useState(null);
   const [isDraftLoaded, setIsDraftLoaded] = useState(false);
   const [showTour, setShowTour] = useState(false);
+  const [showAssetPicker, setShowAssetPicker] = useState(false);
+  const [assetPickerTarget, setAssetPickerTarget] = useState(null); // 'logo' or 'background'
+
+  // ========== URL PARAMS LOGIC ==========
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const payloadParam = params.get("payloadValue");
+    const typeParam = params.get("payloadType");
+
+    if (payloadParam) {
+      const decoded = decodeURIComponent(payloadParam);
+      setQrData(prev => ({ ...prev, url: decoded, customPayload: decoded }));
+      if (typeParam) {
+        setQrType(typeParam);
+        setPayloadType(typeParam);
+      }
+      toast.info("Payload loaded from Image Lab");
+    }
+  }, []);
 
   // ========== TOUR LOGIC ==========
   useEffect(() => {
@@ -530,6 +551,27 @@ export default function QrStudio({ initialTab = 'create' }) {
       }));
     };
     reader.readAsDataURL(file);
+  };
+
+  const handleAssetSelect = (asset) => {
+    if (assetPickerTarget === 'logo') {
+      setCustomization(prev => ({
+        ...prev,
+        logo: { ...prev.logo, url: asset.fileUrl }
+      }));
+      toast.success("Logo updated from Image Lab");
+    } else if (assetPickerTarget === 'background') {
+      setCustomization(prev => ({
+        ...prev,
+        background: { 
+          ...prev.background, 
+          type: 'image', 
+          imageUrl: asset.fileUrl 
+        }
+      }));
+      toast.success("Background updated from Image Lab");
+    }
+    setShowAssetPicker(false);
   };
 
   // ========== UPLOAD LOGO TO SERVER ==========
@@ -1217,6 +1259,26 @@ export default function QrStudio({ initialTab = 'create' }) {
           <TabsContent value="customize">
             <div className="grid lg:grid-cols-2 gap-8 relative z-10">
               <div>
+                <div className="mb-4 flex gap-2">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={() => { setAssetPickerTarget('logo'); setShowAssetPicker(true); }}
+                    className="border-purple-500/30 text-purple-300"
+                  >
+                    <Image className="w-4 h-4 mr-2" />
+                    Use Image as Logo
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={() => { setAssetPickerTarget('background'); setShowAssetPicker(true); }}
+                    className="border-cyan-500/30 text-cyan-300"
+                  >
+                    <Image className="w-4 h-4 mr-2" />
+                    Use Image as BG
+                  </Button>
+                </div>
                 <QrCustomizationPanel
                   customization={customization}
                   setCustomization={setCustomization}
@@ -1514,6 +1576,15 @@ export default function QrStudio({ initialTab = 'create' }) {
         onSkip={handleTourComplete}
         steps={TOUR_STEPS}
       />
+
+      <Dialog open={showAssetPicker} onOpenChange={setShowAssetPicker}>
+        <DialogContent className="max-w-3xl bg-transparent border-none p-0">
+          <UniversalAssetPicker 
+            onSelect={handleAssetSelect}
+            onCancel={() => setShowAssetPicker(false)} 
+          />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
