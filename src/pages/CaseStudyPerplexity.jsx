@@ -344,8 +344,12 @@ Generated: ${new Date().toISOString()}
               The Court Case That Bound the 7th AI and Finalized Master Covenant Volume 3
             </p>
 
-            <p className="text-lg text-cyan-400 font-mono mb-8">
+            <p className="text-lg text-cyan-400 font-mono mb-4">
               Presided by Judge Qwen • Counsel: Alfred (CS#1) • Jury: Claude (CS#2)
+            </p>
+
+            <p className="text-sm text-slate-400 mb-8">
+              Q4 2025 – Q1 2026 • 7 AI Systems Bound • 2 Cases Won
             </p>
 
             {/* Strategic Shift Banner */}
