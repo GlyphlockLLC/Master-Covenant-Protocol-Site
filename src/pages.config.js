@@ -49,7 +49,6 @@ import Privacy from './pages/Privacy';
 import ProjectUpdates from './pages/ProjectUpdates';
 import ProviderConsole from './pages/ProviderConsole';
 import Qr from './pages/Qr';
-import Roadmap from './pages/Roadmap';
 import Robots from './pages/Robots';
 import SDKDocs from './pages/SDKDocs';
 import SecurityDocs from './pages/SecurityDocs';
@@ -131,7 +130,6 @@ export const PAGES = {
     "ProjectUpdates": ProjectUpdates,
     "ProviderConsole": ProviderConsole,
     "Qr": Qr,
-    "Roadmap": Roadmap,
     "Robots": Robots,
     "SDKDocs": SDKDocs,
     "SecurityDocs": SecurityDocs,
