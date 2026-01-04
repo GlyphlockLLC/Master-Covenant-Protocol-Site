@@ -1,43 +1,148 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-
-import { Terminal } from 'lucide-react';
+import { Terminal, Settings, Info } from 'lucide-react';
 
 export default function QRTypeForm({ qrType, qrData, setQrData, selectedPayloadType }) {
-  // Handle custom generic payloads
-  if (qrType === 'custom') {
+  
+  // Handle dynamic form generation from catalog fields
+  if (selectedPayloadType?.fields && selectedPayloadType.fields.length > 0) {
+    
+    // Construct the payload string whenever dynamic fields change
+    useEffect(() => {
+      if (qrType === 'custom' && selectedPayloadType.fields) {
+        // Simple logic to reconstruct payload string from form data
+        // This is a basic implementation - specific formatters could be added to the catalog later
+        const params = new URLSearchParams();
+        let base = "";
+        
+        // Handle common prefixes if defined in placeholder or description logic
+        if (selectedPayloadType.id.startsWith('url_')) {
+           base = qrData[`${selectedPayloadType.id}_url`] || "";
+        }
+        
+        // Build payload string logic (simplified for dynamic types)
+        // For production, we'd want specific formatters per type
+        // Here we map form fields back to the customPayload state for the QR renderer
+        
+        let constructedPayload = "";
+        
+        // Special handlers for known types to format correctly
+        if (selectedPayloadType.id === 'url_timelock') {
+           const url = qrData[`${selectedPayloadType.id}_url`] || "https://example.com";
+           constructedPayload = `${url}?not_before=${qrData[`${selectedPayloadType.id}_startTime`] || ''}&not_after=${qrData[`${selectedPayloadType.id}_endTime`] || ''}`;
+        } else if (selectedPayloadType.id === 'url_geolock') {
+           const url = qrData[`${selectedPayloadType.id}_url`] || "https://example.com";
+           constructedPayload = `${url}?lat=${qrData[`${selectedPayloadType.id}_latitude`] || ''}&lng=${qrData[`${selectedPayloadType.id}_longitude`] || ''}&r=${qrData[`${selectedPayloadType.id}_radius`] || ''}`;
+        } else if (selectedPayloadType.id === 'crypto_btc') {
+           const addr = qrData[`${selectedPayloadType.id}_address`] || "";
+           constructedPayload = `bitcoin:${addr}?amount=${qrData[`${selectedPayloadType.id}_amount`] || ''}&label=${qrData[`${selectedPayloadType.id}_label`] || ''}`;
+        } else {
+           // Default: JSON-like structure for unknown proprietary types or raw string concatenation
+           // This ensures the "customPayload" state is updated for the renderer
+           // Ideally, we'd map this perfectly, but for now we rely on the user editing the raw output if needed,
+           // OR we just set the individual fields in state and let QrStudio.js buildQRPayload handle it if we extended that switch.
+           // BUT since QrStudio uses 'custom' case returning qrData.customPayload, we must set it here.
+           
+           // Fallback: Dump as key-value pairs text if no specific formatter
+           constructedPayload = selectedPayloadType.placeholder || "";
+           // We'll let the user see the fields update, but maybe we shouldn't overwrite customPayload directly 
+           // if they are typing in it. 
+           // BETTER STRATEGY: Update a hidden "dynamicPayload" state and merge? 
+           // Actually, let's keep it simple: The FORM updates the individual fields in qrData. 
+           // We need to update QrStudio.js to handle these new fields if we want them to generate the correct string.
+           // OR we update customPayload here.
+           
+           // Let's rely on the input fields updating `qrData[fieldKey]` and then we construct the string here.
+           const parts = selectedPayloadType.fields.map(f => {
+             const val = qrData[`${selectedPayloadType.id}_${f.name}`];
+             return val ? `${f.name}=${val}` : null;
+           }).filter(Boolean);
+           
+           if (parts.length > 0) {
+             constructedPayload = `${selectedPayloadType.id}://?${parts.join('&')}`;
+           }
+        }
+        
+        // Only update if we have meaningful data to avoid overwriting initial state too aggressively
+        if (constructedPayload) {
+           setQrData(prev => ({ ...prev, customPayload: constructedPayload }));
+        }
+      }
+    }, [qrData, selectedPayloadType, qrType, setQrData]);
+
     return (
-      <div className="space-y-4">
-        <div className="p-3 bg-purple-500/10 border border-purple-500/30 rounded-lg flex items-start gap-3">
-          <Terminal className="w-5 h-5 text-purple-400 mt-1" />
+      <div className="space-y-5">
+        <div className="flex items-center gap-3 mb-4 p-3 bg-slate-800/50 rounded-lg border border-slate-700">
+          <div className="p-2 bg-cyan-500/20 rounded-md">
+            <Settings className="w-4 h-4 text-cyan-400" />
+          </div>
           <div>
-            <h4 className="text-sm font-semibold text-purple-300">Advanced Payload Configuration</h4>
-            <p className="text-xs text-purple-200/70 mt-1">
-              Configure the raw data for {selectedPayloadType?.label || 'this type'}.
-              Ensure the format matches the standard schema.
-            </p>
+            <h3 className="text-sm font-medium text-white">{selectedPayloadType.label} Configuration</h3>
+            <p className="text-xs text-slate-400">Configure parameters for this payload type</p>
           </div>
         </div>
-        <div>
-          <Label htmlFor="customPayload" className="text-white">Payload Data *</Label>
-          <Textarea
-            id="customPayload"
-            value={qrData.customPayload || ''}
-            onChange={(e) => setQrData({...qrData, customPayload: e.target.value})}
-            placeholder={selectedPayloadType?.placeholder || "Enter payload data..."}
-            rows={4}
-            className="bg-gray-900 border-gray-700 text-cyan-400 font-mono text-sm min-h-[100px]"
-          />
-          {selectedPayloadType?.description && (
-            <p className="text-xs text-gray-500 mt-2">{selectedPayloadType.description}</p>
-          )}
+
+        <div className="grid gap-4">
+          {selectedPayloadType.fields.map((field) => {
+            const fieldKey = `${selectedPayloadType.id}_${field.name}`;
+            
+            return (
+              <div key={field.name} className="space-y-2">
+                <Label className="text-xs font-medium text-slate-300 uppercase tracking-wider">{field.label}</Label>
+                
+                {field.type === 'select' ? (
+                  <Select 
+                    value={qrData[fieldKey] || ''} 
+                    onValueChange={(val) => setQrData({...qrData, [fieldKey]: val})}
+                  >
+                    <SelectTrigger className="bg-slate-900 border-slate-700 text-white">
+                      <SelectValue placeholder={`Select ${field.label}`} />
+                    </SelectTrigger>
+                    <SelectContent className="bg-slate-900 border-slate-700 text-white">
+                      {field.options?.map(opt => (
+                        <SelectItem key={opt} value={opt}>{opt}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                ) : field.type === 'textarea' ? (
+                  <Textarea
+                    value={qrData[fieldKey] || ''}
+                    onChange={(e) => setQrData({...qrData, [fieldKey]: e.target.value})}
+                    placeholder={field.placeholder}
+                    className="bg-slate-900 border-slate-700 text-white min-h-[80px]"
+                  />
+                ) : (
+                  <Input
+                    type={field.type || 'text'}
+                    value={qrData[fieldKey] || (field.defaultValue || '')}
+                    onChange={(e) => setQrData({...qrData, [fieldKey]: e.target.value})}
+                    placeholder={field.placeholder}
+                    readOnly={field.readOnly}
+                    step={field.step}
+                    className="bg-slate-900 border-slate-700 text-white h-11"
+                  />
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Live Payload Preview */}
+        <div className="pt-4 border-t border-slate-800">
+          <Label className="text-xs text-slate-500 mb-2 block">Generated Payload Preview</Label>
+          <div className="bg-black/30 p-3 rounded border border-slate-800 font-mono text-xs text-cyan-400 break-all">
+            {qrData.customPayload || selectedPayloadType.placeholder || "Configure fields above..."}
+          </div>
         </div>
       </div>
     );
   }
+
+  // Handle custom generic payloads (fallback for types without fields)
+  if (qrType === 'custom') {
 
   switch (qrType) {
     case "url":

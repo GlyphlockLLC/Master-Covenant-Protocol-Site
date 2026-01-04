@@ -54,6 +54,12 @@ export const PAYLOAD_TYPES = [
     description: 'URL only accessible during specific time windows',
     placeholder: 'https://example.com (Available: 9AM-5PM)',
     premium: true,
+    fields: [
+      { name: 'url', label: 'Target URL', type: 'url', placeholder: 'https://example.com' },
+      { name: 'startTime', label: 'Start Time', type: 'datetime-local' },
+      { name: 'endTime', label: 'End Time', type: 'datetime-local' },
+      { name: 'timezone', label: 'Timezone', type: 'text', placeholder: 'UTC' }
+    ]
   },
   { 
     id: 'url_geolock', 
@@ -63,6 +69,12 @@ export const PAYLOAD_TYPES = [
     description: 'URL only accessible from specific locations',
     placeholder: 'https://example.com (Radius: 100m)',
     premium: true,
+    fields: [
+      { name: 'url', label: 'Target URL', type: 'url', placeholder: 'https://example.com' },
+      { name: 'latitude', label: 'Latitude', type: 'number', step: 'any' },
+      { name: 'longitude', label: 'Longitude', type: 'number', step: 'any' },
+      { name: 'radius', label: 'Radius (meters)', type: 'number', placeholder: '100' }
+    ]
   },
   { 
     id: 'url_velocity', 
@@ -193,6 +205,11 @@ export const PAYLOAD_TYPES = [
     description: 'Direct Stripe checkout link',
     placeholder: 'https://buy.stripe.com/...',
     premium: true,
+    fields: [
+      { name: 'paymentUrl', label: 'Stripe Payment Link', type: 'url', placeholder: 'https://buy.stripe.com/...' },
+      { name: 'productName', label: 'Product Name', type: 'text', placeholder: 'Premium Plan' },
+      { name: 'price', label: 'Price Display', type: 'text', placeholder: '$99.00' }
+    ]
   },
   { 
     id: 'crypto_btc', 
@@ -202,6 +219,12 @@ export const PAYLOAD_TYPES = [
     description: 'BTC wallet address',
     placeholder: 'bitcoin:1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa',
     premium: false,
+    fields: [
+      { name: 'address', label: 'Bitcoin Address', type: 'text', placeholder: '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa' },
+      { name: 'amount', label: 'Amount (BTC)', type: 'number', step: 'any', placeholder: '0.001' },
+      { name: 'label', label: 'Label', type: 'text', placeholder: 'Donation' },
+      { name: 'message', label: 'Message', type: 'text', placeholder: 'Thank you' }
+    ]
   },
   { 
     id: 'crypto_eth', 
@@ -211,6 +234,11 @@ export const PAYLOAD_TYPES = [
     description: 'ETH wallet address',
     placeholder: 'ethereum:0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb',
     premium: false,
+    fields: [
+      { name: 'address', label: 'Ethereum Address', type: 'text', placeholder: '0x...' },
+      { name: 'amount', label: 'Amount (ETH)', type: 'number', step: 'any' },
+      { name: 'gas', label: 'Gas Limit (Optional)', type: 'number' }
+    ]
   },
   { 
     id: 'crypto_sol', 
@@ -240,6 +268,12 @@ export const PAYLOAD_TYPES = [
     description: 'Trigger OAuth authentication flow',
     placeholder: 'oauth://authorize?client_id=xxx',
     premium: true,
+    fields: [
+      { name: 'authUrl', label: 'Authorization URL', type: 'url', placeholder: 'https://auth.example.com/oauth/authorize' },
+      { name: 'clientId', label: 'Client ID', type: 'text', placeholder: 'client_12345' },
+      { name: 'scope', label: 'Scopes', type: 'text', placeholder: 'openid profile email' },
+      { name: 'state', label: 'State/Nonce', type: 'text', placeholder: 'random_string' }
+    ]
   },
   { 
     id: 'auth_sso', 
@@ -722,6 +756,11 @@ export const PAYLOAD_TYPES = [
     description: 'Prove NFT ownership',
     placeholder: 'nft://claim?token_id=xxx',
     premium: true,
+    fields: [
+      { name: 'contractAddress', label: 'Contract Address', type: 'text', placeholder: '0x...' },
+      { name: 'tokenId', label: 'Token ID', type: 'text', placeholder: '123' },
+      { name: 'chain', label: 'Chain', type: 'select', options: ['Ethereum', 'Polygon', 'Solana', 'Tezos'] }
+    ]
   },
   { 
     id: 'blockchain_contract', 
@@ -769,6 +808,12 @@ export const PAYLOAD_TYPES = [
     description: 'GlyphLock trust verification system',
     placeholder: 'glx://truststrike?signature=xxx',
     premium: true,
+    fields: [
+      { name: 'entityId', label: 'Entity ID', type: 'text', placeholder: 'ENT-88392' },
+      { name: 'verificationLevel', label: 'Verification Level', type: 'select', options: ['Standard', 'Enhanced', 'High Assurance', 'Maximum'] },
+      { name: 'expiryDate', label: 'Signature Expiry', type: 'date' },
+      { name: 'nonce', label: 'Cryptographic Nonce', type: 'text', readOnly: true, defaultValue: 'AUTO_GENERATED' }
+    ]
   },
   { 
     id: 'glx_covenant', 
