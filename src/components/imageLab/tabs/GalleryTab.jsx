@@ -6,7 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Loader2, Search, Download, Edit, Trash2, Lock, Image as ImageIcon, CheckSquare, Square, X } from 'lucide-react';
+import { Loader2, Search, Download, Edit, Trash2, Lock, Image as ImageIcon, CheckSquare, Square, X, QrCode } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import {
   GlyphImageCard,
@@ -25,6 +26,7 @@ export default function GalleryTab({ user, onImageSelect }) {
   const [selectionMode, setSelectionMode] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const { data: images = [], isLoading, refetch } = useQuery({
     queryKey: ['interactive-images'],
@@ -129,6 +131,13 @@ export default function GalleryTab({ user, onImageSelect }) {
     } catch (error) {
       window.open(url, '_blank');
     }
+  };
+
+  const handleSendToQr = (image) => {
+    // Navigate to QR Studio with image URL as payload
+    const payload = encodeURIComponent(image.fileUrl);
+    navigate(`/qr?tab=create&payloadType=url&payloadValue=${payload}`);
+    toast.success('Sending to QR Studio...');
   };
 
   return (
@@ -348,6 +357,15 @@ export default function GalleryTab({ user, onImageSelect }) {
                         <Trash2 className="w-4 h-4" />
                       </Button>
                     </div>
+                    <Button
+                      size="sm"
+                      onClick={() => handleSendToQr(image)}
+                      className="w-full mt-2 bg-gradient-to-r from-cyan-600 to-blue-600 text-white text-xs h-8"
+                    >
+                      <QrCode className="w-3 h-3 mr-2" />
+                      Create QR from Image
+                    </Button>
+                  </>
                   )}
                 </CardContent>
               </Card>

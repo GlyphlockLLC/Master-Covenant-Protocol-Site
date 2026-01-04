@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { Loader2, Upload, Save, Lock, Trash2, Sparkles, MousePointer, Link2, ExternalLink } from 'lucide-react';
+import { Loader2, Upload, Save, Lock, Trash2, Sparkles, MousePointer, Link2, ExternalLink, Share2, Users } from 'lucide-react';
 import { toast } from 'sonner';
 import {
   GlyphImageCard,
@@ -17,6 +17,10 @@ import {
   GlyphImageBadge,
   GlyphImagePanel,
 } from '../design/GlyphImageDesignSystem';
+import UniversalAssetPicker from '@/components/shared/UniversalAssetPicker';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { useCollaboration } from '@/components/hooks/useCollaboration';
+import CollaborationPanel from '@/components/qr/CollaborationPanel';
 
 export default function InteractiveTab({ user, selectedImage, onImageSelect }) {
   const [imageAsset, setImageAsset] = useState(selectedImage);
@@ -25,8 +29,26 @@ export default function InteractiveTab({ user, selectedImage, onImageSelect }) {
   const [loading, setLoading] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
   const [pendingClick, setPendingClick] = useState(null);
+  const [showAssetPicker, setShowAssetPicker] = useState(false);
+  const [collabSessionId, setCollabSessionId] = useState(null);
   const canvasRef = useRef(null);
   const imageRef = useRef(null);
+
+  // Collaboration Hook
+  const { activeUsers, messages, isConnected, sendMessage, sendStateUpdate } = useCollaboration({
+    projectId: collabSessionId,
+    currentUser: user,
+    onStateUpdate: (data) => {
+      if (data.hotspots) setHotspots(data.hotspots);
+    }
+  });
+
+  // Broadcast hotspot changes
+  useEffect(() => {
+    if (collabSessionId && isConnected) {
+      sendStateUpdate({ hotspots });
+    }
+  }, [hotspots, collabSessionId, isConnected]);
 
   useEffect(() => {
     if (selectedImage) {
@@ -34,6 +56,13 @@ export default function InteractiveTab({ user, selectedImage, onImageSelect }) {
       setHotspots(selectedImage.hotspots || []);
     }
   }, [selectedImage]);
+
+  const startCollaboration = () => {
+    if (!imageAsset?.id) return;
+    const sessionId = `img_collab_${imageAsset.id}`;
+    setCollabSessionId(sessionId);
+    toast.success("Collaboration session started! Others can join using this Image ID.");
+  };
 
   const handleImageUpload = async (e) => {
     const file = e.target.files?.[0];
@@ -375,13 +404,23 @@ Be precise with the bounding box - make it fit the detected object tightly but i
                     <Link2 className="w-4 h-4 text-cyan-400" />
                     Action URL / Payload
                   </Label>
-                  <Input
-                    value={selectedHotspot.actionValue}
-                    onChange={(e) => handleUpdateHotspot('actionValue', e.target.value)}
-                    placeholder="https://example.com or payload"
-                    className={`${GlyphImageInput.base} mt-1`}
-                  />
-                  <p className="text-xs text-gray-500 mt-1">This URL opens when users click/tap this zone</p>
+                  <div className="flex gap-2">
+                    <Input
+                      value={selectedHotspot.actionValue}
+                      onChange={(e) => handleUpdateHotspot('actionValue', e.target.value)}
+                      placeholder="https://example.com or payload"
+                      className={`${GlyphImageInput.base} mt-1`}
+                    />
+                    <Button 
+                      onClick={() => setShowAssetPicker(true)}
+                      variant="outline"
+                      className="mt-1 border-cyan-500/30 text-cyan-400"
+                      title="Link Asset"
+                    >
+                      <Link2 className="w-4 h-4" />
+                    </Button>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-1">Link a URL, QR Code, or other asset</p>
                 </div>
                 
                 {/* Test Button */}
@@ -473,16 +512,39 @@ Be precise with the bounding box - make it fit the detected object tightly but i
 
       {/* Right - Canvas */}
       <div className="lg:col-span-2">
+        {collabSessionId && (
+          <CollaborationPanel 
+            activeUsers={activeUsers}
+            isConnected={isConnected}
+            messages={messages}
+            onSendMessage={sendMessage}
+            currentUser={user}
+          />
+        )}
+        
         <Card className={`${GlyphImageCard.premium} ${GlyphImageShadows.depth.lg}`}>
           <CardHeader className="border-b border-purple-500/20">
             <CardTitle className={`${GlyphImageTypography.heading.md} text-white flex items-center justify-between`}>
               <span>{imageAsset.name}</span>
-              {analyzing && (
-                <span className="flex items-center gap-2 text-sm text-cyan-400">
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  AI analyzing...
-                </span>
-              )}
+              <div className="flex items-center gap-2">
+                {!collabSessionId && (
+                  <Button 
+                    size="sm" 
+                    variant="outline" 
+                    onClick={startCollaboration}
+                    className="border-purple-500/30 text-purple-300 hover:bg-purple-500/10"
+                  >
+                    <Users className="w-4 h-4 mr-2" />
+                    Collaborate
+                  </Button>
+                )}
+                {analyzing && (
+                  <span className="flex items-center gap-2 text-sm text-cyan-400">
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    AI analyzing...
+                  </span>
+                )}
+              </div>
             </CardTitle>
           </CardHeader>
           <CardContent className={GlyphImagePanel.primary}>
@@ -572,6 +634,20 @@ Be precise with the bounding box - make it fit the detected object tightly but i
           </CardContent>
         </Card>
       </div>
+
+      <Dialog open={showAssetPicker} onOpenChange={setShowAssetPicker}>
+        <DialogContent className="max-w-3xl bg-transparent border-none p-0">
+          <UniversalAssetPicker 
+            onSelect={(asset) => {
+              const value = asset.type === 'qr' ? asset.payload : asset.fileUrl;
+              handleUpdateHotspot('actionValue', value);
+              setShowAssetPicker(false);
+              toast.success(`Linked ${asset.type === 'qr' ? 'QR Code' : 'Image'}`);
+            }} 
+            onCancel={() => setShowAssetPicker(false)} 
+          />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
