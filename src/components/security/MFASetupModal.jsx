@@ -31,6 +31,22 @@ export default function MFASetupModal({ isOpen, onClose, onSuccess }) {
     }
   }, [isOpen]);
 
+  // Countdown timer for setup token expiry
+  React.useEffect(() => {
+    if (step === 'qr' && timeRemaining > 0) {
+      const timer = setInterval(() => {
+        setTimeRemaining(prev => {
+          if (prev <= 1) {
+            setError('Setup session expired. Please restart.');
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+      return () => clearInterval(timer);
+    }
+  }, [step, timeRemaining]);
+
   const initializeSetup = async () => {
     setIsLoading(true);
     setError('');
@@ -40,7 +56,9 @@ export default function MFASetupModal({ isOpen, onClose, onSuccess }) {
       
       setQrCodeDataUrl(response.data.qrCodeDataUrl);
       setManualKey(response.data.manualKey);
-      setTempSecret(response.data.tempSecret);
+      setSetupToken(response.data.setupToken);
+      setExpiresIn(response.data.expiresIn || 300);
+      setTimeRemaining(response.data.expiresIn || 300);
     } catch (err) {
       setError(err.message || 'Failed to initialize MFA setup');
     } finally {
@@ -60,7 +78,7 @@ export default function MFASetupModal({ isOpen, onClose, onSuccess }) {
     try {
       const response = await base44.functions.invoke('mfaVerifySetup', {
         code: verificationCode,
-        tempSecret
+        setupToken // Send encrypted time-bound token
       });
 
       setRecoveryCodes(response.data.recoveryCodes);
@@ -172,10 +190,16 @@ export default function MFASetupModal({ isOpen, onClose, onSuccess }) {
                   </p>
                 </div>
 
+                {timeRemaining > 0 && (
+                  <div className="text-center text-sm text-slate-400 mb-2">
+                    Setup expires in: <span className="text-cyan-400 font-mono">{Math.floor(timeRemaining / 60)}:{(timeRemaining % 60).toString().padStart(2, '0')}</span>
+                  </div>
+                )}
+
                 <Button
                   onClick={() => setStep('verify')}
                   className="w-full bg-gradient-to-r from-cyan-600 to-blue-600"
-                  disabled={!qrCodeDataUrl}
+                  disabled={!qrCodeDataUrl || timeRemaining === 0}
                 >
                   Continue
                 </Button>
