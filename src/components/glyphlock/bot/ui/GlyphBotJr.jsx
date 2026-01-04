@@ -3,7 +3,7 @@ import { base44 } from "@/api/base44Client";
 import { Sparkles, Send, Loader2, Volume2 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { PERSONAS } from '../config';
-import { tts as ttsService } from '../services';
+import { speak } from '@/components/utils/auroraVoice';
 
 export default function GlyphBotJr() {
   const jrPersona = PERSONAS.find(p => p.id === "glyphbot_jr") || PERSONAS[4];
@@ -20,29 +20,7 @@ export default function GlyphBotJr() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const playVoice = async (text) => {
-    try {
-      const cleanText = text.replace(/[🌟💠✨🦕#*`]/g, '').trim();
-      if (!cleanText) return;
 
-      const result = await ttsService.generate({
-        text: cleanText,
-        provider: 'google',
-        voice: 'en-US-Neural2-F',
-        speed: 1.1,
-        pitch: 1.0,
-        volume: 1.0
-      });
-
-      if (result?.audioUrl) {
-        const audio = new Audio(result.audioUrl);
-        audio.playbackRate = 1.1;
-        await audio.play();
-      }
-    } catch (err) {
-      console.error("Voice playback failed:", err);
-    }
-  };
 
   const handleSend = async () => {
     if (!input.trim() || loading) return;
@@ -103,8 +81,6 @@ When answering questions, use the knowledge bases to provide accurate informatio
       };
       
       setMessages(prev => [...prev, assistantMessage]);
-      
-      setTimeout(() => playVoice(response), 300);
       
     } catch (error) {
       setMessages(prev => [...prev, {
@@ -212,9 +188,11 @@ When answering questions, use the knowledge bases to provide accurate informatio
               
               {msg.role === "assistant" && (
                 <button
-                  onClick={() => playVoice(msg.text)}
+                  onClick={() => speak(msg.text)}
+                  data-glyphbot-jr-listen
                   className="mt-3 text-xs bg-blue-600/30 hover:bg-blue-600/50 px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5 border border-blue-400/30"
                   style={{ boxShadow: '0 0 10px rgba(37, 99, 235, 0.2)' }}
+                  aria-label="Listen"
                 >
                   <Volume2 className="w-3 h-3" />
                   Listen
