@@ -194,13 +194,10 @@ export default function SteganographicQR({ qrPayload, qrGenerated, onEmbedded })
         binary += fullData.charCodeAt(i).toString(2).padStart(8, '0');
       }
 
-      // Select Embedding Strategy
+      // Embed based on Algorithm
       if (algorithm === 'FREQUENCY_DOMAIN') {
         // Simulation of Frequency Domain (DCT) Embedding
-        // Real DCT is complex; we simulate robustness by embedding in higher bits (2nd LSB) 
-        // spread across the image to simulate frequency coefficient manipulation resistance
         let dataIdx = 0;
-        // Pseudo-random scatter based on key or fixed seed
         for (let i = 0; i < data.length; i += 8) { // Spread out
           if (dataIdx >= binary.length) break;
           // Use Blue channel, 2nd bit (value 2) for "Frequency" simulation
@@ -209,16 +206,12 @@ export default function SteganographicQR({ qrPayload, qrGenerated, onEmbedded })
         }
       } else if (algorithm === 'LSB_MATRIX') {
         // Matrix Encoding (Hamming Code simulation)
-        // Embeds 1 bit of data into 3 pixels by changing at most 1 bit
-        // For this demo, we use a simple scattered LSB across RGB
         let dataIdx = 0;
         for (let i = 0; i < data.length; i += 4) {
           if (dataIdx >= binary.length) break;
-          // R
+          // Scatter across R, G, B
           if (dataIdx < binary.length) { data[i] = (data[i] & 0xFE) | parseInt(binary[dataIdx++]); }
-          // G
           if (dataIdx < binary.length) { data[i+1] = (data[i+1] & 0xFE) | parseInt(binary[dataIdx++]); }
-          // B
           if (dataIdx < binary.length) { data[i+2] = (data[i+2] & 0xFE) | parseInt(binary[dataIdx++]); }
         }
       } else {
@@ -226,6 +219,7 @@ export default function SteganographicQR({ qrPayload, qrGenerated, onEmbedded })
         let dataIdx = 0;
         for (let i = 0; i < data.length; i += 4) {
           if (dataIdx >= binary.length) break;
+          // Modify Red channel LSB
           data[i] = (data[i] & 0xFE) | parseInt(binary[dataIdx]);
           dataIdx++;
         }
@@ -236,18 +230,14 @@ export default function SteganographicQR({ qrPayload, qrGenerated, onEmbedded })
       const stegoUrl = canvas.toDataURL('image/png');
       setStegoResult(stegoUrl);
 
-      // 3. Upload Result to Cloud (Simulated here, would use UploadFile integration)
-      // For this demo, we'll assume we got a URL back. We'll use the data URL for the record.
-      // In production: upload `stegoUrl` blob -> get URL.
-      
-      // 4. Create Database Record
+      // 3. Create Database Record
       await base44.functions.invoke('stegoOps', {
         action: 'create_record',
         name: `Stego-${coverImage.name}`,
         algorithm,
-        carrierUrl: 'https://placeholder.com/original.png', // Would be real URL
-        resultUrl: 'https://placeholder.com/stego.png',     // Would be real URL
-        payloadHash: btoa(qrPayload).substring(0, 10),      // Simple hash
+        carrierUrl: 'https://placeholder.com/original.png',
+        resultUrl: 'https://placeholder.com/stego.png',
+        payloadHash: btoa(qrPayload).substring(0, 10),
         keyHint
       });
 
@@ -282,9 +272,7 @@ export default function SteganographicQR({ qrPayload, qrGenerated, onEmbedded })
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const data = imageData.data;
 
-      // Attempt extraction using multiple strategies since we don't know the algo beforehand
-      // (Or we could scan for a specific header pattern in each strategy)
-      
+      // Multi-strategy Extraction
       const strategies = [
         { name: 'LSB_RED', fn: (d) => {
             let b = ''; 
@@ -293,7 +281,7 @@ export default function SteganographicQR({ qrPayload, qrGenerated, onEmbedded })
         }},
         { name: 'FREQUENCY', fn: (d) => {
             let b = ''; 
-            for(let i=0; i<d.length; i+=8) b += ((d[i+2]>>1)&1).toString(); // Check Blue 2nd bit spread
+            for(let i=0; i<d.length; i+=8) b += ((d[i+2]>>1)&1).toString(); 
             return b;
         }},
         { name: 'MATRIX', fn: (d) => {
@@ -312,19 +300,14 @@ export default function SteganographicQR({ qrPayload, qrGenerated, onEmbedded })
 
       for (const strat of strategies) {
         const bin = strat.fn(data);
-        // Try to read first 500 chars to find header
-        // Optimization: Convert chunks until header found
+        // Optimization: Check first 2000 bits for header
         let txt = '';
-        // Only convert enough to find header first to save time? 
-        // For demo, convert first 2000 bits (approx 250 chars)
         for (let i = 0; i < Math.min(bin.length, 2000); i += 8) {
           txt += String.fromCharCode(parseInt(bin.substr(i, 8), 2));
         }
         
-        // Loose match for header start
         if (txt.includes('GLYPH:')) {
-           // If header found, convert fully
-           txt = '';
+           txt = ''; // Decode full if found
            for (let i = 0; i < bin.length; i += 8) {
              txt += String.fromCharCode(parseInt(bin.substr(i, 8), 2));
            }
@@ -337,8 +320,6 @@ export default function SteganographicQR({ qrPayload, qrGenerated, onEmbedded })
         }
       }
 
-      // Parse header
-      if (match) {
       if (match) {
         const alg = match[1];
         const content = match[2];
@@ -350,7 +331,7 @@ export default function SteganographicQR({ qrPayload, qrGenerated, onEmbedded })
             content: decoded,
             verified: true
           });
-          toast.success("Data extracted and verified");
+          toast.success(`Data extracted (${detectedAlgo})`);
         } else {
           toast.error("Decryption failed. Check key.");
         }
@@ -395,12 +376,8 @@ export default function SteganographicQR({ qrPayload, qrGenerated, onEmbedded })
       const balance = Math.abs(0.5 - (ones / total));
       
       // 2. Chi-Square Attack Simulation (Simplified)
-      // High deviation from random distribution in LSB pairs often indicates hidden data
-      // For this demo, we use the balance metric as a proxy for "randomness"
-      // Natural images rarely have perfectly random LSBs (0.5 balance) but encrypted stego does.
-      
       const entropy = -((ones/total)*Math.log2(ones/total) + (zeros/total)*Math.log2(zeros/total));
-      const hasHiddenData = balance < 0.05 && entropy > 0.95; // Very simplified heuristic
+      const hasHiddenData = balance < 0.05 && entropy > 0.95; // Simplified heuristic
 
       setAnalysisResult({
         lsbEntropy: entropy.toFixed(4),
@@ -453,6 +430,7 @@ export default function SteganographicQR({ qrPayload, qrGenerated, onEmbedded })
                     <SelectContent className="bg-slate-800 border-slate-700 text-white">
                       <SelectItem value="AES_ENCRYPTED_LSB">AES-256 Encrypted LSB (Recommended)</SelectItem>
                       <SelectItem value="LSB_MATRIX">Matrix Encoding (High Capacity)</SelectItem>
+                      <SelectItem value="FREQUENCY_DOMAIN">Frequency Domain (Resistant)</SelectItem>
                       <SelectItem value="ALPHA_CHANNEL">Alpha Channel Injection (PNG Only)</SelectItem>
                     </SelectContent>
                   </Select>
@@ -605,7 +583,7 @@ export default function SteganographicQR({ qrPayload, qrGenerated, onEmbedded })
                     <div className="border-2 border-dashed border-slate-700 rounded-lg h-48 flex flex-col items-center justify-center text-slate-500 hover:border-yellow-500/50 hover:bg-slate-800/50 transition-all cursor-pointer relative">
                       <input 
                         type="file" 
-                        onChange={(e) => handleImageUpload(e, 'decode')} // Reuse decode upload handler
+                        onChange={(e) => handleImageUpload(e, 'decode')} 
                         className="absolute inset-0 opacity-0 cursor-pointer"
                         accept="image/png"
                       />

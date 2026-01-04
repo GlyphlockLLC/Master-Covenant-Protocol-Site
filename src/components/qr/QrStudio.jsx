@@ -36,6 +36,7 @@ import AiArtPanel from './AiArtPanel';
 import CollaborationPanel from './CollaborationPanel';
 import ShareDialog from './ShareDialog';
 import ProjectManager from './ProjectManager';
+import ProjectManager from './ProjectManager';
 
 
 export default function QrStudio({ initialTab = 'create' }) {
@@ -989,6 +990,18 @@ export default function QrStudio({ initialTab = 'create' }) {
                     />
                   </div>
 
+                  <div className="h-[400px] mb-4">
+                    <ProjectManager 
+                      qrAsset={qrAssetDraft} 
+                      onUpdateAsset={(updated) => setQrAssetDraft(updated)}
+                      onRestoreVersion={(ver) => {
+                        setQrData(prev => ({ ...prev, url: ver.payload }));
+                        if (ver.design_config) setCustomization(ver.design_config);
+                        toast.success(`Restored version v${ver.version_number}`);
+                      }}
+                      onInvite={(email) => setSharedUsers(prev => [...prev, email])}
+                    />
+                  </div>
                   <AIInsightsPanel 
                     qrType={qrType} 
                     qrData={qrData} 
