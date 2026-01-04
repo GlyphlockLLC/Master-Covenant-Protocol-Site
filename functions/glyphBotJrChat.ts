@@ -14,9 +14,9 @@ Deno.serve(async (req) => {
         const base44 = createClientFromRequest(req);
         const { action, text, messages, systemPrompt } = await req.json();
 
-        // 🎯 LISTEN ACTION — Fetch TTS and return as base64
+        // 🎯 LISTEN ACTION — Fetch TTS and return as base64 (chunked for long text)
         if (action === 'listen') {
-            if (!text || text.length > 500) {
+            if (!text || text.length > 2000) {
                 return Response.json({ error: 'Invalid text' }, { status: 400 });
             }
 
@@ -41,22 +41,53 @@ Deno.serve(async (req) => {
             // Fallback if text is empty after cleaning
             if (!cleanText) cleanText = "Here you go!";
 
-            const encodedText = encodeURIComponent(cleanText.substring(0, 200));
-            const ttsUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=en&client=tw-ob&q=${encodedText}`;
-
-            // Fetch the audio and convert to base64 (CORS proxy)
-            const audioResponse = await fetch(ttsUrl, {
-                headers: {
-                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+            // Split into chunks at sentence boundaries (max ~180 chars each for Google TTS)
+            const chunks = [];
+            const sentences = cleanText.match(/[^.!?]+[.!?]+|[^.!?]+$/g) || [cleanText];
+            let currentChunk = '';
+            
+            for (const sentence of sentences) {
+                if ((currentChunk + sentence).length <= 180) {
+                    currentChunk += sentence;
+                } else {
+                    if (currentChunk) chunks.push(currentChunk.trim());
+                    currentChunk = sentence.length > 180 ? sentence.substring(0, 180) : sentence;
                 }
-            });
+            }
+            if (currentChunk) chunks.push(currentChunk.trim());
 
-            if (!audioResponse.ok) {
+            // Fetch all chunks in parallel
+            const audioChunks = await Promise.all(
+                chunks.slice(0, 5).map(async (chunk) => { // Max 5 chunks
+                    const encodedText = encodeURIComponent(chunk);
+                    const ttsUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=en&client=tw-ob&q=${encodedText}`;
+                    
+                    const audioResponse = await fetch(ttsUrl, {
+                        headers: {
+                            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+                        }
+                    });
+                    
+                    if (!audioResponse.ok) return null;
+                    return await audioResponse.arrayBuffer();
+                })
+            );
+
+            // Combine audio buffers
+            const validChunks = audioChunks.filter(Boolean);
+            if (validChunks.length === 0) {
                 throw new Error('TTS fetch failed');
             }
 
-            const audioBuffer = await audioResponse.arrayBuffer();
-            const base64Audio = btoa(String.fromCharCode(...new Uint8Array(audioBuffer)));
+            const totalLength = validChunks.reduce((sum, buf) => sum + buf.byteLength, 0);
+            const combined = new Uint8Array(totalLength);
+            let offset = 0;
+            for (const buf of validChunks) {
+                combined.set(new Uint8Array(buf), offset);
+                offset += buf.byteLength;
+            }
+
+            const base64Audio = btoa(String.fromCharCode(...combined));
 
             return Response.json({
                 text: text,
@@ -64,7 +95,8 @@ Deno.serve(async (req) => {
                     enabled: true,
                     persona: 'Aurora',
                     audioBase64: base64Audio,
-                    mimeType: 'audio/mpeg'
+                    mimeType: 'audio/mpeg',
+                    chunks: chunks.length
                 }
             });
         }
