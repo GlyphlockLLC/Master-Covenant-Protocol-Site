@@ -411,7 +411,7 @@ export default function Navbar({ user, onLogin, onLogout }) {
         }}
       />
 
-      <div className="max-w-[1440px] mx-auto px-6 lg:px-12 py-3 flex items-center justify-between">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12 py-3 flex items-center justify-between">
         {/* Logo with hover effects */}
         <Link to={createPageUrl("Home")} className="flex items-center gap-3 group">
           <MagneticButton>
@@ -550,12 +550,13 @@ export default function Navbar({ user, onLogin, onLogout }) {
           )}
         </div>
 
-        {/* Mobile Toggle */}
+        {/* Mobile Toggle - Larger touch target */}
         <motion.button
           whileTap={{ scale: 0.95 }}
-          className="lg:hidden relative w-12 h-12 flex items-center justify-center rounded-xl bg-white/5 border border-white/10"
+          className="lg:hidden relative w-14 h-14 flex items-center justify-center rounded-xl bg-white/5 border border-white/10 touch-manipulation"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label="Toggle menu"
+          style={{ WebkitTapHighlightColor: 'transparent' }}
         >
           <AnimatePresence mode="wait">
             {mobileMenuOpen ? (
@@ -566,7 +567,7 @@ export default function Navbar({ user, onLogin, onLogout }) {
                 exit={{ rotate: 90, opacity: 0 }}
                 transition={{ duration: 0.2 }}
               >
-                <X size={24} className="text-cyan-400" />
+                <X size={28} className="text-cyan-400" />
               </motion.div>
             ) : (
               <motion.div
@@ -576,7 +577,7 @@ export default function Navbar({ user, onLogin, onLogout }) {
                 exit={{ rotate: -90, opacity: 0 }}
                 transition={{ duration: 0.2 }}
               >
-                <Menu size={24} />
+                <Menu size={28} />
               </motion.div>
             )}
           </AnimatePresence>
