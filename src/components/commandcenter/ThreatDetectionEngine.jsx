@@ -432,52 +432,85 @@ export function useThreatDetection(user) {
 
   // Run threat analysis
   const runAnalysis = useCallback(() => {
-    setIsScanning(true);
-    
-    const allAssets = [...qrAssets, ...images];
-    const detectedThreats = analyzePatterns(auditLogs, apiKeys, allAssets, config);
-    
-    // Check for new threats
-    const newThreats = detectedThreats.filter(t => 
-      !threats.some(existing => 
-        existing.type === t.type && 
-        Math.abs(new Date(existing.timestamp) - new Date(t.timestamp)) < 60000
-      )
-    );
-
-    if (newThreats.length > 0) {
-      setThreats(prev => [...newThreats, ...prev].slice(0, 50));
-      
-      // Log new threats
-      newThreats.forEach(threat => {
-        logIncident(threat);
-        
-        // Auto-disable keys if configured
-        if (config.autoDisableKeys && threat.type === 'API_KEY_ABUSE' && threat.data?.keyId) {
-          disableApiKey(threat.data.keyId);
-        }
-      });
-
-      // Show notification for critical threats
-      const criticalThreats = newThreats.filter(t => 
-        THREAT_TYPES[t.type]?.severity === 'critical'
-      );
-      if (criticalThreats.length > 0) {
-        toast.error(`${criticalThreats.length} critical threat(s) detected!`, {
-          duration: 10000
-        });
-      }
+    // Don't run if data is still loading
+    if (loadingLogs || loadingKeys) {
+      return;
     }
 
-    setIsScanning(false);
-  }, [auditLogs, apiKeys, qrAssets, images, config, threats, logIncident, disableApiKey]);
+    setIsScanning(true);
+    setLastScanTime(new Date());
+    
+    try {
+      const allAssets = [...(qrAssets || []), ...(images || [])];
+      const detectedThreats = analyzePatterns(auditLogs || [], apiKeys || [], allAssets, config);
+      
+      // Check for new threats (deduplicate)
+      const newThreats = detectedThreats.filter(t => 
+        !threats.some(existing => 
+          existing.type === t.type && 
+          existing.details === t.details &&
+          Math.abs(new Date(existing.timestamp) - new Date(t.timestamp)) < 120000 // 2 min window
+        )
+      );
 
-  // Run analysis periodically
+      if (newThreats.length > 0) {
+        setThreats(prev => {
+          const combined = [...newThreats, ...prev];
+          // Remove duplicates and limit to 50
+          const unique = combined.filter((t, i, arr) => 
+            arr.findIndex(x => x.type === t.type && x.details === t.details) === i
+          );
+          return unique.slice(0, 50);
+        });
+        
+        // Log new threats
+        newThreats.forEach(threat => {
+          logIncident(threat);
+          
+          // Auto-disable keys if configured
+          if (config.autoDisableKeys && threat.type === 'API_KEY_ABUSE' && threat.data?.keyId) {
+            disableApiKey(threat.data.keyId);
+          }
+        });
+
+        // Show notification for critical threats
+        const criticalThreats = newThreats.filter(t => 
+          THREAT_TYPES[t.type]?.severity === 'critical'
+        );
+        if (criticalThreats.length > 0) {
+          toast.error(`${criticalThreats.length} critical threat(s) detected!`, {
+            duration: 10000
+          });
+        }
+      }
+    } catch (e) {
+      console.error('Threat analysis error:', e);
+    } finally {
+      setIsScanning(false);
+    }
+  }, [auditLogs, apiKeys, qrAssets, images, config, threats, logIncident, disableApiKey, loadingLogs, loadingKeys]);
+
+  // Run analysis periodically - with smarter intervals
   useEffect(() => {
-    runAnalysis();
-    const interval = setInterval(runAnalysis, 30000); // Every 30 seconds
-    return () => clearInterval(interval);
-  }, [runAnalysis]);
+    // Initial scan after data loads
+    const initialTimeout = setTimeout(() => {
+      if (!loadingLogs && !loadingKeys) {
+        runAnalysis();
+      }
+    }, 1000);
+
+    // Periodic scans every 30 seconds
+    const interval = setInterval(() => {
+      if (!loadingLogs && !loadingKeys) {
+        runAnalysis();
+      }
+    }, 30000);
+
+    return () => {
+      clearTimeout(initialTimeout);
+      clearInterval(interval);
+    };
+  }, [runAnalysis, loadingLogs, loadingKeys]);
 
   const dismissThreat = useCallback((threat) => {
     setThreats(prev => prev.filter(t => t !== threat));
