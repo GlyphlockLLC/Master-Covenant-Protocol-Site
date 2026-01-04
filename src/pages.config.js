@@ -49,6 +49,7 @@ import Privacy from './pages/Privacy';
 import ProjectUpdates from './pages/ProjectUpdates';
 import ProviderConsole from './pages/ProviderConsole';
 import Qr from './pages/Qr';
+import Roadmap from './pages/Roadmap';
 import Robots from './pages/Robots';
 import SDKDocs from './pages/SDKDocs';
 import SecurityDocs from './pages/SecurityDocs';
@@ -70,12 +71,12 @@ import Solutions from './pages/Solutions';
 import SystemStatus from './pages/SystemStatus';
 import Terms from './pages/Terms';
 import TrustSecurity from './pages/TrustSecurity';
+import UserSettings from './pages/UserSettings';
 import VIPContract from './pages/VIPContract';
 import VideoUpload from './pages/VideoUpload';
 import imageLab from './pages/image-lab';
 import sitemapQr from './pages/sitemap-qr';
-import UserSettings from './pages/UserSettings';
-import Roadmap from './pages/Roadmap';
+import CaseStudyPerplexity from './pages/CaseStudyPerplexity';
 import __Layout from './Layout.jsx';
 
 
@@ -131,6 +132,7 @@ export const PAGES = {
     "ProjectUpdates": ProjectUpdates,
     "ProviderConsole": ProviderConsole,
     "Qr": Qr,
+    "Roadmap": Roadmap,
     "Robots": Robots,
     "SDKDocs": SDKDocs,
     "SecurityDocs": SecurityDocs,
@@ -152,12 +154,12 @@ export const PAGES = {
     "SystemStatus": SystemStatus,
     "Terms": Terms,
     "TrustSecurity": TrustSecurity,
+    "UserSettings": UserSettings,
     "VIPContract": VIPContract,
     "VideoUpload": VideoUpload,
     "image-lab": imageLab,
     "sitemap-qr": sitemapQr,
-    "UserSettings": UserSettings,
-    "Roadmap": Roadmap,
+    "CaseStudyPerplexity": CaseStudyPerplexity,
 }
 
 export const pagesConfig = {
