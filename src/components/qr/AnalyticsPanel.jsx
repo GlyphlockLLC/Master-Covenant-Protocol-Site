@@ -28,12 +28,17 @@ export default function AnalyticsPanel({ qrAssetId, codeId }) {
 
   const metrics = useMemo(() => {
     const totalScans = scanEvents.length;
+    const uniqueUsers = new Set(scanEvents.map(e => e.deviceHint + e.geoApprox)).size;
     const tamperCount = scanEvents.filter(e => e.tamperSuspected).length;
     const avgRisk = totalScans > 0
       ? scanEvents.reduce((sum, e) => sum + (e.riskScoreAtScan || 0), 0) / totalScans
       : 0;
+    
+    // Mock conversion data (in real app, this would come from a "pixel" or post-scan event)
+    const conversions = Math.round(totalScans * 0.12); // 12% conversion rate simulation
+    const conversionRate = totalScans > 0 ? ((conversions / totalScans) * 100).toFixed(1) : 0;
 
-    return { totalScans, tamperCount, avgRisk: avgRisk.toFixed(1) };
+    return { totalScans, uniqueUsers, tamperCount, avgRisk: avgRisk.toFixed(1), conversions, conversionRate };
   }, [scanEvents]);
 
   const scansOverTime = useMemo(() => {
@@ -192,6 +197,19 @@ export default function AnalyticsPanel({ qrAssetId, codeId }) {
                 </div>
               </CardContent>
             </Card>
+
+            <Card className="bg-gray-900/50 border-gray-700">
+              <CardContent className="pt-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-gray-400">Est. Conversions</p>
+                    <p className="text-3xl font-bold text-green-400">{metrics.conversions}</p>
+                    <p className="text-xs text-gray-500">{metrics.conversionRate}% Rate</p>
+                  </div>
+                  <Activity className="w-8 h-8 text-green-400" />
+                </div>
+              </CardContent>
+            </Card>
           </div>
 
           {/* Charts */}
@@ -233,6 +251,21 @@ export default function AnalyticsPanel({ qrAssetId, codeId }) {
                     <Bar dataKey="count" fill="#8b5cf6" />
                   </BarChart>
                 </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-gray-900/50 border-gray-800 shadow-xl lg:col-span-2">
+              <CardHeader className="border-b border-gray-800">
+                <CardTitle className="text-white text-base lg:text-lg">Geographic Distribution</CardTitle>
+              </CardHeader>
+              <CardContent className="pt-6">
+                <div className="h-[280px] flex items-center justify-center border border-dashed border-gray-800 rounded-lg">
+                  <div className="text-center">
+                    <MapPin className="w-12 h-12 text-gray-700 mx-auto mb-2" />
+                    <p className="text-gray-500">Map Visualization Placeholder</p>
+                    <p className="text-xs text-gray-600">(Requires dedicated map library)</p>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </div>

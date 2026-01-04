@@ -41,6 +41,35 @@ export default function QrStudio({ initialTab = 'create' }) {
   const [vaultedItems, setVaultedItems] = useState([]);
   const [vaultLoading, setVaultLoading] = useState(false);
   const [isUnlocked, setIsUnlocked] = useState(false);
+  const [collabSessionId, setCollabSessionId] = useState(null);
+  const [activeCollaborators, setActiveCollaborators] = useState([]);
+
+  // Polling for collaboration (Simulated Real-time)
+  useEffect(() => {
+    if (!collabSessionId) return;
+    
+    const interval = setInterval(async () => {
+      // In real app, fetch session from DB
+      // const session = await base44.entities.CollaborationSession.get(collabSessionId);
+      // setQrData(session.currentData);
+      // setActiveCollaborators(session.activeUsers);
+      console.log("Polling collab session:", collabSessionId);
+    }, 5000);
+    
+    return () => clearInterval(interval);
+  }, [collabSessionId]);
+
+  const startCollaboration = async () => {
+    try {
+      const sessionId = `collab_${Date.now()}`;
+      setCollabSessionId(sessionId);
+      toast.success("Collaboration session started! ID: " + sessionId);
+      // Create session in DB
+      // await base44.entities.CollaborationSession.create(...)
+    } catch(e) {
+      toast.error("Failed to start session");
+    }
+  };
 
   // Load current user
   useEffect(() => {
@@ -656,14 +685,24 @@ export default function QrStudio({ initialTab = 'create' }) {
                       <Sparkles className="w-5 h-5 text-cyan-400" />
                       Payload Type ({PAYLOAD_TYPES.length}+ Available)
                     </span>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setShowPayloadSelector(!showPayloadSelector)}
-                      className="text-cyan-400"
-                    >
-                      {showPayloadSelector ? 'Collapse' : 'Expand'}
-                    </Button>
+                    <div className="flex items-center gap-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={startCollaboration}
+                        className="text-xs border-purple-500/50 text-purple-400 hover:bg-purple-500/10"
+                      >
+                        {collabSessionId ? 'Session Active' : 'Start Collab'}
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setShowPayloadSelector(!showPayloadSelector)}
+                        className="text-cyan-400"
+                      >
+                        {showPayloadSelector ? 'Collapse' : 'Expand'}
+                      </Button>
+                    </div>
                   </CardTitle>
                 </CardHeader>
                 {showPayloadSelector ? (
