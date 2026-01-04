@@ -105,9 +105,9 @@ export default function MFASetupModal({ isOpen, onClose, onSuccess }) {
             Enable Authenticator App
           </DialogTitle>
           <DialogDescription>
-            {step === 'qr' && 'Scan the QR code with your authenticator app'}
-            {step === 'verify' && 'Enter the 6-digit code from your app'}
-            {step === 'codes' && 'Save your recovery codes'}
+            {step === 'qr' && 'Secure your account with 2-step verification'}
+            {step === 'verify' && 'Verify your authenticator app'}
+            {step === 'codes' && 'Backup your emergency recovery codes'}
           </DialogDescription>
         </DialogHeader>
 
@@ -154,9 +154,19 @@ export default function MFASetupModal({ isOpen, onClose, onSuccess }) {
                   </div>
                 </div>
 
-                <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-3">
-                  <p className="text-sm text-blue-300">
-                    Scan this QR code with Google Authenticator, Authy, or any compatible authenticator app.
+                <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4 space-y-2">
+                  <p className="text-sm font-medium text-blue-200">
+                    1. Download an authenticator app
+                  </p>
+                  <p className="text-xs text-blue-300">
+                    We recommend <strong>Google Authenticator</strong> or <strong>Authy</strong>.
+                    Available on iOS and Android app stores.
+                  </p>
+                  <p className="text-sm font-medium text-blue-200 pt-2">
+                    2. Scan the QR code
+                  </p>
+                  <p className="text-xs text-blue-300">
+                    Open the app and tap the "+" or "Add Account" button, then choose "Scan QR Code".
                   </p>
                 </div>
 
