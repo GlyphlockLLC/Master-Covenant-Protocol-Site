@@ -20,12 +20,15 @@ import {
 import GenerateTab from '@/components/imageLab/tabs/GenerateTab.jsx';
 import InteractiveTab from '@/components/imageLab/tabs/InteractiveTab.jsx';
 import GalleryTab from '@/components/imageLab/tabs/GalleryTab.jsx';
+import OnboardingTour from '@/components/imageLab/OnboardingTour.jsx';
 
 export default function ImageLab() {
   const [activeTab, setActiveTab] = useState('generate');
   const [user, setUser] = useState(null);
+  const [userPrefs, setUserPrefs] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [showTour, setShowTour] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -34,6 +37,23 @@ export default function ImageLab() {
         if (isAuth) {
           const userData = await base44.auth.me();
           setUser(userData);
+          
+          // Fetch user preferences
+          const prefs = await base44.entities.UserPreferences.filter({ created_by: userData.email });
+          if (prefs && prefs.length > 0) {
+            setUserPrefs(prefs[0]);
+            // Check if we should show tour
+            if (prefs[0].imageLabSettings?.showOnboarding !== false) {
+              setShowTour(true);
+            }
+          } else {
+            // No prefs record yet, show tour for new user
+            setShowTour(true);
+          }
+        } else {
+          // Guest user - check local storage
+          const tourSeen = localStorage.getItem('glyphlock_imagelab_tour_seen');
+          if (!tourSeen) setShowTour(true);
         }
       } catch (error) {
         console.error('Auth error:', error);
@@ -42,6 +62,49 @@ export default function ImageLab() {
       }
     })();
   }, []);
+
+  // Global Keyboard Shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      // Ignore if input/textarea is focused
+      if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
+
+      if ((e.metaKey || e.ctrlKey)) {
+        if (e.key === '1') {
+          e.preventDefault();
+          setActiveTab('generate');
+        } else if (e.key === '2') {
+          e.preventDefault();
+          setActiveTab('interactive');
+        } else if (e.key === '3') {
+          e.preventDefault();
+          setActiveTab('gallery');
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  const handleTourComplete = async () => {
+    setShowTour(false);
+    if (user) {
+      try {
+        if (userPrefs) {
+          await base44.entities.UserPreferences.update(userPrefs.id, {
+            imageLabSettings: { ...userPrefs.imageLabSettings, showOnboarding: false }
+          });
+        } else {
+          await base44.entities.UserPreferences.create({
+            imageLabSettings: { showOnboarding: false }
+          });
+        }
+      } catch (e) { console.error("Failed to save tour pref", e); }
+    } else {
+      localStorage.setItem('glyphlock_imagelab_tour_seen', 'true');
+    }
+  };
 
   useEffect(() => {
     const cleanup = injectSoftwareSchema(
@@ -132,6 +195,7 @@ export default function ImageLab() {
             <TabsList className="hidden lg:flex w-full mb-6 bg-black/40 backdrop-blur-md border-t-2 border-b-2 border-cyan-500/20 p-0 h-auto rounded-none">
               <TabsTrigger 
                 value="generate" 
+                data-tour="generate-tab"
                 className="flex-1 min-h-[56px] relative group border-r border-cyan-500/10 data-[state=active]:bg-gradient-to-b data-[state=active]:from-purple-500/20 data-[state=active]:to-transparent data-[state=active]:border-t-2 data-[state=active]:border-t-purple-400 data-[state=active]:text-purple-300 text-gray-500 hover:text-gray-300 transition-all font-mono text-xs uppercase tracking-widest rounded-none"
               >
                 <span className="mr-2 text-[10px] opacity-60">01</span>
@@ -142,6 +206,7 @@ export default function ImageLab() {
               
               <TabsTrigger 
                 value="interactive" 
+                data-tour="interactive-tab"
                 className="flex-1 min-h-[56px] relative group border-r border-cyan-500/10 data-[state=active]:bg-gradient-to-b data-[state=active]:from-cyan-500/20 data-[state=active]:to-transparent data-[state=active]:border-t-2 data-[state=active]:border-t-cyan-400 data-[state=active]:text-cyan-300 text-gray-500 hover:text-gray-300 transition-all font-mono text-xs uppercase tracking-widest rounded-none"
               >
                 <span className="mr-2 text-[10px] opacity-60">02</span>
@@ -152,6 +217,7 @@ export default function ImageLab() {
               
               <TabsTrigger 
                 value="gallery" 
+                data-tour="gallery-tab"
                 className="flex-1 min-h-[56px] relative group data-[state=active]:bg-gradient-to-b data-[state=active]:from-blue-500/20 data-[state=active]:to-transparent data-[state=active]:border-t-2 data-[state=active]:border-t-blue-400 data-[state=active]:text-blue-300 text-gray-500 hover:text-gray-300 transition-all font-mono text-xs uppercase tracking-widest rounded-none"
               >
                 <span className="mr-2 text-[10px] opacity-60">03</span>
@@ -207,6 +273,7 @@ export default function ImageLab() {
             <TabsContent value="generate">
               <GenerateTab
                 user={user}
+                userPrefs={userPrefs}
                 onImageGenerated={handleImageGenerated}
               />
             </TabsContent>
