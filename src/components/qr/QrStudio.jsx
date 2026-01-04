@@ -37,6 +37,7 @@ import CollaborationPanel from './CollaborationPanel';
 import ShareDialog from './ShareDialog';
 import ProjectManager from './ProjectManager';
 import { buildQrArtifact } from './logic/qrPipeline';
+import GuidedTour from '@/components/shared/GuidedTour';
 
 
 export default function QrStudio({ initialTab = 'create' }) {
@@ -129,6 +130,77 @@ export default function QrStudio({ initialTab = 'create' }) {
   const [logoFile, setLogoFile] = useState(null);
   const [qrDataUrl, setQrDataUrl] = useState(null);
   const [isDraftLoaded, setIsDraftLoaded] = useState(false);
+  const [showTour, setShowTour] = useState(false);
+
+  // ========== TOUR LOGIC ==========
+  useEffect(() => {
+    if (!currentUser) return;
+    (async () => {
+      try {
+        const prefs = await base44.entities.UserPreferences.filter({ created_by: currentUser.email });
+        if (prefs.length === 0 || !prefs[0].toursSeen?.qrStudio) {
+          setShowTour(true);
+        }
+      } catch (e) { console.error("Tour check failed", e); }
+    })();
+  }, [currentUser]);
+
+  const handleTourComplete = async () => {
+    setShowTour(false);
+    if (currentUser) {
+      try {
+        const prefs = await base44.entities.UserPreferences.filter({ created_by: currentUser.email });
+        if (prefs.length > 0) {
+          await base44.entities.UserPreferences.update(prefs[0].id, {
+            toursSeen: { ...prefs[0].toursSeen, qrStudio: true }
+          });
+        } else {
+          await base44.entities.UserPreferences.create({
+            toursSeen: { qrStudio: true }
+          });
+        }
+      } catch (e) { console.error("Failed to save tour pref", e); }
+    }
+  };
+
+  const TOUR_STEPS = [
+    {
+      id: 'welcome',
+      title: 'Welcome to QR Studio',
+      content: 'The most advanced QR code generator with built-in security and analytics.',
+      target: null,
+    },
+    {
+      id: 'create',
+      title: 'Create & Configure',
+      content: 'Choose from 90+ payload types and configure your QR code content here.',
+      target: '[data-tour="tab-create"]',
+    },
+    {
+      id: 'customize',
+      title: 'Customize Design',
+      content: 'Style your QR code with colors, gradients, logos, and custom shapes.',
+      target: '[data-tour="tab-customize"]',
+    },
+    {
+      id: 'security',
+      title: 'Security Analysis',
+      content: 'Every QR code is scanned for threats before generation. View security scores here.',
+      target: '[data-tour="tab-security"]',
+    },
+    {
+      id: 'stego',
+      title: 'Steganography',
+      content: 'Hide your QR code invisibly inside an image for covert transmission.',
+      target: '[data-tour="tab-stego"]',
+    },
+    {
+      id: 'generate-btn',
+      title: 'Generate',
+      content: 'Click here to generate your secure QR code.',
+      target: '[data-tour="generate-btn"]',
+    }
+  ];
 
   // ========== PERSISTENCE & AUTO-SAVE ==========
   // 1. Restore draft on mount
@@ -784,6 +856,7 @@ export default function QrStudio({ initialTab = 'create' }) {
               <TabsTrigger
                 key={tab.value}
                 value={tab.value}
+                data-tour={`tab-${tab.value}`}
                 className="flex-1 min-h-[52px] relative group border-r border-cyan-500/10 last:border-r-0 data-[state=active]:bg-gradient-to-b data-[state=active]:from-cyan-500/20 data-[state=active]:to-transparent data-[state=active]:border-t-2 data-[state=active]:border-t-cyan-400 data-[state=active]:text-cyan-300 text-gray-500 hover:text-gray-300 transition-all font-mono text-xs uppercase tracking-widest rounded-none"
               >
                 <tab.icon className="w-4 h-4 mr-2" />
@@ -993,6 +1066,7 @@ export default function QrStudio({ initialTab = 'create' }) {
                       <Button
                         onClick={generateQR}
                         disabled={isScanning}
+                        data-tour="generate-btn"
                         className={`${GlyphButton.primary} w-full ${GlyphShadows.neonCyan} min-h-[48px]`}
                       >
                         {isScanning ? (
@@ -1434,6 +1508,12 @@ export default function QrStudio({ initialTab = 'create' }) {
           </TabsContent>
         </Tabs>
       </div>
+      <GuidedTour 
+        isOpen={showTour}
+        onComplete={handleTourComplete}
+        onSkip={handleTourComplete}
+        steps={TOUR_STEPS}
+      />
     </div>
   );
 }

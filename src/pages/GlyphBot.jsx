@@ -8,6 +8,7 @@ import { Activity, Zap, Shield, Bot, AlertTriangle, X, PanelRightOpen, PanelRigh
 import { createPageUrl } from '@/utils';
 import { toast } from 'sonner';
 import { injectSoftwareSchema } from '@/components/utils/seoHelpers';
+import GuidedTour from '@/components/shared/GuidedTour';
 
 const { 
   useGlyphBotPersistence, 
@@ -54,6 +55,70 @@ export default function GlyphBotPage() {
   const [lastMeta, setLastMeta] = useState(null);
   const [providerMeta, setProviderMeta] = useState(null);
   const chatContainerRef = useRef(null);
+  const [showTour, setShowTour] = useState(false);
+
+  useEffect(() => {
+    if (!currentUser) return;
+    (async () => {
+      try {
+        const prefs = await base44.entities.UserPreferences.filter({ created_by: currentUser.email });
+        if (prefs.length === 0 || !prefs[0].toursSeen?.glyphBot) {
+          setShowTour(true);
+        }
+      } catch (e) { console.error("Tour check failed", e); }
+    })();
+  }, [currentUser]);
+
+  const handleTourComplete = async () => {
+    setShowTour(false);
+    if (currentUser) {
+      try {
+        const prefs = await base44.entities.UserPreferences.filter({ created_by: currentUser.email });
+        if (prefs.length > 0) {
+          await base44.entities.UserPreferences.update(prefs[0].id, {
+            toursSeen: { ...prefs[0].toursSeen, glyphBot: true }
+          });
+        } else {
+          await base44.entities.UserPreferences.create({
+            toursSeen: { glyphBot: true }
+          });
+        }
+      } catch (e) { console.error("Failed to save tour pref", e); }
+    }
+  };
+
+  const TOUR_STEPS = [
+    {
+      id: 'welcome',
+      title: 'Meet GlyphBot',
+      content: 'Your elite AI security assistant for code auditing, threat detection, and more.',
+      target: null,
+    },
+    {
+      id: 'control-bar',
+      title: 'Control Center',
+      content: 'Switch personas (Security, Developer, etc.), change LLM providers, and toggle Voice mode here.',
+      target: '[data-tour="control-bar"]',
+    },
+    {
+      id: 'audit-toggle',
+      title: 'Security Audits',
+      content: 'Open the Audit Panel to run deep scans on businesses, people, or websites.',
+      target: '[data-tour="audit-toggle"]',
+    },
+    {
+      id: 'history-toggle',
+      title: 'Chat History',
+      content: 'Access your saved conversations and past audits here.',
+      target: '[data-tour="history-toggle"]',
+    },
+    {
+      id: 'chat-input',
+      title: 'Ask Anything',
+      content: 'Type your query here. Try "Audit glyphlock.io" or "Check this code for bugs".',
+      target: '[data-tour="chat-input"]',
+    }
+  ];
   
   // Phase 7: TTS settings state with ENHANCED CONTROLS
   const [voiceSettings, setVoiceSettings] = useState(() => {
@@ -659,6 +724,7 @@ export default function GlyphBotPage() {
                 <>
                   <button
                     onClick={() => setShowAuditPanel(!showAuditPanel)}
+                    data-tour="audit-toggle"
                     style={{ touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent', pointerEvents: 'auto', minHeight: '44px' }}
                     className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all duration-300 ${
                       showAuditPanel 
@@ -672,6 +738,7 @@ export default function GlyphBotPage() {
                   </button>
                   <button
                     onClick={() => setShowHistoryPanel(!showHistoryPanel)}
+                    data-tour="history-toggle"
                     style={{ touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent', pointerEvents: 'auto', minHeight: '44px' }}
                     className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold bg-emerald-500/20 border-2 border-emerald-500/50 text-emerald-300 hover:border-cyan-400 hover:text-cyan-300 hover:bg-cyan-500/20 transition-all duration-300"
                     title={showHistoryPanel ? 'Hide History' : 'Show History'}
@@ -692,6 +759,7 @@ export default function GlyphBotPage() {
           </header>
 
           {/* Control Bar */}
+          <div data-tour="control-bar">
           <UI.ControlBar
               persona={persona}
               setPersona={setPersona}
@@ -730,6 +798,7 @@ export default function GlyphBotPage() {
               voiceProfiles={voiceProfiles}
               emotionPresets={emotionPresets}
             />
+          </div>
 
           {/* GLYPHLOCK: Provider Chain - Restored */}
           {providerMeta && (
@@ -968,6 +1037,7 @@ export default function GlyphBotPage() {
           </div>
 
           {/* Input Bar */}
+          <div data-tour="chat-input">
           <UI.ChatInput
             value={input}
             onChange={setInput}
@@ -977,6 +1047,7 @@ export default function GlyphBotPage() {
             isSending={isSending}
             disabled={isSending}
           />
+          </div>
         </div>
       </div>
 
@@ -992,6 +1063,12 @@ export default function GlyphBotPage() {
           />
         </div>
       )}
+      <GuidedTour 
+        isOpen={showTour}
+        onComplete={handleTourComplete}
+        onSkip={handleTourComplete}
+        steps={TOUR_STEPS}
+      />
     </div>
   );
 }

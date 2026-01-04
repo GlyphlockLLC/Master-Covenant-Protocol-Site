@@ -4,6 +4,7 @@ import { Upload, Copy, CheckCircle2, AlertCircle, QrCode, Image, Music, Video, D
 import { toast } from 'sonner';
 import QRCode from 'qrcode';
 import SEOHead from '@/components/SEOHead';
+import GuidedTour from '@/components/shared/GuidedTour';
 
 export default function VideoUpload() {
   const [file, setFile] = useState(null);
@@ -13,6 +14,75 @@ export default function VideoUpload() {
   const [qrCodeUrl, setQrCodeUrl] = useState('');
   const [generatingQr, setGeneratingQr] = useState(false);
   const qrCanvasRef = useRef(null);
+  const [showTour, setShowTour] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const isAuth = await base44.auth.isAuthenticated();
+        if (isAuth) {
+          const user = await base44.auth.me();
+          const prefs = await base44.entities.UserPreferences.filter({ created_by: user.email });
+          if (prefs.length === 0 || !prefs[0].toursSeen?.videoUpload) {
+            setShowTour(true);
+          }
+        } else {
+           // Guest logic
+           const tourSeen = localStorage.getItem('glyphlock_videoupload_tour_seen');
+           if (!tourSeen) setShowTour(true);
+        }
+      } catch (e) { console.error("Tour check failed", e); }
+    })();
+  }, []);
+
+  const handleTourComplete = async () => {
+    setShowTour(false);
+    try {
+      const isAuth = await base44.auth.isAuthenticated();
+      if (isAuth) {
+        const user = await base44.auth.me();
+        const prefs = await base44.entities.UserPreferences.filter({ created_by: user.email });
+        if (prefs.length > 0) {
+          await base44.entities.UserPreferences.update(prefs[0].id, {
+            toursSeen: { ...prefs[0].toursSeen, videoUpload: true }
+          });
+        } else {
+          await base44.entities.UserPreferences.create({
+            toursSeen: { videoUpload: true }
+          });
+        }
+      } else {
+        localStorage.setItem('glyphlock_videoupload_tour_seen', 'true');
+      }
+    } catch (e) { console.error("Failed to save tour pref", e); }
+  };
+
+  const TOUR_STEPS = [
+    {
+      id: 'welcome',
+      title: 'Media Upload Hub',
+      content: 'Securely host videos, audio, and images for easy sharing.',
+      target: null,
+    },
+    {
+      id: 'upload',
+      title: 'Upload Media',
+      content: 'Select MP4, MP3, or image files to upload. We automatically optimize them for streaming.',
+      target: '[data-tour="upload-section"]',
+    },
+    {
+      id: 'qr',
+      title: 'Generate QR',
+      content: 'Get an instant QR code linking directly to your media file.',
+      target: '[data-tour="qr-section"]',
+    },
+    {
+      id: 'url',
+      title: 'Share URL',
+      content: 'Copy the permanent link to share your content anywhere.',
+      target: '[data-tour="url-section"]',
+    }
+  ];
 
   const acceptedTypes = {
     video: ['video/mp4', 'video/quicktime', 'video/x-msvideo'],
@@ -134,7 +204,7 @@ export default function VideoUpload() {
 
         <div className="bg-slate-900/60 border-2 border-[#3B82F6]/30 rounded-2xl p-6 md:p-8 space-y-6 shadow-[0_0_40px_rgba(59,130,246,0.15)]">
           {/* File Input */}
-          <div className="space-y-4">
+          <div className="space-y-4" data-tour="upload-section">
             <label className="block text-sm font-bold text-slate-300 uppercase tracking-wider">
               Select Media File
             </label>
@@ -207,7 +277,7 @@ export default function VideoUpload() {
                 <span className="font-bold text-lg">Upload Successful!</span>
               </div>
               
-              <div className="space-y-3">
+              <div className="space-y-3" data-tour="url-section">
                 <label className="block text-sm font-bold text-slate-300 uppercase tracking-wider">
                   File URL
                 </label>
@@ -229,6 +299,7 @@ export default function VideoUpload() {
               </div>
 
               {/* Generate QR Code Button */}
+              <div data-tour="qr-section">
               <button
                 onClick={generateQrCode}
                 disabled={generatingQr}
@@ -249,6 +320,7 @@ export default function VideoUpload() {
                   </>
                 )}
               </button>
+              </div>
 
               {/* QR Code Display */}
               {qrCodeUrl && (
@@ -319,6 +391,13 @@ export default function VideoUpload() {
 
         {/* Hidden canvas for QR generation */}
         <canvas ref={qrCanvasRef} style={{ display: 'none' }} />
+
+        <GuidedTour 
+          isOpen={showTour}
+          onComplete={handleTourComplete}
+          onSkip={handleTourComplete}
+          steps={TOUR_STEPS}
+        />
 
         {/* Features */}
         <div className="mt-8 grid md:grid-cols-3 gap-4">

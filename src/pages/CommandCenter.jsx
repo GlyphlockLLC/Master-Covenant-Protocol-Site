@@ -39,6 +39,7 @@ import {
   BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, 
   Tooltip, ResponsiveContainer, PieChart, Pie, Cell, AreaChart, Area
 } from 'recharts';
+import GuidedTour from '@/components/shared/GuidedTour';
 
 // Real-time clock component
 function LiveClock() {
@@ -107,13 +108,13 @@ function MobileSidebar({ isOpen, onClose, activeTab, setActiveTab, user, onLogou
 // Sidebar content
 function SidebarContent({ activeTab, setActiveTab, user, onLogout, threatCount = 0 }) {
   const navItems = [
-    { id: "overview", label: "Overview", icon: Home },
-    { id: "threats", label: "Threat Detection", icon: ShieldAlert, badge: threatCount },
+    { id: "overview", label: "Overview", icon: Home, tour: "nav-overview" },
+    { id: "threats", label: "Threat Detection", icon: ShieldAlert, badge: threatCount, tour: "nav-threats" },
     { id: "resources", label: "Resources", icon: Layers },
-    { id: "api-keys", label: "API Keys", icon: Key },
+    { id: "api-keys", label: "API Keys", icon: Key, tour: "nav-api-keys" },
     { id: "trust-anchors", label: "Trust Anchors", icon: Lock },
     { id: "security", label: "Security", icon: Shield },
-    { id: "analytics", label: "Analytics", icon: BarChart3 },
+    { id: "analytics", label: "Analytics", icon: BarChart3, tour: "nav-analytics" },
     { id: "tools", label: "Tools", icon: Zap },
     { id: "logs", label: "Logs", icon: FileText },
     { id: "compliance", label: "Compliance Report", icon: FileCheck },
@@ -129,6 +130,7 @@ function SidebarContent({ activeTab, setActiveTab, user, onLogout, threatCount =
           <button
             key={item.id}
             onClick={() => setActiveTab(item.id)}
+            data-tour={item.tour}
             className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all text-sm ${
               isActive
                 ? "bg-cyan-500/10 text-cyan-400 border-l-2 border-cyan-400"
@@ -2142,6 +2144,70 @@ export default function CommandCenter() {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("overview");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showTour, setShowTour] = useState(false);
+
+  useEffect(() => {
+    if (!user) return;
+    (async () => {
+      try {
+        const prefs = await base44.entities.UserPreferences.filter({ created_by: user.email });
+        if (prefs.length === 0 || !prefs[0].toursSeen?.commandCenter) {
+          setShowTour(true);
+        }
+      } catch (e) { console.error("Tour check failed", e); }
+    })();
+  }, [user]);
+
+  const handleTourComplete = async () => {
+    setShowTour(false);
+    if (user) {
+      try {
+        const prefs = await base44.entities.UserPreferences.filter({ created_by: user.email });
+        if (prefs.length > 0) {
+          await base44.entities.UserPreferences.update(prefs[0].id, {
+            toursSeen: { ...prefs[0].toursSeen, commandCenter: true }
+          });
+        } else {
+          await base44.entities.UserPreferences.create({
+            toursSeen: { commandCenter: true }
+          });
+        }
+      } catch (e) { console.error("Failed to save tour pref", e); }
+    }
+  };
+
+  const TOUR_STEPS = [
+    {
+      id: 'welcome',
+      title: 'Command Center',
+      content: 'Your central hub for security monitoring, API management, and system analytics.',
+      target: null,
+    },
+    {
+      id: 'overview',
+      title: 'Overview Dashboard',
+      content: 'View real-time system status, active assets, and recent activity at a glance.',
+      target: '[data-tour="nav-overview"]',
+    },
+    {
+      id: 'threats',
+      title: 'Threat Detection',
+      content: 'Monitor and configure AI-powered threat detection rules and view active alerts.',
+      target: '[data-tour="nav-threats"]',
+    },
+    {
+      id: 'api-keys',
+      title: 'API Keys',
+      content: 'Manage your API credentials, rotate keys, and set permissions.',
+      target: '[data-tour="nav-api-keys"]',
+    },
+    {
+      id: 'analytics',
+      title: 'Analytics',
+      content: 'Deep dive into usage metrics, scan history, and system performance.',
+      target: '[data-tour="nav-analytics"]',
+    }
+  ];
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -2253,6 +2319,12 @@ export default function CommandCenter() {
           </main>
         </div>
       </div>
+      <GuidedTour 
+        isOpen={showTour}
+        onComplete={handleTourComplete}
+        onSkip={handleTourComplete}
+        steps={TOUR_STEPS}
+      />
     </>
   );
 }
