@@ -9,8 +9,6 @@ import {
   Activity, Shield, CheckCircle, AlertTriangle, XCircle, 
   Code, Server, Database, Lock, Zap, Layout
 } from 'lucide-react';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 export default function SystemStatus() {
   const [health, setHealth] = useState(null);
@@ -285,13 +283,9 @@ export default function QrStudio() {
                 </div>
                 <div className="flex-1 rounded-md overflow-hidden border border-gray-800 bg-[#1e1e1e]">
                   <ScrollArea className="h-[400px]">
-                    <SyntaxHighlighter 
-                      language="javascript" 
-                      style={vscDarkPlus}
-                      customStyle={{ margin: 0, borderRadius: 0, fontSize: '12px' }}
-                    >
-                      {keyFiles[activeFile]}
-                    </SyntaxHighlighter>
+                    <pre className="p-4 text-xs font-mono text-gray-300 leading-relaxed overflow-x-auto whitespace-pre">
+                      <code>{keyFiles[activeFile]}</code>
+                    </pre>
                   </ScrollArea>
                 </div>
               </CardContent>
