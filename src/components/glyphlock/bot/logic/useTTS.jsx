@@ -25,7 +25,7 @@ export default function useTTS(options = {}) {
   const [lastError, setLastError] = useState(null);
   const [voices, setVoices] = useState([]);
   const [metadata, setMetadata] = useState({});
-  const [provider, setProvider] = useState(options.provider || 'auto');
+  const [provider, setProvider] = useState(options.provider || 'glyphbot');
   
   const utteranceRef = useRef(null);
   const audioRef = useRef(null);
@@ -138,9 +138,9 @@ export default function useTTS(options = {}) {
     setIsLoading(false);
   }, []);
 
-  const playWithOpenAI = useCallback(async (text, settings, voiceProfile) => {
+  const playWithGlyphVoice = useCallback(async (text, settings, voiceProfile) => {
     try {
-      // GLYPHLOCK: Call OpenAI TTS backend function
+      // GLYPHLOCK: Call GlyphBot Voice Engine (Gemini/Google Cloud TTS)
       const { base44 } = await import('@/api/base44Client');
       
       if (!audioContextRef.current) {
@@ -152,13 +152,15 @@ export default function useTTS(options = {}) {
         await audioContext.resume();
       }
 
-      // GLYPHLOCK: Call OpenAI TTS backend with retry logic
+      // GLYPHLOCK: Call GlyphBot Neural Voice backend
       let audioData;
       try {
-        const response = await base44.functions.invoke('textToSpeechOpenAI', {
+        const response = await base44.functions.invoke('glyphBotVoice', {
           text,
-          voiceProfile: voiceProfile || settings.voiceProfile || 'neutral_female',
-          speed: normalizeSpeed(settings.speed)
+          voiceProfile: voiceProfile || settings.voiceProfile || 'aurora',
+          emotion: settings.emotion || 'neutral',
+          speed: normalizeSpeed(settings.speed),
+          provider: 'auto' // Uses Google Cloud Neural2 with fallback
         });
 
         if (response.data?.error) {
@@ -175,9 +177,9 @@ export default function useTTS(options = {}) {
           const blob = new Blob([response.data], { type: 'audio/mpeg' });
           audioData = await blob.arrayBuffer();
         }
-      } catch (openaiError) {
-        console.warn('[TTS] OpenAI failed, retrying with fallback...', openaiError);
-        throw openaiError; // Will trigger fallback to Web Speech
+      } catch (voiceError) {
+        console.warn('[TTS] GlyphBot Voice failed, retrying with fallback...', voiceError);
+        throw voiceError;
       }
 
       let audioBuffer = await audioContext.decodeAudioData(audioData);
@@ -204,12 +206,13 @@ export default function useTTS(options = {}) {
       setIsLoading(false);
       setIsSpeaking(true);
       setMetadata({
-        provider: 'openai',
+        provider: 'glyphbot_neural',
         voiceProfile: voiceProfile || settings.voiceProfile,
         pitch: settings.pitch,
         speed: settings.speed,
         bass: settings.bass,
         clarity: settings.clarity,
+        emotion: settings.emotion,
         timestamp: Date.now()
       });
 
@@ -217,7 +220,7 @@ export default function useTTS(options = {}) {
       return true;
 
     } catch (error) {
-      console.warn('[TTS] OpenAI failed:', error);
+      console.warn('[TTS] GlyphBot Voice failed:', error);
       setIsSpeaking(false);
       setIsLoading(false);
       throw error;
@@ -517,13 +520,13 @@ export default function useTTS(options = {}) {
       console.warn('[TTS] Web Speech failed:', webErr);
     }
     
-    // If Web Speech fails and OpenAI provider is requested, try that
-    if (provider === 'openai') {
+    // If Web Speech fails, try GlyphBot Neural Voice (Google Cloud TTS)
+    if (provider === 'glyphbot' || provider === 'neural' || provider === 'auto') {
       try {
-        console.log('[TTS] Trying OpenAI TTS as fallback...');
-        return await playWithOpenAI(cleanText, settings, settings.voiceProfile);
+        console.log('[TTS] Trying GlyphBot Neural Voice (Google Cloud TTS)...');
+        return await playWithGlyphVoice(cleanText, settings, settings.voiceProfile);
       } catch (err) {
-        console.error('[TTS] OpenAI TTS also failed:', err);
+        console.error('[TTS] GlyphBot Neural Voice also failed:', err);
         setLastError(err.message);
       }
     }
