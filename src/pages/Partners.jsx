@@ -4,6 +4,72 @@ import { createPageUrl } from "@/utils";
 import SEOHead from "@/components/SEOHead";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { 
+  Handshake, Shield, Zap, Target, Users, FileText, 
+  ArrowRight, CheckCircle2, Building2, Globe, Lock,
+  Briefcase, Award, TrendingUp, DollarSign
+} from "lucide-react";
+import PageHeader from "@/components/shared/PageHeader";
+
+const PARTNERSHIP_TYPES = [
+  {
+    id: 'technology',
+    title: 'Technology Partners',
+    icon: Zap,
+    color: 'from-cyan-500 to-blue-600',
+    description: 'Integrate GlyphLock security modules into your platform',
+    benefits: [
+      'White-label QR security engine',
+      'API access to verification modules',
+      'Co-development opportunities',
+      'Technical support & documentation'
+    ],
+    cta: 'Apply for Tech Partnership'
+  },
+  {
+    id: 'reseller',
+    title: 'Reseller Partners',
+    icon: Building2,
+    color: 'from-purple-500 to-pink-600',
+    description: 'Distribute GlyphLock solutions to your client base',
+    benefits: [
+      'Competitive margins',
+      'Sales enablement resources',
+      'Deal registration protection',
+      'Co-marketing support'
+    ],
+    cta: 'Become a Reseller'
+  },
+  {
+    id: 'integration',
+    title: 'Integration Partners',
+    icon: Globe,
+    color: 'from-green-500 to-emerald-600',
+    description: 'Build connectors between GlyphLock and your ecosystem',
+    benefits: [
+      'Integration certification program',
+      'Joint go-to-market',
+      'Marketplace listing',
+      'Developer resources'
+    ],
+    cta: 'Explore Integrations'
+  },
+  {
+    id: 'enterprise',
+    title: 'Enterprise Licensing',
+    icon: Lock,
+    color: 'from-amber-500 to-orange-600',
+    description: 'Deploy GlyphLock across your organization',
+    benefits: [
+      'Volume licensing discounts',
+      'Dedicated success manager',
+      'Custom SLAs',
+      'On-premise deployment options'
+    ],
+    cta: 'Request Enterprise Quote'
+  }
+];
 
 const valuationScenarios = [
   {
@@ -52,6 +118,7 @@ const formatMillions = (value) => {
 
 export default function Partners() {
   const [projectedVal, setProjectedVal] = React.useState(2000000);
+  const [activeSection, setActiveSection] = React.useState('overview');
 
   const computedScenarios = [
     valuationScenarios[0],
@@ -72,6 +139,13 @@ export default function Partners() {
   const minVal = Math.min(...computedScenarios.map((v) => v.valuation));
   const maxVal = Math.max(...computedScenarios.map((v) => v.valuation));
 
+  const HELP_STEPS = [
+    { title: 'Choose Partnership Type', description: 'Select the partnership model that fits your business' },
+    { title: 'Submit Application', description: 'Complete the partnership inquiry form' },
+    { title: 'Qualification Call', description: 'Our team will schedule a discovery call' },
+    { title: 'Agreement & Onboarding', description: 'Sign partnership agreement and get started' }
+  ];
+
   return (
     <>
       <SEOHead 
@@ -80,7 +154,21 @@ export default function Partners() {
         keywords="cybersecurity partnerships, strategic licensing, technology partnerships, investor relations, IP protection, quantum-resistant encryption, enterprise security, partnership opportunities"
         url="/partners"
       />
-      <div className="min-h-screen bg-black text-white py-24 relative overflow-hidden">
+      
+      <PageHeader
+        title="Partnership Program"
+        subtitle="Strategic partnerships and licensing opportunities"
+        icon={Handshake}
+        backTo="Home"
+        helpSteps={HELP_STEPS}
+        tips={[
+          'Technology partners get early access to new features',
+          'Enterprise licensing includes dedicated support',
+          'Resellers receive co-marketing budgets'
+        ]}
+      />
+      
+      <div className="min-h-screen bg-black text-white py-12 relative overflow-hidden">
       {/* Background effects */}
       <div className="pointer-events-none fixed inset-0 opacity-30 mix-blend-screen">
         <div className="absolute -top-40 left-10 h-96 w-96 rounded-full bg-[#8C4BFF] blur-[120px]" />
@@ -99,12 +187,54 @@ export default function Partners() {
           </span>
         </div>
 
+        {/* Partnership Types Grid */}
+        <section className="mb-16">
+          <h2 className="text-2xl font-bold text-white mb-8 text-center">
+            Choose Your <span className="text-transparent bg-gradient-to-r from-[#00E4FF] to-[#8C4BFF] bg-clip-text">Partnership Path</span>
+          </h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {PARTNERSHIP_TYPES.map((type) => {
+              const Icon = type.icon;
+              return (
+                <Card 
+                  key={type.id}
+                  className="bg-black/40 border-white/10 hover:border-cyan-500/50 transition-all duration-300 group"
+                >
+                  <CardHeader>
+                    <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${type.color} flex items-center justify-center mb-3 group-hover:scale-110 transition-transform`}>
+                      <Icon className="w-6 h-6 text-white" />
+                    </div>
+                    <CardTitle className="text-white text-lg">{type.title}</CardTitle>
+                    <p className="text-gray-400 text-sm">{type.description}</p>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-2 mb-4">
+                      {type.benefits.map((benefit, idx) => (
+                        <li key={idx} className="flex items-start gap-2 text-sm text-gray-300">
+                          <CheckCircle2 className="w-4 h-4 text-green-400 flex-shrink-0 mt-0.5" />
+                          {benefit}
+                        </li>
+                      ))}
+                    </ul>
+                    <Link to={createPageUrl("Consultation")}>
+                      <Button className="w-full bg-white/10 hover:bg-white/20 text-white text-sm">
+                        {type.cta}
+                        <ArrowRight className="w-4 h-4 ml-2" />
+                      </Button>
+                    </Link>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+        </section>
+
         {/* Hero section */}
         <section className="grid gap-12 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] items-start mb-24">
           <div>
-            <h1 className="text-4xl md:text-6xl font-black tracking-tighter font-space text-white mb-6 leading-tight">
-              PARTNERSHIP <span className="text-transparent bg-gradient-to-r from-[#00E4FF] to-[#8C4BFF] bg-clip-text">OVERVIEW</span>
-            </h1>
+            <h2 className="text-3xl md:text-5xl font-black tracking-tighter font-space text-white mb-6 leading-tight">
+              FINANCIAL <span className="text-transparent bg-gradient-to-r from-[#00E4FF] to-[#8C4BFF] bg-clip-text">OVERVIEW</span>
+            </h2>
             <p className="text-lg text-[#00E4FF] font-bold mb-4">
               Credentialed Integrity System – Protocol-Governed Access Control
             </p>
