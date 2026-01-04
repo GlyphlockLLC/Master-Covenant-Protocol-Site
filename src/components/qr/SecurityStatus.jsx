@@ -107,6 +107,16 @@ export default function SecurityStatus({ securityResult }) {
               </div>
             )}
 
+            {/* Analysis Details */}
+            {securityResult.analysis_details && (
+              <div className="mt-4 p-3 bg-slate-950/50 rounded border border-slate-800">
+                <h4 className="text-xs font-semibold text-gray-400 mb-1">Analysis Details</h4>
+                <p className="text-xs text-gray-300 leading-relaxed">
+                  {securityResult.analysis_details}
+                </p>
+              </div>
+            )}
+
             {/* AI Model Version */}
             <div className="mt-4 pt-4 border-t border-gray-800 flex items-center gap-2 text-xs text-gray-500">
               <Shield className="w-3 h-3" />

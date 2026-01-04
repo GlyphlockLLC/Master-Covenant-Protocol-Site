@@ -1312,7 +1312,15 @@ export default function QrStudio({ initialTab = 'create' }) {
 
           {/* ========== 06_SECURITY TAB ========== */}
           <TabsContent value="security">
-            <div className="space-y-6 relative z-10">
+          <div className="space-y-6 relative z-10">
+            {securityResult?.risk_level === 'high' && (
+               <Alert className="bg-red-500/10 border-red-500/50 mb-4">
+                 <Shield className="h-4 w-4 text-red-400" />
+                 <AlertDescription className="text-red-200">
+                   <strong>Critical Threat Detected:</strong> This payload has been flagged by our AI security engine. Distribution is restricted.
+                 </AlertDescription>
+               </Alert>
+            )}
               <Card className={`${GlyphCard.premium} ${GlyphShadows.depth.lg}`}>
                 <CardHeader className="border-b border-purple-500/20">
                   <CardTitle className={`${GlyphTypography.heading.lg} text-white flex items-center gap-2`}>
