@@ -17,6 +17,7 @@ import Contact from './pages/Contact';
 import ContentGenerator from './pages/ContentGenerator';
 import Cookies from './pages/Cookies';
 import Dashboard from './pages/Dashboard';
+import DeveloperAPI from './pages/DeveloperAPI';
 import DreamTeam from './pages/DreamTeam';
 import EmergencyBackup from './pages/EmergencyBackup';
 import EntertainerCheckIn from './pages/EntertainerCheckIn';
@@ -73,7 +74,7 @@ import TrustSecurity from './pages/TrustSecurity';
 import VIPContract from './pages/VIPContract';
 import VideoUpload from './pages/VideoUpload';
 import sitemapQr from './pages/sitemap-qr';
-import DeveloperAPI from './pages/DeveloperAPI';
+import SystemStatus from './pages/SystemStatus';
 import __Layout from './Layout.jsx';
 
 
@@ -97,6 +98,7 @@ export const PAGES = {
     "ContentGenerator": ContentGenerator,
     "Cookies": Cookies,
     "Dashboard": Dashboard,
+    "DeveloperAPI": DeveloperAPI,
     "DreamTeam": DreamTeam,
     "EmergencyBackup": EmergencyBackup,
     "EntertainerCheckIn": EntertainerCheckIn,
@@ -153,7 +155,7 @@ export const PAGES = {
     "VIPContract": VIPContract,
     "VideoUpload": VideoUpload,
     "sitemap-qr": sitemapQr,
-    "DeveloperAPI": DeveloperAPI,
+    "SystemStatus": SystemStatus,
 }
 
 export const pagesConfig = {

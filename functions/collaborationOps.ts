@@ -19,11 +19,13 @@ Deno.serve(async (req) => {
             
             // In a real Redis/WebSocket scenario, we'd subscribe here.
             // For DB-backed:
-            let session = await base44.entities.CollaborationSession.filter({ projectId });
+            // Use service role to bypass RLS for system-managed session consistency
+            const adminBase44 = base44.asServiceRole;
+            let session = await adminBase44.entities.CollaborationSession.filter({ projectId });
             
             if (session.length === 0) {
                 // Create new session
-                await base44.entities.CollaborationSession.create({
+                await adminBase44.entities.CollaborationSession.create({
                     projectId,
                     hostId: user.id,
                     activeUsers: [user.email],
@@ -34,7 +36,7 @@ Deno.serve(async (req) => {
                 // Update existing
                 const s = session[0];
                 const activeUsers = new Set([...(s.activeUsers || []), user.email]);
-                await base44.entities.CollaborationSession.update(s.id, {
+                await adminBase44.entities.CollaborationSession.update(s.id, {
                     activeUsers: Array.from(activeUsers),
                     lastUpdate: new Date().toISOString()
                 });
@@ -45,18 +47,18 @@ Deno.serve(async (req) => {
 
         // --- SYNC STATE (Heartbeat & Update) ---
         if (action === 'sync') {
+            const adminBase44 = base44.asServiceRole;
             // "Last Write Wins" Strategy for simple object merge
             const { projectId, changes } = data;
-            const sessions = await base44.entities.CollaborationSession.filter({ projectId });
+            const sessions = await adminBase44.entities.CollaborationSession.filter({ projectId });
             
             if (sessions.length > 0) {
                 const s = sessions[0];
                 const newState = { ...s.currentState, ...changes };
                 
-                await base44.entities.CollaborationSession.update(s.id, {
+                await adminBase44.entities.CollaborationSession.update(s.id, {
                     currentState: newState,
                     lastUpdate: new Date().toISOString(),
-                    // Update active user timestamp implicitly by refreshing 'activeUsers' if needed (skipped for brevity)
                 });
                 
                 return Response.json({ 
@@ -69,12 +71,13 @@ Deno.serve(async (req) => {
 
         // --- LEAVE SESSION ---
         if (action === 'leave') {
+            const adminBase44 = base44.asServiceRole;
             const { projectId } = data;
-            const sessions = await base44.entities.CollaborationSession.filter({ projectId });
+            const sessions = await adminBase44.entities.CollaborationSession.filter({ projectId });
             if (sessions.length > 0) {
                 const s = sessions[0];
                 const activeUsers = (s.activeUsers || []).filter(u => u !== user.email);
-                await base44.entities.CollaborationSession.update(s.id, { activeUsers });
+                await adminBase44.entities.CollaborationSession.update(s.id, { activeUsers });
             }
             return Response.json({ success: true });
         }
