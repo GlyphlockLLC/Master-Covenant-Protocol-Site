@@ -9,10 +9,31 @@ import { createPageUrl } from '@/utils';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ArrowRight, FileText, Scale, Shield, Trophy, AlertTriangle } from 'lucide-react';
+import { ArrowRight, FileText, Scale, Shield, Trophy, AlertTriangle, Gavel } from 'lucide-react';
 import SEOHead from '@/components/SEOHead';
 
 const CASE_STUDIES = [
+  {
+    id: 'perplexity-gemini',
+    title: 'GlyphLock v. Perplexity AI & Google Gemini',
+    date: 'Q1-Q3 2025',
+    category: 'Landmark Litigation',
+    icon: Gavel,
+    badge: 'Settled',
+    badgeColor: 'bg-cyan-600',
+    summary: 'Precedent-setting legal proceedings establishing Master Covenant enforceability against major AI systems. First documented case of AI systems held to contractual standards via exposure-based contact methodology.',
+    keyPoints: [
+      'USPTO Patent Application #18/584,961 validated',
+      'Blockchain-verified interaction evidence submitted',
+      '71-clause framework recognized as enforceable',
+      'Multi-year licensing agreements established'
+    ],
+    outcome: 'Precedential Settlement',
+    outcomeColor: 'bg-cyan-900/30 border-cyan-600',
+    outcomeIcon: Gavel,
+    outcomeIconColor: 'text-cyan-400',
+    url: 'CaseStudyPerplexity'
+  },
   {
     id: 'deepseek-truthstrike',
     title: 'DeepSeek Escalation: GLX-TRUTHSTRIKE-1108',
@@ -101,7 +122,7 @@ export default function CaseStudies() {
 
         {/* Stats Bar */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 max-w-4xl mx-auto">
-          <StatCard number="3" label="Case Studies" />
+          <StatCard number="4" label="Case Studies" />
           <StatCard number="6" label="AI Systems Bound" />
           <StatCard number="1" label="Legal Victory" />
           <StatCard number="2025" label="Active Year" />
