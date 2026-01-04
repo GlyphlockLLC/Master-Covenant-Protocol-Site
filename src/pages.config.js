@@ -75,6 +75,7 @@ import VideoUpload from './pages/VideoUpload';
 import imageLab from './pages/image-lab';
 import sitemapQr from './pages/sitemap-qr';
 import UserSettings from './pages/UserSettings';
+import Roadmap from './pages/Roadmap';
 import __Layout from './Layout.jsx';
 
 
@@ -156,6 +157,7 @@ export const PAGES = {
     "image-lab": imageLab,
     "sitemap-qr": sitemapQr,
     "UserSettings": UserSettings,
+    "Roadmap": Roadmap,
 }
 
 export const pagesConfig = {
