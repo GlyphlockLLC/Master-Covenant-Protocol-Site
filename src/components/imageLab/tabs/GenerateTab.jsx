@@ -58,6 +58,7 @@ const ASPECT_RATIOS = [
 ];
 
 export default function GenerateTab({ user, userPrefs, onImageGenerated }) {
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
   const [prompt, setPrompt] = useState('');
   const [negativePrompt, setNegativePrompt] = useState('');
   const [selectedStyle, setSelectedStyle] = useState(userPrefs?.imageLabSettings?.defaultStyle || 'photorealistic');
@@ -329,29 +330,29 @@ export default function GenerateTab({ user, userPrefs, onImageGenerated }) {
   };
 
   return (
-    <div className="space-y-6">
+    <div className={isMobile ? 'space-y-4' : 'space-y-6'}>
       {/* Sub-tabs for different modes */}
       <Tabs value={activeSubTab} onValueChange={setActiveSubTab}>
-        <TabsList className="bg-black/60 border border-purple-500/30 p-1">
-          <TabsTrigger value="generate" className="data-[state=active]:bg-purple-600 data-[state=active]:text-white">
-            <Wand2 className="w-4 h-4 mr-2" />
-            Generate
+        <TabsList className={`bg-black/60 border border-purple-500/30 p-1 ${isMobile ? 'grid grid-cols-3 w-full' : ''}`}>
+          <TabsTrigger value="generate" className={`data-[state=active]:bg-purple-600 data-[state=active]:text-white ${isMobile ? 'min-h-[48px] text-xs' : ''}`}>
+            <Wand2 className={isMobile ? 'w-4 h-4' : 'w-4 h-4 mr-2'} />
+            {!isMobile && 'Generate'}
           </TabsTrigger>
-          <TabsTrigger value="transform" className="data-[state=active]:bg-cyan-600 data-[state=active]:text-white">
-            <Paintbrush className="w-4 h-4 mr-2" />
-            Transform
+          <TabsTrigger value="transform" className={`data-[state=active]:bg-cyan-600 data-[state=active]:text-white ${isMobile ? 'min-h-[48px] text-xs' : ''}`}>
+            <Paintbrush className={isMobile ? 'w-4 h-4' : 'w-4 h-4 mr-2'} />
+            {!isMobile && 'Transform'}
           </TabsTrigger>
-          <TabsTrigger value="tools" className="data-[state=active]:bg-green-600 data-[state=active]:text-white">
-            <Scissors className="w-4 h-4 mr-2" />
-            Tools
+          <TabsTrigger value="tools" className={`data-[state=active]:bg-green-600 data-[state=active]:text-white ${isMobile ? 'min-h-[48px] text-xs' : ''}`}>
+            <Scissors className={isMobile ? 'w-4 h-4' : 'w-4 h-4 mr-2'} />
+            {!isMobile && 'Tools'}
           </TabsTrigger>
         </TabsList>
 
         {/* GENERATE TAB */}
         <TabsContent value="generate">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className={`grid grid-cols-1 ${isMobile ? 'gap-4' : 'lg:grid-cols-3 gap-6'}`}>
             {/* Left Column - Controls */}
-            <div className="lg:col-span-2 space-y-6">
+            <div className={`${isMobile ? 'space-y-4' : 'lg:col-span-2 space-y-6'}`}>
               {/* Prompt Panel */}
               <Card className={`${GlyphImageCard.premium} ${GlyphImageShadows.depth.lg}`}>
                 <CardHeader className="border-b border-purple-500/20 flex flex-row items-center justify-between">
@@ -611,8 +612,8 @@ export default function GenerateTab({ user, userPrefs, onImageGenerated }) {
             </div>
 
             {/* Right Column - Preview */}
-            <div>
-              <Card className={`${GlyphImageCard.premium} ${GlyphImageShadows.depth.lg} sticky top-24`}>
+            <div className={isMobile ? '' : 'lg:col-span-1'}>
+              <Card className={`${GlyphImageCard.premium} ${GlyphImageShadows.depth.lg} ${isMobile ? '' : 'sticky top-24'}`}>
                 <CardHeader className="border-b border-purple-500/20">
                   <CardTitle className={`${GlyphImageTypography.heading.md} text-white flex items-center gap-2`}>
                     <ImageIcon className="w-5 h-5 text-cyan-400" />
