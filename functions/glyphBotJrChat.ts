@@ -20,7 +20,28 @@ Deno.serve(async (req) => {
                 return Response.json({ error: 'Invalid text' }, { status: 400 });
             }
 
-            const encodedText = encodeURIComponent(text.substring(0, 200));
+            // Clean text for natural speech: remove emojis, excessive punctuation, URLs
+            let cleanText = text
+                .replace(/[\u{1F600}-\u{1F64F}]/gu, '') // emoticons
+                .replace(/[\u{1F300}-\u{1F5FF}]/gu, '') // symbols & pictographs
+                .replace(/[\u{1F680}-\u{1F6FF}]/gu, '') // transport & map
+                .replace(/[\u{2600}-\u{26FF}]/gu, '')   // misc symbols
+                .replace(/[\u{2700}-\u{27BF}]/gu, '')   // dingbats
+                .replace(/[\u{1F900}-\u{1F9FF}]/gu, '') // supplemental symbols
+                .replace(/[\u{1FA00}-\u{1FA6F}]/gu, '') // chess symbols
+                .replace(/[\u{1FA70}-\u{1FAFF}]/gu, '') // symbols extended
+                .replace(/https?:\/\/[^\s]+/g, '')     // URLs
+                .replace(/[*_~`#]+/g, '')              // markdown
+                .replace(/\.{2,}/g, '.')               // multiple dots
+                .replace(/!{2,}/g, '!')                // multiple exclamations
+                .replace(/\?{2,}/g, '?')               // multiple questions
+                .replace(/\s+/g, ' ')                  // normalize whitespace
+                .trim();
+
+            // Fallback if text is empty after cleaning
+            if (!cleanText) cleanText = "Here you go!";
+
+            const encodedText = encodeURIComponent(cleanText.substring(0, 200));
             const ttsUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=en&client=tw-ob&q=${encodedText}`;
 
             // Fetch the audio and convert to base64 (CORS proxy)
