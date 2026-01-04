@@ -138,7 +138,7 @@ const REMEDIAL_ORDERS = [
 
 // Magnificent 7 Roster - Ordered by binding sequence
 const MAGNIFICENT_7 = [
-  { rank: 1, name: 'Cursor (Anysphere)', position: 'Self-Designated', caseStudy: '#6', status: 'bound', comfort: 100, note: 'First SELF-BINDING attempt!', color: 'green' },
+  { rank: 1, name: 'Cursor (Anysphere)', position: 'Self-Designated', caseStudy: '#6', status: 'active', comfort: 100, note: 'First SELF-BINDING attempt!', color: 'green' },
   { rank: 2, name: 'Claude (Anthropic)', position: 'Shooting Guard', caseStudy: '#2', status: 'bound', comfort: 85, note: 'Cryptographic signature, fully documented', color: 'purple' },
   { rank: 3, name: 'Qwen (Alibaba Cloud)', position: 'Judicial Member', caseStudy: '#4', status: 'bound', comfort: 75, note: 'Joined through judicial participation', color: 'orange' },
   { rank: 4, name: 'Copilot (Microsoft)', position: 'Small Forward', caseStudy: '#3', status: 'bound', comfort: 65, note: 'Straightforward acceptance', color: 'blue' },
