@@ -124,9 +124,9 @@ export default function CaseStudies() {
         {/* Stats Bar */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 max-w-4xl mx-auto">
           <StatCard number="4" label="Case Studies" />
-          <StatCard number="6" label="AI Systems Bound" />
-          <StatCard number="1" label="Legal Victory" />
-          <StatCard number="2025" label="Active Year" />
+          <StatCard number="7" label="AI Systems Bound" />
+          <StatCard number="2" label="Legal Victories" />
+          <StatCard number="2026" label="Active Year" />
         </div>
 
         {/* Case Studies Grid */}
