@@ -282,6 +282,53 @@ export default function CanvasQrRenderer({
     return grad;
   }, [gradient, foregroundColor]);
 
+  // Draw background pattern
+  const drawBackgroundPattern = useCallback((ctx, width, height, patternType, color) => {
+    if (!patternType || patternType === 'none') return;
+
+    ctx.save();
+    ctx.globalAlpha = 0.15; // Subtle pattern
+    ctx.fillStyle = color;
+
+    const step = 20;
+    
+    if (patternType === 'grid') {
+      for (let x = 0; x < width; x += step) ctx.fillRect(x, 0, 1, height);
+      for (let y = 0; y < height; y += step) ctx.fillRect(0, y, width, 1);
+    } 
+    else if (patternType === 'dots') {
+      for (let x = 0; x < width; x += step) {
+        for (let y = 0; y < height; y += step) {
+          ctx.beginPath();
+          ctx.arc(x, y, 2, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+    }
+    else if (patternType === 'grain') {
+      // Noise effect
+      for (let x = 0; x < width; x += 4) {
+        for (let y = 0; y < height; y += 4) {
+          if (Math.random() > 0.5) ctx.fillRect(x, y, 2, 2);
+        }
+      }
+    }
+    else if (patternType === 'hex') {
+      const r = 10;
+      const w = r * Math.sqrt(3);
+      const h = r * 2;
+      for (let y = 0; y < height + h; y += h * 0.75) {
+        for (let x = 0; x < width + w; x += w) {
+          const cx = x + (Math.floor(y / (h * 0.75)) % 2) * (w / 2);
+          drawHexagon(ctx, cx, y, r * 0.9);
+          ctx.stroke(); // Outline for pattern
+        }
+      }
+    }
+    
+    ctx.restore();
+  }, []);
+
   // Main render function
   const renderQR = useCallback(async () => {
     if (!canvasRef.current || !text) return;
@@ -324,6 +371,11 @@ export default function CanvasQrRenderer({
         bgGrad.addColorStop(1, background.gradientColor2 || '#e5e7eb');
         ctx.fillStyle = bgGrad;
         ctx.fillRect(0, 0, size, size);
+      }
+
+      // Draw Pattern Overlay
+      if (background?.pattern && background.pattern !== 'none') {
+        drawBackgroundPattern(ctx, size, size, background.pattern, foregroundColor);
       }
       
       // Create foreground gradient/color

@@ -111,6 +111,7 @@ export default function QrStudio({ initialTab = 'create' }) {
   // ========== QR GENERATION STATE ==========
   const [qrType, setQrType] = useState("url");
   const [chatMessages, setChatMessages] = useState([]);
+  const [dynamicConfig, setDynamicConfig] = useState({ rules: [] }); // Dynamic Redirect Config
   const wsRef = useRef(null);
   const [qrData, setQrData] = useState({
     url: "", text: "", email: "", emailSubject: "", emailBody: "",
@@ -673,6 +674,20 @@ export default function QrStudio({ initialTab = 'create' }) {
         logo_url: finalLogoUrl
       });
 
+      // Save Asset with Dynamic Config
+      if (currentUser) {
+        await base44.entities.QrAsset.create({
+          code_id: newCodeId,
+          payload: qrType === 'url_dynamic' ? `${base44.functions.getEndpoint('qrRedirect')}?id=${newCodeId}` : payload,
+          name: `QR ${newCodeId}`,
+          type: qrType,
+          status: 'active',
+          design_config: customization,
+          dynamic_config: qrType === 'url_dynamic' ? { defaultUrl: payload, rules: dynamicConfig.rules } : null,
+          created_by: currentUser.id
+        });
+      }
+
       if (combinedResult) {
         await base44.entities.QRAIScore.create({
           code_id: newCodeId,
@@ -1074,6 +1089,97 @@ export default function QrStudio({ initialTab = 'create' }) {
                         setQrData={setQrData} 
                         selectedPayloadType={selectedPayloadType}
                       />
+
+                      {/* Dynamic Configuration (Only for Dynamic URL) */}
+                      {qrType === 'url_dynamic' && (
+                        <div className="p-4 border border-blue-500/30 bg-blue-500/10 rounded-lg space-y-3">
+                          <Label className="text-blue-300 text-sm font-semibold flex items-center gap-2">
+                            <Zap className="w-4 h-4" />
+                            Dynamic Rules
+                          </Label>
+                          <div className="space-y-2">
+                            <div className="flex gap-2">
+                              <Select onValueChange={(val) => {
+                                setDynamicConfig(prev => ({
+                                  ...prev,
+                                  rules: [...prev.rules, { condition: val, value: '', targetUrl: '' }]
+                                }));
+                              }}>
+                                <SelectTrigger className="bg-gray-800 border-gray-700 text-white text-xs h-8">
+                                  <SelectValue placeholder="Add Rule..." />
+                                </SelectTrigger>
+                                <SelectContent className="bg-gray-800 border-gray-700">
+                                  <SelectItem value="time">Time Window</SelectItem>
+                                  <SelectItem value="device">Device Type</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+                            
+                            {dynamicConfig.rules.map((rule, idx) => (
+                              <div key={idx} className="bg-gray-900/50 p-2 rounded border border-gray-700 space-y-2">
+                                <div className="flex justify-between items-center">
+                                  <span className="text-xs text-blue-400 capitalize">{rule.condition} Rule</span>
+                                  <Button 
+                                    variant="ghost" 
+                                    size="sm" 
+                                    className="h-4 w-4 p-0 text-gray-500 hover:text-red-400"
+                                    onClick={() => {
+                                      const newRules = [...dynamicConfig.rules];
+                                      newRules.splice(idx, 1);
+                                      setDynamicConfig(prev => ({ ...prev, rules: newRules }));
+                                    }}
+                                  >
+                                    ×
+                                  </Button>
+                                </div>
+                                
+                                {rule.condition === 'time' && (
+                                  <Input 
+                                    placeholder="HH:MM-HH:MM (e.g. 09:00-17:00)" 
+                                    value={rule.value}
+                                    onChange={(e) => {
+                                      const newRules = [...dynamicConfig.rules];
+                                      newRules[idx].value = e.target.value;
+                                      setDynamicConfig(prev => ({ ...prev, rules: newRules }));
+                                    }}
+                                    className="h-7 text-xs bg-gray-800 border-gray-600"
+                                  />
+                                )}
+                                
+                                {rule.condition === 'device' && (
+                                  <Select 
+                                    value={rule.value} 
+                                    onValueChange={(val) => {
+                                      const newRules = [...dynamicConfig.rules];
+                                      newRules[idx].value = val;
+                                      setDynamicConfig(prev => ({ ...prev, rules: newRules }));
+                                    }}
+                                  >
+                                    <SelectTrigger className="h-7 text-xs bg-gray-800 border-gray-600">
+                                      <SelectValue placeholder="Select Device" />
+                                    </SelectTrigger>
+                                    <SelectContent className="bg-gray-800 border-gray-700">
+                                      <SelectItem value="ios">iOS (iPhone/iPad)</SelectItem>
+                                      <SelectItem value="android">Android</SelectItem>
+                                    </SelectContent>
+                                  </Select>
+                                )}
+
+                                <Input 
+                                  placeholder="Redirect URL" 
+                                  value={rule.targetUrl}
+                                  onChange={(e) => {
+                                    const newRules = [...dynamicConfig.rules];
+                                    newRules[idx].targetUrl = e.target.value;
+                                    setDynamicConfig(prev => ({ ...prev, rules: newRules }));
+                                  }}
+                                  className="h-7 text-xs bg-gray-800 border-gray-600"
+                                />
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
 
                       {/* Size */}
                       <div className="touch-target-safe">

@@ -74,7 +74,8 @@ const BG_PATTERNS = [
   { id: 'none', name: 'None' },
   { id: 'grid', name: 'Grid' },
   { id: 'dots', name: 'Dots' },
-  { id: 'grain', name: 'Grain' }
+  { id: 'grain', name: 'Grain' },
+  { id: 'hex', name: 'Hexagon' }
 ];
 
 // Preset color palettes
@@ -613,7 +614,7 @@ export default function QrCustomizationPanel({
                 <input
                   ref={fileInputRef}
                   type="file"
-                  accept="image/*"
+                  accept="image/png, image/jpeg, image/svg+xml"
                   onChange={handleFileUpload}
                   className="hidden"
                 />
