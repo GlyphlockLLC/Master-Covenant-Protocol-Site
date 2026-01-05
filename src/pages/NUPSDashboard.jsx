@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { 
   Shield, DollarSign, ShoppingCart, Users, LogOut, 
   Printer, CreditCard, DoorOpen, FileText, UserCheck,
-  Package, BarChart3, Settings, Loader2
+  Package, BarChart3, Settings, Loader2, Brain
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
@@ -30,6 +30,118 @@ const LoadingFallback = () => (
     <Loader2 className="w-8 h-8 animate-spin text-cyan-400" />
   </div>
 );
+
+// Redemption Analytics Component
+function RedemptionAnalyticsTab() {
+  const [insights, setInsights] = React.useState(null);
+  const [loading, setLoading] = React.useState(false);
+
+  const loadAnalytics = async () => {
+    setLoading(true);
+    try {
+      const { data } = await base44.functions.invoke('nupsAI', {
+        action: 'analyzeRedemptionPatterns',
+        data: {}
+      });
+      setInsights(data.insights);
+    } catch (err) {
+      console.error('Analytics failed:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      <Card className="bg-slate-900/50 border-purple-500/30">
+        <CardContent className="p-6">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h3 className="text-lg font-bold text-white">AI Voucher Redemption Analysis</h3>
+              <p className="text-sm text-slate-400">Understand promotional effectiveness</p>
+            </div>
+            <Button onClick={loadAnalytics} disabled={loading} className="bg-gradient-to-r from-purple-600 to-pink-600">
+              {loading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <BarChart3 className="w-4 h-4 mr-2" />}
+              {loading ? 'Analyzing...' : 'Run Analysis'}
+            </Button>
+          </div>
+
+          {insights && (
+            <div className="grid md:grid-cols-2 gap-6">
+              {/* Effectiveness Score */}
+              <Card className="bg-slate-800/50 border-slate-700">
+                <CardContent className="p-4">
+                  <h4 className="text-sm font-medium text-slate-400 mb-3">Campaign Effectiveness</h4>
+                  <div className="flex items-center gap-4">
+                    <div className="text-4xl font-bold text-purple-400">{insights.effectiveness?.score || 0}%</div>
+                    <Badge className={
+                      insights.effectiveness?.rating === 'Excellent' ? 'bg-green-500/20 text-green-400' :
+                      insights.effectiveness?.rating === 'Good' ? 'bg-blue-500/20 text-blue-400' :
+                      'bg-yellow-500/20 text-yellow-400'
+                    }>
+                      {insights.effectiveness?.rating}
+                    </Badge>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Peak Times */}
+              <Card className="bg-slate-800/50 border-slate-700">
+                <CardContent className="p-4">
+                  <h4 className="text-sm font-medium text-slate-400 mb-3">Peak Redemption Times</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {insights.peakRedemptionTimes?.map((time, i) => (
+                      <Badge key={i} className="bg-cyan-500/20 text-cyan-400">{time}</Badge>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Recommendations */}
+              <Card className="bg-slate-800/50 border-slate-700 md:col-span-2">
+                <CardContent className="p-4">
+                  <h4 className="text-sm font-medium text-slate-400 mb-3">AI Recommendations</h4>
+                  <ul className="space-y-2">
+                    {insights.recommendations?.map((rec, i) => (
+                      <li key={i} className="flex items-start gap-2 text-sm text-slate-300">
+                        <span className="text-purple-400">•</span>
+                        {rec}
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+
+              {/* Suggested Adjustments */}
+              {insights.suggestedAdjustments?.length > 0 && (
+                <Card className="bg-slate-800/50 border-slate-700 md:col-span-2">
+                  <CardContent className="p-4">
+                    <h4 className="text-sm font-medium text-slate-400 mb-3">Suggested Adjustments</h4>
+                    <div className="space-y-3">
+                      {insights.suggestedAdjustments.map((adj, i) => (
+                        <div key={i} className="flex items-center justify-between p-3 bg-slate-900/50 rounded-lg">
+                          <span className="text-sm text-white">{adj.change}</span>
+                          <span className="text-sm text-green-400">{adj.expectedResult}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+            </div>
+          )}
+
+          {!insights && !loading && (
+            <div className="text-center py-12 text-slate-500">
+              <BarChart3 className="w-12 h-12 mx-auto mb-3 opacity-50" />
+              <p>Click "Run Analysis" to get AI-powered insights</p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
 
 export default function NUPSDashboard() {
   const [user, setUser] = useState(null);
@@ -329,12 +441,16 @@ export default function NUPSDashboard() {
                   <TabsList className="mb-4">
                     <TabsTrigger value="4bill">4-Bill Printer</TabsTrigger>
                     <TabsTrigger value="5sheet">5-Sheet Printer</TabsTrigger>
+                    <TabsTrigger value="analytics">Redemption Analytics</TabsTrigger>
                   </TabsList>
                   <TabsContent value="4bill">
                     <VoucherPrinter4Bill />
                   </TabsContent>
                   <TabsContent value="5sheet">
                     <VoucherPrinter5Sheet />
+                  </TabsContent>
+                  <TabsContent value="analytics">
+                    <RedemptionAnalyticsTab />
                   </TabsContent>
                 </Tabs>
               </TabsContent>
