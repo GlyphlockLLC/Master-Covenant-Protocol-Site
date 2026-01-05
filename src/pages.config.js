@@ -39,6 +39,7 @@ import ManageSubscription from './pages/ManageSubscription';
 import MasterCovenant from './pages/MasterCovenant';
 import Mobile from './pages/Mobile';
 import NISTChallenge from './pages/NISTChallenge';
+import NUPSDashboard from './pages/NUPSDashboard';
 import NUPSLogin from './pages/NUPSLogin';
 import NUPSOwner from './pages/NUPSOwner';
 import NUPSStaff from './pages/NUPSStaff';
@@ -78,7 +79,6 @@ import VIPContract from './pages/VIPContract';
 import VideoUpload from './pages/VideoUpload';
 import ViewInteractive from './pages/ViewInteractive';
 import sitemapQr from './pages/sitemap-qr';
-import NUPSDashboard from './pages/NUPSDashboard';
 import __Layout from './Layout.jsx';
 
 
@@ -124,6 +124,7 @@ export const PAGES = {
     "MasterCovenant": MasterCovenant,
     "Mobile": Mobile,
     "NISTChallenge": NISTChallenge,
+    "NUPSDashboard": NUPSDashboard,
     "NUPSLogin": NUPSLogin,
     "NUPSOwner": NUPSOwner,
     "NUPSStaff": NUPSStaff,
@@ -163,7 +164,6 @@ export const PAGES = {
     "VideoUpload": VideoUpload,
     "ViewInteractive": ViewInteractive,
     "sitemap-qr": sitemapQr,
-    "NUPSDashboard": NUPSDashboard,
 }
 
 export const pagesConfig = {

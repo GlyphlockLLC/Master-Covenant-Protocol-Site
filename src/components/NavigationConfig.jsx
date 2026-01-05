@@ -87,7 +87,7 @@ export const FOOTER_LINKS = {
     { label: "QR Verification", page: "Qr", visibility: "public" },
     { label: "Image Lab", page: "ImageLab", visibility: "public" },
     { label: "GlyphBot Intelligence", page: "GlyphBot", visibility: "public" },
-    { label: "NUPS Transaction Verification", page: "NUPSLogin", visibility: "public" },
+    { label: "NUPS Dashboard", page: "NUPSDashboard", visibility: "public" },
     { label: "Security Modules", page: "SecurityTools", visibility: "public" },
     { label: "SDK Documentation", page: "SDKDocs", visibility: "public" }
   ],
