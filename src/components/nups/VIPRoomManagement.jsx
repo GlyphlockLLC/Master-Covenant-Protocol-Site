@@ -201,8 +201,11 @@ export default function VIPRoomManagement() {
       </Card>
 
       {/* Start Session Dialog */}
-      <Dialog open={showStartDialog} onOpenChange={setShowStartDialog}>
-        <DialogContent className="glass-modal border-purple-500/30">
+      <Dialog open={showStartDialog} onOpenChange={(open) => {
+        setShowStartDialog(open);
+        if (!open) setUpgradeAnalysis(null);
+      }}>
+        <DialogContent className="bg-slate-900 border-purple-500/30 text-white max-w-lg">
           <DialogHeader>
             <DialogTitle className="text-white">
               Start VIP Session - {selectedRoom?.room_name || `Room ${selectedRoom?.room_number}`}
