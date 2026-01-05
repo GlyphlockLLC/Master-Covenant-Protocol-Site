@@ -148,7 +148,7 @@ export default function NUPSDashboard() {
       <div className="container mx-auto p-4 md:p-6">
         {/* Quick Stats */}
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
-          <Card className="glass-card-dark border-green-500/30">
+          <Card className="bg-slate-900/50 border-green-500/30">
             <CardContent className="p-4">
               <DollarSign className="w-6 h-6 text-green-400 mb-2" />
               <div className="text-2xl font-bold text-green-400">${todayRevenue.toFixed(0)}</div>
@@ -156,7 +156,7 @@ export default function NUPSDashboard() {
             </CardContent>
           </Card>
           
-          <Card className="glass-card-dark border-cyan-500/30">
+          <Card className="bg-slate-900/50 border-cyan-500/30">
             <CardContent className="p-4">
               <ShoppingCart className="w-6 h-6 text-cyan-400 mb-2" />
               <div className="text-2xl font-bold text-cyan-400">{todayTransactions.length}</div>
@@ -164,7 +164,7 @@ export default function NUPSDashboard() {
             </CardContent>
           </Card>
           
-          <Card className="glass-card-dark border-purple-500/30">
+          <Card className="bg-slate-900/50 border-purple-500/30">
             <CardContent className="p-4">
               <UserCheck className="w-6 h-6 text-purple-400 mb-2" />
               <div className="text-2xl font-bold text-purple-400">{activeShifts.length}/{entertainers.length}</div>
@@ -172,7 +172,7 @@ export default function NUPSDashboard() {
             </CardContent>
           </Card>
           
-          <Card className="glass-card-dark border-pink-500/30">
+          <Card className="bg-slate-900/50 border-pink-500/30">
             <CardContent className="p-4">
               <DoorOpen className="w-6 h-6 text-pink-400 mb-2" />
               <div className="text-2xl font-bold text-pink-400">{occupiedRooms}/{vipRooms.length}</div>
@@ -180,7 +180,7 @@ export default function NUPSDashboard() {
             </CardContent>
           </Card>
           
-          <Card className="glass-card-dark border-amber-500/30">
+          <Card className="bg-slate-900/50 border-amber-500/30">
             <CardContent className="p-4">
               <Package className="w-6 h-6 text-amber-400 mb-2" />
               <div className="text-2xl font-bold text-amber-400">{products.length}</div>
@@ -231,7 +231,7 @@ export default function NUPSDashboard() {
             <TabsContent value="overview">
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {/* Quick Actions */}
-                <Card className="glass-card-dark border-cyan-500/30">
+                <Card className="bg-slate-900/50 border-cyan-500/30">
                   <CardHeader>
                     <CardTitle className="text-white">Quick Actions</CardTitle>
                   </CardHeader>
@@ -271,7 +271,7 @@ export default function NUPSDashboard() {
                 </Card>
 
                 {/* Recent Activity */}
-                <Card className="glass-card-dark border-purple-500/30 md:col-span-2">
+                <Card className="bg-slate-900/50 border-purple-500/30 md:col-span-2">
                   <CardHeader>
                     <CardTitle className="text-white">Recent Transactions</CardTitle>
                   </CardHeader>
