@@ -78,6 +78,7 @@ import VIPContract from './pages/VIPContract';
 import VideoUpload from './pages/VideoUpload';
 import ViewInteractive from './pages/ViewInteractive';
 import sitemapQr from './pages/sitemap-qr';
+import NUPSDashboard from './pages/NUPSDashboard';
 import __Layout from './Layout.jsx';
 
 
@@ -162,6 +163,7 @@ export const PAGES = {
     "VideoUpload": VideoUpload,
     "ViewInteractive": ViewInteractive,
     "sitemap-qr": sitemapQr,
+    "NUPSDashboard": NUPSDashboard,
 }
 
 export const pagesConfig = {
