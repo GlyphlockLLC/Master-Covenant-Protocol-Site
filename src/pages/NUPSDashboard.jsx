@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { 
   Shield, DollarSign, ShoppingCart, Users, LogOut, 
   Printer, CreditCard, DoorOpen, FileText, UserCheck,
-  Package, BarChart3, Settings, Loader2, Brain
+  Package, BarChart3, Settings, Loader2, Brain, Crown, Plus
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
@@ -26,6 +26,10 @@ const BatchManagement = lazy(() => import("../components/nups/BatchManagement.js
 const TransactionHistory = lazy(() => import("../components/nups/TransactionHistory.jsx"));
 const AISalesReports = lazy(() => import("../components/nups/AISalesReports.jsx"));
 const AIStaffPerformance = lazy(() => import("../components/nups/AIStaffPerformance.jsx"));
+const VIPMemberForm = lazy(() => import("../components/nups/VIPMemberForm.jsx"));
+const VIPReceiptCard = lazy(() => import("../components/nups/VIPReceiptCard.jsx"));
+const VIPContractCard = lazy(() => import("../components/nups/VIPContractCard.jsx"));
+const VIPAIRecommendations = lazy(() => import("../components/nups/VIPAIRecommendations.jsx"));
 
 const LoadingFallback = () => (
   <div className="flex items-center justify-center py-12">
@@ -322,6 +326,10 @@ export default function NUPSDashboard() {
               <UserCheck className="w-4 h-4 mr-1" />
               <span className="hidden sm:inline">Staff</span>
             </TabsTrigger>
+            <TabsTrigger value="vip-members" className="min-w-[80px]">
+              <Crown className="w-4 h-4 mr-1" />
+              <span className="hidden sm:inline">VIP Members</span>
+            </TabsTrigger>
             {isAdmin && (
               <>
                 <TabsTrigger value="vouchers" className="min-w-[80px]">
@@ -434,6 +442,11 @@ export default function NUPSDashboard() {
             {/* Staff Tab */}
             <TabsContent value="staff">
               <EntertainerCheckIn />
+            </TabsContent>
+
+            {/* VIP Members Tab */}
+            <TabsContent value="vip-members">
+              <VIPMembersTab />
             </TabsContent>
 
             {/* Vouchers Tab (Admin Only) */}
