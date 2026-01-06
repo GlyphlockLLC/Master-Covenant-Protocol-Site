@@ -14,6 +14,7 @@ import {
   CheckCircle, Download
 } from 'lucide-react';
 import { toast } from 'sonner';
+import EntertainerContractModal from '@/components/nups/EntertainerContractModal';
 
 const DB_NAME = 'NUPS_TimeClock';
 const DB_VERSION = 1;
@@ -81,6 +82,8 @@ export default function NUPSTimeClockContent() {
   const [selectedId, setSelectedId] = useState(null);
   const [search, setSearch] = useState('');
   const [isOnline, setIsOnline] = useState(navigator.onLine);
+  const [showContractModal, setShowContractModal] = useState(false);
+  const [pendingClockIn, setPendingClockIn] = useState(null);
 
   const { data: entertainers = [] } = useQuery({
     queryKey: ['entertainers-timeclock'],
@@ -132,13 +135,57 @@ export default function NUPSTimeClockContent() {
     return formatDuration(mins);
   };
 
+  const checkContractSigned = async (entertainerId) => {
+    try {
+      const db = await openContractDB();
+      const tx = db.transaction('entertainerContracts', 'readonly');
+      const request = tx.objectStore('entertainerContracts').get(entertainerId);
+      return new Promise((resolve) => {
+        request.onsuccess = () => resolve(!!request.result);
+        request.onerror = () => resolve(false);
+      });
+    } catch {
+      return false;
+    }
+  };
+
+  async function openContractDB() {
+    return new Promise((resolve, reject) => {
+      const request = indexedDB.open('NUPS_Contracts', 2);
+      request.onerror = () => reject(request.error);
+      request.onsuccess = () => resolve(request.result);
+      request.onupgradeneeded = (e) => {
+        const db = e.target.result;
+        if (!db.objectStoreNames.contains('entertainerContracts')) db.createObjectStore('entertainerContracts', { keyPath: 'id' });
+        if (!db.objectStoreNames.contains('vipContracts')) db.createObjectStore('vipContracts', { keyPath: 'id' });
+      };
+    });
+  }
+
   const handleClockIn = async () => {
     if (!selected) return;
+    const hasSigned = await checkContractSigned(selected.id);
+    if (!hasSigned) {
+      setPendingClockIn(selected);
+      setShowContractModal(true);
+      return;
+    }
+    completeClockIn(selected);
+  };
+
+  const handleContractSigned = (record) => {
+    if (pendingClockIn) {
+      completeClockIn(pendingClockIn);
+      setPendingClockIn(null);
+    }
+  };
+
+  const completeClockIn = async (entertainer) => {
     const shift = {
       id: crypto.randomUUID(),
-      entertainerId: selected.id,
-      name: selected.stage_name,
-      legalName: selected.legal_name,
+      entertainerId: entertainer.id,
+      name: entertainer.stage_name,
+      legalName: entertainer.legal_name,
       clockIn: new Date().toISOString(),
       clockOut: null,
       duration: null,
@@ -147,15 +194,15 @@ export default function NUPSTimeClockContent() {
     const audit = {
       id: crypto.randomUUID(),
       action: 'CLOCK_IN',
-      entertainerId: selected.id,
-      name: selected.stage_name,
+      entertainerId: entertainer.id,
+      name: entertainer.stage_name,
       timestamp: Date.now(),
-      details: `Clocked in at ${new Date().toLocaleTimeString()}`
+      details: `Clocked in at ${new Date().toLocaleTimeString()} (Agreement on file)`
     };
     try {
       await saveShift(shift);
       await addAuditEntry(audit);
-      toast.success(`${selected.stage_name} clocked in`);
+      toast.success(`${entertainer.stage_name} clocked in`);
       setSelectedId(null);
       loadData();
     } catch (err) {

@@ -10,6 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Label } from "@/components/ui/label";
 import { DoorOpen, Video, Clock, DollarSign, User, UserCheck, Sparkles, Loader2, ArrowUp } from "lucide-react";
 import { toast } from "sonner";
+import VIPContractModal from '@/components/nups/VIPContractModal';
 
 export default function VIPRoomManagement() {
   const queryClient = useQueryClient();
