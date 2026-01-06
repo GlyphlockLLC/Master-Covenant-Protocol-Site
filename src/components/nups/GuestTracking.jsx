@@ -131,9 +131,9 @@ export default function GuestTracking() {
                     </div>
                   </div>
 
-                    <Badge className={`mb-3 ${getLocationColor(guest.current_location)}`}>
+                    <Badge className={`mb-3 ${getLocationColor(guest.current_location || "Lobby")}`}>
                       <MapPin className="w-3 h-3 mr-1" />
-                      {guest.current_location}
+                      {guest.current_location || "Lobby"}
                     </Badge>
 
                     <div className="space-y-2 text-sm">

@@ -178,7 +178,7 @@ export default function EntertainerCheckIn() {
 
                     <div className="mt-3">
                       <Select 
-                        value={shift.location}
+                        value={shift.location || "Main Floor"}
                         onValueChange={(newLocation) => {
                           const newStatus = newLocation === "VIP Area" ? "in_vip" : "on_floor";
                           updateLocation.mutate({ 
