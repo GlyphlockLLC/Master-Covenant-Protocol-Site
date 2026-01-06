@@ -166,7 +166,7 @@ export default function NUPS() {
               >
                 <tab.icon className="w-4 h-4" />
                 <span className="hidden sm:inline">{tab.label}</span>
-                {tab.roles.length <= 2 && <Badge className="ml-1 text-[10px] bg-slate-600 px-1">Admin</Badge>}
+                {tab.roles && tab.roles.length <= 2 && <Badge className="ml-1 text-[10px] bg-slate-600 px-1">Admin</Badge>}
               </TabsTrigger>
             ))}
           </TabsList>
