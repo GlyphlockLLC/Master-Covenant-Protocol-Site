@@ -11,7 +11,7 @@ export const NAV = [
   { label: "Dream Team", href: "/DreamTeam", visibility: "public" },
   { label: "GlyphBot", href: "/GlyphBot", visibility: "public" },
   { label: "Command Center", href: "/CommandCenter", visibility: "public" },
-  { label: "NUPS", href: "/NUPSDashboard", visibility: "public" },
+  { label: "NUPS", href: "/NUPS", visibility: "authenticated" },
   { label: "Protocol Verification", href: "/Consultation", visibility: "public" }
 ];
 
@@ -35,12 +35,10 @@ export const NAV_SECTIONS = [
       { label: "Image Lab", page: "ImageLab", visibility: "public" },
       { label: "GlyphBot Intelligence", page: "GlyphBot", visibility: "public" },
 
-      { label: "NUPS", page: "NUPS", visibility: "public" },
-      { label: "VIP Profiles", page: "VIPMemberProfile", visibility: "public" },
+      { label: "NUPS", page: "NUPS", visibility: "authenticated" },
       { label: "Security Modules", page: "SecurityTools", visibility: "public" },
-      { label: "Media Processing Hub", page: "VideoUpload", visibility: "public" },
-      { label: "SDK Documentation", page: "SDKDocs", visibility: "public" },
-      { label: "Site Intelligence", page: "Sie", visibility: "admin" } // New SIE module
+      { label: "Media Processing Hub", page: "VideoUpload", visibility: "authenticated" },
+      { label: "SDK Documentation", page: "SDKDocs", visibility: "public" }
     ]
   },
   {
@@ -75,7 +73,7 @@ export const NAV_SECTIONS = [
       { label: "Project Updates", page: "ProjectUpdates", visibility: "public" }
     ]
   }
-            ];
+];
 
 export const FOOTER_LINKS = {
   company: [
@@ -89,7 +87,7 @@ export const FOOTER_LINKS = {
     { label: "QR Verification", page: "Qr", visibility: "public" },
     { label: "Image Lab", page: "ImageLab", visibility: "public" },
     { label: "GlyphBot Intelligence", page: "GlyphBot", visibility: "public" },
-    { label: "NUPS Dashboard", page: "NUPSDashboard", visibility: "public" },
+    { label: "NUPS", page: "NUPS", visibility: "authenticated" },
     { label: "Security Modules", page: "SecurityTools", visibility: "public" },
     { label: "SDK Documentation", page: "SDKDocs", visibility: "public" }
   ],
