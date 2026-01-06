@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { FileText, DollarSign, ShoppingCart, Printer, Calendar } from "lucide-react";
 
-export default function ZReportGenerator({ user }) {
+export default function ZReportGenerator({ user = {} }) {
   const queryClient = useQueryClient();
   const [openingCash, setOpeningCash] = useState(0);
   const [closingCash, setClosingCash] = useState(0);
