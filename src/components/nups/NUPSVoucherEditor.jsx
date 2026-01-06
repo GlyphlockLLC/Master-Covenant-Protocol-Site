@@ -224,13 +224,13 @@ export default function NUPSVoucherEditor() {
       });
     }
 
-    if (elements.barcode.enabled) {
+    if (elements?.barcode?.enabled) {
       const bc = generateBarcodeCanvas(sampleSerial, elements.barcode.width, elements.barcode.height);
       applyFilter(() => ctx.drawImage(bc, elements.barcode.x, elements.barcode.y));
       if (selectedElement === 'barcode') drawSelection(ctx, elements.barcode.x, elements.barcode.y, elements.barcode.width, elements.barcode.height);
     }
 
-    if (elements.serial.enabled) {
+    if (elements?.serial?.enabled) {
       applyFilter(() => {
         ctx.fillStyle = colorMode === 'monochrome' ? '#000' : elements.serial.color;
         ctx.font = `${elements.serial.fontWeight} ${elements.serial.fontSize}px ${elements.serial.fontFamily}`;
@@ -242,7 +242,7 @@ export default function NUPSVoucherEditor() {
       }
     }
 
-    if (elements.denomination.enabled) {
+    if (elements?.denomination?.enabled) {
       applyFilter(() => {
         ctx.fillStyle = colorMode === 'monochrome' ? '#000' : elements.denomination.color;
         ctx.font = `${elements.denomination.fontWeight} ${elements.denomination.fontSize}px ${elements.denomination.fontFamily}`;
@@ -254,13 +254,13 @@ export default function NUPSVoucherEditor() {
       }
     }
 
-    if (elements.qrCode.enabled) {
+    if (elements?.qrCode?.enabled) {
       const qr = generateQRCanvas(sampleSerial, elements.qrCode.size);
       applyFilter(() => ctx.drawImage(qr, elements.qrCode.x, elements.qrCode.y));
       if (selectedElement === 'qrCode') drawSelection(ctx, elements.qrCode.x, elements.qrCode.y, elements.qrCode.size, elements.qrCode.size);
     }
 
-    if (elements.customImage.enabled && elements.customImage.image) {
+    if (elements?.customImage?.enabled && elements?.customImage?.image) {
       applyFilter(() => ctx.drawImage(elements.customImage.image, elements.customImage.x, elements.customImage.y, elements.customImage.width, elements.customImage.height));
       if (selectedElement === 'customImage') drawSelection(ctx, elements.customImage.x, elements.customImage.y, elements.customImage.width, elements.customImage.height);
     }
