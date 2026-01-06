@@ -38,6 +38,7 @@ export const NAV_SECTIONS = [
                   { label: "NUPS Time Clock", page: "NUPSTimeClock", visibility: "public" },
                   { label: "NUPS Vouchers", page: "NUPSVoucherPrint", visibility: "public" },
                   { label: "NUPS Contracts", page: "NUPSContractPrint", visibility: "public" },
+            { label: "NUPS Offline Help", page: "NUPSOfflineHelp", visibility: "public" },
                   { label: "VIP Profiles", page: "VIPMemberProfile", visibility: "public" },
       { label: "Security Modules", page: "SecurityTools", visibility: "public" },
       { label: "Media Processing Hub", page: "VideoUpload", visibility: "public" },
