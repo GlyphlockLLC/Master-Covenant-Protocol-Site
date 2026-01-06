@@ -152,7 +152,7 @@ export default function GuestTracking() {
 
                     <div className="mt-3">
                       <Select 
-                        value={guest.current_location}
+                        value={guest.current_location || "Lobby"}
                         onValueChange={(location) => 
                           updateLocation.mutate({ guestId: guest.id, location })
                         }
