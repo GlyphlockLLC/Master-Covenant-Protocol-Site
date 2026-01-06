@@ -81,6 +81,8 @@ import VideoUpload from './pages/VideoUpload';
 import ViewInteractive from './pages/ViewInteractive';
 import sitemapQr from './pages/sitemap-qr';
 import NUPSTimeClock from './pages/NUPSTimeClock';
+import NUPSVoucherPrint from './pages/NUPSVoucherPrint';
+import NUPSContractPrint from './pages/NUPSContractPrint';
 import __Layout from './Layout.jsx';
 
 
@@ -168,6 +170,8 @@ export const PAGES = {
     "ViewInteractive": ViewInteractive,
     "sitemap-qr": sitemapQr,
     "NUPSTimeClock": NUPSTimeClock,
+    "NUPSVoucherPrint": NUPSVoucherPrint,
+    "NUPSContractPrint": NUPSContractPrint,
 }
 
 export const pagesConfig = {
