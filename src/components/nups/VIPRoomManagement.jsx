@@ -42,6 +42,8 @@ export default function VIPRoomManagement() {
 
   const [upgradeAnalysis, setUpgradeAnalysis] = useState(null);
   const [loadingUpgrade, setLoadingUpgrade] = useState(false);
+  const [showVIPContractModal, setShowVIPContractModal] = useState(false);
+  const [pendingSession, setPendingSession] = useState(null);
 
   const getUpgradeSuggestion = async (guestId, currentRoom) => {
     if (!guestId) return;
@@ -215,7 +217,9 @@ export default function VIPRoomManagement() {
           <form 
             onSubmit={(e) => {
               e.preventDefault();
-              startSession.mutate(sessionForm);
+              const guest = guests.find(g => g.guest_name === sessionForm.guest_name);
+              setPendingSession({ ...sessionForm, guestData: guest });
+              setShowVIPContractModal(true);
             }} 
             className="space-y-4"
           >
@@ -333,6 +337,18 @@ export default function VIPRoomManagement() {
           </form>
         </DialogContent>
       </Dialog>
+
+      <VIPContractModal
+        open={showVIPContractModal}
+        onOpenChange={setShowVIPContractModal}
+        client={pendingSession?.guestData || { guest_name: pendingSession?.guest_name }}
+        onAccepted={() => {
+          if (pendingSession) {
+            startSession.mutate(pendingSession);
+            setPendingSession(null);
+          }
+        }}
+      />
     </div>
   );
 }
