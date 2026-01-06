@@ -187,8 +187,8 @@ export default function NUPS() {
                     <TabsTrigger value="history">Transactions</TabsTrigger>
                     <TabsTrigger value="zreport">Z-Report</TabsTrigger>
                   </TabsList>
-                  <TabsContent value="register"><POSCashRegister /></TabsContent>
-                  <TabsContent value="batch"><BatchManagement /></TabsContent>
+                  <TabsContent value="register"><POSCashRegister user={user} /></TabsContent>
+                  <TabsContent value="batch"><BatchManagement user={user} /></TabsContent>
                   <TabsContent value="history"><TransactionHistory transactions={[]} /></TabsContent>
                   <TabsContent value="zreport"><ZReportGenerator /></TabsContent>
                 </Tabs>
