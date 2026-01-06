@@ -9,8 +9,9 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Loader2, Search, Filter, Shield, AlertTriangle, CheckCircle, FileText } from "lucide-react";
+import AdminGate, { AdminPageMeta } from "@/components/security/AdminGate";
 
-export default function AuditTrail() {
+function AuditTrailContent() {
   const [filterType, setFilterType] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [limit, setLimit] = useState(50);
@@ -167,5 +168,15 @@ export default function AuditTrail() {
         </Card>
       </div>
     </div>
+  );
+}
+
+// ADMIN-ONLY WRAPPER
+export default function AuditTrail() {
+  return (
+    <AdminGate pageName="Audit Trail">
+      <AdminPageMeta />
+      <AuditTrailContent />
+    </AdminGate>
   );
 }

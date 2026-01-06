@@ -4,11 +4,14 @@ import { Shield, Activity, BarChart3 } from "lucide-react";
 import ThreatMonitor from "@/components/security/ThreatMonitor";
 import SecurityAnalytics from "@/components/security/SecurityAnalytics";
 import FreeTrialGuard from "@/components/FreeTrialGuard";
+import AdminGate, { AdminPageMeta } from "@/components/security/AdminGate";
 
 export default function SecurityOperationsCenter() {
   return (
-    <FreeTrialGuard serviceName="HSSS">
-      <div className="min-h-screen bg-black text-white py-20">
+    <AdminGate pageName="Security Operations Center">
+      <AdminPageMeta />
+      <FreeTrialGuard serviceName="HSSS">
+        <div className="min-h-screen bg-black text-white py-20">
         <div className="container mx-auto px-4">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12">
@@ -46,6 +49,7 @@ export default function SecurityOperationsCenter() {
           </div>
         </div>
       </div>
-    </FreeTrialGuard>
+      </FreeTrialGuard>
+    </AdminGate>
   );
 }

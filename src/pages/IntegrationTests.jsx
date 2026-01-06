@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { Shield, CheckCircle, XCircle, Loader2, Play, Database, CreditCard, Brain, Mail, Upload, Key, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import AdminGate, { AdminPageMeta } from "@/components/security/AdminGate";
 
-export default function IntegrationTests() {
+function IntegrationTestsContent() {
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState(null);
   const [user, setUser] = useState(null);
@@ -28,6 +29,8 @@ export default function IntegrationTests() {
       console.error('Failed to load user:', error);
     }
   };
+
+  // Auth check is handled by AdminGate wrapper - keeping loadUser for stats
 
   const runTests = async () => {
     setLoading(true);
@@ -66,18 +69,6 @@ export default function IntegrationTests() {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
         <Loader2 className="w-8 h-8 text-cyan-400 animate-spin" />
-      </div>
-    );
-  }
-
-  if (user.role !== 'admin') {
-    return (
-      <div className="min-h-screen bg-black flex items-center justify-center p-6">
-        <div className="max-w-md text-center">
-          <Shield className="w-16 h-16 text-red-400 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold text-white mb-2">Access Denied</h1>
-          <p className="text-gray-400">This page requires admin privileges</p>
-        </div>
       </div>
     );
   }
@@ -262,5 +253,15 @@ export default function IntegrationTests() {
         </div>
       </div>
     </div>
+  );
+}
+
+// ADMIN-ONLY WRAPPER
+export default function IntegrationTests() {
+  return (
+    <AdminGate pageName="Integration Tests">
+      <AdminPageMeta />
+      <IntegrationTestsContent />
+    </AdminGate>
   );
 }

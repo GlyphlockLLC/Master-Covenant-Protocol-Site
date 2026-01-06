@@ -4,13 +4,15 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Download, AlertTriangle, CheckCircle, FileArchive, Github } from 'lucide-react';
 import { toast } from 'sonner';
+import AdminGate, { AdminPageMeta } from "@/components/security/AdminGate";
 
 /**
  * EMERGENCY BACKUP
  * One-click download of everything before credits run out
+ * ADMIN-ONLY
  */
 
-export default function EmergencyBackup() {
+function EmergencyBackupContent() {
   const [downloading, setDownloading] = useState(false);
   const [done, setDone] = useState(false);
 
@@ -156,5 +158,15 @@ export default function EmergencyBackup() {
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+// ADMIN-ONLY WRAPPER
+export default function EmergencyBackup() {
+  return (
+    <AdminGate pageName="Emergency Backup">
+      <AdminPageMeta />
+      <EmergencyBackupContent />
+    </AdminGate>
   );
 }

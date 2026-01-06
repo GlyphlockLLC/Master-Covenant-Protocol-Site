@@ -9,6 +9,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import ChainConfigBuilder from '@/components/provider/ChainConfigBuilder';
 import { Button } from '@/components/ui/button';
+import AdminGate, { AdminPageMeta } from "@/components/security/AdminGate";
 
 // OMEGA CHAIN V3: Gemini Primary (FREE) → OpenAI → Claude → OpenRouter → OSS
 const PRIORITY_ORDER_AUDIT = ['GEMINI', 'OPENAI', 'CLAUDE', 'OPENROUTER', 'LOCAL_OSS'];
@@ -45,7 +46,7 @@ function getStatusIcon(provider) {
   return <Clock className="w-4 h-4 text-slate-400" />;
 }
 
-export default function ProviderConsole() {
+function ProviderConsoleContent() {
   const [providerMeta, setProviderMeta] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -311,5 +312,15 @@ export default function ProviderConsole() {
         </Tabs>
       </div>
     </div>
+  );
+}
+
+// ADMIN-ONLY WRAPPER
+export default function ProviderConsole() {
+  return (
+    <AdminGate pageName="Provider Console">
+      <AdminPageMeta />
+      <ProviderConsoleContent />
+    </AdminGate>
   );
 }

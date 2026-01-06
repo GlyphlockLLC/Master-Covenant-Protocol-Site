@@ -10,8 +10,9 @@ import { toast } from "sonner";
 import ScanHistory from "@/components/sie/ScanHistory";
 import ScanAutomation from "@/components/sie/ScanAutomation";
 import AIRemediationPanel from "@/components/sie/AIRemediationPanel";
+import AdminGate, { AdminPageMeta } from "@/components/security/AdminGate";
 
-export default function Sie() {
+function SieContent() {
   const [scanRun, setScanRun] = useState(null);
   const [history, setHistory] = useState([]);
   const [config, setConfig] = useState(null);
@@ -330,5 +331,15 @@ function DataTable({ columns, data, renderRow }) {
         </Table>
       </CardContent>
     </Card>
+  );
+}
+
+// ADMIN-ONLY WRAPPER
+export default function Sie() {
+  return (
+    <AdminGate pageName="Site Intelligence Engine">
+      <AdminPageMeta />
+      <SieContent />
+    </AdminGate>
   );
 }

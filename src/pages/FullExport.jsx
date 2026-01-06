@@ -6,9 +6,11 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Download, Copy, FileCode, Database, Server, Layout, Check, Loader2, FolderOpen, AlertTriangle } from 'lucide-react';
 import { toast } from 'sonner';
 import SEOHead from '@/components/SEOHead';
+import AdminGate, { AdminPageMeta } from "@/components/security/AdminGate";
 
 /**
  * FULL PROJECT EXPORT - INDEPENDENCE FROM BASE44 CREDITS
+ * ADMIN-ONLY
  * 
  * This page exports your ENTIRE codebase so you can:
  * 1. Host it yourself on Vercel/Netlify/your own server
@@ -16,7 +18,7 @@ import SEOHead from '@/components/SEOHead';
  * 3. Never lose your work if credits run out
  */
 
-export default function FullExport() {
+function FullExportContent() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [exporting, setExporting] = useState(false);
@@ -162,20 +164,6 @@ export default function FullExport() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <Loader2 className="w-8 h-8 animate-spin text-blue-400" />
-      </div>
-    );
-  }
-
-  if (!user || user.role !== 'admin') {
-    return (
-      <div className="min-h-screen flex items-center justify-center p-4">
-        <Card className="bg-red-950/50 border-red-500/30 max-w-md">
-          <CardContent className="p-8 text-center">
-            <AlertTriangle className="w-16 h-16 text-red-400 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-white mb-2">Admin Access Required</h2>
-            <p className="text-red-300">Only administrators can export the full codebase.</p>
-          </CardContent>
-        </Card>
       </div>
     );
   }
@@ -392,5 +380,15 @@ export default function FullExport() {
         )}
       </div>
     </div>
+  );
+}
+
+// ADMIN-ONLY WRAPPER
+export default function FullExport() {
+  return (
+    <AdminGate pageName="Full Export">
+      <AdminPageMeta />
+      <FullExportContent />
+    </AdminGate>
   );
 }

@@ -9,8 +9,9 @@ import {
   Activity, Shield, CheckCircle, AlertTriangle, XCircle, 
   Code, Server, Database, Lock, Zap, Layout
 } from 'lucide-react';
+import AdminGate, { AdminPageMeta } from "@/components/security/AdminGate";
 
-export default function SystemStatus() {
+function SystemStatusContent() {
   const [health, setHealth] = useState(null);
   const [sieStatus, setSieStatus] = useState(null);
   const [integrations, setIntegrations] = useState(null);
@@ -295,5 +296,15 @@ export default function QrStudio() {
         </div>
       </div>
     </div>
+  );
+}
+
+// ADMIN-ONLY WRAPPER
+export default function SystemStatus() {
+  return (
+    <AdminGate pageName="System Status">
+      <AdminPageMeta />
+      <SystemStatusContent />
+    </AdminGate>
   );
 }
