@@ -190,7 +190,7 @@ export default function NUPS() {
                   <TabsContent value="register"><POSCashRegister user={user} /></TabsContent>
                   <TabsContent value="batch"><BatchManagement user={user} /></TabsContent>
                   <TabsContent value="history"><TransactionHistory transactions={[]} /></TabsContent>
-                  <TabsContent value="zreport"><ZReportGenerator /></TabsContent>
+                  <TabsContent value="zreport"><ZReportGenerator user={user} /></TabsContent>
                 </Tabs>
               </div>
             </TabsContent>
