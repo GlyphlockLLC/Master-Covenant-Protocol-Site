@@ -89,10 +89,10 @@ export default function VoucherPrinter4Bill() {
       height: 2.61in;
       margin: 0 auto;
       position: relative;
-      border-radius: 8px;
+      border-radius: 0;
       overflow: hidden;
       background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f1a 100%);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      box-shadow: none;
     }
     .voucher-bg {
       position: absolute;
@@ -181,9 +181,9 @@ export default function VoucherPrinter4Bill() {
       text-transform: uppercase;
     }
     .cut-line {
-      border-bottom: 1px dashed #ccc;
-      margin: 0 auto;
-      width: 6.5in;
+      border-bottom: 1px dashed #888;
+      margin: 0;
+      width: 100%;
     }
   </style>
 </head>
@@ -393,7 +393,7 @@ export default function VoucherPrinter4Bill() {
           </CardHeader>
           <CardContent>
             <div 
-              className="relative mx-auto rounded-lg overflow-hidden"
+              className="relative mx-auto overflow-hidden"
               style={{
                 width: '100%',
                 maxWidth: '460px',
@@ -401,7 +401,8 @@ export default function VoucherPrinter4Bill() {
                 background: bgImage 
                   ? `url(${bgImage}) center/cover` 
                   : 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f1a 100%)',
-                boxShadow: '0 8px 32px rgba(0,0,0,0.4)'
+                boxShadow: 'none',
+                border: '1px solid #333'
               }}
             >
               {bgImage && <div className="absolute inset-0 bg-black/15" />}
