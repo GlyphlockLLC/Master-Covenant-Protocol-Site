@@ -60,7 +60,7 @@ export default function AIStaffPerformance() {
             <div className="flex items-center gap-4">
               <div>
                 <label className="text-xs text-slate-400 block mb-1">Analysis Period</label>
-                <Select value={period} onValueChange={setPeriod}>
+                <Select value={period || "weekly"} onValueChange={setPeriod}>
                   <SelectTrigger className="w-40 bg-slate-800 border-slate-600">
                     <SelectValue />
                   </SelectTrigger>
