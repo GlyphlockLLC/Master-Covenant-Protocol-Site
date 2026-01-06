@@ -552,7 +552,7 @@ export default function NUPSDashboard() {
               <span className="hidden sm:inline">Overview</span>
             </TabsTrigger>
             <TabsTrigger value="pos" className="min-w-[80px]">
-              <CreditCard className="w-4 h-4 mr-1" />
+                              <Wallet className="w-4 h-4 mr-1" />
               <span className="hidden sm:inline">POS</span>
             </TabsTrigger>
             <TabsTrigger value="vip" className="min-w-[80px]">
