@@ -90,9 +90,9 @@ export default function EntertainerCheckIn() {
         <CardContent className="space-y-4">
           <div className="grid md:grid-cols-3 gap-4">
             <Select value={selectedEntertainer || "none"} onValueChange={(val) => setSelectedEntertainer(val === "none" ? null : val)}>
-              <SelectTrigger className="glass-input">
-                <SelectValue />
-              </SelectTrigger>
+                <SelectTrigger className="glass-input">
+                  <SelectValue placeholder="Select entertainer..." />
+                </SelectTrigger>
               <SelectContent className="bg-gray-900 border-gray-700">
                 <SelectItem value="none">Select entertainer...</SelectItem>
                 {(entertainers || [])
@@ -106,9 +106,9 @@ export default function EntertainerCheckIn() {
             </Select>
 
             <Select value={location || "Main Floor"} onValueChange={setLocation}>
-              <SelectTrigger className="glass-input">
-                <SelectValue />
-              </SelectTrigger>
+                <SelectTrigger className="glass-input">
+                  <SelectValue placeholder="Select location" />
+                </SelectTrigger>
               <SelectContent className="bg-gray-900 border-gray-700">
                 <SelectItem value="Main Floor">Main Floor</SelectItem>
                 <SelectItem value="VIP Area">VIP Area</SelectItem>
@@ -178,19 +178,19 @@ export default function EntertainerCheckIn() {
 
                     <div className="mt-3">
                       <Select 
-                        value={shift.location || "Main Floor"}
-                        onValueChange={(newLocation) => {
-                          const newStatus = newLocation === "VIP Area" ? "in_vip" : "on_floor";
-                          updateLocation.mutate({ 
-                            shiftId: shift.id, 
-                            newLocation, 
-                            newStatus 
-                          });
-                        }}
-                      >
-                        <SelectTrigger className="bg-gray-900 border-gray-700 text-xs h-8">
-                          <SelectValue />
-                        </SelectTrigger>
+                          value={shift.location || "Main Floor"}
+                          onValueChange={(newLocation) => {
+                            const newStatus = newLocation === "VIP Area" ? "in_vip" : "on_floor";
+                            updateLocation.mutate({ 
+                              shiftId: shift.id, 
+                              newLocation, 
+                              newStatus 
+                            });
+                          }}
+                        >
+                          <SelectTrigger className="bg-gray-900 border-gray-700 text-xs h-8">
+                            <SelectValue placeholder="Location" />
+                          </SelectTrigger>
                         <SelectContent className="bg-gray-900 border-gray-700">
                           <SelectItem value="Main Floor">Main Floor</SelectItem>
                           <SelectItem value="VIP Area">VIP Area</SelectItem>

@@ -226,13 +226,13 @@ export default function VIPRoomManagement() {
             <div>
               <Label className="text-white">Entertainer *</Label>
               <Select 
-                value={sessionForm.entertainer_id || "none"} 
-                onValueChange={(value) => setSessionForm({...sessionForm, entertainer_id: value === "none" ? "" : value})}
-                required
-              >
-                <SelectTrigger className="glass-input">
-                  <SelectValue />
-                </SelectTrigger>
+                  value={sessionForm.entertainer_id || "none"} 
+                  onValueChange={(value) => setSessionForm({...sessionForm, entertainer_id: value === "none" ? "" : value})}
+                  required
+                >
+                  <SelectTrigger className="glass-input">
+                    <SelectValue placeholder="Select entertainer..." />
+                  </SelectTrigger>
                 <SelectContent className="bg-gray-900 border-gray-700">
                   <SelectItem value="none">Select entertainer...</SelectItem>
                   {(entertainers || []).map(shift => (
@@ -247,19 +247,19 @@ export default function VIPRoomManagement() {
             <div>
               <Label className="text-white">Select Guest</Label>
               <Select 
-                value={sessionForm.guest_name || "none"} 
-                onValueChange={(value) => {
-                  const guestName = value === "none" ? "" : value;
-                  setSessionForm({...sessionForm, guest_name: guestName});
-                  const guest = (guests || []).find(g => g.guest_name === guestName);
-                  if (guest) {
-                    getUpgradeSuggestion(guest.id, selectedRoom?.room_name);
-                  }
-                }}
-              >
-                <SelectTrigger className="bg-slate-800 border-slate-600">
-                  <SelectValue />
-                </SelectTrigger>
+                  value={sessionForm.guest_name || "none"} 
+                  onValueChange={(value) => {
+                    const guestName = value === "none" ? "" : value;
+                    setSessionForm({...sessionForm, guest_name: guestName});
+                    const guest = (guests || []).find(g => g.guest_name === guestName);
+                    if (guest) {
+                      getUpgradeSuggestion(guest.id, selectedRoom?.room_name);
+                    }
+                  }}
+                >
+                  <SelectTrigger className="bg-slate-800 border-slate-600">
+                    <SelectValue placeholder="Select guest..." />
+                  </SelectTrigger>
                 <SelectContent className="bg-gray-900 border-gray-700">
                   <SelectItem value="none">Select guest...</SelectItem>
                   {(guests || []).filter(g => g.status === 'in_building').map(g => (
@@ -305,12 +305,12 @@ export default function VIPRoomManagement() {
             <div>
               <Label className="text-white">Duration (minutes) *</Label>
               <Select 
-                value={String(sessionForm.duration_minutes)} 
-                onValueChange={(value) => setSessionForm({...sessionForm, duration_minutes: Number(value)})}
-              >
-                <SelectTrigger className="glass-input">
-                  <SelectValue />
-                </SelectTrigger>
+                  value={String(sessionForm.duration_minutes || 60)} 
+                  onValueChange={(value) => setSessionForm({...sessionForm, duration_minutes: Number(value)})}
+                >
+                  <SelectTrigger className="glass-input">
+                    <SelectValue placeholder="Select duration" />
+                  </SelectTrigger>
                 <SelectContent className="bg-gray-900 border-gray-700">
                   <SelectItem value="30">30 minutes - ${((selectedRoom?.rate_per_hour || 0) * 0.5).toFixed(2)}</SelectItem>
                   <SelectItem value="60">60 minutes - ${(selectedRoom?.rate_per_hour || 0).toFixed(2)}</SelectItem>

@@ -238,12 +238,12 @@ export default function POSCashRegister({ user = {} }) {
           <CardContent className="p-4">
             <Label className="text-sm text-gray-400 mb-2 block">Customer (Optional)</Label>
             <Select
-              value={selectedCustomer?.id || "walk-in"}
-              onValueChange={(id) => setSelectedCustomer(id === "walk-in" ? null : (customers || []).find(c => c.id === id) || null)}
-            >
-              <SelectTrigger className="glass-input text-white">
-                <SelectValue />
-              </SelectTrigger>
+                value={selectedCustomer?.id || "walk-in"}
+                onValueChange={(id) => setSelectedCustomer(id === "walk-in" ? null : (customers || []).find(c => c.id === id) || null)}
+              >
+                <SelectTrigger className="glass-input text-white">
+                  <SelectValue placeholder="Walk-in Customer" />
+                </SelectTrigger>
               <SelectContent className="glass-card-dark border-gray-700">
                 <SelectItem value="walk-in">Walk-in Customer</SelectItem>
                 {(customers || []).map((customer) => (
@@ -386,9 +386,9 @@ export default function POSCashRegister({ user = {} }) {
             <div>
               <Label className="text-sm text-gray-400 mb-2 block">Payment Method</Label>
               <Select value={paymentMethod || "Cash"} onValueChange={setPaymentMethod}>
-                <SelectTrigger className="glass-input">
-                  <SelectValue />
-                </SelectTrigger>
+                  <SelectTrigger className="glass-input">
+                    <SelectValue placeholder="Select payment method" />
+                  </SelectTrigger>
                 <SelectContent className="glass-card-dark border-gray-700">
                   <SelectItem value="Cash">
                     <div className="flex items-center gap-2">
