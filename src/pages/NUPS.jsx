@@ -34,7 +34,7 @@ const EntertainerCheckIn = lazy(() => import('@/components/nups/EntertainerCheck
 const EntertainerContract = lazy(() => import('@/components/nups/EntertainerContract'));
 const AISalesReports = lazy(() => import('@/components/nups/AISalesReports'));
 const AIStaffPerformance = lazy(() => import('@/components/nups/AIStaffPerformance'));
-const AIInsightsPanel = lazy(() => import('@/components/nups/AIInsightsPanel'));
+const AIInsightsPanelModule = lazy(() => import('@/components/nups/AIInsightsPanel'));
 const InventoryManagement = lazy(() => import('@/components/nups/InventoryManagement'));
 
 // Audit logging utility
@@ -268,7 +268,7 @@ export default function NUPS() {
 
             {/* AI Insights (Admin) */}
             <TabsContent value="ai">
-              <AIInsightsPanel />
+              <AIInsightsPanelModule.VoucherAIPanel venue="DP" />
             </TabsContent>
 
             {/* Offline Help */}
