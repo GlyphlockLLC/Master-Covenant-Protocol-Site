@@ -84,7 +84,7 @@ export default function AdvancedReporting({ transactions, products, customers, l
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle className="text-white">Performance Analytics</CardTitle>
-            <Select value={timeRange} onValueChange={setTimeRange}>
+            <Select value={timeRange || "30"} onValueChange={setTimeRange}>
               <SelectTrigger className="w-[180px] bg-gray-800 border-gray-700 text-white">
                 <SelectValue />
               </SelectTrigger>

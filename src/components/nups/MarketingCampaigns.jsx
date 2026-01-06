@@ -126,7 +126,7 @@ export default function MarketingCampaigns() {
                 <div>
                   <Label>Campaign Type *</Label>
                   <Select 
-                    value={formData.campaign_type} 
+                    value={formData.campaign_type || "promotion"} 
                     onValueChange={(value) => setFormData({...formData, campaign_type: value})}
                   >
                     <SelectTrigger className="bg-gray-800 border-gray-700">
@@ -157,7 +157,7 @@ export default function MarketingCampaigns() {
                 <div>
                   <Label>Discount Type</Label>
                   <Select 
-                    value={formData.discount_type} 
+                    value={formData.discount_type || "percentage"} 
                     onValueChange={(value) => setFormData({...formData, discount_type: value})}
                   >
                     <SelectTrigger className="bg-gray-800 border-gray-700">
