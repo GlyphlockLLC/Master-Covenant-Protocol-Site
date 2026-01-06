@@ -309,10 +309,10 @@ export default function VIPRoomManagement() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent className="bg-gray-900 border-gray-700">
-                  <SelectItem value="30">30 minutes - ${(selectedRoom?.rate_per_hour * 0.5).toFixed(2)}</SelectItem>
-                  <SelectItem value="60">60 minutes - ${selectedRoom?.rate_per_hour.toFixed(2)}</SelectItem>
-                  <SelectItem value="90">90 minutes - ${(selectedRoom?.rate_per_hour * 1.5).toFixed(2)}</SelectItem>
-                  <SelectItem value="120">120 minutes - ${(selectedRoom?.rate_per_hour * 2).toFixed(2)}</SelectItem>
+                  <SelectItem value="30">30 minutes - ${((selectedRoom?.rate_per_hour || 0) * 0.5).toFixed(2)}</SelectItem>
+                  <SelectItem value="60">60 minutes - ${(selectedRoom?.rate_per_hour || 0).toFixed(2)}</SelectItem>
+                  <SelectItem value="90">90 minutes - ${((selectedRoom?.rate_per_hour || 0) * 1.5).toFixed(2)}</SelectItem>
+                  <SelectItem value="120">120 minutes - ${((selectedRoom?.rate_per_hour || 0) * 2).toFixed(2)}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
