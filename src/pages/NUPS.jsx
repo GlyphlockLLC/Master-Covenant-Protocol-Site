@@ -242,7 +242,7 @@ export default function NUPS() {
 
             {/* Inventory (Admin/Manager) */}
             <TabsContent value="inventory">
-              <InventoryManagement />
+              <InventoryManagement products={[]} />
             </TabsContent>
 
             {/* Products (Admin/Manager) */}

@@ -19,7 +19,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { POSRecommendationsPanel, FraudAlertPanel, PopularItemsPredictor } from "./AIInsightsPanel";
 
-export default function POSCashRegister({ user }) {
+export default function POSCashRegister({ user = {} }) {
   const queryClient = useQueryClient();
   const [cart, setCart] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
