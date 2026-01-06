@@ -9,7 +9,7 @@ import {
   DollarSign, User, RefreshCw
 } from "lucide-react";
 
-export default function VIPAIRecommendations({ guest, todaySpend, lifetimeSpend, roomSessions, fullView = false }) {
+export default function VIPAIRecommendations({ guest = null, todaySpend = 0, lifetimeSpend = 0, roomSessions = [], fullView = false }) {
   const [recommendations, setRecommendations] = useState(null);
   const [loading, setLoading] = useState(false);
 
