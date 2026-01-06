@@ -429,7 +429,7 @@ export default function NUPSVoucherPrint() {
       {/* Settings Tab - Manager/Admin Only */}
       {tab === 'settings' && (
         <ProtectedSection requireRole="manager" fallbackMessage="Settings require Manager access">
-        <Card className="bg-slate-900/50 border-amber-500/30">
+          <Card className="bg-slate-900/50 border-amber-500/30">
           <CardHeader>
             <CardTitle className="text-white flex items-center gap-2">
               <Settings className="w-5 h-5 text-amber-400" />
@@ -502,11 +502,11 @@ export default function NUPSVoucherPrint() {
               Save Settings
             </Button>
           </CardContent>
-        </Card>
+          </Card>
         </ProtectedSection>
       )}
 
-              {/* Redeem Tab - All Staff */}
+      {/* Redeem Tab - All Staff */}
       {tab === 'redeem' && (
         <Card className="bg-slate-900/50 border-purple-500/30">
           <CardHeader>
