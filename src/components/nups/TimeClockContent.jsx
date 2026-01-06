@@ -384,6 +384,13 @@ export default function NUPSTimeClockContent() {
           </CardContent>
         </Card>
       )}
+
+      <EntertainerContractModal
+        open={showContractModal}
+        onOpenChange={setShowContractModal}
+        entertainer={pendingClockIn}
+        onSigned={handleContractSigned}
+      />
     </div>
   );
 }
