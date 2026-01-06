@@ -26,7 +26,7 @@ export default function GuestTracking() {
     queryFn: () => base44.entities.VIPGuest.list('-created_date', 100)
   });
 
-  const activeGuests = guests.filter(g => g.status === 'in_building');
+  const activeGuests = (guests || []).filter(g => g.status === 'in_building');
 
   const checkInGuest = useMutation({
     mutationFn: (data) => base44.entities.VIPGuest.create({

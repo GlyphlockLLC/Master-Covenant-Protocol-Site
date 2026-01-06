@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { ShoppingCart, CreditCard, Calendar } from "lucide-react";
 import { format } from "date-fns";
 
-export default function TransactionHistory({ transactions }) {
+export default function TransactionHistory({ transactions = [] }) {
   return (
     <Card className="bg-gray-900 border-gray-800">
       <CardHeader>
@@ -12,7 +12,7 @@ export default function TransactionHistory({ transactions }) {
       </CardHeader>
       <CardContent>
         <div className="space-y-3 max-h-[600px] overflow-y-auto">
-          {transactions.map((transaction) => (
+          {(transactions || []).map((transaction) => (
             <div
               key={transaction.id}
               className="bg-gray-800 border border-gray-700 rounded-lg p-4"

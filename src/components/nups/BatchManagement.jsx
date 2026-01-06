@@ -96,9 +96,9 @@ export default function BatchManagement({ user }) {
     });
   };
 
-  const batchTotal = batchTransactions.reduce((sum, t) => sum + (t.total || 0), 0);
-  const cashTotal = batchTransactions.filter(t => t.payment_method === 'Cash').reduce((sum, t) => sum + (t.total || 0), 0);
-  const cardTotal = batchTransactions.filter(t => ['Credit Card', 'Debit Card'].includes(t.payment_method)).reduce((sum, t) => sum + (t.total || 0), 0);
+  const batchTotal = (batchTransactions || []).reduce((sum, t) => sum + (t.total || 0), 0);
+  const cashTotal = (batchTransactions || []).filter(t => t.payment_method === 'Cash').reduce((sum, t) => sum + (t.total || 0), 0);
+  const cardTotal = (batchTransactions || []).filter(t => ['Credit Card', 'Debit Card'].includes(t.payment_method)).reduce((sum, t) => sum + (t.total || 0), 0);
 
   return (
     <div className="space-y-4">

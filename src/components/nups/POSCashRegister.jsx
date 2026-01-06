@@ -61,8 +61,8 @@ export default function POSCashRegister({ user }) {
     }
   });
 
-  const filteredProducts = products.filter(p =>
-    p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  const filteredProducts = (products || []).filter(p =>
+    p.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     p.sku?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     p.barcode?.toLowerCase().includes(searchTerm.toLowerCase())
   );
