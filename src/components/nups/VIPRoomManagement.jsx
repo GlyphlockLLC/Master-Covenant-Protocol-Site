@@ -226,16 +226,17 @@ export default function VIPRoomManagement() {
             <div>
               <Label className="text-white">Entertainer *</Label>
               <Select 
-                value={sessionForm.entertainer_id} 
-                onValueChange={(value) => setSessionForm({...sessionForm, entertainer_id: value})}
+                value={sessionForm.entertainer_id || "none"} 
+                onValueChange={(value) => setSessionForm({...sessionForm, entertainer_id: value === "none" ? "" : value})}
                 required
               >
                 <SelectTrigger className="glass-input">
                   <SelectValue placeholder="Select entertainer..." />
                 </SelectTrigger>
                 <SelectContent className="bg-gray-900 border-gray-700">
-                  {entertainers.map(shift => (
-                    <SelectItem key={shift.entertainer_id} value={shift.entertainer_id}>
+                  <SelectItem value="none">Select entertainer...</SelectItem>
+                  {(entertainers || []).map(shift => (
+                    <SelectItem key={shift.entertainer_id} value={shift.entertainer_id || shift.id}>
                       {shift.stage_name}
                     </SelectItem>
                   ))}
@@ -246,10 +247,11 @@ export default function VIPRoomManagement() {
             <div>
               <Label className="text-white">Select Guest</Label>
               <Select 
-                value={sessionForm.guest_name} 
+                value={sessionForm.guest_name || "none"} 
                 onValueChange={(value) => {
-                  setSessionForm({...sessionForm, guest_name: value});
-                  const guest = guests.find(g => g.guest_name === value);
+                  const guestName = value === "none" ? "" : value;
+                  setSessionForm({...sessionForm, guest_name: guestName});
+                  const guest = (guests || []).find(g => g.guest_name === guestName);
                   if (guest) {
                     getUpgradeSuggestion(guest.id, selectedRoom?.room_name);
                   }
@@ -259,8 +261,9 @@ export default function VIPRoomManagement() {
                   <SelectValue placeholder="Select or type guest name..." />
                 </SelectTrigger>
                 <SelectContent className="bg-gray-900 border-gray-700">
-                  {guests.filter(g => g.status === 'in_building').map(g => (
-                    <SelectItem key={g.id} value={g.guest_name}>
+                  <SelectItem value="none">Select guest...</SelectItem>
+                  {(guests || []).filter(g => g.status === 'in_building').map(g => (
+                    <SelectItem key={g.id} value={g.guest_name || g.id}>
                       {g.guest_name} {g.vip_tier && `(${g.vip_tier})`}
                     </SelectItem>
                   ))}
