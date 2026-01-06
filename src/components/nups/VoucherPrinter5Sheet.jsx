@@ -168,19 +168,20 @@ export default function VoucherPrinter5Sheet() {
           
           .voucher {
             width: 7.5in;
-            height: 2in;
+            height: 2.1in;
             position: relative;
-            border: 2px solid #000;
+            border: none;
             background: white;
           }
           
           .perf-line {
             position: absolute;
-            bottom: 0;
+            bottom: -1px;
             left: 0;
             right: 0;
+            width: 100%;
             height: 0;
-            border-bottom: 2px dashed #888;
+            border-bottom: 1px dashed #666;
           }
           
           .voucher:last-child .perf-line {
