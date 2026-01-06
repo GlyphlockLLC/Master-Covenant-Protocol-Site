@@ -413,11 +413,12 @@ export default function VIPMemberForm({ guest, onSave, onCancel }) {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <Label className="text-slate-300">ID Type *</Label>
-                  <Select value={form.government_id_type} onValueChange={(v) => handleChange('government_id_type', v)}>
+                  <Select value={form.government_id_type || "none"} onValueChange={(v) => handleChange('government_id_type', v === "none" ? "" : v)}>
                     <SelectTrigger className="bg-slate-900 border-slate-600">
                       <SelectValue placeholder="Select ID type" />
                     </SelectTrigger>
                     <SelectContent className="bg-slate-900 border-slate-700">
+                      <SelectItem value="none">Select ID type...</SelectItem>
                       <SelectItem value="Drivers License">Driver's License</SelectItem>
                       <SelectItem value="State ID">State ID Card</SelectItem>
                       <SelectItem value="Passport">U.S. Passport</SelectItem>
@@ -535,11 +536,12 @@ export default function VIPMemberForm({ guest, onSave, onCancel }) {
                 </div>
                 <div>
                   <Label className="text-slate-300">Relationship *</Label>
-                  <Select value={form.emergency_contact_relationship} onValueChange={(v) => handleChange('emergency_contact_relationship', v)}>
+                  <Select value={form.emergency_contact_relationship || "none"} onValueChange={(v) => handleChange('emergency_contact_relationship', v === "none" ? "" : v)}>
                     <SelectTrigger className="bg-slate-900 border-slate-600">
                       <SelectValue placeholder="Select relationship" />
                     </SelectTrigger>
                     <SelectContent className="bg-slate-900 border-slate-700">
+                      <SelectItem value="none">Select relationship...</SelectItem>
                       <SelectItem value="Spouse">Spouse</SelectItem>
                       <SelectItem value="Partner">Partner</SelectItem>
                       <SelectItem value="Parent">Parent</SelectItem>
@@ -655,11 +657,12 @@ export default function VIPMemberForm({ guest, onSave, onCancel }) {
                 </div>
                 <div>
                   <Label className="text-slate-300">How did they hear about us?</Label>
-                  <Select value={form.referral_source} onValueChange={(v) => handleChange('referral_source', v)}>
+                  <Select value={form.referral_source || "none"} onValueChange={(v) => handleChange('referral_source', v === "none" ? "" : v)}>
                     <SelectTrigger className="bg-slate-900 border-slate-600">
                       <SelectValue placeholder="Select source" />
                     </SelectTrigger>
                     <SelectContent className="bg-slate-900 border-slate-700">
+                      <SelectItem value="none">Select source...</SelectItem>
                       <SelectItem value="Member Referral">Member Referral</SelectItem>
                       <SelectItem value="Online Search">Online Search</SelectItem>
                       <SelectItem value="Social Media">Social Media</SelectItem>
