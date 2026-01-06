@@ -178,6 +178,33 @@ p {
   scroll-behavior: smooth;
 }
 
+/* Modal/Dialog scroll fix - CRITICAL for contract modals */
+[role="dialog"] [data-radix-scroll-area-viewport],
+[role="dialog"] .overflow-y-auto,
+[role="dialog"] .overflow-auto {
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  -webkit-overflow-scrolling: touch !important;
+  touch-action: pan-y !important;
+  max-height: inherit !important;
+}
+
+/* Ensure dialog content doesn't block scroll */
+[data-radix-dialog-content] {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Contract modal specific scroll fix */
+.contract-scroll-area {
+  overflow-y: auto !important;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+  scrollbar-width: thin;
+}
+
 .chat-scroll-container::-webkit-scrollbar {
   width: 4px;
 }

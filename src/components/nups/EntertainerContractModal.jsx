@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { ScrollArea } from '@/components/ui/scroll-area';
+// ScrollArea removed - using native overflow for better mobile support
 import { Printer, CheckCircle, AlertTriangle } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -183,7 +183,7 @@ export default function EntertainerContractModal({ open, onOpenChange, entertain
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-slate-900 border-purple-500/50 max-w-3xl max-h-[90vh] flex flex-col">
+      <DialogContent className="bg-slate-900 border-purple-500/50 max-w-3xl max-h-[85vh] flex flex-col overflow-hidden">
         <DialogHeader>
           <DialogTitle className="text-white flex items-center gap-2">
             <AlertTriangle className="w-5 h-5 text-amber-400" />
@@ -191,10 +191,19 @@ export default function EntertainerContractModal({ open, onOpenChange, entertain
           </DialogTitle>
         </DialogHeader>
 
-        <ScrollArea className="flex-1 max-h-[400px] border border-slate-700 rounded-lg p-4 bg-slate-950" onScrollCapture={handleScroll}>
+        <div 
+          ref={scrollRef}
+          onScroll={handleScroll}
+          className="flex-1 min-h-[250px] max-h-[40vh] border border-slate-700 rounded-lg p-4 bg-slate-950 overflow-y-auto overscroll-contain"
+          style={{ 
+            WebkitOverflowScrolling: 'touch',
+            scrollbarWidth: 'thin',
+            scrollbarColor: 'rgba(168,85,247,0.5) transparent'
+          }}
+        >
           <pre className="text-slate-300 text-xs whitespace-pre-wrap font-mono leading-relaxed">{CONTRACT_TEXT}</pre>
-          <div className="h-4" />
-        </ScrollArea>
+          <div className="h-8" />
+        </div>
 
         {!scrolledToEnd && (
           <p className="text-amber-400 text-xs text-center">⬇️ Scroll to bottom to enable acknowledgments</p>
