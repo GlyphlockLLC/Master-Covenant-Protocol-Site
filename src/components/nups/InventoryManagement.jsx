@@ -169,7 +169,7 @@ export default function InventoryManagement({ products = [] }) {
             </div>
             <Select value={statusFilter || "all"} onValueChange={setStatusFilter}>
               <SelectTrigger className="w-[180px] bg-gray-800 border-gray-700 text-white">
-                <SelectValue placeholder="Filter by status" />
+                <SelectValue placeholder="All Products" />
               </SelectTrigger>
               <SelectContent className="bg-gray-800 border-gray-700">
                 <SelectItem value="all">All Products</SelectItem>

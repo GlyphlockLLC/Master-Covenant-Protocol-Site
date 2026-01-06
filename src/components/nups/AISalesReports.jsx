@@ -61,7 +61,7 @@ export default function AISalesReports() {
                 <label className="text-xs text-slate-400 block mb-1">Report Period</label>
                 <Select value={reportPeriod || "weekly"} onValueChange={setReportPeriod}>
                   <SelectTrigger className="w-40 bg-slate-800 border-slate-600">
-                    <SelectValue />
+                    <SelectValue placeholder="Select period" />
                   </SelectTrigger>
                   <SelectContent className="bg-slate-900 border-slate-700">
                     <SelectItem value="daily">Daily</SelectItem>
