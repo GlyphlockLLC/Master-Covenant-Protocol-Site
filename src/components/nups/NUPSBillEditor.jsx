@@ -399,7 +399,7 @@ export default function NUPSBillEditor() {
 
             <div>
               <Label className="text-slate-400 text-xs">Image Fit</Label>
-              <Select value={imageFit} onValueChange={setImageFit}>
+              <Select value={imageFit || "stretch"} onValueChange={setImageFit}>
                 <SelectTrigger className="bg-slate-800 border-slate-600 h-8 text-xs"><SelectValue /></SelectTrigger>
                 <SelectContent className="bg-slate-900 border-slate-700">
                   <SelectItem value="stretch">Stretch</SelectItem>
