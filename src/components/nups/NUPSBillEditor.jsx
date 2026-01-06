@@ -528,27 +528,37 @@ export default function NUPSBillEditor() {
                   className="grid grid-cols-2 gap-2 w-full h-full"
                   style={{ minHeight: '300px' }}
                 >
-                  {[1, 2, 3, 4].map((num) => (
-                    <div 
-                      key={num} 
-                      className="relative border border-gray-300 rounded overflow-hidden bg-white"
-                      style={{ 
-                        aspectRatio: `${CANVAS_WIDTH}/${CANVAS_HEIGHT}`,
-                        filter: colorMode === 'monochrome' ? 'grayscale(100%)' : 'none'
-                      }}
-                    >
-                      {canvasRef.current && (
-                        <img 
-                          src={canvasRef.current.toDataURL('image/png')} 
-                          alt={`Bill ${num}`}
-                          className="w-full h-full object-contain"
-                        />
-                      )}
-                      <div className="absolute bottom-1 right-1 bg-black/50 text-white text-[8px] px-1 rounded">
-                        #{num}
+                  {[1, 2, 3, 4].map((num) => {
+                    let imgSrc = null;
+                    try {
+                      if (canvasRef.current) {
+                        imgSrc = canvasRef.current.toDataURL('image/png');
+                      }
+                    } catch (e) {
+                      // Canvas not ready
+                    }
+                    return (
+                      <div 
+                        key={num} 
+                        className="relative border border-gray-300 rounded overflow-hidden bg-white"
+                        style={{ 
+                          aspectRatio: `${CANVAS_WIDTH}/${CANVAS_HEIGHT}`,
+                          filter: colorMode === 'monochrome' ? 'grayscale(100%)' : 'none'
+                        }}
+                      >
+                        {imgSrc && (
+                          <img 
+                            src={imgSrc} 
+                            alt={`Bill ${num}`}
+                            className="w-full h-full object-contain"
+                          />
+                        )}
+                        <div className="absolute bottom-1 right-1 bg-black/50 text-white text-[8px] px-1 rounded">
+                          #{num}
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
               <p className="text-xs text-slate-500 mt-2 text-center">

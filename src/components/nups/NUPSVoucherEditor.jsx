@@ -536,28 +536,38 @@ export default function NUPSVoucherEditor() {
                   className="flex flex-col gap-2 items-center"
                   style={{ minWidth: '340px' }}
                 >
-                  {[1, 2, 3, 4, 5].map((num) => (
-                    <div 
-                      key={num} 
-                      className="relative border border-gray-300 rounded overflow-hidden bg-white flex-shrink-0"
-                      style={{ 
-                        width: `${CANVAS_WIDTH}px`,
-                        height: `${CANVAS_HEIGHT}px`,
-                        filter: colorMode === 'monochrome' ? 'grayscale(100%)' : 'none'
-                      }}
-                    >
-                      {canvasRef.current && (
-                        <img 
-                          src={canvasRef.current.toDataURL('image/png')} 
-                          alt={`Voucher ${num}`}
-                          className="w-full h-full object-contain"
-                        />
-                      )}
-                      <div className="absolute bottom-1 right-1 bg-black/50 text-white text-[8px] px-1 rounded">
-                        #{num}
+                  {[1, 2, 3, 4, 5].map((num) => {
+                    let imgSrc = null;
+                    try {
+                      if (canvasRef.current) {
+                        imgSrc = canvasRef.current.toDataURL('image/png');
+                      }
+                    } catch (e) {
+                      // Canvas not ready
+                    }
+                    return (
+                      <div 
+                        key={num} 
+                        className="relative border border-gray-300 rounded overflow-hidden bg-white flex-shrink-0"
+                        style={{ 
+                          width: `${CANVAS_WIDTH}px`,
+                          height: `${CANVAS_HEIGHT}px`,
+                          filter: colorMode === 'monochrome' ? 'grayscale(100%)' : 'none'
+                        }}
+                      >
+                        {imgSrc && (
+                          <img 
+                            src={imgSrc} 
+                            alt={`Voucher ${num}`}
+                            className="w-full h-full object-contain"
+                          />
+                        )}
+                        <div className="absolute bottom-1 right-1 bg-black/50 text-white text-[8px] px-1 rounded">
+                          #{num}
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
               <p className="text-xs text-slate-500 mt-2 text-center">
