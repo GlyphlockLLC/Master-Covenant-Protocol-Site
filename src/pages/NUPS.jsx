@@ -268,7 +268,9 @@ export default function NUPS() {
 
             {/* AI Insights (Admin) */}
             <TabsContent value="ai">
-              <AIInsightsPanelModule.VoucherAIPanel venue="DP" />
+              <Suspense fallback={<TabLoader />}>
+                <AIInsightsPanelModule />
+              </Suspense>
             </TabsContent>
 
             {/* Offline Help */}
