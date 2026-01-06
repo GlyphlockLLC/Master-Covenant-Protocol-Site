@@ -158,7 +158,7 @@ export default function GuestTracking() {
                         }
                       >
                         <SelectTrigger className="bg-gray-900 border-gray-700 text-xs h-8">
-                          <SelectValue />
+                          <SelectValue placeholder="Select location" />
                         </SelectTrigger>
                         <SelectContent className="bg-gray-900 border-gray-700">
                           <SelectItem value="Lobby">Lobby</SelectItem>
