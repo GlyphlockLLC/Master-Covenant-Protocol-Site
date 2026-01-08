@@ -123,66 +123,80 @@ export default function TechnologyMarquee() {
           </div>
         </div>
       ))}
+return (
+  <div>
+    {/* your marquee JSX here */}
+return (
+  <div>
+    {/* your marquee JSX here */}
 
-<style>{`
-  .marquee-container {
-    overflow: hidden;
-    padding: 0.75rem 0;
-    position: relative;
-  }
+    <style>{`
+      .marquee-content {
+        display: flex;
+        gap: 2rem;
+        width: max-content;
+        animation: marquee-left var(--marquee-speed) linear infinite;
+        will-change: transform;
+      }
 
-  .marquee-content {
-    display: flex;
-    gap: 2rem;
-    width: max-content;
-    animation: marquee-left var(--marquee-speed) linear infinite;
-    will-change: transform;
-  }
+      .marquee-right {
+        animation-name: marquee-right;
+      }
 
-  .marquee-right {
-    animation-name: marquee-right;
-  }
+      .logo-item {
+        width: 120px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      }
 
-  .logo-item {
-    width: 120px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-    position: relative;
-  }
+      .logo-item::after {
+        content: "";
+        position: absolute;
+        inset: -6px;
+        border-radius: 12px;
+        opacity: 0;
+        transition: opacity 0.35s ease;
+        pointer-events: none;
+        box-shadow:
+          0 0 18px rgba(99, 102, 241, 0.8),
+          0 0 36px rgba(99, 102, 241, 0.6);
+      }
 
-  .logo-img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    filter: brightness(0) invert(1) opacity(0.65);
-    transition:
-      filter 0.35s ease,
-      transform 0.35s ease,
-      filter 0.35s ease;
-  }
+      .logo-img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        filter: brightness(0) invert(1) opacity(0.65);
+        transition: filter 0.35s ease, transform 0.35s ease;
+        z-index: 1;
+      }
 
-  /* 🔥 HOVER MAGIC */
-  .logo-item:hover {
-    transform: translateY(-2px) scale(1.12);
-    z-index: 5;
-  }
+      .logo-item:hover {
+        transform: translateY(-2px) scale(1.12);
+        z-index: 5;
+      }
 
-  .logo-item:hover .logo-img {
-    filter: brightness(1) invert(0) opacity(1)
-      drop-shadow(0 0 18px rgba(99, 102, 241, 0.85))
-      drop-shadow(0 0 36px rgba(99, 102, 241, 0.55));
-  }
+      .logo-item:hover::after {
+        opacity: 1;
+      }
 
-  @keyframes marquee-left {
-    from { transform: translateX(0); }
-    to { transform: translateX(calc(-1 * var(--marquee-distance))); }
-  }
+      .logo-item:hover .logo-img {
+        filter: brightness(1) invert(0) opacity(1);
+      }
 
-  @keyframes marquee-right {
-    from { transform: translateX(calc(-1 * var(--marquee-distance))); }
-    to { transform: translateX(0); }
-  }
-`}</style>
+      @keyframes marquee-left {
+        from { transform: translateX(0); }
+        to { transform: translateX(calc(-1 * var(--marquee-distance))); }
+      }
+
+      @keyframes marquee-right {
+        from { transform: translateX(calc(-1 * var(--marquee-distance))); }
+        to { transform: translateX(0); }
+      }
+    `}</style>
+  </div>
+);
