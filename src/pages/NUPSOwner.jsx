@@ -9,6 +9,7 @@ import {
   Users, LogOut, UserCheck, DoorOpen, FileText
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { createPageUrl } from "@/utils";
 
 const EntertainerContract = lazy(() => import("../components/nups/EntertainerContract.jsx"));
 const EntertainerCheckIn = lazy(() => import("../components/nups/EntertainerCheckIn.jsx"));
@@ -23,13 +24,19 @@ export default function NUPSOwner() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
+        const isAuth = await base44.auth.isAuthenticated();
+        if (!isAuth) {
+          base44.auth.redirectToLogin(createPageUrl('NUPSLogin'));
+          return;
+        }
         const currentUser = await base44.auth.me();
-        if (currentUser.role !== 'admin') {
-          window.location.href = '/nups-staff';
+        if (currentUser.role !== 'admin' && currentUser.role !== 'manager') {
+          window.location.href = createPageUrl('NUPSStaff');
+          return;
         }
         setUser(currentUser);
       } catch (error) {
-        base44.auth.redirectToLogin('/nups-login');
+        base44.auth.redirectToLogin(createPageUrl('NUPSLogin'));
       }
     };
     checkAuth();

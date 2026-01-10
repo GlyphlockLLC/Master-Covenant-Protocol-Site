@@ -396,14 +396,14 @@ export default function NUPSDashboard() {
       try {
         const isAuth = await base44.auth.isAuthenticated();
         if (!isAuth) {
-          window.location.href = createPageUrl('NUPSLogin');
+          base44.auth.redirectToLogin(createPageUrl('NUPSLogin'));
           return;
         }
         const currentUser = await base44.auth.me();
         setUser(currentUser);
       } catch (error) {
         console.error('Auth error:', error);
-        window.location.href = createPageUrl('NUPSLogin');
+        base44.auth.redirectToLogin(createPageUrl('NUPSLogin'));
       } finally {
         setLoading(false);
       }

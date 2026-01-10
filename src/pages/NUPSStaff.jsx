@@ -9,6 +9,7 @@ import POSCashRegister from "../components/nups/POSCashRegister.jsx";
 import BatchManagement from "../components/nups/BatchManagement.jsx";
 import TransactionHistory from "../components/nups/TransactionHistory.jsx";
 import { useQuery } from "@tanstack/react-query";
+import { createPageUrl } from "@/utils";
 
 export default function NUPSStaff() {
   const [user, setUser] = useState(null);
@@ -16,10 +17,15 @@ export default function NUPSStaff() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
+        const isAuth = await base44.auth.isAuthenticated();
+        if (!isAuth) {
+          base44.auth.redirectToLogin(createPageUrl('NUPSLogin'));
+          return;
+        }
         const currentUser = await base44.auth.me();
         setUser(currentUser);
       } catch (error) {
-        base44.auth.redirectToLogin('/nups-login');
+        base44.auth.redirectToLogin(createPageUrl('NUPSLogin'));
       }
     };
     checkAuth();
