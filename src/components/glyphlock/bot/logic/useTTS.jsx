@@ -37,7 +37,7 @@ export default function useTTS(options = {}) {
     volume: options.volume || 1.0,
     bass: options.bass || 0,
     clarity: options.clarity || 0,
-    voiceProfile: options.voiceProfile || 'neutral_female',
+    voiceProfile: options.voiceProfile || 'aurora', // Default to premium voice
     emotion: options.emotion || 'neutral'
   });
 
