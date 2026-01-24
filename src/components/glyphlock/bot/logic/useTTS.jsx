@@ -140,7 +140,10 @@ export default function useTTS(options = {}) {
 
   const playWithGlyphVoice = useCallback(async (text, settings, voiceProfile) => {
     try {
-      // GLYPHLOCK: Call GlyphBot Voice Engine (Gemini/Google Cloud TTS)
+      console.log('[TTS Neural] 🎙️ Invoking Google Cloud Neural2 TTS...');
+      console.log('[TTS Neural] Settings:', { voiceProfile: voiceProfile || settings.voiceProfile, emotion: settings.emotion, speed: settings.speed });
+      
+      // GLYPHLOCK: Call GlyphBot Voice Engine (Google Cloud Neural2 TTS)
       const { base44 } = await import('@/api/base44Client');
       
       if (!audioContextRef.current) {
@@ -149,40 +152,42 @@ export default function useTTS(options = {}) {
       const audioContext = audioContextRef.current;
 
       if (audioContext.state === 'suspended') {
+        console.log('[TTS Neural] Resuming audio context...');
         await audioContext.resume();
       }
 
       // GLYPHLOCK: Call GlyphBot Neural Voice backend
-      let audioData;
-      try {
-        const response = await base44.functions.invoke('glyphBotVoice', {
-          text,
-          voiceProfile: voiceProfile || settings.voiceProfile || 'aurora',
-          emotion: settings.emotion || 'neutral',
-          speed: normalizeSpeed(settings.speed),
-          provider: 'auto' // Uses Google Cloud Neural2 with fallback
-        });
+      const response = await base44.functions.invoke('glyphBotVoice', {
+        text,
+        voiceProfile: voiceProfile || settings.voiceProfile || 'aurora',
+        emotion: settings.emotion || 'neutral',
+        speed: normalizeSpeed(settings.speed),
+        provider: 'auto' // Uses Google Cloud Neural2 with fallback
+      });
 
-        if (response.data?.error) {
-          throw new Error(response.data.error);
-        }
+      console.log('[TTS Neural] Backend response received, type:', typeof response.data);
 
-        // Handle binary audio response
-        if (response.data instanceof ArrayBuffer) {
-          audioData = response.data;
-        } else if (response.data instanceof Blob) {
-          audioData = await response.data.arrayBuffer();
-        } else {
-          // Fallback: assume it's a URL or base64
-          const blob = new Blob([response.data], { type: 'audio/mpeg' });
-          audioData = await blob.arrayBuffer();
-        }
-      } catch (voiceError) {
-        console.warn('[TTS] GlyphBot Voice failed, retrying with fallback...', voiceError);
-        throw voiceError;
+      if (response.data?.error) {
+        throw new Error(response.data.error);
       }
 
+      // Handle binary audio response
+      let audioData;
+      if (response.data instanceof ArrayBuffer) {
+        console.log('[TTS Neural] Response is ArrayBuffer');
+        audioData = response.data;
+      } else if (response.data instanceof Blob) {
+        console.log('[TTS Neural] Response is Blob, converting...');
+        audioData = await response.data.arrayBuffer();
+      } else {
+        console.log('[TTS Neural] Response is raw data, wrapping in Blob...');
+        const blob = new Blob([response.data], { type: 'audio/mpeg' });
+        audioData = await blob.arrayBuffer();
+      }
+
+      console.log('[TTS Neural] Audio data size:', audioData.byteLength, 'bytes');
       let audioBuffer = await audioContext.decodeAudioData(audioData);
+      console.log('[TTS Neural] Audio decoded successfully, duration:', audioBuffer.duration, 'seconds');
       
       // GLYPHLOCK: Apply audio filters (bass/clarity/pitch)
       audioBuffer = await applyAudioFilters(audioContext, audioBuffer, settings);
@@ -199,6 +204,7 @@ export default function useTTS(options = {}) {
       audioRef.current = { source, audioContext };
 
       source.onended = () => {
+        console.log('[TTS Neural] Playback ended');
         setIsSpeaking(false);
         audioRef.current = null;
       };
@@ -206,7 +212,7 @@ export default function useTTS(options = {}) {
       setIsLoading(false);
       setIsSpeaking(true);
       setMetadata({
-        provider: 'glyphbot_neural',
+        provider: 'google_cloud_neural2',
         voiceProfile: voiceProfile || settings.voiceProfile,
         pitch: settings.pitch,
         speed: settings.speed,
@@ -216,11 +222,12 @@ export default function useTTS(options = {}) {
         timestamp: Date.now()
       });
 
+      console.log('[TTS Neural] ✅ Starting playback with Neural2 voice:', voiceProfile || settings.voiceProfile);
       source.start(0);
       return true;
 
     } catch (error) {
-      console.warn('[TTS] GlyphBot Voice failed:', error);
+      console.error('[TTS Neural] ❌ GlyphBot Neural Voice FAILED:', error);
       setIsSpeaking(false);
       setIsLoading(false);
       throw error;
