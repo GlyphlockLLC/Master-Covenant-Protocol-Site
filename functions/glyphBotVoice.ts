@@ -87,57 +87,57 @@ function buildSSML(text, voiceConfig, emotion = 'neutral') {
   </speak>`;
 }
 
-// OpenAI TTS synthesis (premium HD voices)
-async function synthesizeWithOpenAI(text, voiceProfile, speed) {
-  const apiKey = Deno.env.get('OPENAI_API_KEY');
+// Google Cloud TTS synthesis (Neural2 voices - premium quality)
+async function synthesizeWithGoogleCloud(text, voiceProfile, emotion, speed) {
+  const apiKey = Deno.env.get('GOOGLE_CLOUD_TTS_API_KEY') || Deno.env.get('GEMINI_API_KEY');
   
   if (!apiKey) {
-    throw new Error('OpenAI API key not configured');
+    throw new Error('Google Cloud TTS API key not configured');
   }
   
-  // Map voice profiles to OpenAI voices
-  const openAIVoiceMap = {
-    'aurora': 'nova',
-    'neutral_female': 'nova',
-    'warm_female': 'shimmer',
-    'professional_female': 'alloy',
-    'energetic_female': 'shimmer',
-    'neutral_male': 'onyx',
-    'warm_male': 'echo',
-    'professional_male': 'fable',
-    'deep_male': 'onyx',
-    'nova': 'nova',
-    'echo': 'echo',
-    'onyx': 'onyx',
-    'alloy': 'alloy',
-    'shimmer': 'shimmer',
-    'fable': 'fable'
-  };
+  const voiceConfig = VOICE_PROFILES[voiceProfile] || VOICE_PROFILES.neutral_female;
+  const ssml = buildSSML(text, voiceConfig, emotion);
   
-  const openAIVoice = openAIVoiceMap[voiceProfile] || 'nova';
+  console.log('[Google Cloud TTS] Using Neural2 voice:', voiceConfig.name);
   
-  console.log('[OpenAI TTS] Using voice:', openAIVoice, 'for profile:', voiceProfile);
-  
-  const response = await fetch('https://api.openai.com/v1/audio/speech', {
+  const response = await fetch(`https://texttospeech.googleapis.com/v1/text:synthesize?key=${apiKey}`, {
     method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${apiKey}`,
-      'Content-Type': 'application/json'
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      model: 'tts-1-hd',
-      input: text,
-      voice: openAIVoice,
-      speed: Math.max(0.25, Math.min(4.0, speed || 1.0))
+      input: { ssml },
+      voice: {
+        languageCode: 'en-US',
+        name: voiceConfig.name,
+        ssmlGender: voiceConfig.gender
+      },
+      audioConfig: {
+        audioEncoding: 'MP3',
+        speakingRate: Math.max(0.25, Math.min(4.0, speed || 1.0)),
+        pitch: voiceConfig.pitch || 0,
+        effectsProfileId: ['headphone-class-device']
+      }
     })
   });
   
   if (!response.ok) {
     const error = await response.text();
-    throw new Error(`OpenAI TTS failed: ${error}`);
+    throw new Error(`Google Cloud TTS failed: ${error}`);
   }
   
-  return await response.arrayBuffer();
+  const data = await response.json();
+  
+  if (!data.audioContent) {
+    throw new Error('No audio content returned');
+  }
+  
+  // Convert base64 to binary
+  const binaryString = atob(data.audioContent);
+  const bytes = new Uint8Array(binaryString.length);
+  for (let i = 0; i < binaryString.length; i++) {
+    bytes[i] = binaryString.charCodeAt(i);
+  }
+  
+  return bytes.buffer;
 }
 
 // Fallback: Google Translate TTS (free, lower quality)
@@ -248,14 +248,14 @@ Deno.serve(async (req) => {
     let audioBuffer;
     let usedProvider = 'unknown';
     
-    // PRIORITY 1: OpenAI TTS (premium HD voices - we have API key)
+    // PRIORITY 1: Google Cloud Neural2 TTS (premium voices, GEMINI_API_KEY available)
     try {
-      console.log(`[GlyphBot Voice][${requestId}] 🎙️ Trying OpenAI TTS HD...`);
-      audioBuffer = await synthesizeWithOpenAI(cleanText, voiceProfile, speed);
-      usedProvider = 'openai_tts_hd';
-      console.log(`[GlyphBot Voice][${requestId}] ✅ OpenAI TTS HD succeeded`);
-    } catch (openAIError) {
-      console.warn(`[GlyphBot Voice][${requestId}] ⚠️ OpenAI TTS failed:`, openAIError.message);
+      console.log(`[GlyphBot Voice][${requestId}] 🎙️ Trying Google Cloud Neural2...`);
+      audioBuffer = await synthesizeWithGoogleCloud(cleanText, voiceProfile, emotion, speed);
+      usedProvider = 'google_cloud_neural2';
+      console.log(`[GlyphBot Voice][${requestId}] ✅ Google Cloud Neural2 succeeded`);
+    } catch (gcError) {
+      console.warn(`[GlyphBot Voice][${requestId}] ⚠️ Google Cloud Neural2 failed:`, gcError.message);
     }
     
     // Fallback to Google Translate TTS (robotic but free)
