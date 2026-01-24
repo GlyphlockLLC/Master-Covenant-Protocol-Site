@@ -248,29 +248,23 @@ Deno.serve(async (req) => {
     let audioBuffer;
     let usedProvider = 'unknown';
     
-    // Try Google Cloud TTS first (higher quality)
-    if (provider === 'google_cloud' || provider === 'auto') {
-      try {
-        console.log(`[GlyphBot Voice][${requestId}] Trying Google Cloud TTS...`);
-        audioBuffer = await synthesizeWithGoogleCloud(cleanText, voiceProfile, emotion, speed);
-        usedProvider = 'google_cloud_neural2';
-        console.log(`[GlyphBot Voice][${requestId}] Google Cloud TTS succeeded`);
-      } catch (gcError) {
-        console.warn(`[GlyphBot Voice][${requestId}] Google Cloud TTS failed:`, gcError.message);
-        
-        if (provider === 'google_cloud') {
-          return Response.json({ error: gcError.message }, { status: 503 });
-        }
-      }
+    // PRIORITY 1: OpenAI TTS (premium HD voices - we have API key)
+    try {
+      console.log(`[GlyphBot Voice][${requestId}] 🎙️ Trying OpenAI TTS HD...`);
+      audioBuffer = await synthesizeWithOpenAI(cleanText, voiceProfile, speed);
+      usedProvider = 'openai_tts_hd';
+      console.log(`[GlyphBot Voice][${requestId}] ✅ OpenAI TTS HD succeeded`);
+    } catch (openAIError) {
+      console.warn(`[GlyphBot Voice][${requestId}] ⚠️ OpenAI TTS failed:`, openAIError.message);
     }
     
-    // Fallback to Google Translate TTS
+    // Fallback to Google Translate TTS (robotic but free)
     if (!audioBuffer) {
       try {
         console.log(`[GlyphBot Voice][${requestId}] Falling back to Google Translate TTS...`);
         audioBuffer = await synthesizeWithGoogleTranslate(cleanText);
-        usedProvider = 'google_translate';
-        console.log(`[GlyphBot Voice][${requestId}] Google Translate TTS succeeded`);
+        usedProvider = 'google_translate_fallback';
+        console.log(`[GlyphBot Voice][${requestId}] Google Translate TTS succeeded (fallback)`);
       } catch (gtError) {
         console.error(`[GlyphBot Voice][${requestId}] All TTS providers failed`);
         return Response.json({ 
