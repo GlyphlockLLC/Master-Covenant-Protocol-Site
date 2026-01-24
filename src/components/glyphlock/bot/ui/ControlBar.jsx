@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import { Volume2, Wifi, FileSearch, Braces, Layout, Trash2, Settings2, ChevronDown } from 'lucide-react';
+import { Volume2, Wifi, FileSearch, Braces, Layout, Trash2, Settings2, ChevronDown, Save, Star, StarOff } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { base44 } from '@/api/base44Client';
+import { toast } from 'sonner';
 // Using native HTML inputs for reliability
 import { PERSONAS, MODEL_OPTIONS } from '../config';
 
@@ -62,6 +65,88 @@ export default function ControlBar({
   emotionPresets = []
 }) {
   const [showVoiceControls, setShowVoiceControls] = useState(false);
+  const [savedProfiles, setSavedProfiles] = useState([]);
+  const [profileName, setProfileName] = useState('');
+  const [isLoadingProfiles, setIsLoadingProfiles] = useState(false);
+
+  React.useEffect(() => {
+    loadSavedProfiles();
+  }, []);
+
+  const loadSavedProfiles = async () => {
+    try {
+      setIsLoadingProfiles(true);
+      const profiles = await base44.entities.VoiceProfile.list('-created_date', 50);
+      setSavedProfiles(profiles);
+    } catch (e) {
+      console.warn('Failed to load voice profiles:', e);
+    } finally {
+      setIsLoadingProfiles(false);
+    }
+  };
+
+  const saveCurrentProfile = async () => {
+    if (!profileName.trim()) {
+      toast.error('Please enter a profile name');
+      return;
+    }
+
+    try {
+      await base44.entities.VoiceProfile.create({
+        profile_name: profileName.trim(),
+        voice_id: voiceSettings.voiceProfile,
+        pitch: voiceSettings.pitch,
+        speed: voiceSettings.speed,
+        volume: voiceSettings.volume,
+        bass: voiceSettings.bass,
+        clarity: voiceSettings.clarity,
+        emotion: voiceSettings.emotion,
+        is_favorite: false
+      });
+      toast.success(`Profile "${profileName}" saved`);
+      setProfileName('');
+      loadSavedProfiles();
+    } catch (e) {
+      toast.error('Failed to save profile');
+      console.error(e);
+    }
+  };
+
+  const loadProfile = async (profile) => {
+    onVoiceSettingsChange.setVoiceSettings({
+      voiceProfile: profile.voice_id,
+      pitch: profile.pitch,
+      speed: profile.speed,
+      volume: profile.volume,
+      bass: profile.bass,
+      clarity: profile.clarity,
+      emotion: profile.emotion,
+      provider: 'glyphbot'
+    });
+    toast.success(`Loaded "${profile.profile_name}"`);
+  };
+
+  const deleteProfile = async (id, name) => {
+    try {
+      await base44.entities.VoiceProfile.delete(id);
+      toast.success(`Deleted "${name}"`);
+      loadSavedProfiles();
+    } catch (e) {
+      toast.error('Failed to delete profile');
+      console.error(e);
+    }
+  };
+
+  const toggleFavorite = async (profile) => {
+    try {
+      await base44.entities.VoiceProfile.update(profile.id, {
+        is_favorite: !profile.is_favorite
+      });
+      loadSavedProfiles();
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   const handleVoiceChange = (key, value) => {
     console.log('[ControlBar] Voice setting changed:', key, '=', value);
@@ -326,9 +411,8 @@ export default function ControlBar({
                       onClick={() => {
                         console.log('[ControlBar] Test Voice clicked with settings:', voiceSettings);
                         if (onVoiceSettingsChange?.playText) {
-                          // Pass the CURRENT voiceSettings explicitly
                           onVoiceSettingsChange.playText(
-                            "Hello! This is a test of your current voice settings. The emotion is " + (voiceSettings?.emotion || 'neutral') + " and the profile is " + (voiceSettings?.voiceProfile || 'neutral female') + ".",
+                            "Hello! This is a test of your current voice settings.",
                             { ...voiceSettings }
                           );
                         }
@@ -337,21 +421,74 @@ export default function ControlBar({
                       className="flex-1 px-3 py-2.5 rounded-lg text-xs bg-cyan-500/20 border border-cyan-500/50 text-cyan-300 hover:bg-cyan-500/30 transition-all flex items-center justify-center gap-1.5"
                     >
                       <Volume2 className="w-3.5 h-3.5" />
-                      Test Voice
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        localStorage.setItem('glyphbot_voice_settings', JSON.stringify(voiceSettings));
-                        console.log('[Voice] Settings saved:', voiceSettings);
-                      }}
-                      style={{ touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent', pointerEvents: 'auto', minHeight: '44px' }}
-                      className="flex-1 px-3 py-2.5 rounded-lg text-xs bg-purple-500/20 border border-purple-500/50 text-purple-300 hover:bg-purple-500/30 transition-all flex items-center justify-center gap-1.5"
-                    >
-                      <Settings2 className="w-3.5 h-3.5" />
-                      Save
+                      Test
                     </button>
                   </div>
+
+                  {/* Save Custom Profile */}
+                  <div className="pt-3 border-t border-slate-700 space-y-2">
+                    <div className="text-xs font-bold text-purple-300 uppercase tracking-wider">Save Custom Profile</div>
+                    <div className="flex gap-2">
+                      <Input
+                        placeholder="Profile name..."
+                        value={profileName}
+                        onChange={(e) => setProfileName(e.target.value)}
+                        className="flex-1 text-xs h-9 bg-slate-800 border-slate-700 text-white"
+                      />
+                      <button
+                        onClick={saveCurrentProfile}
+                        disabled={!profileName.trim()}
+                        style={{ touchAction: 'manipulation', WebkitTapHighlightColor: 'transparent', pointerEvents: 'auto', minHeight: '44px' }}
+                        className="px-3 py-2 rounded-lg text-xs bg-cyan-500/20 border border-cyan-500/50 text-cyan-300 hover:bg-cyan-500/30 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                      >
+                        <Save className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Saved Profiles List */}
+                  {savedProfiles.length > 0 && (
+                    <div className="pt-3 border-t border-slate-700 space-y-2">
+                      <div className="text-xs font-bold text-purple-300 uppercase tracking-wider">Your Profiles</div>
+                      <div className="space-y-1 max-h-48 overflow-y-auto">
+                        {savedProfiles.map((profile) => (
+                          <div
+                            key={profile.id}
+                            className="flex items-center gap-2 p-2 rounded-lg bg-slate-800 hover:bg-slate-750 border border-slate-700 group transition-all"
+                          >
+                            <button
+                              onClick={() => toggleFavorite(profile)}
+                              className="text-slate-400 hover:text-yellow-400 transition-colors"
+                              style={{ touchAction: 'manipulation', minHeight: '36px', minWidth: '36px' }}
+                            >
+                              {profile.is_favorite ? (
+                                <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                              ) : (
+                                <StarOff className="w-4 h-4" />
+                              )}
+                            </button>
+                            <button
+                              onClick={() => loadProfile(profile)}
+                              className="flex-1 text-left"
+                              style={{ touchAction: 'manipulation', minHeight: '36px' }}
+                            >
+                              <div className="text-xs font-medium text-white">{profile.profile_name}</div>
+                              <div className="text-[10px] text-slate-400">
+                                {profile.voice_id} • {profile.emotion}
+                              </div>
+                            </button>
+                            <button
+                              onClick={() => deleteProfile(profile.id, profile.profile_name)}
+                              className="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-300 transition-all"
+                              style={{ touchAction: 'manipulation', minHeight: '36px', minWidth: '36px' }}
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </PopoverContent>
             </Popover>
