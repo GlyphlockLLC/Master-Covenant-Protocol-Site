@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { base44 } from "@/api/base44Client";
-import { Sparkles, Send, Loader2, Volume2, RotateCcw } from "lucide-react";
+import { Sparkles, Send, Loader2, Volume2, RotateCcw, AlertCircle } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { PERSONAS } from '../config';
 import FeedbackButtons from './FeedbackButtons';
@@ -24,10 +24,13 @@ import {
 function ListenButton({ text }) {
   const [loading, setLoading] = useState(false);
   const [playing, setPlaying] = useState(false);
+  const [error, setError] = useState(false);
   const audioRef = useRef(null);
 
   const handleListen = async () => {
     if (loading || playing) return;
+    
+    setError(false);
     
     if (audioRef.current) {
       audioRef.current.pause();
@@ -67,6 +70,7 @@ function ListenButton({ text }) {
           };
           audio.onerror = () => {
             setPlaying(false);
+            setError(true);
             audioRef.current = null;
           };
 
@@ -77,11 +81,27 @@ function ListenButton({ text }) {
           return;
         }
       }
+      
+      setError(true);
     } catch (err) {
       console.error('[Aurora TTS] Failed:', err);
+      setError(true);
     }
     setLoading(false);
   };
+
+  if (error) {
+    return (
+      <button
+        onClick={handleListen}
+        className="text-xs bg-red-600/30 hover:bg-red-600/50 px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5 border border-red-400/30"
+        title="Audio failed. Click to retry."
+      >
+        <AlertCircle className="w-3 h-3" />
+        Retry Audio
+      </button>
+    );
+  }
 
   return (
     <button
@@ -274,6 +294,7 @@ User Context:
       setMessages(prev => [...prev, assistantMessage]);
       
     } catch (error) {
+      console.error('[GlyphBot] Chat error:', error);
       setMessages(prev => [...prev, {
         role: "assistant",
         text: "Oops! Something went wrong. Can you try asking again? 😊",
