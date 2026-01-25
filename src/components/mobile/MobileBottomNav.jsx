@@ -27,11 +27,12 @@ export default function MobileBottomNav({ onMenuOpen }) {
             <Link
               key={tab.id}
               to={createPageUrl(tab.id === 'home' ? 'Home' : tab.id === 'services' ? 'Services' : tab.id === 'qr' ? 'Qr' : 'GlyphBot')}
-              className={`flex flex-col items-center justify-center min-w-[64px] min-h-[56px] rounded-xl transition-all duration-300 ${
+              className={`flex flex-col items-center justify-center min-w-[64px] min-h-[56px] rounded-xl transition-all duration-200 ${
                 isActive 
-                  ? 'bg-purple-500/20 text-cyan-400' 
-                  : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
+                  ? 'bg-purple-500/20 text-cyan-400 scale-105' 
+                  : 'text-slate-400 active:text-white active:bg-slate-800/50 active:scale-95'
               }`}
+              style={{ touchAction: 'manipulation' }}
             >
               <Icon className={`w-6 h-6 mb-1 transition-all duration-300 ${
                 isActive ? 'scale-110 drop-shadow-[0_0_8px_rgba(6,182,212,0.8)]' : ''

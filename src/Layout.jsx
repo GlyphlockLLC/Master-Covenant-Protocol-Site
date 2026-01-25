@@ -10,6 +10,7 @@ import Footer from "@/components/Footer";
 import GlyphLoader from "@/components/GlyphLoader";
 import MobileScalingSystem from "@/components/mobile/mobile-utils";
 import MobileTouchOptimizer from "@/components/mobile/MobileTouchOptimizer";
+import MobileOptimizer from "@/components/mobile/MobileOptimizer";
 import MobileBottomNav from "@/components/mobile/MobileBottomNav";
 import MobileSlideMenu from "@/components/mobile/MobileSlideMenu";
 import ThemeProvider from "@/components/ThemeProvider";
@@ -134,16 +135,18 @@ export default function Layout({ children, currentPageName }) {
       </div>
 
       <div 
-        className="min-h-screen text-white flex flex-col relative overflow-x-hidden selection:bg-[#00E4FF] selection:text-black" 
+        className="min-h-screen text-white flex flex-col relative overflow-x-hidden selection:bg-[#00E4FF] selection:text-black touch-pan-y" 
         style={{ 
           background: 'transparent',
           paddingBottom: 'env(safe-area-inset-bottom)',
           position: 'relative',
           zIndex: 1,
-          isolation: 'isolate'
+          isolation: 'isolate',
+          WebkitOverflowScrolling: 'touch'
         }}
       >
         <MobileTouchOptimizer />
+        <MobileOptimizer />
         <SecurityMonitor />
 
         {/* Desktop Navbar */}
