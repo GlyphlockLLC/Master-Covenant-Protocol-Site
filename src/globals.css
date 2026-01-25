@@ -80,8 +80,14 @@ img.logo,
   loading: eager;
 }
 
+/* MOBILE SCROLL FIX - FORCE ENABLED */
+* {
+  pointer-events: auto !important;
+}
+
 body, #root, #__next, main, section {
   background: transparent !important;
+  touch-action: pan-y pan-x !important;
 }
 
 /* Mobile-specific background fix */
