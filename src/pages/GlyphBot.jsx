@@ -33,6 +33,7 @@ export default function GlyphBotPage() {
   const [persona, setPersona] = useState('GENERAL');
   const [provider, setProvider] = useState('AUTO');
   const [isSending, setIsSending] = useState(false);
+  const [uploadedFiles, setUploadedFiles] = useState([]);
   const [chatCount, setChatCount] = useState(0);
   const [showTrimWarning, setShowTrimWarning] = useState(false);
   const [showHistoryPanel, setShowHistoryPanel] = useState(false);
@@ -294,15 +295,35 @@ export default function GlyphBotPage() {
     const trimmed = input.trim();
     if (!trimmed || isSending) return;
 
+    // Upload files first if any
+    let uploadedUrls = [];
+    if (files.length > 0 || uploadedFiles.length > 0) {
+      const filesToUpload = files.length > 0 ? files : uploadedFiles;
+      try {
+        const uploadPromises = filesToUpload.map(async (file) => {
+          const formData = new FormData();
+          formData.append('file', file);
+          const { data } = await base44.integrations.Core.UploadFile({ file });
+          return { name: file.name, url: data.file_url, type: file.type };
+        });
+        uploadedUrls = await Promise.all(uploadPromises);
+      } catch (e) {
+        console.error('[GlyphBot] File upload failed:', e);
+        toast.error('File upload failed');
+        return;
+      }
+    }
+
     const newUserMsg = { 
       id: `user-${Date.now()}`, 
       role: 'user', 
       content: trimmed,
-      files: files.map(f => ({ name: f.name, size: f.size, type: f.type }))
+      files: uploadedUrls
     };
     const updatedMessages = [...messages, newUserMsg];
     setMessages(updatedMessages);
     setInput('');
+    setUploadedFiles([]);
     setIsSending(true);
     
     // Track user message for full history persistence
@@ -321,7 +342,8 @@ export default function GlyphBotPage() {
         provider: provider === 'AUTO' ? null : provider,
         autoProvider: provider === 'AUTO',
         jsonModeForced: modes.json,
-        structuredMode: modes.struct
+        structuredMode: modes.struct,
+        fileUrls: uploadedUrls.length > 0 ? uploadedUrls.map(f => f.url) : undefined
       });
 
       // Extract text from response (handle both data object and direct string)
@@ -1046,6 +1068,8 @@ export default function GlyphBotPage() {
             onRegenerate={handleRegenerate}
             isSending={isSending}
             disabled={isSending}
+            uploadedFiles={uploadedFiles}
+            onFilesChange={setUploadedFiles}
           />
           </div>
         </div>
