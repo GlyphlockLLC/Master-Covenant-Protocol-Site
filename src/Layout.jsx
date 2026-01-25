@@ -10,6 +10,8 @@ import Footer from "@/components/Footer";
 import GlyphLoader from "@/components/GlyphLoader";
 import MobileScalingSystem from "@/components/mobile/mobile-utils";
 import MobileTouchOptimizer from "@/components/mobile/MobileTouchOptimizer";
+import MobileBottomNav from "@/components/mobile/MobileBottomNav";
+import MobileSlideMenu from "@/components/mobile/MobileSlideMenu";
 import ThemeProvider from "@/components/ThemeProvider";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import StructuredDataOrg from "@/components/StructuredDataOrg";
@@ -22,6 +24,7 @@ const { GlyphBotJr } = UI;
 export default function Layout({ children, currentPageName }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
@@ -143,11 +146,23 @@ export default function Layout({ children, currentPageName }) {
         <MobileTouchOptimizer />
         <SecurityMonitor />
 
-        {/* Navbar */}
-        <Navbar user={user} onLogin={handleLogin} onLogout={handleLogout} />
+        {/* Desktop Navbar */}
+        <div className="hidden md:block">
+          <Navbar user={user} onLogin={handleLogin} onLogout={handleLogout} />
+        </div>
+
+        {/* Mobile Navigation */}
+        <MobileBottomNav onMenuOpen={() => setMobileMenuOpen(true)} />
+        <MobileSlideMenu 
+          isOpen={mobileMenuOpen} 
+          onClose={() => setMobileMenuOpen(false)}
+          user={user}
+          onLogin={handleLogin}
+          onLogout={handleLogout}
+        />
 
         {/* Main content */}
-        <main className="flex-1 relative pt-4">
+        <main className="flex-1 relative pt-4 pb-24 md:pb-4">
           {children}
         </main>
 
