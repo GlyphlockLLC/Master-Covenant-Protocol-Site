@@ -502,11 +502,6 @@ html, body {
   touch-action: pan-y pan-x !important;
 }
 
-/* Ensure all scrollable containers allow touch scroll */
-main, section, article, div {
-  touch-action: pan-y pan-x !important;
-}
-
 /* ========== MOBILE-FIRST COMPLETE REDESIGN ========== */
 @media (max-width: 768px) {
   * {
@@ -666,12 +661,6 @@ main, section, article, div {
   }
 }
 
-/* Footer isolation - prevent fixed/sticky behavior */
-footer, [role="contentinfo"] {
-  position: relative !important;
-  background-attachment: scroll !important;
-}
-
 /* Ensure nebula animations persist during scroll */
 #nebula-layer,
 #nebula-layer-stars {
@@ -689,41 +678,20 @@ footer, [role="contentinfo"] {
   }
 }
 
-/* CRITICAL: Restore pointer events on all interactive elements */
+/* Interactive elements */
 button, a, input, textarea, select, [role="button"], [type="button"], [type="submit"], label {
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
-  pointer-events: auto !important;
   cursor: pointer;
 }
 
-/* Ensure all input types are interactive */
-input[type="text"],
-input[type="email"],
-input[type="password"],
-input[type="number"],
-input[type="tel"],
-input[type="url"],
-input[type="search"],
-input[type="file"],
-textarea,
-select {
-  pointer-events: auto !important;
-  touch-action: manipulation !important;
-}
-
-/* Ensure scroll containers don't trap events */
+/* Scroll containers */
 .scroll-container, [class*="scroll"], [class*="overflow"] {
   touch-action: pan-y pan-x;
   overscroll-behavior: contain;
 }
 
-/* Fix for any accidentally disabled parent containers */
-main, section, article, div, form {
-  pointer-events: auto !important;
-}
-
-/* Prevent canvas overlays from blocking interaction */
+/* Prevent canvas from blocking */
 canvas {
   pointer-events: none !important;
 }

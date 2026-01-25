@@ -130,11 +130,9 @@ export default function Layout({ children, currentPageName }) {
           left: 0, 
           right: 0, 
           bottom: 0, 
-          zIndex: 0, 
-          pointerEvents: 'none !important',
-          transform: 'translateZ(0)',
-          willChange: 'transform',
-          backfaceVisibility: 'hidden'
+          zIndex: -1, 
+          pointerEvents: 'none',
+          touchAction: 'none'
         }}
       >
         <NebulaLayer intensity={1.0} />
@@ -149,11 +147,9 @@ export default function Layout({ children, currentPageName }) {
           left: 0, 
           right: 0, 
           bottom: 0, 
-          zIndex: 1, 
-          pointerEvents: 'none !important',
-          transform: 'translateZ(0)',
-          willChange: 'transform',
-          backfaceVisibility: 'hidden'
+          zIndex: -1, 
+          pointerEvents: 'none',
+          touchAction: 'none'
         }}
       >
         <CursorOrb />
@@ -164,22 +160,19 @@ export default function Layout({ children, currentPageName }) {
         style={{ 
           background: 'transparent',
           paddingBottom: 'env(safe-area-inset-bottom)',
-          overscrollBehavior: 'none',
           position: 'relative',
-          touchAction: 'pan-y pan-x',
-          WebkitOverflowScrolling: 'touch'
+          zIndex: 1,
+          isolation: 'isolate'
         }}
       >
         <MobileTouchOptimizer />
         <SecurityMonitor />
 
         {/* Navbar */}
-        <div style={{ position: 'relative', zIndex: 9998, pointerEvents: 'auto' }}>
-          <Navbar user={user} onLogin={handleLogin} onLogout={handleLogout} />
-        </div>
+        <Navbar user={user} onLogin={handleLogin} onLogout={handleLogout} />
 
         {/* Main content */}
-        <main className="flex-1 relative pt-4" style={{ background: 'transparent', zIndex: 10, pointerEvents: 'auto', position: 'relative', touchAction: 'pan-y pan-x', WebkitOverflowScrolling: 'touch' }}>
+        <main className="flex-1 relative pt-4">
           {children}
         </main>
 
@@ -188,21 +181,14 @@ export default function Layout({ children, currentPageName }) {
           position: 'fixed', 
           bottom: 0, 
           right: 0, 
-          zIndex: 99999, 
-          pointerEvents: 'auto !important',
-          isolation: 'isolate',
-          touchAction: 'manipulation',
-          WebkitTapHighlightColor: 'transparent',
-          display: 'block !important',
-          visibility: 'visible !important'
+          zIndex: 9999, 
+          touchAction: 'manipulation'
         }}>
           <GlyphBotJr />
         </div>
 
-        {/* Footer - always rendered */}
-        <footer className="relative overflow-hidden" style={{ zIndex: 100, pointerEvents: 'auto', isolation: 'isolate' }}>
-          <Footer />
-        </footer>
+        {/* Footer */}
+        <Footer />
       </div>
     </ThemeProvider>
   );
