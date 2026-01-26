@@ -8,6 +8,7 @@ import VioletLoader from "@/components/shared/VioletLoader";
 import AdminGate, { AdminPageMeta } from "@/components/security/AdminGate";
 import ConsoleLayout from "@/components/console/ConsoleLayout";
 import DashboardHome from "@/components/console/DashboardHome";
+import RealtimeDashboard from "@/components/console/RealtimeDashboard";
 import KeyManagement from "@/components/admin/KeyManagement";
 import StatusReport from "@/components/admin/StatusReport";
 import { useThreatDetection } from "@/components/commandcenter/ThreatDetectionEngine";
@@ -618,10 +619,7 @@ function ConsoleContent() {
 
   const renderModule = () => {
     switch (activeModule) {
-      case "dashboard": 
-        // Import and use RealtimeDashboard dynamically
-        const RealtimeDashboard = require('@/components/console/RealtimeDashboard').default;
-        return <RealtimeDashboard user={user} />;
+      case "dashboard": return <RealtimeDashboard user={user} />;
       case "api-keys": return <div className="p-6"><KeyManagement /></div>;
       case "sdk": return <SettingsModule user={user} />;
       case "functions": return <ToolsModule />;
@@ -631,9 +629,7 @@ function ConsoleContent() {
       case "security": return <ThreatDetectionModule user={user} threatDetection={threatDetection} />;
       case "billing": return <SettingsModule user={user} />;
       case "audit-timeline": return <LogsModule />;
-      default: 
-        const DefaultDashboard = require('@/components/console/RealtimeDashboard').default;
-        return <DefaultDashboard user={user} />;
+      default: return <RealtimeDashboard user={user} />;
     }
   };
 

@@ -39,6 +39,7 @@ const AIStaffPerformance = lazy(() => import('@/components/nups/AIStaffPerforman
 const AIInsightsPanelLazy = lazy(() => import('@/components/nups/AIInsightsPanel').then(mod => ({ default: mod.VoucherAIPanel })));
 const InventoryManagement = lazy(() => import('@/components/nups/InventoryManagement'));
 const UserManagement = lazy(() => import('@/components/nups/UserManagement'));
+const AdvancedZReport = lazy(() => import('@/components/nups/AdvancedZReport'));
 
 // Audit logging utility
 async function logAuditEvent(action, details, role, sessionId) {
@@ -267,10 +268,9 @@ export default function NUPS() {
                   <TabsContent value="sales"><AISalesReports /></TabsContent>
                   <TabsContent value="staff"><AIStaffPerformance /></TabsContent>
                   <TabsContent value="zreports">
-                    {(() => {
-                      const AdvancedZReport = require('@/components/nups/AdvancedZReport').default;
-                      return <AdvancedZReport user={user} />;
-                    })()}
+                    <Suspense fallback={<TabLoader />}>
+                      <AdvancedZReport user={user} />
+                    </Suspense>
                   </TabsContent>
                 </Tabs>
               </div>
