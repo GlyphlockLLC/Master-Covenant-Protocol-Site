@@ -11,6 +11,7 @@ import { injectSoftwareSchema } from '@/components/utils/seoHelpers';
 import GuidedTour from '@/components/shared/GuidedTour';
 import FileAnalyzer from '@/components/glyphbot/FileAnalyzer';
 import { useUnifiedVoice } from '@/components/shared/UnifiedVoiceProvider';
+import { useUnifiedVoice } from '@/components/shared/UnifiedVoiceProvider';
 
 const { 
   useGlyphBotPersistence, 
@@ -259,30 +260,10 @@ export default function GlyphBotPage() {
     }
   }, [messages, isSending]);
 
-  // Save settings after SAVE_SETTINGS_THRESHOLD chats
+  // 🎙️ Auto-save voice settings to unified provider
   useEffect(() => {
-    if (chatCount > 0 && chatCount % SAVE_SETTINGS_THRESHOLD === 0) {
-      try {
-        const settingsToSave = {
-          persona,
-          provider,
-          modes: { voice: modes.voice, live: modes.live, audit: modes.audit },
-          voiceSettings: {
-          speed: voiceSettings.speed,
-          pitch: voiceSettings.pitch,
-          volume: voiceSettings.volume,
-          bass: voiceSettings.bass,
-          clarity: voiceSettings.clarity
-          }
-        };
-        localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settingsToSave));
-        localStorage.setItem(STORAGE_KEYS.CHAT_COUNT, chatCount.toString());
-        console.log(`[GlyphBot] Settings saved after ${chatCount} chats`);
-      } catch (e) {
-        console.warn('Failed to save settings:', e);
-      }
-    }
-  }, [chatCount, persona, provider, modes, voiceSettings]);
+    saveVoiceSettings(voiceSettings);
+  }, [voiceSettings, saveVoiceSettings]);
 
   // Auto-scroll chat
   useEffect(() => {
