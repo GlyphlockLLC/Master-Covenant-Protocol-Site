@@ -2,8 +2,8 @@ import About from './pages/About';
 import AboutCarlo from './pages/AboutCarlo';
 import Accessibility from './pages/Accessibility';
 import AccountSecurity from './pages/AccountSecurity';
-import Authenticator from './pages/Authenticator';
 import AuditTrail from './pages/AuditTrail';
+import Authenticator from './pages/Authenticator';
 import BillingAndPayments from './pages/BillingAndPayments';
 import Blockchain from './pages/Blockchain';
 import CaseStudies from './pages/CaseStudies';
@@ -86,8 +86,8 @@ export const PAGES = {
     "AboutCarlo": AboutCarlo,
     "Accessibility": Accessibility,
     "AccountSecurity": AccountSecurity,
-    "Authenticator": Authenticator,
     "AuditTrail": AuditTrail,
+    "Authenticator": Authenticator,
     "BillingAndPayments": BillingAndPayments,
     "Blockchain": Blockchain,
     "CaseStudies": CaseStudies,
