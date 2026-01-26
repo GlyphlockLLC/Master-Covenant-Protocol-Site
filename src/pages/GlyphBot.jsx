@@ -4,13 +4,16 @@ import { UI, Logic, Config } from '@/components/glyphlock/bot';
 import ChatMessageMemo from '@/components/glyphlock/bot/ui/ChatMessageMemo';
 import SEOHead from '@/components/SEOHead';
 import { base44 } from '@/api/base44Client';
-import { Activity, Zap, Shield, Bot, AlertTriangle, X, PanelRightOpen, PanelRightClose } from 'lucide-react';
+import { Activity, Zap, Shield, Bot, AlertTriangle, X, PanelRightOpen, PanelRightClose, FileText } from 'lucide-react';
 import { createPageUrl } from '@/utils';
 import { toast } from 'sonner';
 import { injectSoftwareSchema } from '@/components/utils/seoHelpers';
 import GuidedTour from '@/components/shared/GuidedTour';
 import FileAnalyzer from '@/components/glyphbot/FileAnalyzer';
 import AuditReportManager from '@/components/glyphbot/AuditReportManager';
+import AuditCommentSection from '@/components/glyphbot/AuditCommentSection';
+import AuditSharePanel from '@/components/glyphbot/AuditSharePanel';
+import ThreatDashboard from '@/components/glyphbot/ThreatDashboard';
 import { useUnifiedVoice } from '@/components/shared/UnifiedVoiceProvider';
 
 const { 
@@ -47,6 +50,7 @@ export default function GlyphBotPage() {
   const [isProcessingAudit, setIsProcessingAudit] = useState(false);
   const [showFileAnalyzer, setShowFileAnalyzer] = useState(false);
   const [showReportManager, setShowReportManager] = useState(false);
+  const [showThreatDashboard, setShowThreatDashboard] = useState(false);
 
   const [modes, setModes] = useState({
     voice: false,
@@ -755,6 +759,13 @@ export default function GlyphBotPage() {
                   </button>
                 </>
               )}
+              <button
+                onClick={() => setShowThreatDashboard(!showThreatDashboard)}
+                className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-red-500/20 border-2 border-red-500/50 text-red-300 hover:border-red-400 hover:text-red-300 hover:bg-red-500/30 transition-all duration-300"
+              >
+                <AlertTriangle className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Threats</span>
+              </button>
               <Link
                 to={createPageUrl('ProviderConsole')}
                 className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-purple-500/20 border-2 border-purple-500/50 text-purple-300 hover:border-cyan-400 hover:text-cyan-300 hover:bg-cyan-500/20 transition-all duration-300 shadow-[0_0_15px_rgba(168,85,247,0.3)] hover:shadow-[0_0_25px_rgba(6,182,212,0.5)]"
@@ -1093,14 +1104,33 @@ export default function GlyphBotPage() {
       {/* GLYPHLOCK: Audit Report Modal - HIGHEST Z-INDEX */}
       {selectedAuditView && (
         <div style={{ position: 'fixed', inset: 0, zIndex: 999999, pointerEvents: 'auto' }}>
-          <UI.AuditReportView
-            audit={selectedAuditView}
-            onClose={() => setSelectedAuditView(null)}
-            onPlaySummary={handlePlayAuditSummary}
-            onArchive={handleArchiveAudit}
-            onDownload={handleDownloadAudit}
-            onGenerateReport={() => setShowReportManager(selectedAuditView)}
-          />
+          <div className="max-w-6xl mx-auto h-full overflow-y-auto bg-slate-900 border-2 border-purple-500/30">
+            <div className="p-6 space-y-6">
+              <UI.AuditReportView
+                audit={selectedAuditView}
+                onClose={() => setSelectedAuditView(null)}
+                onPlaySummary={handlePlayAuditSummary}
+                onArchive={handleArchiveAudit}
+                onDownload={handleDownloadAudit}
+                onGenerateReport={() => setShowReportManager(selectedAuditView)}
+              />
+
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div className="lg:col-span-2">
+                  <AuditCommentSection
+                    auditId={selectedAuditView.id}
+                    currentUser={currentUser}
+                  />
+                </div>
+                <div>
+                  <AuditSharePanel
+                    auditId={selectedAuditView.id}
+                    auditTitle={selectedAuditView.targetIdentifier}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       )}
 
@@ -1110,6 +1140,26 @@ export default function GlyphBotPage() {
           auditData={showReportManager}
           onClose={() => setShowReportManager(null)}
         />
+      )}
+
+      {/* Threat Dashboard Modal */}
+      {showThreatDashboard && (
+        <div style={{ position: 'fixed', inset: 0, zIndex: 999998, pointerEvents: 'auto' }}>
+          <div className="w-full h-screen overflow-y-auto bg-slate-900 border-2 border-red-500/30">
+            <div className="max-w-7xl mx-auto p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h1 className="text-3xl font-bold text-white">Security Threat Intelligence</h1>
+                <button
+                  onClick={() => setShowThreatDashboard(false)}
+                  className="p-2 rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+              <ThreatDashboard />
+            </div>
+          </div>
+        </div>
       )}
       <GuidedTour 
         isOpen={showTour}
