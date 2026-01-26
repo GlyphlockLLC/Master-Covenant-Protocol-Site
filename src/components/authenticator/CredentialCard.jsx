@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { TOTP } from 'otpauth';
-import { Star, Copy, Trash2, RefreshCw } from 'lucide-react';
+import { Star, Copy, Trash2, RefreshCw, QrCode } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
+import QRCodeDisplay from './QRCodeDisplay';
 
 export default function CredentialCard({ credential, onToggleFavorite, onDelete }) {
   const [code, setCode] = useState('------');
   const [timeLeft, setTimeLeft] = useState(30);
   const [progress, setProgress] = useState(100);
+  const [showQR, setShowQR] = useState(false);
 
   useEffect(() => {
     const generateCode = () => {
@@ -99,6 +101,15 @@ export default function CredentialCard({ credential, onToggleFavorite, onDelete 
             >
               <Copy className="w-3 h-3 mr-1" />
               Copy
+            </Button>
+            <Button
+              onClick={() => setShowQR(true)}
+              size="sm"
+              variant="ghost"
+              className="text-xs text-cyan-400 hover:text-cyan-300 hover:bg-cyan-500/20"
+            >
+              <QrCode className="w-3 h-3 mr-1" />
+              QR
             </Button>
             <Button
               onClick={() => onToggleFavorite(credential.id, credential.is_favorite)}
