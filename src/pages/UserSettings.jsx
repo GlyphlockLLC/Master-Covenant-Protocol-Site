@@ -92,7 +92,7 @@ export default function UserSettings() {
         full_name: fullName.trim()
       });
       setUser(prev => ({ ...prev, full_name: fullName.trim() }));
-      toast.success('Profile updated successfully');
+      toast.success('✅ Profile saved to database');
     } catch (e) {
       console.error('Failed to update profile:', e);
       toast.error(e.message || 'Failed to update profile');
@@ -109,26 +109,36 @@ export default function UserSettings() {
 
     setSaving(true);
     try {
-      const prefs = await base44.entities.UserPreferences.filter({ 
-        created_by: user.email 
-      });
-      
       const data = {
         emailNotifications,
         securityAlerts,
         productUpdates,
         defaultVoice,
         voiceSpeed: voiceSpeed[0],
-        voicePitch: voicePitch[0]
+        voicePitch: voicePitch[0],
+        chatSettings: {
+          autoPlayVoice: false,
+          theme: 'dark'
+        }
       };
       
+      // Try to get existing preferences
+      const prefs = await base44.entities.UserPreferences.filter({ 
+        created_by: user.email 
+      });
+      
       if (prefs.length > 0) {
+        // Update existing
         await base44.entities.UserPreferences.update(prefs[0].id, data);
-        toast.success('Preferences updated successfully');
+        toast.success('✅ Preferences saved to database');
       } else {
+        // Create new
         await base44.entities.UserPreferences.create(data);
-        toast.success('Preferences saved successfully');
+        toast.success('✅ Preferences saved to database');
       }
+      
+      // Reload to verify
+      await loadUserData();
     } catch (e) {
       console.error('Failed to save preferences:', e);
       toast.error(e.message || 'Failed to save preferences');
