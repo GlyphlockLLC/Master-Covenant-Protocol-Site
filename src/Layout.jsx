@@ -12,6 +12,7 @@ import MobileCore from "@/components/mobile/MobileCore";
 import MobileBottomNav from "@/components/mobile/MobileBottomNav";
 import MobileSlideMenu from "@/components/mobile/MobileSlideMenu";
 import ErrorBoundary from "@/components/ErrorBoundary";
+import { UnifiedVoiceProvider } from "@/components/shared/UnifiedVoiceProvider";
 
 import ThemeProvider from "@/components/ThemeProvider";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
@@ -91,6 +92,7 @@ export default function Layout({ children, currentPageName }) {
 
   return (
     <ErrorBoundary>
+    <UnifiedVoiceProvider>
     <ThemeProvider>
       {/* GLYPHLOCK: Analytics, SEO & Security */}
       <GoogleAnalytics />
@@ -159,6 +161,7 @@ export default function Layout({ children, currentPageName }) {
         <Footer />
         </div>
         </ThemeProvider>
+        </UnifiedVoiceProvider>
         </ErrorBoundary>
         );
         }
