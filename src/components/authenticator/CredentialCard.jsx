@@ -124,6 +124,10 @@ export default function CredentialCard({ credential, onToggleFavorite, onDelete 
           </div>
         </div>
       </div>
+
+      {showQR && (
+        <QRCodeDisplay credential={credential} onClose={() => setShowQR(false)} />
+      )}
     </div>
   );
 }
