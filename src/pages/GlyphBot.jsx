@@ -9,6 +9,7 @@ import { createPageUrl } from '@/utils';
 import { toast } from 'sonner';
 import { injectSoftwareSchema } from '@/components/utils/seoHelpers';
 import GuidedTour from '@/components/shared/GuidedTour';
+import FileAnalyzer from '@/components/glyphbot/FileAnalyzer';
 
 const { 
   useGlyphBotPersistence, 
@@ -42,6 +43,7 @@ export default function GlyphBotPage() {
   const [selectedAuditView, setSelectedAuditView] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
   const [isProcessingAudit, setIsProcessingAudit] = useState(false);
+  const [showFileAnalyzer, setShowFileAnalyzer] = useState(false);
 
   const [modes, setModes] = useState({
     voice: false,
@@ -910,11 +912,49 @@ export default function GlyphBotPage() {
                     />
                   </div>
                 ) : (
-                  <div className="flex-1 overflow-y-auto p-4">
-                    <UI.AuditPanel
-                      onStartAudit={handleStartAudit}
-                      isProcessing={isProcessingAudit}
-                    />
+                  <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                    {/* Audit Mode Tabs */}
+                    <div className="flex gap-2 mb-4">
+                      <button
+                        onClick={() => setShowFileAnalyzer(false)}
+                        className={`flex-1 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${
+                          !showFileAnalyzer
+                            ? 'bg-cyan-500/30 text-cyan-300 border-2 border-cyan-400'
+                            : 'bg-slate-800/40 text-slate-400 border border-slate-700 hover:border-cyan-500/50'
+                        }`}
+                      >
+                        Security Scan
+                      </button>
+                      <button
+                        onClick={() => setShowFileAnalyzer(true)}
+                        className={`flex-1 px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${
+                          showFileAnalyzer
+                            ? 'bg-purple-500/30 text-purple-300 border-2 border-purple-400'
+                            : 'bg-slate-800/40 text-slate-400 border border-slate-700 hover:border-purple-500/50'
+                        }`}
+                      >
+                        File Analysis
+                      </button>
+                    </div>
+                    
+                    {showFileAnalyzer ? (
+                      <FileAnalyzer 
+                        onAnalysisComplete={(result) => {
+                          const msg = {
+                            id: `file-analysis-${Date.now()}`,
+                            role: 'assistant',
+                            content: `📁 **File Analysis Complete**\n\n**Risk Level:** ${result.riskLevel.toUpperCase()}\n**Security Score:** ${result.securityScore}/100\n\n${result.threats?.length > 0 ? `**Threats:** ${result.threats.join(', ')}` : '✅ No threats detected'}`
+                          };
+                          setMessages(prev => [...prev, msg]);
+                          trackMessage(msg);
+                        }}
+                      />
+                    ) : (
+                      <UI.AuditPanel
+                        onStartAudit={handleStartAudit}
+                        isProcessing={isProcessingAudit}
+                      />
+                    )}
                   </div>
                 )}
               </aside>
