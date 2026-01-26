@@ -499,7 +499,12 @@ export default function GlyphBotPage() {
         return;
       }
 
-      const auditId = audit.id || audit._id || audit.entity_id;
+      const auditId = audit?.id;
+      if (!auditId) {
+        toast.error('Audit creation failed: no ID returned');
+        setIsProcessingAudit(false);
+        return;
+      }
 
       // Channel-specific message
       const channelLabel = auditData.targetType === 'business' 
@@ -615,6 +620,10 @@ export default function GlyphBotPage() {
 
   // Phase 6: View audit from history
   const handleViewAudit = useCallback((audit) => {
+    if (!audit?.id) {
+      toast.error('Invalid audit data');
+      return;
+    }
     setSelectedAuditView(audit);
   }, []);
 
@@ -1103,8 +1112,9 @@ export default function GlyphBotPage() {
 
       {/* GLYPHLOCK: Audit Report Modal - HIGHEST Z-INDEX */}
       {selectedAuditView && (
-        <div style={{ position: 'fixed', inset: 0, zIndex: 999999, pointerEvents: 'auto' }}>
-          <div className="max-w-6xl mx-auto h-full overflow-y-auto bg-slate-900 border-2 border-purple-500/30">
+        <div style={{ position: 'fixed', inset: 0, zIndex: 999999, pointerEvents: 'auto', overflow: 'hidden' }}>
+          <div className="h-full overflow-y-auto bg-slate-900 border-2 border-purple-500/30 flex items-start justify-center">
+            <div className="max-w-6xl w-full">
             <div className="p-6 space-y-6">
               <UI.AuditReportView
                 audit={selectedAuditView}
@@ -1129,6 +1139,7 @@ export default function GlyphBotPage() {
                   />
                 </div>
               </div>
+            </div>
             </div>
           </div>
         </div>
