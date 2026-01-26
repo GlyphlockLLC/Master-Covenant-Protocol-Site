@@ -81,21 +81,32 @@ export default function UserSettings() {
   };
 
   const handleSaveProfile = async () => {
+    if (!fullName?.trim()) {
+      toast.error('Full name cannot be empty');
+      return;
+    }
+
     setSaving(true);
     try {
       await base44.auth.updateMe({
-        full_name: fullName
+        full_name: fullName.trim()
       });
+      setUser(prev => ({ ...prev, full_name: fullName.trim() }));
       toast.success('Profile updated successfully');
     } catch (e) {
       console.error('Failed to update profile:', e);
-      toast.error('Failed to update profile');
+      toast.error(e.message || 'Failed to update profile');
     } finally {
       setSaving(false);
     }
   };
 
   const handleSavePreferences = async () => {
+    if (!user) {
+      toast.error('User not authenticated');
+      return;
+    }
+
     setSaving(true);
     try {
       const prefs = await base44.entities.UserPreferences.filter({ 
@@ -113,14 +124,14 @@ export default function UserSettings() {
       
       if (prefs.length > 0) {
         await base44.entities.UserPreferences.update(prefs[0].id, data);
+        toast.success('Preferences updated successfully');
       } else {
         await base44.entities.UserPreferences.create(data);
+        toast.success('Preferences saved successfully');
       }
-      
-      toast.success('Preferences saved successfully');
     } catch (e) {
       console.error('Failed to save preferences:', e);
-      toast.error('Failed to save preferences');
+      toast.error(e.message || 'Failed to save preferences');
     } finally {
       setSaving(false);
     }
