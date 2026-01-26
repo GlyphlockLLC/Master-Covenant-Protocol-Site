@@ -49,11 +49,17 @@ export default function Layout({ children, currentPageName }) {
       const isLocal = host === 'localhost' || host === '127.0.0.1';
 
       if (!isLocal) {
-        // Force non-www (canonical domain)
-        if (host.startsWith('www.')) {
-          const target = `https://${host.replace(/^www\./, '')}${window.location.pathname}${window.location.search}`;
-          window.location.replace(target);
-          return;
+        // Canonical domain enforcement: www.glyphlock.io → glyphlock.io
+        const canonicalDomain = 'glyphlock.io';
+        const allowedDomains = ['glyphlock.io', 'www.glyphlock.io'];
+        
+        if (allowedDomains.includes(host)) {
+          // Redirect www to non-www for canonical URL
+          if (host.startsWith('www.')) {
+            const target = `https://${canonicalDomain}${window.location.pathname}${window.location.search}${window.location.hash}`;
+            window.location.replace(target);
+            return;
+          }
         }
       }
     }

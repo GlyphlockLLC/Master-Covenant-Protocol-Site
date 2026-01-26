@@ -45,7 +45,9 @@ export default function SEOHead({
   const resolvedKeywords = combinedKeywords;
   const resolvedSchemaType = autoData.schemaType || "WebSite";
 
-  const siteUrl = "https://glyphlock.io";
+  // Canonical domain configuration
+  const canonicalDomain = 'glyphlock.io';
+  const siteUrl = `https://${canonicalDomain}`;
   const fullUrl = url ? `${siteUrl}${url}` : siteUrl;
 
   useEffect(() => {
