@@ -406,7 +406,7 @@ export default function Navbar({ user, onLogin, onLogout }) {
 
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-12 py-3 flex items-center justify-between">
         {/* Logo with hover effects */}
-        <Link to={createPageUrl("Home")} className="flex items-center gap-3 group">
+        <Link to={createPageUrl("Home")} className="flex items-center gap-3 group" aria-label="GlyphLock Home">
           <MagneticButton>
             <div className="relative">
               {/* Animated glow ring */}
@@ -418,7 +418,10 @@ export default function Navbar({ user, onLogin, onLogout }) {
               <div className="relative">
                 <img
                   src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/d92107808_glyphlock-3d-logo.png"
-                  alt="GlyphLock"
+                  alt="GlyphLock Logo"
+                  loading="eager"
+                  width="40"
+                  height="40"
                   className="h-10 w-auto relative z-10 group-hover:scale-110 transition-transform duration-300"
                 />
               </div>
@@ -551,7 +554,9 @@ export default function Navbar({ user, onLogin, onLogout }) {
           whileTap={{ scale: 0.95 }}
           className="lg:hidden relative w-14 h-14 flex items-center justify-center rounded-xl bg-white/5 border border-white/10 touch-manipulation"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          aria-label="Toggle menu"
+          aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={mobileMenuOpen}
+          aria-controls="mobile-menu"
           style={{ WebkitTapHighlightColor: 'transparent' }}
         >
           <AnimatePresence mode="wait">
@@ -584,6 +589,9 @@ export default function Navbar({ user, onLogin, onLogout }) {
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
+            id="mobile-menu"
+            role="navigation"
+            aria-label="Mobile navigation"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

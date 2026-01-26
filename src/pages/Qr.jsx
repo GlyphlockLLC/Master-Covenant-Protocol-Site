@@ -122,6 +122,7 @@ export default function Qr() {
         description="Create secure QR codes with GlyphLock's unified QR Studio. Features anti-quishing protection, steganography, hot zones, 90+ payload types, and military-grade encryption."
         keywords="QR code generator, secure QR codes, anti-quishing, steganography QR, QR security, hot zones QR, bulk QR generation, GlyphLock QR Studio, dynamic QR codes"
         url="/qr"
+        schemaType="WebApplication"
       />
       
       <PageHeader

@@ -31,7 +31,10 @@ export default function Footer() {
             <div className="flex items-center gap-3">
               <img
                 src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6902128ac3c5c94a82446585/08025b614_gl-logo.png"
-                alt="GlyphLock"
+                alt="GlyphLock Logo"
+                loading="lazy"
+                width="40"
+                height="40"
                 className="h-10 w-auto"
               />
               <span className="text-2xl font-black tracking-tighter font-space text-white">
@@ -53,17 +56,17 @@ export default function Footer() {
                 <span className="text-indigo-300 text-xs font-bold uppercase tracking-wider">UNMATCHED VERIFICATION</span>
               </div>
             </div>
-            <div className="flex items-center gap-4 pt-4">
-              <a href="https://twitter.com/glyphlock" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/8 flex items-center justify-center text-indigo-300 hover:bg-violet-500 hover:text-white hover:shadow-[0_0_15px_rgba(168,60,255,0.6)] transition-all duration-300">
+            <div className="flex flex-wrap items-center gap-3 pt-4">
+              <a href="https://twitter.com/glyphlock" target="_blank" rel="noopener noreferrer" aria-label="Follow GlyphLock on Twitter" className="w-10 h-10 rounded-full bg-white/8 flex items-center justify-center text-indigo-300 hover:bg-violet-500 hover:text-white hover:shadow-[0_0_15px_rgba(168,60,255,0.6)] transition-all duration-300">
                 <Twitter size={18} />
               </a>
-              <a href="https://linkedin.com/company/glyphlock" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/8 flex items-center justify-center text-indigo-300 hover:bg-violet-500 hover:text-white hover:shadow-[0_0_15px_rgba(168,60,255,0.6)] transition-all duration-300">
+              <a href="https://linkedin.com/company/glyphlock" target="_blank" rel="noopener noreferrer" aria-label="Connect with GlyphLock on LinkedIn" className="w-10 h-10 rounded-full bg-white/8 flex items-center justify-center text-indigo-300 hover:bg-violet-500 hover:text-white hover:shadow-[0_0_15px_rgba(168,60,255,0.6)] transition-all duration-300">
                 <Linkedin size={18} />
               </a>
-              <a href="https://instagram.com/glyphlock" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/8 flex items-center justify-center text-indigo-300 hover:bg-violet-500 hover:text-white hover:shadow-[0_0_15px_rgba(168,60,255,0.6)] transition-all duration-300">
+              <a href="https://instagram.com/glyphlock" target="_blank" rel="noopener noreferrer" aria-label="Follow GlyphLock on Instagram" className="w-10 h-10 rounded-full bg-white/8 flex items-center justify-center text-indigo-300 hover:bg-violet-500 hover:text-white hover:shadow-[0_0_15px_rgba(168,60,255,0.6)] transition-all duration-300">
                 <Instagram size={18} />
               </a>
-              <a href="https://github.com/glyphlock" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/8 flex items-center justify-center text-indigo-300 hover:bg-violet-500 hover:text-white hover:shadow-[0_0_15px_rgba(168,60,255,0.6)] transition-all duration-300">
+              <a href="https://github.com/glyphlock" target="_blank" rel="noopener noreferrer" aria-label="View GlyphLock on GitHub" className="w-10 h-10 rounded-full bg-white/8 flex items-center justify-center text-indigo-300 hover:bg-violet-500 hover:text-white hover:shadow-[0_0_15px_rgba(168,60,255,0.6)] transition-all duration-300">
                 <Github size={18} />
               </a>
             </div>
@@ -72,61 +75,61 @@ export default function Footer() {
           {/* Company Column */}
           <div className="lg:col-span-2">
             <h4 className="text-white font-bold mb-6 uppercase tracking-widest text-xs">Company</h4>
-            <div className="flex flex-col gap-4">
+            <nav aria-label="Company links" className="flex flex-col gap-4">
               {FOOTER_LINKS.company && FOOTER_LINKS.company.map((link) => (
-                <Link key={link.page} to={createPageUrl(link.page)} className="text-white font-medium hover:text-cyan-400 hover:drop-shadow-[0_0_8px_rgba(6,182,212,0.8)] transition-all duration-300">
+                <Link key={link.page} to={createPageUrl(link.page)} className="text-gray-200 font-medium hover:text-cyan-400 hover:drop-shadow-[0_0_8px_rgba(6,182,212,0.8)] transition-all duration-300">
                   {link.label}
                 </Link>
               ))}
-            </div>
+            </nav>
           </div>
 
           {/* Modules Column */}
           <div className="lg:col-span-2">
             <h4 className="text-white font-bold mb-6 uppercase tracking-widest text-xs">Modules</h4>
-            <div className="flex flex-col gap-4">
+            <nav aria-label="Modules links" className="flex flex-col gap-4">
               {FOOTER_LINKS.modules && FOOTER_LINKS.modules.map((link) => (
-                <Link key={link.page} to={createPageUrl(link.page)} className="text-white font-medium hover:text-blue-400 hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.8)] transition-all duration-300">
+                <Link key={link.page} to={createPageUrl(link.page)} className="text-gray-200 font-medium hover:text-blue-400 hover:drop-shadow-[0_0_8px_rgba(59,130,246,0.8)] transition-all duration-300">
                   {link.label}
                 </Link>
               ))}
-            </div>
+            </nav>
           </div>
 
           {/* Protocols Column */}
           <div className="lg:col-span-2">
             <h4 className="text-white font-bold mb-6 uppercase tracking-widest text-xs">Protocols</h4>
-            <div className="flex flex-col gap-4">
+            <nav aria-label="Protocols links" className="flex flex-col gap-4">
               {FOOTER_LINKS.protocols && FOOTER_LINKS.protocols.map((link) => (
-                <Link key={link.page} to={createPageUrl(link.page)} className="text-white font-medium hover:text-amber-400 hover:drop-shadow-[0_0_8px_rgba(251,191,36,0.8)] transition-all duration-300">
+                <Link key={link.page} to={createPageUrl(link.page)} className="text-gray-200 font-medium hover:text-amber-400 hover:drop-shadow-[0_0_8px_rgba(251,191,36,0.8)] transition-all duration-300">
                   {link.label}
                 </Link>
               ))}
-            </div>
+            </nav>
           </div>
 
           {/* Resources Column */}
           <div className="lg:col-span-2">
             <h4 className="text-white font-bold mb-6 uppercase tracking-widest text-xs">Resources</h4>
-            <div className="flex flex-col gap-4">
+            <nav aria-label="Resources links" className="flex flex-col gap-4">
               {FOOTER_LINKS.resources && FOOTER_LINKS.resources.map((link) => (
-                <Link key={link.page} to={createPageUrl(link.page)} className="text-white font-medium hover:text-indigo-400 hover:drop-shadow-[0_0_8px_rgba(129,140,248,0.8)] transition-all duration-300">
+                <Link key={link.page} to={createPageUrl(link.page)} className="text-gray-200 font-medium hover:text-indigo-400 hover:drop-shadow-[0_0_8px_rgba(129,140,248,0.8)] transition-all duration-300">
                   {link.label}
                 </Link>
               ))}
-            </div>
+            </nav>
           </div>
           
           {/* Account Column */}
           <div className="lg:col-span-2">
             <h4 className="text-white font-bold mb-6 uppercase tracking-widest text-xs">Account</h4>
-            <div className="flex flex-col gap-4">
+            <nav aria-label="Account links" className="flex flex-col gap-4">
               {FOOTER_LINKS.account && FOOTER_LINKS.account.map((link) => (
-                <Link key={link.page} to={createPageUrl(link.page)} className="text-white font-medium hover:text-purple-400 hover:drop-shadow-[0_0_8px_rgba(168,85,247,0.8)] transition-all duration-300">
+                <Link key={link.page} to={createPageUrl(link.page)} className="text-gray-200 font-medium hover:text-purple-400 hover:drop-shadow-[0_0_8px_rgba(168,85,247,0.8)] transition-all duration-300">
                   {link.label}
                 </Link>
               ))}
-            </div>
+            </nav>
           </div>
           
           {/* Contact Column */}
@@ -266,7 +269,7 @@ export default function Footer() {
                 className="group flex flex-col items-center gap-2 p-3 rounded-xl bg-white/5 border border-white/10 hover:border-cyan-500/30 hover:bg-cyan-500/5 transition-all duration-300"
               >
                 <div className="w-16 h-16 md:w-20 md:h-20 flex items-center justify-center opacity-90 group-hover:opacity-100 transition-opacity group-hover:scale-105 duration-300">
-                  <img src={cert.image} alt={cert.name} className="w-full h-full object-contain filter drop-shadow-[0_0_8px_rgba(0,0,0,0.5)]" />
+                  <img src={cert.image} alt={`${cert.name} certification badge`} loading="lazy" width="80" height="80" className="w-full h-full object-contain filter drop-shadow-[0_0_8px_rgba(0,0,0,0.5)]" />
                 </div>
                 <div className="text-center">
                   <p className="text-xs font-bold text-white group-hover:text-cyan-400 transition-colors">{cert.name}</p>
@@ -283,13 +286,13 @@ export default function Footer() {
         {/* Bottom Bar - Legal Links */}
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm">
           <p className="text-white font-medium">© {new Date().getFullYear()} GlyphLock Security LLC. All rights reserved.</p>
-          <div className="flex items-center gap-8">
+          <nav aria-label="Legal links" className="flex flex-wrap items-center gap-4 md:gap-8">
             {FOOTER_LINKS.legal && FOOTER_LINKS.legal.map((link) => (
-            <Link key={link.page} to={createPageUrl(link.page)} className="text-white font-medium hover:text-cyan-400 hover:drop-shadow-[0_0_8px_rgba(6,182,212,0.8)] transition-all duration-300">
+            <Link key={link.page} to={createPageUrl(link.page)} className="text-gray-200 font-medium hover:text-cyan-400 hover:drop-shadow-[0_0_8px_rgba(6,182,212,0.8)] transition-all duration-300">
               {link.label}
             </Link>
             ))}
-          </div>
+          </nav>
         </div>
       </div>
     </footer>

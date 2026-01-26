@@ -29,16 +29,33 @@ export default function Contact() {
 
   const sendEmail = useMutation({
     mutationFn: async (data) => {
+      // Email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(data.email)) {
+        throw new Error("Invalid email format");
+      }
+      
+      // Basic spam check - rate limiting client-side
+      const lastSubmit = localStorage.getItem('lastContactSubmit');
+      if (lastSubmit && Date.now() - parseInt(lastSubmit) < 60000) {
+        throw new Error("Please wait before submitting again");
+      }
+      
       await base44.integrations.Core.SendEmail({
         to: "glyphlock@gmail.com",
         subject: `Contact Form: ${data.subject}`,
         body: `Name: ${data.name}\nEmail: ${data.email}\n\nMessage:\n${data.message}`
       });
+      
+      localStorage.setItem('lastContactSubmit', Date.now().toString());
     },
     onSuccess: () => {
       setSubmitted(true);
       setFormData({ name: "", email: "", subject: "", message: "" });
       setTimeout(() => setSubmitted(false), 5000);
+    },
+    onError: (error) => {
+      alert(error.message || "Failed to send message. Please try again.");
     }
   });
 
@@ -54,6 +71,7 @@ export default function Contact() {
         description="Contact GlyphLock Security for cybersecurity solutions, partnership opportunities, licensing inquiries, and enterprise security consultations. El Mirage, AZ | (424) 246-6499 | glyphlock@gmail.com"
         keywords="contact GlyphLock, cybersecurity consultation, partnership inquiry, licensing request, enterprise security contact, GlyphLock email, security consultation, El Mirage Arizona, technology partnership"
         url="/contact"
+        schemaType="ContactPage"
       />
       <div className="min-h-screen bg-black text-white pt-32 pb-24 relative overflow-hidden">
         {/* Background Elements */}
@@ -184,7 +202,7 @@ export default function Contact() {
                     />
                   </div>
 
-                  <GlyphButton type="submit" variant="mixed" className="w-full" disabled={sendEmail.isPending}>
+                  <GlyphButton type="submit" variant="mixed" className="w-full" disabled={sendEmail.isPending} aria-label="Send secure message">
                     {sendEmail.isPending ? (
                       <div className="flex items-center justify-center gap-2">
                         <motion.div 

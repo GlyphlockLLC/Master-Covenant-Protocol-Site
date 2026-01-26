@@ -86,7 +86,13 @@ export default function About() {
 
   return (
     <>
-      <SEOHead />
+      <SEOHead 
+        title="About GlyphLock - Quantum-Resistant Cybersecurity Platform | Leadership & Technology"
+        description="Learn about GlyphLock Security's origin story, leadership team (Carlo Earl, Collin Vanderginst, Jacub Lough), and quantum-resistant technology stack. Founded 2025 in Arizona."
+        keywords="GlyphLock about, Carlo Earl founder, Collin Vanderginst CTO, Jacub Lough CFO, quantum-resistant security company, cybersecurity leadership, Arizona security company"
+        url="/about"
+        schemaType="AboutPage"
+      />
       
       <div className="min-h-screen bg-black text-white pt-24 pb-24 relative overflow-hidden">
         {/* Background Elements */}
@@ -363,7 +369,7 @@ export default function About() {
                 transition={{ duration: 1, delay: 0.5, type: "spring", stiffness: 100 }}
               >
                 <Link to={createPageUrl("Consultation")}>
-                  <Button className="bg-gradient-to-r from-[#00E4FF] to-[#8C4BFF] hover:scale-105 transition-transform text-white text-lg font-bold uppercase tracking-wide px-10 py-6 shadow-[0_0_30px_rgba(0,228,255,0.3)] border-none">
+                  <Button className="bg-gradient-to-r from-[#00E4FF] to-[#8C4BFF] hover:scale-105 transition-transform text-white text-lg font-bold uppercase tracking-wide px-10 py-6 shadow-[0_0_30px_rgba(0,228,255,0.3)] border-none" aria-label="Request security credentials">
                     Request Credentials
                   </Button>
                 </Link>

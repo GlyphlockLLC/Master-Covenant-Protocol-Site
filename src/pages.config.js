@@ -13,6 +13,7 @@ import CaseStudyPerplexity from './pages/CaseStudyPerplexity';
 import CaseStudyTruthStrike from './pages/CaseStudyTruthStrike';
 import CommandCenter from './pages/CommandCenter';
 import ComplianceReport from './pages/ComplianceReport';
+import Console from './pages/Console';
 import Consultation from './pages/Consultation';
 import ConsultationSuccess from './pages/ConsultationSuccess';
 import Contact from './pages/Contact';
@@ -78,7 +79,6 @@ import VIPMemberProfile from './pages/VIPMemberProfile';
 import VideoUpload from './pages/VideoUpload';
 import ViewInteractive from './pages/ViewInteractive';
 import sitemapQr from './pages/sitemap-qr';
-import Console from './pages/Console';
 import __Layout from './Layout.jsx';
 
 
@@ -98,6 +98,7 @@ export const PAGES = {
     "CaseStudyTruthStrike": CaseStudyTruthStrike,
     "CommandCenter": CommandCenter,
     "ComplianceReport": ComplianceReport,
+    "Console": Console,
     "Consultation": Consultation,
     "ConsultationSuccess": ConsultationSuccess,
     "Contact": Contact,
@@ -163,7 +164,6 @@ export const PAGES = {
     "VideoUpload": VideoUpload,
     "ViewInteractive": ViewInteractive,
     "sitemap-qr": sitemapQr,
-    "Console": Console,
 }
 
 export const pagesConfig = {

@@ -161,12 +161,13 @@ export default function Services() {
         description="Explore GlyphLock's comprehensive cybersecurity services including Visual Cryptography, GlyphBot AI, NUPS POS System, Security Operations Center, Blockchain Security, and Hotzone Mapper. Quantum-resistant protection for enterprises."
         keywords="cybersecurity services, visual cryptography, QR security, steganography, GlyphBot AI, NUPS POS, security operations center, blockchain security, hotzone mapper, threat detection, vulnerability scanning"
         url="/services"
+        schemaType="ItemList"
       />
       
       <div className="min-h-screen bg-black text-white py-20">
         <div className="container mx-auto px-4 max-w-7xl">
           {/* Header */}
-          <div ref={heroRef} className="text-center mb-12 md:mb-16 px-4">
+          <div ref={heroRef} className="text-center mb-12 md:mb-16 px-4 max-w-5xl mx-auto">
             <motion.h1 
               initial={{ opacity: 0, x: -100 }}
               animate={heroInView ? { opacity: 1, x: 0 } : {}}
@@ -200,7 +201,7 @@ export default function Services() {
           </div>
 
           {/* Services Grid */}
-          <div ref={servicesRef} className="space-y-8 md:space-y-12 mb-12 md:mb-16">
+          <div ref={servicesRef} className="space-y-6 md:space-y-8 lg:space-y-12 mb-12 md:mb-16 max-w-6xl mx-auto">
             {services.map((service, idx) => (
               <motion.div 
                 key={service.id} 
@@ -228,7 +229,7 @@ export default function Services() {
                   ))}
                 </div>
                 <Link to={createPageUrl(service.page)}>
-                  <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+                  <Button className="bg-blue-600 hover:bg-blue-700 text-white" aria-label={`Access ${service.title}`}>
                     Access Module
                   </Button>
                 </Link>
