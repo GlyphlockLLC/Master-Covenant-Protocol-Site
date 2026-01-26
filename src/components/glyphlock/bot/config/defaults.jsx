@@ -1,14 +1,15 @@
+
 export const DEFAULT_PERSONA = 'GENERAL';
 export const DEFAULT_PROVIDER = 'AUTO';
 
 export const DEFAULT_VOICE_SETTINGS = {
-  voiceProfile: 'neutral_female',
+  voiceProfile: 'echo', // 🎙️ Warm, conversational male voice (NOT robotic)
   speed: 1.0,
   pitch: 1.0,
   volume: 1.0,
-  bass: 0,
-  clarity: 0,
-  emotion: 'neutral',
+  bass: 0.2, // Slight warmth
+  clarity: 0.15, // Natural speech clarity
+  emotion: 'friendly', // Human-like emotion
   provider: 'auto'
 };
 
