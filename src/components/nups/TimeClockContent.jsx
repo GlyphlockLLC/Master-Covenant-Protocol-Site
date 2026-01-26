@@ -11,10 +11,11 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { 
   Clock, LogIn, LogOut, Users, Search, Timer, 
-  CheckCircle, Download
+  CheckCircle, Download, Settings
 } from 'lucide-react';
 import { toast } from 'sonner';
 import EntertainerContractModal from '@/components/nups/EntertainerContractModal';
+import EmployeeManagement from '@/components/nups/EmployeeManagement';
 
 const DB_NAME = 'NUPS_TimeClock';
 const DB_VERSION = 1;
@@ -76,7 +77,7 @@ async function getAuditLog() {
   });
 }
 
-export default function NUPSTimeClockContent() {
+export default function NUPSTimeClockContent({ user }) {
   const [shifts, setShifts] = useState([]);
   const [auditLog, setAuditLog] = useState([]);
   const [selectedId, setSelectedId] = useState(null);
@@ -85,6 +86,7 @@ export default function NUPSTimeClockContent() {
   const [showContractModal, setShowContractModal] = useState(false);
   const [pendingClockIn, setPendingClockIn] = useState(null);
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [showEmployeeManager, setShowEmployeeManager] = useState(false);
 
   // Real-time clock update
   useEffect(() => {
@@ -298,6 +300,11 @@ export default function NUPSTimeClockContent() {
 
   return (
     <div className="space-y-6">
+      {/* Admin Employee Manager */}
+      {showEmployeeManager && (
+        <EmployeeManagement user={user} />
+      )}
+
       {/* Real-Time Clock Display */}
       <Card className="bg-gradient-to-r from-cyan-900/30 to-blue-900/30 border-cyan-500/50">
         <CardContent className="p-6 text-center">
@@ -312,9 +319,21 @@ export default function NUPSTimeClockContent() {
 
       <div className="flex items-center justify-between">
         <p className="text-slate-400 text-sm">{activeShifts.length} active • {todayShifts.length} today</p>
-        <Button variant="outline" size="sm" onClick={exportData} className="border-slate-600">
-          <Download className="w-4 h-4 mr-1" /> Export
-        </Button>
+        <div className="flex gap-2">
+          {user?.role === 'admin' && (
+            <Button 
+              variant={showEmployeeManager ? "default" : "outline"} 
+              size="sm" 
+              onClick={() => setShowEmployeeManager(!showEmployeeManager)}
+              className={showEmployeeManager ? "bg-cyan-600 hover:bg-cyan-700" : "border-slate-600"}
+            >
+              <Settings className="w-4 h-4 mr-1" /> Manage Staff
+            </Button>
+          )}
+          <Button variant="outline" size="sm" onClick={exportData} className="border-slate-600">
+            <Download className="w-4 h-4 mr-1" /> Export
+          </Button>
+        </div>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-6">
