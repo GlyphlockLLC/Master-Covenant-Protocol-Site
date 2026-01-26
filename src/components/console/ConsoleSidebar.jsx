@@ -9,17 +9,15 @@ const coreModules = [
 const developerModules = [
   { id: "api-keys", label: "API Keys", icon: Key },
   { id: "sdk", label: "SDK Center", icon: Download },
-  { id: "functions", label: "Edge Functions", icon: Zap },
-  { id: "api-reference", label: "API Docs", icon: Book },
-  { id: "logs", label: "Logs", icon: FileText },
+  { id: "functions", label: "Security Tools", icon: Zap },
+  { id: "logs", label: "Activity Logs", icon: FileText },
 ];
 
 const enterpriseModules = [
-  { id: "billing", label: "Billing", icon: DollarSign },
-  { id: "usage", label: "Usage", icon: TrendingUp },
-  { id: "team-roles", label: "Team & Roles", icon: UsersRound },
-  { id: "audit-timeline", label: "Audit Timeline", icon: Clock },
-  { id: "security", label: "Security", icon: Shield },
+  { id: "usage", label: "Analytics", icon: TrendingUp },
+  { id: "team-roles", label: "User Management", icon: UsersRound },
+  { id: "audit-timeline", label: "Audit Logs", icon: Clock },
+  { id: "security", label: "Threat Detection", icon: Shield },
 ];
 
 const adminOnlyModules = [
