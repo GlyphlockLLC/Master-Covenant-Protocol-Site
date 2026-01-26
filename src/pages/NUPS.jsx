@@ -15,6 +15,7 @@ import {
 import OnlineStatusIndicator from '@/components/nups/OnlineStatusIndicator';
 import InstallPrompt from '@/components/nups/InstallPrompt';
 import { useAccessControl } from '@/components/nups/ProtectedField';
+import { PermissionGate, usePermission } from '@/components/rbac/PermissionGate';
 
 // Lazy load all content components
 const TimeClockContent = lazy(() => import('@/components/nups/TimeClockContent'));
@@ -88,6 +89,7 @@ function TabLoader() {
 export default function NUPS() {
   const [activeTab, setActiveTab] = useState('timeclock');
   const { isAdmin, isManager, isStaff, user, userRole } = useAccessControl();
+  const permissions = usePermission(userRole);
   const [sessionId] = useState(() => {
     let sid = sessionStorage.getItem('nups_session_id');
     if (!sid) {
@@ -260,11 +262,16 @@ export default function NUPS() {
                   <TabsList className="bg-slate-800/50 border border-slate-700">
                     <TabsTrigger value="sales">AI Sales Reports</TabsTrigger>
                     <TabsTrigger value="staff">Staff Performance</TabsTrigger>
-                    <TabsTrigger value="zreports">Z-Reports</TabsTrigger>
+                    <TabsTrigger value="zreports">Advanced Z-Reports</TabsTrigger>
                   </TabsList>
                   <TabsContent value="sales"><AISalesReports /></TabsContent>
                   <TabsContent value="staff"><AIStaffPerformance /></TabsContent>
-                  <TabsContent value="zreports"><ZReportGenerator user={user} /></TabsContent>
+                  <TabsContent value="zreports">
+                    {(() => {
+                      const AdvancedZReport = require('@/components/nups/AdvancedZReport').default;
+                      return <AdvancedZReport user={user} />;
+                    })()}
+                  </TabsContent>
                 </Tabs>
               </div>
             </TabsContent>

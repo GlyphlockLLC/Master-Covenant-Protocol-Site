@@ -364,10 +364,35 @@ export default function AISalesReports() {
               <CardHeader>
                 <CardTitle className="text-white flex items-center gap-2">
                   <Brain className="w-5 h-5 text-purple-400" />
-                  AI-Generated Insights
+                  AI-Generated Insights & Forecasting
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
+                {/* 7-Day Forecast */}
+                {report.insights?.forecast && (
+                  <div className="p-5 bg-gradient-to-br from-cyan-500/10 to-purple-500/10 rounded-xl border border-cyan-500/30">
+                    <h4 className="text-sm font-semibold text-cyan-400 mb-3 flex items-center gap-2">
+                      <TrendingUp className="w-4 h-4" />
+                      7-Day Revenue Forecast
+                    </h4>
+                    <div className="grid grid-cols-3 gap-4 mb-4">
+                      <div className="text-center">
+                        <div className="text-xs text-slate-400 mb-1">Pessimistic</div>
+                        <div className="text-xl font-bold text-red-400">${report.insights.forecast.low?.toFixed(0) || '—'}</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-xs text-slate-400 mb-1">Expected</div>
+                        <div className="text-2xl font-bold text-cyan-400">${report.insights.forecast.mid?.toFixed(0) || '—'}</div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-xs text-slate-400 mb-1">Optimistic</div>
+                        <div className="text-xl font-bold text-green-400">${report.insights.forecast.high?.toFixed(0) || '—'}</div>
+                      </div>
+                    </div>
+                    <p className="text-sm text-slate-300">{report.insights.forecast.description || report.insights.forecast}</p>
+                  </div>
+                )}
+
                 {/* Key Findings */}
                 <div>
                   <h4 className="text-sm font-medium text-purple-400 mb-3">Key Findings</h4>

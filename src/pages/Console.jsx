@@ -618,7 +618,10 @@ function ConsoleContent() {
 
   const renderModule = () => {
     switch (activeModule) {
-      case "dashboard": return <DashboardHome user={user} />;
+      case "dashboard": 
+        // Import and use RealtimeDashboard dynamically
+        const RealtimeDashboard = require('@/components/console/RealtimeDashboard').default;
+        return <RealtimeDashboard user={user} />;
       case "api-keys": return <div className="p-6"><KeyManagement /></div>;
       case "sdk": return <SettingsModule user={user} />;
       case "functions": return <ToolsModule />;
@@ -628,7 +631,9 @@ function ConsoleContent() {
       case "security": return <ThreatDetectionModule user={user} threatDetection={threatDetection} />;
       case "billing": return <SettingsModule user={user} />;
       case "audit-timeline": return <LogsModule />;
-      default: return <DashboardHome user={user} />;
+      default: 
+        const DefaultDashboard = require('@/components/console/RealtimeDashboard').default;
+        return <DefaultDashboard user={user} />;
     }
   };
 
