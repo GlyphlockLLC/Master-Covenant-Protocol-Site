@@ -20,6 +20,7 @@ import StructuredDataOrg from "@/components/StructuredDataOrg";
 import SecurityHeaders from "@/components/security/SecurityHeaders";
 import CrawlerFallback from "@/components/seo/CrawlerFallback";
 import PrerenderHints from "@/components/seo/PrerenderHints";
+import VoiceConsentBanner from "@/components/shared/VoiceConsentBanner";
 
 const { GlyphBotJr } = UI;
 
@@ -100,6 +101,7 @@ export default function Layout({ children, currentPageName }) {
       <SecurityHeaders />
       <CrawlerFallback />
       <PrerenderHints />
+      <VoiceConsentBanner />
       
       {/* Background layers - ALWAYS VISIBLE ON DESKTOP */}
       <div className="hidden md:block" style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none' }}>
