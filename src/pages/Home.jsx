@@ -152,6 +152,7 @@ export default function Home() {
         description="GlyphLock Security LLC provides military-grade quantum-resistant cybersecurity with AI-powered threat detection, visual cryptography, blockchain security, and secure POS systems. GlyphBot AI assistant, secure QR codes, steganography tools, and Master Covenant framework."
         keywords="GlyphLock Security, quantum-resistant encryption, cybersecurity, AI security, blockchain security, visual cryptography, QR code security, steganography, security operations center, GlyphBot AI, Master Covenant"
         url="/"
+        schemaType="WebSite"
       />
       
       {/* SEO H1 - Hidden but crawlable */}

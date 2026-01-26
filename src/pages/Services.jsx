@@ -193,7 +193,7 @@ export default function Services() {
               className="flex flex-wrap justify-center gap-4"
             >
               <Link to={createPageUrl("Consultation")}>
-                <Button className="bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-700 hover:to-violet-700 text-white">
+                <Button className="bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-700 hover:to-violet-700 text-white" aria-label="Request security credentials">
                   Request Credentials
                 </Button>
               </Link>
@@ -345,7 +345,7 @@ export default function Services() {
               transition={{ duration: 1, delay: 0.4, type: "spring", stiffness: 100 }}
             >
               <Link to={createPageUrl("Consultation")}>
-                <Button size="lg" className="bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-700 hover:to-violet-700 text-white">
+                <Button size="lg" className="bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-700 hover:to-violet-700 text-white" aria-label="Request security credentials consultation">
                   Request Credentials
                 </Button>
               </Link>

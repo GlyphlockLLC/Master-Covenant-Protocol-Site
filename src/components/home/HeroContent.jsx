@@ -78,7 +78,7 @@ export default function HeroContent() {
             whileTap={{ scale: 0.95 }}
           >
             <Link to={createPageUrl("Consultation")}>
-              <Button size="lg" className="relative overflow-hidden bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white text-base md:text-lg px-6 md:px-8 py-6 font-black tracking-wide shadow-[0_0_35px_rgba(59,130,246,0.6)] hover:shadow-[0_0_55px_rgba(59,130,246,0.8)] transition-all duration-300 w-full sm:w-auto">
+              <Button size="lg" className="relative overflow-hidden bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white text-base md:text-lg px-6 md:px-8 py-6 font-black tracking-wide shadow-[0_0_35px_rgba(59,130,246,0.6)] hover:shadow-[0_0_55px_rgba(59,130,246,0.8)] transition-all duration-300 w-full sm:w-auto" aria-label="Request security credentials">
                 {/* Shimmer sweep */}
                 <motion.div
                   className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent"
@@ -107,7 +107,7 @@ export default function HeroContent() {
             whileTap={{ scale: 0.95 }}
           >
             <Link to={createPageUrl("SecurityTools")}>
-              <Button size="lg" variant="outline" className="relative overflow-hidden border-2 border-cyan-400/60 text-white hover:bg-cyan-500/20 text-base md:text-lg px-6 md:px-8 py-6 font-bold tracking-wide shadow-[0_0_25px_rgba(6,182,212,0.3)] hover:shadow-[0_0_40px_rgba(6,182,212,0.5)] transition-all duration-300 w-full sm:w-auto">
+              <Button size="lg" variant="outline" className="relative overflow-hidden border-2 border-cyan-400/60 text-white hover:bg-cyan-500/20 text-base md:text-lg px-6 md:px-8 py-6 font-bold tracking-wide shadow-[0_0_25px_rgba(6,182,212,0.3)] hover:shadow-[0_0_40px_rgba(6,182,212,0.5)] transition-all duration-300 w-full sm:w-auto" aria-label="Request module access">
                 {/* Animated border glow */}
                 <motion.div
                   className="absolute inset-0 rounded-lg opacity-0 hover:opacity-100"

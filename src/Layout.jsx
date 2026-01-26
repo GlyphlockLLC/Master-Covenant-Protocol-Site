@@ -11,6 +11,7 @@ import GlyphLoader from "@/components/GlyphLoader";
 import MobileCore from "@/components/mobile/MobileCore";
 import MobileBottomNav from "@/components/mobile/MobileBottomNav";
 import MobileSlideMenu from "@/components/mobile/MobileSlideMenu";
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 import ThemeProvider from "@/components/ThemeProvider";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
@@ -89,6 +90,7 @@ export default function Layout({ children, currentPageName }) {
   };
 
   return (
+    <ErrorBoundary>
     <ThemeProvider>
       {/* GLYPHLOCK: Analytics, SEO & Security */}
       <GoogleAnalytics />
@@ -116,6 +118,10 @@ export default function Layout({ children, currentPageName }) {
           WebkitOverflowScrolling: 'touch'
         }}
       >
+        {/* Skip to main content for keyboard users */}
+        <a href="#main-content" className="skip-to-main">
+          Skip to main content
+        </a>
         <MobileCore />
         <SecurityMonitor />
 
@@ -135,7 +141,7 @@ export default function Layout({ children, currentPageName }) {
         />
 
         {/* Main content */}
-        <main className="flex-1 relative pt-4 pb-28 md:pb-4 px-4 md:px-0">
+        <main id="main-content" className="flex-1 relative pt-4 pb-28 md:pb-4 px-4 md:px-0" role="main">
           {children}
         </main>
 
@@ -152,7 +158,8 @@ export default function Layout({ children, currentPageName }) {
 
         {/* Footer */}
         <Footer />
-      </div>
-    </ThemeProvider>
-  );
-  }
+        </div>
+        </ThemeProvider>
+        </ErrorBoundary>
+        );
+        }

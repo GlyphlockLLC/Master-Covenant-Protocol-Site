@@ -494,6 +494,8 @@ export default function Navbar({ user, onLogin, onLogout }) {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 hover:border-cyan-400/30 transition-all backdrop-blur-sm"
+                  aria-label="User menu"
+                  aria-haspopup="true"
                 >
                   <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-cyan-500 to-violet-500 flex items-center justify-center text-xs font-bold text-white">
                     {user.full_name?.charAt(0) || "U"}
@@ -543,6 +545,7 @@ export default function Navbar({ user, onLogin, onLogout }) {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               className="text-gray-300 hover:text-white text-sm font-semibold px-4 py-2 rounded-lg hover:bg-white/5 transition-all"
+              aria-label="Sign in to your account"
             >
               Sign In
             </motion.button>

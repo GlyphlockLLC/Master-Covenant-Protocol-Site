@@ -94,11 +94,12 @@ input, textarea, [contenteditable], p, span, h1, h2, h3, h4, h5, h6, li, td, th 
     position: relative;
   }
   
-  /* MOBILE: Minimum touch targets */
-  button:not(.preserve-size), .btn:not(.preserve-size), [role="button"]:not(.preserve-size) {
+  /* MOBILE: Minimum touch targets - WCAG 2.5.5 AA compliant */
+  button:not(.preserve-size), .btn:not(.preserve-size), [role="button"]:not(.preserve-size), a:not(.inline-link) {
     min-height: 44px;
     min-width: 44px;
     touch-action: manipulation;
+    -webkit-tap-highlight-color: rgba(59, 130, 246, 0.2);
   }
 
   /* MOBILE: Links - minimum touch target for standalone links */
@@ -307,12 +308,18 @@ canvas {
   @apply block px-4 py-3 rounded-lg text-base hover:bg-gray-900 transition-colors min-h-[44px] flex items-center;
 }
 
-/* Prevent iOS Zoom on Form Focus */
+/* Prevent iOS Zoom on Form Focus - Accessibility */
 @media screen and (max-width: 768px) {
   input:focus,
   select:focus,
   textarea:focus {
     font-size: 16px !important;
+  }
+
+  /* Focus visible ring for keyboard navigation */
+  *:focus-visible {
+    outline: 2px solid #3B82F6;
+    outline-offset: 2px;
   }
 }
 
@@ -327,6 +334,23 @@ canvas {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border-width: 0;
+}
+
+/* Skip to main content link for keyboard users */
+.skip-to-main {
+  position: absolute;
+  left: -9999px;
+  z-index: 999999;
+  padding: 1rem 1.5rem;
+  background: #3B82F6;
+  color: white;
+  text-decoration: none;
+  border-radius: 0.5rem;
+}
+
+.skip-to-main:focus {
+  left: 1rem;
+  top: 1rem;
 }
 
 /* Loading States */
