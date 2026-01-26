@@ -109,12 +109,25 @@ input, textarea, [contenteditable], p, span, h1, h2, h3, h4, h5, h6, li, td, th 
     align-items: center;
     touch-action: manipulation;
   }
+
+  /* MOBILE: Links - minimum touch target for standalone links */
+  a:not(.inline-link) {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    touch-action: manipulation;
+  }
   
   /* MOBILE: Readable inputs */
   input:not([type="checkbox"]):not([type="radio"]):not([type="file"]), textarea, select {
     font-size: 16px;
     min-height: 44px;
     padding: 12px 16px;
+  }
+
+  input[type="checkbox"], input[type="radio"] {
+    min-width: 20px;
+    min-height: 20px;
   }
 
   input[type="checkbox"], input[type="radio"] {
@@ -156,6 +169,12 @@ input, textarea, [contenteditable], p, span, h1, h2, h3, h4, h5, h6, li, td, th 
   .container, [class*="max-w-"] {
     padding-left: 16px;
     padding-right: 16px;
+  }
+
+  /* MOBILE: Section spacing */
+  section:not(.preserve-spacing) {
+    padding-top: 32px;
+    padding-bottom: 32px;
   }
 
   /* MOBILE: Section spacing */

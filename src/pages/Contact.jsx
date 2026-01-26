@@ -8,7 +8,6 @@ import { Textarea } from "@/components/ui/textarea";
 import SEOHead from "@/components/SEOHead";
 import { GlyphInput, GlyphButton, GlyphFormPanel } from "@/components/ui/GlyphForm";
 import { motion, useInView } from "framer-motion";
-import CyanLoader from "@/components/shared/CyanLoader";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -73,7 +72,7 @@ export default function Contact() {
         url="/contact"
         schemaType="ContactPage"
       />
-      <div className="min-h-screen bg-black text-white pt-32 pb-24 relative overflow-hidden">
+      <main className="min-h-screen bg-black text-white pt-32 pb-24 relative overflow-hidden" role="main">
         {/* Background Elements */}
         <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-[#3B82F6]/5 rounded-full blur-[120px] pointer-events-none"></div>
         <div className="absolute bottom-0 right-1/4 w-[600px] h-[600px] bg-[#7C3AED]/5 rounded-full blur-[120px] pointer-events-none"></div>
@@ -156,21 +155,27 @@ export default function Contact() {
                     <div className="space-y-2">
                       <Label htmlFor="name" className="text-white/80 text-xs uppercase tracking-wider font-bold">Identity</Label>
                       <GlyphInput
+                        id="name"
                         type="text"
                         placeholder="Your Name"
                         value={formData.name}
                         onChange={(e) => setFormData({...formData, name: e.target.value})}
                         className="w-full"
+                        required
+                        aria-required="true"
                       />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="email" className="text-white/80 text-xs uppercase tracking-wider font-bold">Contact Point</Label>
                       <GlyphInput
+                        id="email"
                         type="email"
                         placeholder="name@company.com"
                         value={formData.email}
                         onChange={(e) => setFormData({...formData, email: e.target.value})}
                         className="w-full"
+                        required
+                        aria-required="true"
                       />
                     </div>
                   </div>
@@ -178,11 +183,14 @@ export default function Contact() {
                   <div className="space-y-2">
                     <Label htmlFor="subject" className="text-white/80 text-xs uppercase tracking-wider font-bold">Subject Protocol</Label>
                     <GlyphInput
+                      id="subject"
                       type="text"
                       placeholder="Consultation / Partnership / Support"
                       value={formData.subject}
                       onChange={(e) => setFormData({...formData, subject: e.target.value})}
                       className="w-full"
+                      required
+                      aria-required="true"
                     />
                   </div>
 
@@ -199,6 +207,8 @@ export default function Contact() {
                         boxShadow: '6px 6px 10px rgba(0,0,0,0.8), 1px 1px 10px rgba(59, 130, 246, 0.2)'
                       }}
                       placeholder="Describe your security requirements..."
+                      aria-required="true"
+                      minLength={10}
                     />
                   </div>
 
@@ -264,7 +274,7 @@ export default function Contact() {
           </div>
 
         </div>
-      </div>
+      </main>
     </>
   );
 }

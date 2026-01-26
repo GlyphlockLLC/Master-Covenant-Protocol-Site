@@ -1,11 +1,10 @@
 import React, { useRef } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { 
-  Shield, Lock, Cpu, QrCode, Eye, Map, Zap, Database, 
-  ShoppingCart, Brain, Globe, AlertCircle, CheckCircle2
+  Shield, Eye, Map, Database, 
+  ShoppingCart, Brain, CheckCircle2
 } from "lucide-react";
 import SEOHead from "@/components/SEOHead";
 import { motion, useInView } from "framer-motion";
@@ -164,7 +163,7 @@ export default function Services() {
         schemaType="ItemList"
       />
       
-      <div className="min-h-screen bg-black text-white py-20">
+      <main className="min-h-screen bg-black text-white py-20" role="main">
         <div className="container mx-auto px-4 max-w-7xl">
           {/* Header */}
           <div ref={heroRef} className="text-center mb-12 md:mb-16 px-4 max-w-5xl mx-auto">
@@ -201,7 +200,7 @@ export default function Services() {
           </div>
 
           {/* Services Grid */}
-          <div ref={servicesRef} className="space-y-6 md:space-y-8 lg:space-y-12 mb-12 md:mb-16 max-w-6xl mx-auto">
+          <section ref={servicesRef} className="space-y-6 md:space-y-8 lg:space-y-12 mb-12 md:mb-16 max-w-6xl mx-auto" aria-label="GlyphLock security modules">
             {services.map((service, idx) => (
               <motion.div 
                 key={service.id} 
@@ -235,11 +234,12 @@ export default function Services() {
                 </Link>
               </motion.div>
             ))}
-          </div>
+          </section>
 
           {/* Industries Served */}
-          <div ref={industriesRef} className="mb-16">
+          <section ref={industriesRef} className="mb-16" aria-labelledby="industries-heading">
             <motion.h2 
+              id="industries-heading"
               initial={{ opacity: 0, y: 40 }}
               animate={industriesInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
@@ -263,7 +263,7 @@ export default function Services() {
                 </motion.div>
               ))}
             </div>
-          </div>
+          </section>
 
           {/* Technology Stack */}
           <motion.div 
@@ -352,7 +352,7 @@ export default function Services() {
             </motion.div>
           </motion.div>
         </div>
-      </div>
+      </main>
     </>
   );
 }

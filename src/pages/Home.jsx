@@ -158,10 +158,10 @@ export default function Home() {
       {/* SEO H1 - Hidden but crawlable */}
       <h1 className="sr-only">GlyphLock Security LLC - Quantum-Resistant Cybersecurity Platform</h1>
 
-      <main className="w-full relative px-4 md:px-0" style={{ background: 'transparent' }}>
+      <main className="w-full relative px-4 md:px-0" style={{ background: 'transparent' }} role="main">
         
         {/* Hero Section */}
-        <section className="w-full">
+        <section className="w-full" aria-label="Hero introduction">
           <ScrollSection>
             <HeroSection />
           </ScrollSection>

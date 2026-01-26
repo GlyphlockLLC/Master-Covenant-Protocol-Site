@@ -3,9 +3,8 @@ import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { Button } from "@/components/ui/button";
 import { 
-  Shield, Zap, Brain, Code, Target, Users, 
-  Sparkles, Crown, Lock, Blocks, FileText, 
-  Globe, TrendingUp, Award
+  Shield, Zap, Code, Target, 
+  Sparkles, Crown, TrendingUp, Blocks
 } from "lucide-react";
 import SEOHead from "../components/SEOHead";
 import { motion, useInView } from "framer-motion";
@@ -94,7 +93,7 @@ export default function About() {
         schemaType="AboutPage"
       />
       
-      <div className="min-h-screen bg-black text-white pt-24 pb-24 relative overflow-hidden">
+      <main className="min-h-screen bg-black text-white pt-24 pb-24 relative overflow-hidden" role="main">
         {/* Background Elements */}
         <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-[#00E4FF]/5 rounded-full blur-[120px] pointer-events-none"></div>
         <div className="absolute bottom-0 left-0 w-[800px] h-[800px] bg-[#8C4BFF]/5 rounded-full blur-[120px] pointer-events-none"></div>
@@ -258,8 +257,9 @@ export default function About() {
           </motion.div>
 
           {/* LEADERSHIP */}
-          <div ref={leadershipRef} className="mb-24">
+          <section ref={leadershipRef} className="mb-24" aria-labelledby="leadership-heading">
             <motion.h2 
+              id="leadership-heading"
               initial={{ opacity: 0, y: 40 }}
               animate={leadershipInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
@@ -292,7 +292,7 @@ export default function About() {
                 );
               })}
             </div>
-          </div>
+          </section>
 
 
 
@@ -378,7 +378,7 @@ export default function About() {
           </motion.div>
 
         </div>
-      </div>
+      </main>
     </>
   );
 }

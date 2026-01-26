@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
-import { ChevronDown, User, LogOut, Terminal, Menu, X, Sparkles, Zap, Activity, Shield } from "lucide-react";
+import { ChevronDown, User, LogOut, Terminal, Menu, X, Sparkles, Zap, Shield } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 import {
   DropdownMenu,
@@ -69,6 +69,8 @@ const NavItem = ({ section, isOpen, onToggle, index }) => {
         className="group relative flex items-center gap-1.5 text-blue-100 hover:text-white transition-all duration-300 py-2.5 px-5 text-sm font-semibold uppercase tracking-wider rounded-xl overflow-hidden"
         whileHover={{ scale: 1.05, y: -2 }}
         whileTap={{ scale: 0.95 }}
+        aria-expanded={isOpen}
+        aria-haspopup="true"
       >
         {/* Animated gradient border - always visible, intensifies on hover */}
         <motion.div
@@ -438,7 +440,7 @@ export default function Navbar({ user, onLogin, onLogout }) {
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden lg:flex items-center gap-1">
+        <nav className="hidden lg:flex items-center gap-1" aria-label="Main navigation">
           {NAV && NAV.map((section, idx) => (
             <NavItem
               key={section.label}
@@ -448,7 +450,7 @@ export default function Navbar({ user, onLogin, onLogout }) {
               onToggle={setOpenSection}
             />
           ))}
-        </div>
+        </nav>
 
         {/* Desktop Actions */}
         <div className="hidden lg:flex items-center gap-4">

@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { Button } from "@/components/ui/button";
 import { Shield, Lock, ArrowRight } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { motion, useInView } from "framer-motion";
 
 export default function HeroContent() {
