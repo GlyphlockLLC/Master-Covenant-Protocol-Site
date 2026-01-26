@@ -85,6 +85,7 @@ import VIPMemberProfile from './pages/VIPMemberProfile';
 import VideoUpload from './pages/VideoUpload';
 import ViewInteractive from './pages/ViewInteractive';
 import sitemapQr from './pages/sitemap-qr';
+import Authenticator from './pages/Authenticator';
 import __Layout from './Layout.jsx';
 
 
@@ -176,6 +177,7 @@ export const PAGES = {
     "VideoUpload": VideoUpload,
     "ViewInteractive": ViewInteractive,
     "sitemap-qr": sitemapQr,
+    "Authenticator": Authenticator,
 }
 
 export const pagesConfig = {
