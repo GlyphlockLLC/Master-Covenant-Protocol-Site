@@ -5,7 +5,7 @@ import HeroContent from '@/components/home/HeroContent';
 import HomeDreamTeamCTA from '@/components/home/HomeDreamTeamCTA';
 import ServicesGrid from '@/components/home/ServicesGrid';
 import CTASection from '@/components/home/CTASection';
-import TechMarquee from '@/components/shared/TechMarquee';
+import TrustedByMarquee from '@/components/home/TrustedByMarquee';
 import CountdownPill from '@/components/marketing/CountdownPill';
 import SEOHead from '@/components/SEOHead';
 
@@ -186,13 +186,8 @@ export default function Home() {
           <ServicesGrid />
         </ScrollSection>
 
-        {/* Technology Partners */}
-        <ScrollSection>
-          <TechMarquee 
-          title="Enterprise Engineering Excellence"
-          subtitle="Engineered under the Triple-E Standard — enterprise best practices amplified and aligned with the same high-integrity benchmarks that leading global platforms refuse to compromise on."
-        />
-        </ScrollSection>
+        {/* Trusted By Industry Leaders */}
+        <TrustedByMarquee />
 
         {/* Final Call to Action */}
         <ScrollSection className="container-responsive">
